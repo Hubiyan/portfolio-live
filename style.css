@@ -1127,7 +1127,7 @@ p {
   font-size:16px; line-height:1.2; color:#000; font-weight:300; /* Light */
 }
 .time-comp .sec{
-  font-size:12px; line-height:1.26; color:#7C7C7C; font-weight:500; /* Medium */
+  font-size:12px; line-height:1.28; color:#7C7C7C; font-weight:500; /* Medium */
 }
 .sec {
     width: var(--spacing-10);
@@ -1663,7 +1663,7 @@ p {
     }
     .sec {
         font-size: var(--spacing-10) !important;
-        line-height: 1.2;
+        line-height: 1.25;
     }
     .time-comp{
     display:inline-flex;
