@@ -139,12 +139,8 @@ body {
     -ms-overflow-style: none !important; /* IE and Edge */
     overflow-x: hidden;
 }
-.my-nav {
-    position: fixed;
-    bottom: 2%;
-    z-index: 997;
-    pointer-events: none;
-}
+
+
 .nav-floater {
     border-radius: var(--spacing-22);
     opacity: 1;
@@ -315,9 +311,7 @@ p {
     height: 100vh;
     max-height: 44rem;
 }
-/* .standard-section {
-    padding-top: var(--spacing-100);
-} */
+
 .section-title {
     font-size: var(--spacing-26);
     font-weight: 500;
@@ -355,19 +349,17 @@ p {
 .carousel-control-next:focus, .carousel-control-next:hover, .carousel-control-prev:focus, .carousel-control-prev:hover {
     opacity: 1;
 }
-/* Disable the sliding transform animation */
+
 #carouselExampleIndicators .carousel-inner {
-    transition: none !important;  /* Remove any transition effects */
-    transform: unset !important;  /* Disable transform transitions */
+    transition: none !important;  
+    transform: unset !important; 
 }
 
-/* Ensure carousel items do not have any transition */
 #carouselExampleIndicators .carousel-item {
-    transition: none !important;  /* Remove any transition effects */
-    transform: unset !important;  /* Disable transform transitions */
+    transition: none !important; 
+    transform: unset !important;  
 }
 
-/* Optional: Remove opacity changes on hover for carousel buttons */
 #carouselExampleIndicators .carousel-control-prev,
 #carouselExampleIndicators .carousel-control-next {
     opacity: 1 !important;
@@ -375,7 +367,7 @@ p {
 
 #carouselExampleIndicators .carousel-control-prev:hover,
 #carouselExampleIndicators .carousel-control-next:hover {
-    opacity: 1 !important; /* Remove hover opacity change */
+    opacity: 1 !important; 
 }
 
 
@@ -1047,7 +1039,7 @@ p {
 /* faq Section */
 
 .full-width-scroller {
-    position: fixed; /* Fixes the element at the top of the viewport */
+    position: fixed; 
     top: 0;
     left: 0;
     width: 100vw;
@@ -1055,7 +1047,6 @@ p {
     background: rgba(255, 255, 255, 0.1);
     -webkit-backdrop-filter: blur(10px); /* For iOS Safari and Chrome */
     backdrop-filter: blur(10px); /* Standard */
-    
     /* Fallback for older browsers */
     background-color: rgba(255, 255, 255, 0.5);
 
@@ -1143,7 +1134,80 @@ p {
     height: 22rem;
 }
 
+/* ===== Gradual Blur on my-nav — CONFIG ===== */
+:root{
+  /* Size & placement */
+  --nav-blur-height: 180px;     /* edit */
+  --nav-blur-width: 100vw;      /* edit */
+  --nav-blur-bottom: 0;         /* edit */
+  --nav-blur-z: 996;            /* keep below your top scroller (1000) and above content */
 
+  /* Effect tuning */
+  --nav-blur-layers: 10;        /* edit */
+  --nav-blur-min: 1px;          /* edit */
+  --nav-blur-max: 14px;         /* edit */
+  --nav-blur-angle: 180deg;     /* 0=top→bottom; try 160deg for diagonal */
+  --nav-band-window: 10%;       /* solid window per band */
+  --nav-band-feather: 10%;      /* feather on both sides */
+}
+
+/* Make .my-nav the blur stage (keeps your existing rules) */
+.my-nav{
+  position: fixed;                  /* you already had fixed; reiterating for clarity */
+  left: 0;
+  right: 0;
+  bottom: var(--nav-blur-bottom);
+  height: var(--nav-blur-height);
+  isolation: isolate;               /* proper backdrop compositing */
+  overflow: clip;                   /* contains mask bands */
+  z-index: var(--nav-blur-z);
+  pointer-events: none;             /* DO NOT intercept clicks */
+}
+
+/* Floater stays fully interactive on top */
+.nav-floater{
+  position: relative;
+  z-index: 2;                       /* above blur layers */
+  pointer-events: auto;             /* clickable */
+  height: fit-content;
+  margin-bottom: var(--spacing-16);
+}
+
+/* Blur band stack inside my-nav */
+.nav-blur-stack{
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  contain: layout paint style;
+}
+
+/* Each band */
+.nav-blur-stack .nav-blur-layer{
+  position: absolute;
+  inset: 0;
+  -webkit-mask-composite: source-over;
+  mask-composite: add;
+  will-change: backdrop-filter;
+}
+
+/* Fallback if backdrop-filter unsupported */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))){
+  .nav-blur-stack{
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0,0,0,0.04) 30%,
+      rgba(0,0,0,0.12) 60%,
+      rgba(0,0,0,0.22) 100%
+    );
+  }
+}
+
+/* Optional: smaller strip on phones */
+@media (max-width: 520px){
+  :root{ --nav-blur-height: 180px; }
+}
 /* h1 responsive manipualtion */
 @media screen and (min-width: 0px) and (max-width: 330px) {
     .main-title {
@@ -1218,9 +1282,7 @@ p {
 
     .my-nav {
         position: fixed !important;
-        bottom: 5% !important;
         left: 0 !important;
-        width: 100vw !important;
         background-color: transparent !important;
         z-index: 997 !important;
         margin: 0 !important;

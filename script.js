@@ -38,7 +38,6 @@ function fixNav() {
                 position: fixed !important;
                 bottom: 0 !important;
                 left: 0 !important;
-                width: 100vw !important;
                 z-index: 997 !important;
                 transform: none !important;
                 -webkit-transform: none !important;
@@ -128,11 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-
-
-
-
-
 // ===== Live Clock =====
 (() => {
   const comps = document.querySelectorAll('.time-comp');
@@ -188,9 +182,6 @@ document.addEventListener('DOMContentLoaded', () => {
 })();
 
 
-
-
-
 document.addEventListener("DOMContentLoaded", () => {
   // Initialize Confetti with the hidden trigger
   const confetti = new Confetti("confetti-trigger");
@@ -222,3 +213,62 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+/* ===== Build Gradual Blur bands inside .my-nav ===== */
+(function buildNavBlur(){
+  const stack = document.getElementById('navBlurStack');
+  if (!stack) return;
+
+  const css = () => getComputedStyle(document.documentElement);
+  const lerp = (a,b,t) => a + (b-a)*t;
+
+  function render(){
+    const s = css();
+    const L        = parseInt(s.getPropertyValue('--nav-blur-layers')) || 10;
+    const blurMin  = parseFloat(s.getPropertyValue('--nav-blur-min')) || 1;
+    const blurMax  = parseFloat(s.getPropertyValue('--nav-blur-max')) || 14;
+    const angle    = (s.getPropertyValue('--nav-blur-angle') || '180deg').trim();
+    const win      = (s.getPropertyValue('--nav-band-window') || '10%').trim();
+    const feather  = (s.getPropertyValue('--nav-band-feather') || '10%').trim();
+
+    stack.innerHTML = '';
+
+    for (let i=0; i<L; i++){
+      const layer = document.createElement('div');
+      layer.className = 'nav-blur-layer';
+
+      // band marching like your Framer snippet: 0,10,20...
+      const start = i * 10;
+      const sPct = start;
+      const aPct = start + parseFloat(feather);
+      const bPct = aPct + parseFloat(win);
+      const ePct = bPct + parseFloat(feather);
+
+      const mask = `linear-gradient(${angle},
+        transparent ${sPct}%,
+        black ${aPct}%,
+        black ${bPct}%,
+        transparent ${ePct}%
+      )`;
+
+      const t     = (L === 1) ? 1 : (i / (L - 1));
+      const blur  = lerp(blurMin, blurMax, t).toFixed(2) + 'px';
+
+      layer.style.webkitMaskImage = mask;
+      layer.style.maskImage = mask;
+      layer.style.webkitBackdropFilter = `blur(${blur})`;
+      layer.style.backdropFilter = `blur(${blur})`;
+
+      stack.appendChild(layer);
+    }
+  }
+
+  const init = () => render();
+  if (document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', init, { once:true });
+  } else {
+    init();
+  }
+  window.addEventListener('resize', render, { passive:true });
+  window.addEventListener('orientationchange', render);
+})();
