@@ -215,14 +215,21 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ===== Build Gradual Blur bands inside .my-nav ===== */
+/* ===== Build Gradual Blur bands inside .my-nav ===== */
 (function buildNavBlur(){
   const stack = document.getElementById('navBlurStack');
   if (!stack) return;
 
-  const css = () => getComputedStyle(document.documentElement);
+  const css  = () => getComputedStyle(document.documentElement);
   const lerp = (a,b,t) => a + (b-a)*t;
 
   function render(){
+    // kill effect entirely on mobile
+    if (window.innerWidth <= 520){
+      stack.innerHTML = '';
+      return;
+    }
+
     const s = css();
     const L        = parseInt(s.getPropertyValue('--nav-blur-layers')) || 10;
     const blurMin  = parseFloat(s.getPropertyValue('--nav-blur-min')) || 1;
@@ -237,7 +244,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const layer = document.createElement('div');
       layer.className = 'nav-blur-layer';
 
-      // band marching like your Framer snippet: 0,10,20...
       const start = i * 10;
       const sPct = start;
       const aPct = start + parseFloat(feather);
@@ -251,13 +257,13 @@ document.addEventListener("DOMContentLoaded", () => {
         transparent ${ePct}%
       )`;
 
-      const t     = (L === 1) ? 1 : (i / (L - 1));
-      const blur  = lerp(blurMin, blurMax, t).toFixed(2) + 'px';
+      const t    = (L === 1) ? 1 : (i / (L - 1));
+      const blur = lerp(blurMin, blurMax, t).toFixed(2) + 'px';
 
-      layer.style.webkitMaskImage = mask;
-      layer.style.maskImage = mask;
+      layer.style.webkitMaskImage      = mask;
+      layer.style.maskImage            = mask;
       layer.style.webkitBackdropFilter = `blur(${blur})`;
-      layer.style.backdropFilter = `blur(${blur})`;
+      layer.style.backdropFilter       = `blur(${blur})`;
 
       stack.appendChild(layer);
     }
@@ -269,6 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
   } else {
     init();
   }
+
   window.addEventListener('resize', render, { passive:true });
   window.addEventListener('orientationchange', render);
 })();
