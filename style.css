@@ -557,7 +557,7 @@ p {
     background-color: var(--grey-200);
     border-radius: 50%;
 }
-.ligher-help {
+.lighter-help {
     color: var(--grey-100);
 }
 .available-avatar {
@@ -1207,7 +1207,7 @@ p {
 @media (max-width: 520px){
   :root{ --nav-blur-height: 180px; }
 }
-/* h1 responsive manipualtion */
+/* h1 responsive manipulation */
 @media screen and (min-width: 0px) and (max-width: 330px) {
     .main-title {
         font-size: var(--spacing-30);
@@ -1240,7 +1240,7 @@ p {
     }
 }
 
-/* h1 responsive manipualtion */
+/* h1 responsive manipulation */
 @media screen and (min-width: 0px) and (max-width: 520px) { 
     .container {
         width: 100% !important;
