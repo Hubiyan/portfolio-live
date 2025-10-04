@@ -1117,12 +1117,10 @@ p {
 .time-comp .hm{
   font-size:16px; line-height:1.2; color:#000; font-weight:300; /* Light */
 }
-.time-comp .sec{
+.time-comp {
   font-size:12px; line-height:1.28; color:#7C7C7C; font-weight:500; /* Medium */
 }
-.sec {
-    width: var(--spacing-10);
-}
+
 .time-comp .ampm{
   margin-left:4px;
   font-size:16px; line-height:1.2; color:#000; font-weight:300; /* Light */
@@ -1721,10 +1719,6 @@ p {
     }
     .city, .pin, .hm, .ampm {
         font-size: var(--spacing-12) !important;
-    }
-    .sec {
-        font-size: var(--spacing-10) !important;
-        line-height: 1.25;
     }
     .time-comp{
     display:inline-flex;

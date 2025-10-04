@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// ===== Live Clock =====
+// ===== Live Clock (Hours & Minutes only) =====
 (() => {
   const comps = document.querySelectorAll('.time-comp');
 
@@ -139,35 +139,31 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cityEl && cityEl.textContent !== city) cityEl.textContent = city;
 
     const hmEl   = comp.querySelector('.hm');
-    const secEl  = comp.querySelector('.sec');
     const apEl   = comp.querySelector('.ampm');
-    if (!hmEl || !secEl || !apEl) return;
+    if (!hmEl || !apEl) return;
 
     const parts = new Intl.DateTimeFormat('en-US', {
       timeZone: tz,
       hour: '2-digit',
       minute: '2-digit',
-      second: '2-digit',
       hour12: true
     }).formatToParts(new Date());
 
     let hour    = parts.find(p => p.type === 'hour')?.value ?? '00';
     const minute = parts.find(p => p.type === 'minute')?.value ?? '00';
-    const second = parts.find(p => p.type === 'second')?.value ?? '00';
     const ampm   = (parts.find(p => p.type === 'dayPeriod')?.value ?? 'AM').toUpperCase();
 
     // Drop leading zero on hour
     hour = String(parseInt(hour, 10));
 
-    hmEl.textContent  = `${hour}:${minute}`;
-    secEl.textContent = String(second).padStart(2,'0');
-    apEl.textContent  = ampm;
+    hmEl.textContent = `${hour}:${minute}`;
+    apEl.textContent = ampm;
   }
 
   function renderAll(){ comps.forEach(renderOne); }
 
   let tick = null;
-  function start(){ renderAll(); tick = setInterval(renderAll, 1000); }
+  function start(){ renderAll(); tick = setInterval(renderAll, 60 * 1000); } // update every minute
   function stop(){ clearInterval(tick); tick = null; }
 
   if (document.readyState === 'loading'){
@@ -180,6 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.hidden) stop(); else start();
   });
 })();
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
