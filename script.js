@@ -58,43 +58,39 @@ window.addEventListener('resize', fixNav);
 window.addEventListener('orientationchange', fixNav);
 
 
-// -------------- TESTIMONIAL SCROLLING --------------
-let isDown = false;
-let startX, scrollLeft;
-const testimonialContainer = document.querySelector('.testimonial-container');
+// -------------- TESTIMONIAL SCROLLING (Reusable) --------------
+document.querySelectorAll('.testimonial-container').forEach(container => {
+    let isDown = false;
+    let startX;
+    let scrollLeft;
 
-function handleTestimonialScroll(e) {
-    if (!isDown) return; 
-    e.preventDefault();
-    const x = e.pageX - testimonialContainer.offsetLeft;
-    const walk = (x - startX) * 2; // Adjust scroll speed
-    testimonialContainer.scrollLeft = scrollLeft - walk;
-}
+    function handleScroll(e) {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - container.offsetLeft;
+        const walk = (x - startX) * 2; // Adjust scroll speed
+        container.scrollLeft = scrollLeft - walk;
+    }
 
-// Mouse events for scrolling testimonials
-testimonialContainer.addEventListener('mousedown', (e) => {
-    isDown = true;
-    testimonialContainer.classList.add('active');
-    startX = e.pageX - testimonialContainer.offsetLeft;
-    scrollLeft = testimonialContainer.scrollLeft;
+    container.addEventListener('mousedown', e => {
+        isDown = true;
+        container.classList.add('active');
+        startX = e.pageX - container.offsetLeft;
+        scrollLeft = container.scrollLeft;
+    });
+
+    container.addEventListener('mouseleave', () => {
+        isDown = false;
+        container.classList.remove('active');
+    });
+
+    container.addEventListener('mouseup', () => {
+        isDown = false;
+        container.classList.remove('active');
+    });
+
+    container.addEventListener('mousemove', handleScroll);
 });
-testimonialContainer.addEventListener('mouseleave', () => { isDown = false; testimonialContainer.classList.remove('active'); });
-testimonialContainer.addEventListener('mouseup', () => { isDown = false; testimonialContainer.classList.remove('active'); });
-testimonialContainer.addEventListener('mousemove', handleTestimonialScroll);
-
-
-// -------------- SCROLLER INDICATOR --------------
-function updateScrollIndicator() {
-    const scrollIndicator = document.querySelector('.scroller-indicator');
-    const scrollTop = window.scrollY;
-    const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const scrollPercentage = (scrollTop / documentHeight) * 100;
-    scrollIndicator.style.width = `${scrollPercentage}%`;
-}
-
-// Attach scroll event for scroller indicator
-window.addEventListener('scroll', updateScrollIndicator);
-
 
 // -------------- CAROUSEL PROGRESS AND BUTTON DISABLE --------------
 document.addEventListener('DOMContentLoaded', () => {

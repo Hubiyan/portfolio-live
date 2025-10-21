@@ -319,8 +319,9 @@ p {
 } 
 .section-description {
     font-size: var(--spacing-18);
-    font-weight: 400;
+    font-weight: 300;
     color: var(--grey-300);
+    line-height: 120%;
 }
 .my-button {
     display: flex;
@@ -449,7 +450,7 @@ p {
     padding-left: var(--spacing-24);
     padding-right: var(--spacing-24);
     cursor: grab;
-    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 .testimonial-container::-webkit-scrollbar {
@@ -477,9 +478,10 @@ p {
 }
 .testimonial-card {
     border: 1px solid var(--grey-50);
-    padding: var(--spacing-16);
+    padding: var(--spacing-24);
     border-radius: var(--spacing-16);
     min-width: 18rem;
+    height: 100%;
 }
 .testimonial-img {
     height: var(--spacing-42);
@@ -645,7 +647,6 @@ p {
     object-fit: contain;
 }
 .case-study-card {
-    padding:var(--spacing-32) var(--spacing-32) 0 var(--spacing-32);
     .section-title {
         font-size: var(--spacing-30);
     }
@@ -671,6 +672,18 @@ p {
 }
 .exp-card {
     padding: var(--spacing-08);
+    user-select: none; /* Prevents text selection */
+    overflow-x: auto;
+    cursor: grab;
+    overflow-y: hidden;
+}
+.exp-card::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+/* Cursor style */
+.exp-card:active {
+    cursor: grabbing;
 }
 .chip {
     font-size: var(--spacing-12);
@@ -1187,6 +1200,16 @@ p {
   mask-composite: add;
   will-change: backdrop-filter;
 }
+.case-card {
+    min-width: 80% !important;
+    padding-bottom: 0 !important;
+}
+.case-title {
+    font-size: var(--spacing-24);
+    font-weight: 500;
+    color: var(--grey-400);
+}
+
 
 /* Fallback if backdrop-filter unsupported */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))){
@@ -1210,10 +1233,16 @@ p {
     .main-title {
         font-size: var(--spacing-30);
     }
+    .case-btn {
+        font-size: var(--spacing-12);
+    }
 }
 @media screen and (min-width: 330px) and (max-width: 350px) {
     .main-title {
         font-size: var(--spacing-32);
+    }
+    .case-btn {
+        font-size: var(--spacing-12) !important;
     }
 }
 
@@ -1405,7 +1434,7 @@ p {
         object-fit: contain;  
     } 
     .testimonial-card {
-        padding: var(--spacing-14);
+        padding: var(--spacing-24);
         min-width: 15.5rem;
     }
     .dark-card {
@@ -1601,6 +1630,15 @@ p {
         .loom-video-about-me {
             border-radius: var(--spacing-14);
             overflow: hidden;
+        }
+        .case-card {
+            min-width: 90% !important;
+        }
+        .case-title {
+            font-size: var(--spacing-18);
+        }
+        .company-box {
+            min-width: var(--spacing-160);
         }
 
 }
