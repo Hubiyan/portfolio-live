@@ -92,6 +92,19 @@ document.querySelectorAll('.testimonial-container').forEach(container => {
     container.addEventListener('mousemove', handleScroll);
 });
 
+// -------------- SCROLLER INDICATOR --------------
+function updateScrollIndicator() {
+    const scrollIndicator = document.querySelector('.scroller-indicator');
+    const scrollTop = window.scrollY;
+    const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollPercentage = (scrollTop / documentHeight) * 100;
+    scrollIndicator.style.width = `${scrollPercentage}%`;  // ✅ fixed
+}
+
+// Attach scroll event for scroller indicator
+window.addEventListener('scroll', updateScrollIndicator);
+
+
 // -------------- CAROUSEL PROGRESS AND BUTTON DISABLE --------------
 document.addEventListener('DOMContentLoaded', () => {
     const carousel = document.querySelector('#carouselExampleIndicators');
