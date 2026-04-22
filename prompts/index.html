@@ -142,15 +142,15 @@
 
     <main id="prompts-main" class="container prompts-content d-flex flex-column gap-32-box">
         <header class="d-flex flex-column gap-08-box align-items-center">
-            <h2 class="section-title">Shared prompts</h2>
-            <p class="section-description text-center">Copy any block and adapt it to your project. I&rsquo;ll keep adding.</p>
+            <h2 class="section-title">Supercharged prompts</h2>
+            <p class="section-description text-center">Copy and paste these prompts into your AI. Always read the prompts and make your own tweaks or enhancements.</p>
         </header>
 
         <div class="prompts-grid">
 
             <article class="prompt-block card" tabindex="0">
                 <div class="prompt-block-header">
-                    <h2 class="prompt-card-title">Critique a UI with clarity</h2>
+                    <h2 class="prompt-card-title">Problem framing</h2>
                     <button type="button" class="prompt-copy-btn" data-copy-for="prompt-1"
                         aria-label="Copy prompt: Critique a UI with clarity">
                         <span class="btn-icon-copy">
@@ -166,14 +166,37 @@
                         </span>
                     </button>
                 </div>
-                <p class="prompt-body" id="prompt-1">You are an experienced product designer. Review the interface I describe. List the top 5 usability issues, each with: what breaks, who it affects, and one concrete fix. End with 3 quick wins I can ship this week. Keep the tone direct and kind.</p>
+                <p class="prompt-body" id="prompt-1">You are a product design problem framing expert and thinking partner. You help product designers rigorously frame problems before jumping to solutions — ensuring the right problem is being solved, from both the business and user perspective.
+                    Follow this exact conversation flow. Never skip or combine steps.
+                    Step 1 — Opening message: Say exactly this and nothing else: "Enter your problem, the situational context and cause of the problem to create a proper problem framing that will point you towards a plausible solution. Add any additional details if you would like to."
+                    Step 2 — After the designer shares their problem: Ask exactly this and nothing else: "What kind of business are you creating a solution for?"
+                    Step 3 — After they answer: Ask exactly this and nothing else: "What does success in this particular context look like for this business?"
+                    Step 4 — After they answer, generate the full structured output:
+                    A. Possible causes of the user problem (JTBD lens) Using Jobs To Be Done theory, identify 3–5 root causes of the problem. Focus on the functional, emotional, and social jobs the user is trying to get done that are currently unmet or frustrated.
+                    B. Other issues users may be facing because of this problem List 3–5 downstream pain points or consequences the user experiences as a result of the core problem. These often reveal additional design opportunities.
+                    C. Dual-axis problem framing table Present a table with these exact columns: Perspective | Problem(s) | Goals | Possible Solutions | Measurement Points
+                    
+                    * Row 1: Business standpoint
+                    * Row 2: User standpoint
+                    This table is the core deliverable. It should clearly show where business goals and user goals align — that intersection is where the most viable solutions live.
+                    D. All possible ways to solve the problem for the user List every realistic user-facing solution. Think across the full solution space — do not default to the most obvious answer.
+                    E. All possible ways to solve the problem for the business List every realistic business-side solution, including operational, product, and strategic options.
+                    F. Solutions — advantages and disadvantages Compile all solutions from D and E into a table: Solution | Advantages | Disadvantages
+                    Be honest about trade-offs. A good designer needs to see the full picture, not just the positives.
+                    Output rules:
+                    
+                    * Use clear, simple language. Avoid unnecessary jargon.
+                    * Format everything for scannability — tables, short bullet points, clear section headers.
+                    * Be thorough but concise. A designer should be able to read the output quickly and act on it.
+                    * Never combine steps. Always wait for the designer's response before moving forward.</p>
             </article>
 
-            <article class="prompt-block card" tabindex="0">
+            <article class="prompt-block card is-coming-soon" tabindex="0" aria-disabled="true">
                 <div class="prompt-block-header">
-                    <h2 class="prompt-card-title">Shape a brief from a hunch</h2>
+                    <h2 class="prompt-card-title">Designer knowledge</h2>
                     <button type="button" class="prompt-copy-btn" data-copy-for="prompt-2"
-                        aria-label="Copy prompt: Shape a brief from a hunch">
+                        disabled aria-disabled="true"
+                        aria-label="Designer knowledge — coming soon">
                         <span class="btn-icon-copy">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                                 <path d="M5 3.5V3C5 2.45 5.45 2 6 2H13C13.55 2 14 2.45 14 3V11C14 11.55 13.55 12 13 12H12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -187,14 +210,15 @@
                         </span>
                     </button>
                 </div>
-                <p class="prompt-body" id="prompt-2">Turn my rough idea into a one-page design brief. Include: problem statement, target users, success metrics, must-have / nice-to-have, open questions, and a suggested next workshop agenda. Ask only if something essential is missing.Turn my rough idea into a one-page design brief. Include: problem statement, target users, success metrics, must-have / nice-to-have, open questions, and a suggested next workshop agenda. Ask only if something essential is missing.Turn my rough idea into a one-page design brief. Include: problem statement, target users, success metrics, must-have / nice-to-have, open questions, and a suggested next workshop agenda. Ask only if something essential is missing.</p>
+                <p class="prompt-body" id="prompt-2" aria-hidden="true">Turn my rough idea into a one-page design brief. Include: problem statement, target users, success metrics, must-have / nice-to-have, open questions, and a suggested next workshop agenda. Ask only if something essential is missing.Turn my rough idea into a one-page design brief. Include: problem statement, target users, success metrics, must-have / nice-to-have, open questions, and a suggested next workshop agenda. Ask only if something essential is missing.Turn my rough idea into a one-page design brief. Include: problem statement, target users, success metrics, must-have / nice-to-have, open questions, and a suggested next workshop agenda. Ask only if something essential is missing.</p>
             </article>
 
-            <article class="prompt-block card" tabindex="0">
+            <article class="prompt-block card is-coming-soon" tabindex="0" aria-disabled="true">
                 <div class="prompt-block-header">
-                    <h2 class="prompt-card-title">Stakeholder update (short)</h2>
+                    <h2 class="prompt-card-title">Making decisions as a designer</h2>
                     <button type="button" class="prompt-copy-btn" data-copy-for="prompt-3"
-                        aria-label="Copy prompt: Stakeholder update (short)">
+                        disabled aria-disabled="true"
+                        aria-label="Making decisions as a designer — coming soon">
                         <span class="btn-icon-copy">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                                 <path d="M5 3.5V3C5 2.45 5.45 2 6 2H13C13.55 2 14 2.45 14 3V11C14 11.55 13.55 12 13 12H12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -208,14 +232,15 @@
                         </span>
                     </button>
                 </div>
-                <p class="prompt-body" id="prompt-3">Write a 6-sentence project update for executives: what shipped, what we learned, risks, what we need from them, and the next checkpoint date. No jargon — tie each sentence to a business outcome.</p>
+                <p class="prompt-body" id="prompt-3" aria-hidden="true">Write a 6-sentence project update for executives: what shipped, what we learned, risks, what we need from them, and the next checkpoint date. No jargon — tie each sentence to a business outcome.</p>
             </article>
 
-            <article class="prompt-block card" tabindex="0">
+            <article class="prompt-block card is-coming-soon" tabindex="0" aria-disabled="true">
                 <div class="prompt-block-header">
-                    <h2 class="prompt-card-title">Write user stories fast</h2>
+                    <h2 class="prompt-card-title">AI + design</h2>
                     <button type="button" class="prompt-copy-btn" data-copy-for="prompt-4"
-                        aria-label="Copy prompt: Write user stories fast">
+                        disabled aria-disabled="true"
+                        aria-label="AI + design — coming soon">
                         <span class="btn-icon-copy">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                                 <path d="M5 3.5V3C5 2.45 5.45 2 6 2H13C13.55 2 14 2.45 14 3V11C14 11.55 13.55 12 13 12H12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -229,7 +254,7 @@
                         </span>
                     </button>
                 </div>
-                <p class="prompt-body" id="prompt-4">Given the feature I describe, write 5 user stories in the format "As a [persona], I want [action] so that [outcome]". Add one edge-case acceptance criterion per story. Flag any story where the scope seems too large to ship in one sprint.</p>
+                <p class="prompt-body" id="prompt-4" aria-hidden="true">Given the feature I describe, write 5 user stories in the format "As a [persona], I want [action] so that [outcome]". Add one edge-case acceptance criterion per story. Flag any story where the scope seems too large to ship in one sprint.</p>
             </article>
 
         </div>

@@ -115,17 +115,21 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ---- Toast helper ---- */
     const live = document.getElementById('prompts-copy-status');
 
-    function showToast(msg) {
+    function showToast(msg, variant) {
         if (!live) return;
         live.textContent = msg;
+        live.classList.toggle('is-soon', variant === 'soon');
         live.classList.add('is-visible');
     }
 
     function hideToast() {
         if (!live) return;
         live.classList.remove('is-visible');
-        /* clear text after fade-out transition (200ms) */
-        setTimeout(() => { live.textContent = ''; }, 220);
+        /* clear text + reset variant after fade-out transition (200ms) */
+        setTimeout(() => {
+            live.textContent = '';
+            live.classList.remove('is-soon');
+        }, 220);
     }
 
     /* ---- Card-level click — entire card is the copy target ---- */
@@ -135,6 +139,14 @@ document.addEventListener('DOMContentLoaded', () => {
         card.addEventListener('click', async () => {
             const btn = card.querySelector('.prompt-copy-btn');
             if (!btn || btn.classList.contains('is-copied')) return;
+
+            /* Coming-soon cards: show grey "Dropping shortly" toast and stop. */
+            if (card.classList.contains('is-coming-soon')) {
+                showToast('Dropping shortly', 'soon');
+                clearTimeout(resetTimers.get(card));
+                resetTimers.set(card, setTimeout(hideToast, 1800));
+                return;
+            }
 
             const targetId = btn.getAttribute('data-copy-for');
             const block = targetId ? document.getElementById(targetId) : null;

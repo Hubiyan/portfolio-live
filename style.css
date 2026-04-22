@@ -2447,6 +2447,36 @@ body.prompts-page {
     animation: prompt-btn-bounce 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
+/* ---- Coming soon state ---- */
+/* Card stays clickable (so we can still surface the "Dropping shortly" toast)
+   but the prompt body is blurred and the copy button is visually disabled. */
+.prompt-block.is-coming-soon {
+    cursor: pointer;
+}
+.prompt-block.is-coming-soon:hover {
+    transform: none;
+    box-shadow: none;
+}
+.prompt-block.is-coming-soon .prompt-body {
+    filter: blur(5px);
+    user-select: none;
+    pointer-events: none;
+    color: var(--grey-300);
+    opacity: 0.85;
+}
+.prompt-copy-btn:disabled,
+.prompt-copy-btn[aria-disabled="true"] {
+    background: var(--grey-100);
+    cursor: not-allowed;
+    pointer-events: none;
+}
+.prompt-copy-btn:disabled .btn-icon-copy svg path,
+.prompt-copy-btn:disabled .btn-icon-copy svg rect,
+.prompt-copy-btn[aria-disabled="true"] .btn-icon-copy svg path,
+.prompt-copy-btn[aria-disabled="true"] .btn-icon-copy svg rect {
+    stroke: var(--grey-300);
+}
+
 /* Accessible live status toast — hidden until .is-visible is added by JS */
 .prompts-copy-status {
     position: fixed;
@@ -2476,6 +2506,12 @@ body.prompts-page {
     visibility: visible;
     transform: translateX(-50%) translateY(0);
     transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s;
+}
+/* Grey variant for "Dropping shortly" / coming-soon feedback */
+.prompts-copy-status.is-soon {
+    background: var(--grey-700);
+    color: var(--bg-white);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
 }
 
 /* ----- Prompts page — responsive (mirrors homepage breakpoint structure) ----- */
