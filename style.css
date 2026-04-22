@@ -2225,7 +2225,11 @@ p {
 .hamburger-menu {
     position: absolute;
     top: calc(100% + var(--spacing-08));
-    right: 0;
+    /* Anchor to the LEFT edge of the hamburger button so the menu
+       always opens to the right of the trigger and never overflows
+       off-screen on narrow viewports. */
+    left: 0;
+    right: auto;
     min-width: 10rem;
     background: var(--bg-white);
     border-radius: var(--spacing-14);
@@ -2238,7 +2242,7 @@ p {
     opacity: 0;
     pointer-events: none;
     transform: translateY(-6px) scale(0.97);
-    transform-origin: top right;
+    transform-origin: top left;
     transition: opacity 0.18s ease, transform 0.18s ease;
 }
 .hamburger-menu.is-open {
@@ -2448,20 +2452,24 @@ body.prompts-page {
     position: fixed;
     left: 50%;
     z-index: 1001;
-    padding: var(--spacing-08) var(--spacing-16);
-    font-size: var(--spacing-14);
-    font-weight: 600;
-    color: #149242;
-    background: var(--bg-white);
+    padding: var(--spacing-10) var(--spacing-16);
+    font-size: var(--spacing-18);
+    font-weight: 400;
+    color: var(--bg-white);
+    background: #17a74c;
     border-radius: var(--spacing-10);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.09);
+    box-shadow: 0 4px 24px rgba(34, 197, 94, 0.25);
     pointer-events: none;
+    width: max-content;
+    max-width: calc(100vw - 2.5rem);
+    box-sizing: border-box;
     /* hidden state */
     bottom: calc(var(--spacing-100) + env(safe-area-inset-bottom, 0));
     opacity: 0;
     visibility: hidden;
     transform: translateX(-50%) translateY(6px);
     transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
+    text-align: left;
 }
 .prompts-copy-status.is-visible {
     opacity: 1;
@@ -2518,10 +2526,14 @@ body.prompts-page {
         height: 2.25rem;
     }
 
-    /* Toast clears bottom nav */
+    /* Toast clears bottom nav + scales down on phones */
     .prompts-copy-status,
     .prompts-copy-status.is-visible {
         bottom: calc(5.5rem + env(safe-area-inset-bottom, 0));
+    }
+    .prompts-copy-status {
+        font-size: var(--spacing-14);
+        max-width: calc(100vw - 2.5rem);
     }
 }
 

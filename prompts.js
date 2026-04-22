@@ -83,6 +83,35 @@ document.addEventListener('DOMContentLoaded', () => {
         try { document.execCommand('copy'); } finally { document.body.removeChild(ta); }
     }
 
+    /* ---- Encouragement messages — random on each copy ---- */
+    const ENCOURAGEMENTS = [
+        'Copied. Now go supercharge your design.',
+        'Locked in. Paste it and let AI think with you.',
+        'Yours now. create something meaningful ☺️',
+        'Copied. your creativity is now AI powered.',
+        'It\u2019s yours. you are now on 🔥.',
+        'Copied. you are now limited only by your imagination.',
+        'In your clipboard. Go build the magic.',
+        'Stolen for greatness. Paste to your fav AI.',
+        'Copied. one step closer to your best design.',
+        'Ready to paste. Design at the speed of thought.',
+        'Copied. Skip the busywork, design the bigger thing.',
+        'Done. Use the saved minutes on craft.',
+        'Copied. Iterate fearlessly.',
+        'In hand. Let AI handle the it for your creativity.',
+        'Copied. Make your next design the best one yet.'
+    ];
+    let lastMsgIndex = -1;
+    function pickEncouragement() {
+        if (ENCOURAGEMENTS.length <= 1) return ENCOURAGEMENTS[0];
+        let i;
+        do {
+            i = Math.floor(Math.random() * ENCOURAGEMENTS.length);
+        } while (i === lastMsgIndex);
+        lastMsgIndex = i;
+        return ENCOURAGEMENTS[i];
+    }
+
     /* ---- Toast helper ---- */
     const live = document.getElementById('prompts-copy-status');
 
@@ -131,8 +160,8 @@ document.addEventListener('DOMContentLoaded', () => {
             /* 4. Confetti burst from the button */
             fireConfettiAt(btn);
 
-            /* 5. Show toast */
-            showToast('Prompt copied to clipboard.');
+            /* 5. Show toast — pick a random encouraging message */
+            showToast(pickEncouragement());
 
             /* 6. Reset everything after 2 s */
             clearTimeout(resetTimers.get(card));
