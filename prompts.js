@@ -1,53 +1,38 @@
 document.addEventListener('DOMContentLoaded', () => {
-    /* ---- Lottie: play once on load, hold last frame.
-       Do NOT use loop="false" in HTML — the player treats a non-empty string as truthy
-       and keeps looping. Control loop only via the lottie instance after load. ---- */
-    const lottiePlayer = document.getElementById('promptsLottiePlayer');
-    if (lottiePlayer) {
-        let lottieHasStarted = false;
-        function getAnim() {
-            return typeof lottiePlayer.getLottie === 'function' ? lottiePlayer.getLottie() : null;
+    /* ---- Sky: animate the cloud turbulence filters so wisps evolve over time ----
+       Each <feTurbulence> gets a randomized starting seed + a slowly drifting
+       baseFrequency. This keeps the clouds from ever looking identical between
+       viewings and subtly morphs their edges the way real cloud vapor does.
+       Gated on prefers-reduced-motion to stay considerate. */
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const turbulences = [
+        { el: document.querySelector('#cloudTurbA feTurbulence'), bx: 0.012, by: 0.022, ax: 0.0015, ay: 0.0020 },
+        { el: document.querySelector('#cloudTurbB feTurbulence'), bx: 0.009, by: 0.018, ax: 0.0012, ay: 0.0018 },
+        { el: document.querySelector('#cloudTurbC feTurbulence'), bx: 0.016, by: 0.030, ax: 0.0020, ay: 0.0025 }
+    ].filter(t => t.el);
+
+    turbulences.forEach((t) => {
+        t.el.setAttribute('seed', String(Math.floor(Math.random() * 10000)));
+        t.phase = Math.random() * Math.PI * 2;
+    });
+
+    if (turbulences.length && !prefersReducedMotion) {
+        let start = null;
+        function tickClouds(ts) {
+            if (start === null) start = ts;
+            const t = (ts - start) / 1000;
+            turbulences.forEach((tu, i) => {
+                /* Each filter oscillates on a slow, unique period (~18–30s). */
+                const speed = 0.18 + i * 0.05;
+                const s = Math.sin(t * speed + tu.phase);
+                const c = Math.cos(t * speed * 0.7 + tu.phase);
+                const bx = (tu.bx + s * tu.ax).toFixed(4);
+                const by = (tu.by + c * tu.ay).toFixed(4);
+                tu.el.setAttribute('baseFrequency', `${bx} ${by}`);
+            });
+            requestAnimationFrame(tickClouds);
         }
-        function lockToLastFrame() {
-            try {
-                const inst = getAnim();
-                if (inst && typeof inst.totalFrames === 'number' && inst.totalFrames > 0) {
-                    const last = Math.max(0, inst.totalFrames - 1);
-                    if (typeof inst.goToAndStop === 'function') {
-                        inst.goToAndStop(last, true);
-                    }
-                    if (typeof inst.pause === 'function') inst.pause();
-                }
-            } catch {
-                /* no-op */
-            }
-        }
-        function tryStartPlayback() {
-            if (lottieHasStarted) return;
-            const inst = getAnim();
-            if (!inst) return;
-            lottieHasStarted = true;
-            if (typeof inst.stop === 'function') inst.stop();
-            inst.loop = false;
-            if (typeof lottiePlayer.setLooping === 'function') {
-                lottiePlayer.setLooping(false);
-            }
-            if (typeof inst.goToAndStop === 'function') {
-                inst.goToAndStop(0, true);
-            }
-            if (typeof lottiePlayer.play === 'function') {
-                lottiePlayer.play();
-            } else if (typeof inst.play === 'function') {
-                inst.play();
-            }
-        }
-        lottiePlayer.addEventListener('load', tryStartPlayback);
-        lottiePlayer.addEventListener('ready', tryStartPlayback);
-        lottiePlayer.addEventListener('complete', () => {
-            lockToLastFrame();
-        });
-        /* If events fire before the internal animation is ready */
-        setTimeout(tryStartPlayback, 0);
+        requestAnimationFrame(tickClouds);
     }
 
     /* ---- Confetti setup ---- */

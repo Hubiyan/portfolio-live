@@ -2294,26 +2294,153 @@ body.prompts-page {
     white-space: nowrap;
 }
 
-/* Lottie hero area — no fill; sits on page bg, animation centered and scaled down */
-.prompts-lottie-area {
-    height: var(--spacing-200);
+/* ---- Sky hero banner ---- */
+.prompts-sky {
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--spacing-20) var(--spacing-20) var(--spacing-12);
-    box-sizing: border-box;
-    background: transparent;
-    overflow: visible;
+    width: 100%;
+    height: 20rem;
+    overflow: hidden;
+    /* Atmospheric gradient — deeper blue up high fading to a hazier horizon, like real sky. */
+    background:
+        radial-gradient(ellipse 120% 80% at 50% 110%, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 55%),
+        linear-gradient(180deg, #2E6FC4 0%, #4A8CD8 45%, #7CB0E8 100%);
+    isolation: isolate;
 }
-.prompts-lottie-player {
-    display: block;
-    /* width: clamp(6.5rem, 22vw, 10.5rem); */
-    height: 4rem;
-    /* max-width: 100%; */
-    /* height: auto; */
-    /* max-height: clamp(4.5rem, 12vw, 6.5rem); */
-    flex-shrink: 0;
+.bottom-grad-sky {
+    position: absolute;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #F8F8F8 100%);
+    bottom: 0;
+    left: 0;
+}
+.prompts-sky-defs {
+    position: absolute;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+.prompts-sky-clouds {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Realistic cloud = stack of soft white radial "puffs" inside a block,
+   then displaced by an SVG turbulence filter for organic wispy edges,
+   then blurred for atmospheric softness. */
+.prompts-sky .cloud {
+    position: absolute;
+    left: -30%;
+    width: 22rem;
+    height: 7rem;
+    pointer-events: none;
+    will-change: transform, opacity;
+    /* Layered puffs — irregular sizes/positions mimic how real cumulus builds. */
+    background:
+        radial-gradient(ellipse 30% 55% at 18% 62%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0) 72%),
+        radial-gradient(ellipse 28% 70% at 38% 38%, rgba(255, 255, 255, 1)    0%, rgba(255, 255, 255, 0) 70%),
+        radial-gradient(ellipse 35% 60% at 58% 48%, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0) 72%),
+        radial-gradient(ellipse 28% 55% at 78% 58%, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0) 70%),
+        /* Subtle shadow along the underside gives volume */
+        radial-gradient(ellipse 50% 30% at 50% 90%, rgba(140, 170, 200, 0.28) 0%, rgba(140, 170, 200, 0) 70%);
+}
+
+@keyframes cloud-drift {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(calc(100vw + 40rem), 0, 0); }
+}
+
+.prompts-sky .cloud-1 {
+    top: 8%;
+    width: 26rem;
+    height: 8rem;
+    opacity: 0.92;
+    filter: url(#cloudTurbA) blur(32px);
+    animation: cloud-drift 140s linear infinite;
+    animation-delay: -25s;
+}
+.prompts-sky .cloud-2 {
+    top: 48%;
+    width: 20rem;
+    height: 6.5rem;
+    opacity: 0.82;
+    filter: url(#cloudTurbB) blur(24px);
+    animation: cloud-drift 180s linear infinite;
+    animation-delay: -80s;
+}
+.prompts-sky .cloud-3 {
+    top: 28%;
+    width: 16rem;
+    height: 5rem;
+    opacity: 0.75;
+    filter: url(#cloudTurbC) blur(20px);
+    animation: cloud-drift 210s linear infinite;
+    animation-delay: -130s;
+}
+.prompts-sky .cloud-4 {
+    top: 62%;
+    width: 30rem;
+    height: 9rem;
+    opacity: 0.68;
+    filter: url(#cloudTurbA) blur(18px);
+    animation: cloud-drift 240s linear infinite;
+    animation-delay: -50s;
+}
+.prompts-sky .cloud-5 {
+    top: 2%;
+    width: 14rem;
+    height: 4.5rem;
+    opacity: 0.85;
+    filter: url(#cloudTurbB) blur(32px);
+    animation: cloud-drift 270s linear infinite;
+    animation-delay: -180s;
+}
+
+/* Content column — left-aligned, vertically centered within the banner */
+.prompts-sky-content {
+    position: relative;
+    z-index: 10;
+    max-width: 52rem;
+    margin: 0 auto;
+    height: 100%;
+    padding: 0 var(--spacing-40);
+    display: flex;
+    flex-direction: column;
+    justify-content: top;
+    align-items: flex-start;
+    gap: var(--spacing-12);
+    box-sizing: border-box;
+    padding-top: 3rem;
+}
+.prompts-sky-title {
+    color: var(--bg-white);
+    font-size: var(--spacing-44);
+    font-weight: 600;
+    line-height: 100%;
+    letter-spacing: -0.02em;
+    margin: 0;
+    text-align: left;
+}
+.prompts-sky-subtitle {
+    color: var(--bg-white);
+    font-size: var(--spacing-18);
+    font-weight: 400;
+    line-height: 150%;
+    margin: 0;
+    text-align: left;
+    max-width: 34rem;
+    opacity: 0.95;
+}
+.prompts-sky-br {
+    display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .prompts-sky .cloud {
+        animation: none !important;
+    }
 }
 
 /* Main content column —
@@ -2524,12 +2651,23 @@ body.prompts-page {
         padding-right: var(--spacing-20);
     }
 
-    .prompts-lottie-area {
-        padding: var(--spacing-16) var(--spacing-16) var(--spacing-08);
+    .prompts-sky {
+        height: 14rem;
     }
-    .prompts-lottie-player {
-        width: clamp(5.5rem, 40vw, 7.5rem);
-        max-height: clamp(3.5rem, 20vw, 5rem);
+    .prompts-sky-content {
+        padding: var(--spacing-20);
+        gap: var(--spacing-08);
+    }
+    .prompts-sky-br {
+        display: inline;
+    }
+    .prompts-sky-title {
+        font-size: clamp(1.5rem, 8vw, 2.25rem);
+        line-height: 105%;
+    }
+    .prompts-sky-subtitle {
+        font-size: clamp(0.8125rem, 3.2vw, 0.9375rem);
+        line-height: 140%;
     }
 
     /* Single-column grid on mobile */
@@ -2588,12 +2726,11 @@ body.prompts-page {
 
 /* Tablet 520–840px — container already gets padding-left/right: 40px from global rule */
 @media screen and (min-width: 520px) and (max-width: 840px) {
-    .prompts-lottie-area {
-        padding: var(--spacing-20) var(--spacing-40) var(--spacing-12);
+    .prompts-sky {
+        height: 14rem;
     }
-    .prompts-lottie-player {
-        width: clamp(7rem, 30vw, 9.5rem);
-        max-height: clamp(4.25rem, 14vw, 6rem);
+    .prompts-sky-content {
+        padding: var(--spacing-40);
     }
 
     /* Two columns with tighter gap at tablet width */

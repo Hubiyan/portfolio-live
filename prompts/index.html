@@ -36,7 +36,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <script src="../confetti.min.js"></script>
 
     <script defer src="../bootstrap.bundle.min.js"></script>
@@ -128,24 +127,42 @@
         </div>
     </div>
 
-    <div class="prompts-lottie-area" aria-hidden="true">
-        <lottie-player
-            id="promptsLottiePlayer"
-            src="../assets/lottie/prompts-lottie.json"
-            background="transparent"
-            speed="1"
-            class="prompts-lottie-player">
-        </lottie-player>
-    </div>
+    <section class="prompts-sky" aria-labelledby="prompts-hero-title">
+        <div class="bottom-grad-sky"></div>
+        <!-- SVG filter defs — creates the wispy edges by displacing the gradient-based clouds
+             with fractal noise. Kept off-screen so it doesn't affect layout. -->
+        <svg class="prompts-sky-defs" width="0" height="0" aria-hidden="true" focusable="false">
+            <defs>
+                <filter id="cloudTurbA" x="-20%" y="-40%" width="140%" height="180%" color-interpolation-filters="sRGB">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.022" numOctaves="2" seed="7" result="turb"/>
+                    <feDisplacementMap in="SourceGraphic" in2="turb" scale="42"/>
+                </filter>
+                <filter id="cloudTurbB" x="-20%" y="-40%" width="140%" height="180%" color-interpolation-filters="sRGB">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.009 0.018" numOctaves="3" seed="23" result="turb"/>
+                    <feDisplacementMap in="SourceGraphic" in2="turb" scale="56"/>
+                </filter>
+                <filter id="cloudTurbC" x="-20%" y="-40%" width="140%" height="180%" color-interpolation-filters="sRGB">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.016 0.030" numOctaves="2" seed="41" result="turb"/>
+                    <feDisplacementMap in="SourceGraphic" in2="turb" scale="34"/>
+                </filter>
+            </defs>
+        </svg>
+        <div class="prompts-sky-clouds" aria-hidden="true">
+            <div class="cloud cloud-1"></div>
+            <div class="cloud cloud-2"></div>
+            <div class="cloud cloud-3"></div>
+            <div class="cloud cloud-4"></div>
+            <div class="cloud cloud-5"></div>
+        </div>
+        <div class="prompts-sky-content">
+            <h1 class="prompts-sky-title" id="prompts-hero-title">Supercharged <br class="prompts-sky-br">prompts</h1>
+            <p class="prompts-sky-subtitle">Copy and paste these prompts into your AI. Always read the prompts and make your own tweaks or enhancements.</p>
+        </div>
+    </section>
 
     <div id="prompts-copy-status" class="prompts-copy-status" role="status" aria-live="polite"></div>
 
     <main id="prompts-main" class="container prompts-content d-flex flex-column gap-32-box">
-        <header class="d-flex flex-column gap-08-box align-items-center">
-            <h2 class="section-title">Supercharged prompts</h2>
-            <p class="section-description text-center">Copy and paste these prompts into your AI. Always read the prompts and make your own tweaks or enhancements.</p>
-        </header>
-
         <div class="prompts-grid">
 
             <article class="prompt-block card" tabindex="0">
