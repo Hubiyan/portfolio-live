@@ -2666,7 +2666,7 @@ body.prompts-page {
         line-height: 105%;
     }
     .prompts-sky-subtitle {
-        font-size: clamp(0.8125rem, 3.2vw, 0.9375rem);
+        font-size: var(--spacing-14);
         line-height: 140%;
     }
 
