@@ -95,6 +95,7 @@ document.querySelectorAll('.testimonial-container').forEach(container => {
 // -------------- SCROLLER INDICATOR --------------
 function updateScrollIndicator() {
     const scrollIndicator = document.querySelector('.scroller-indicator');
+    if (!scrollIndicator) return;
     const scrollTop = window.scrollY;
     const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
     const scrollPercentage = (scrollTop / documentHeight) * 100;
@@ -189,6 +190,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Prompts page has its own copy-triggered confetti — skip scroll-end confetti there
+  if (document.body.classList.contains('prompts-page')) return;
+
   // Initialize Confetti with the hidden trigger
   const confetti = new Confetti("confetti-trigger");
   confetti.destroyTarget(false); // prevent hiding trigger
@@ -219,6 +223,54 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+// -------------- HAMBURGER MENU --------------
+(function initHamburger() {
+    function setup() {
+        const btn = document.getElementById('hamburgerBtn');
+        const menu = document.getElementById('hamburgerMenu');
+        const caseLink = document.getElementById('hamCaseLink');
+        if (!btn || !menu) return;
+
+        function openMenu() {
+            btn.setAttribute('aria-expanded', 'true');
+            menu.setAttribute('aria-hidden', 'false');
+            menu.classList.add('is-open');
+        }
+
+        function closeMenu() {
+            btn.setAttribute('aria-expanded', 'false');
+            menu.setAttribute('aria-hidden', 'true');
+            menu.classList.remove('is-open');
+        }
+
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = btn.getAttribute('aria-expanded') === 'true';
+            isOpen ? closeMenu() : openMenu();
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!btn.contains(e.target) && !menu.contains(e.target)) {
+                closeMenu();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeMenu();
+        });
+
+        if (caseLink) {
+            caseLink.addEventListener('click', () => closeMenu());
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setup, { once: true });
+    } else {
+        setup();
+    }
+})();
 
 /* ===== Build Gradual Blur bands inside .my-nav ===== */
 /* ===== Build Gradual Blur bands inside .my-nav ===== */

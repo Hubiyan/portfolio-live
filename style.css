@@ -2173,3 +2173,384 @@ p {
 .gap-200-box {
     gap: var(--spacing-200);
 }
+
+/* ----- Hamburger menu (top-bar) ----- */
+.hamburger-wrap {
+    position: relative;
+}
+
+.hamburger-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-04);
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: var(--spacing-08);
+    background: var(--bg-white);
+    border: none;
+    border-radius: var(--spacing-08);
+    cursor: pointer;
+    box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.03), 0px 1px 1px 0px rgba(0,0,0,0.04);
+    transition: background 0.15s ease;
+}
+.hamburger-btn:hover {
+    background: var(--grey-50);
+}
+.hamburger-btn[aria-expanded="true"] {
+    background: var(--grey-50);
+}
+
+.ham-bar {
+    display: block;
+    width: 1rem;
+    height: 1.5px;
+    border-radius: 2px;
+    background: var(--grey-500);
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    transform-origin: center;
+}
+.hamburger-btn[aria-expanded="true"] .ham-bar:nth-child(1) {
+    transform: translateY(5.5px) rotate(45deg);
+}
+.hamburger-btn[aria-expanded="true"] .ham-bar:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+.hamburger-btn[aria-expanded="true"] .ham-bar:nth-child(3) {
+    transform: translateY(-5.5px) rotate(-45deg);
+}
+
+.hamburger-menu {
+    position: absolute;
+    top: calc(100% + var(--spacing-08));
+    right: 0;
+    min-width: 10rem;
+    background: var(--bg-white);
+    border-radius: var(--spacing-14);
+    box-shadow: 0px 17px 5px 0px rgba(0,0,0,0), 0px 11px 4px 0px rgba(0,0,0,0.01), 0px 6px 4px 0px rgba(0,0,0,0.02), 0px 3px 3px 0px rgba(0,0,0,0.04), 0px 1px 1px 0px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-06);
+    z-index: 998;
+    /* hidden state */
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-6px) scale(0.97);
+    transform-origin: top right;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.hamburger-menu.is-open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+}
+
+.ham-link {
+    display: block;
+    padding: var(--spacing-10) var(--spacing-14);
+    font-size: var(--spacing-16);
+    font-weight: 500;
+    color: var(--grey-400);
+    text-decoration: none;
+    border-radius: var(--spacing-08);
+    white-space: nowrap;
+    transition: background 0.12s ease, color 0.12s ease;
+}
+.ham-link:hover {
+    background: var(--grey-50);
+    color: var(--grey-500);
+}
+
+/* ----- Prompts page (/prompts/) ----- */
+body.prompts-page {
+    padding-bottom: var(--spacing-100);
+}
+
+/* heading colour override — blue on home, dark on prompts */
+.prompts-page .main-title {
+    color: var(--grey-500);
+}
+
+.nav-prompts-link {
+    font-size: var(--spacing-16);
+    font-weight: 600;
+    color: var(--grey-400);
+    text-decoration: none;
+    white-space: nowrap;
+}
+.nav-prompts-link:hover {
+    color: var(--blue-400);
+}
+.nav-prompts-current {
+    font-size: var(--spacing-16);
+    font-weight: 600;
+    color: var(--blue-300);
+    white-space: nowrap;
+}
+
+/* Lottie hero area — no fill; sits on page bg, animation centered and scaled down */
+.prompts-lottie-area {
+    height: var(--spacing-200);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-20) var(--spacing-20) var(--spacing-12);
+    box-sizing: border-box;
+    background: transparent;
+    overflow: visible;
+}
+.prompts-lottie-player {
+    display: block;
+    /* width: clamp(6.5rem, 22vw, 10.5rem); */
+    height: 4rem;
+    /* max-width: 100%; */
+    /* height: auto; */
+    /* max-height: clamp(4.5rem, 12vw, 6.5rem); */
+    flex-shrink: 0;
+}
+
+/* Main content column —
+   Override .container's fixed min-width: 52rem so the page is fluid below desktop.
+   width: 100% fills available space; max-width: 52rem caps it on wide screens. */
+.prompts-content {
+    padding-top: var(--spacing-32);
+    padding-bottom: var(--spacing-64);
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 52rem;
+    box-sizing: border-box;
+}
+
+/* 2-column prompt grid */
+.prompts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-16);
+    align-items: start;
+}
+
+/* Prompt card */
+.prompt-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    cursor: pointer;
+    overflow: visible !important;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.prompt-block:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.07), 0px 4px 12px rgba(0, 0, 0, 0.04);
+}
+.prompt-block:focus-visible {
+    outline: 2px solid var(--blue-300);
+    outline-offset: 3px;
+}
+
+.prompt-block-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-12);
+    border-bottom: 0.5px solid var(--grey-100);
+    padding-bottom: var(--spacing-16);
+    margin-bottom: var(--spacing-16);
+}
+
+.prompt-card-title {
+    font-size: var(--spacing-18);
+    font-weight: 500;
+    color: var(--grey-500);
+    margin: 0;
+    line-height: 130%;
+    flex: 1;
+}
+
+/* Body text — clamped at 5 lines */
+.prompt-body {
+    margin: 0;
+    font-size: var(--spacing-16);
+    font-weight: 400;
+    color: var(--grey-300);
+    line-height: 160%;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ---- Copy button ---- */
+.prompt-copy-btn {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    background: var(--grey-700);
+    border: none;
+    cursor: pointer;
+    flex-shrink: 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* only transition background — transform handled by animation */
+    transition: background-color 0.35s ease;
+}
+.prompt-copy-btn:hover:not(.is-copied) {
+    background: var(--grey-900);
+}
+
+/* Icon layers */
+.btn-icon-copy,
+.btn-icon-check {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s ease 0.08s,
+                transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) 0.08s;
+}
+.btn-icon-check {
+    opacity: 0;
+    transform: scale(0.3) rotate(-20deg);
+}
+
+/* Copied state */
+.prompt-copy-btn.is-copied {
+    background: #19a14b;
+}
+.prompt-copy-btn.is-copied .btn-icon-copy {
+    opacity: 0;
+    transform: scale(0.3) rotate(20deg);
+}
+.prompt-copy-btn.is-copied .btn-icon-check {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+}
+
+/* Bounce keyframe */
+@keyframes prompt-btn-bounce {
+    0%   { transform: scale(1); }
+    28%  { transform: scale(0.84); }
+    62%  { transform: scale(1.12); }
+    84%  { transform: scale(0.96); }
+    100% { transform: scale(1); }
+}
+.prompt-copy-btn.is-bouncing {
+    animation: prompt-btn-bounce 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Accessible live status toast — hidden until .is-visible is added by JS */
+.prompts-copy-status {
+    position: fixed;
+    left: 50%;
+    z-index: 1001;
+    padding: var(--spacing-08) var(--spacing-16);
+    font-size: var(--spacing-14);
+    font-weight: 600;
+    color: #149242;
+    background: var(--bg-white);
+    border-radius: var(--spacing-10);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.09);
+    pointer-events: none;
+    /* hidden state */
+    bottom: calc(var(--spacing-100) + env(safe-area-inset-bottom, 0));
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50%) translateY(6px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
+}
+.prompts-copy-status.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s;
+}
+
+/* ----- Prompts page — responsive (mirrors homepage breakpoint structure) ----- */
+
+/* All phones ≤ 520px — primary mobile block */
+@media screen and (min-width: 0px) and (max-width: 520px) {
+    /* Restore horizontal breathing room — global .container loses padding: 0 at this width */
+    .prompts-page .prompts-content {
+        padding-left: var(--spacing-20);
+        padding-right: var(--spacing-20);
+    }
+
+    .prompts-lottie-area {
+        padding: var(--spacing-16) var(--spacing-16) var(--spacing-08);
+    }
+    .prompts-lottie-player {
+        width: clamp(5.5rem, 40vw, 7.5rem);
+        max-height: clamp(3.5rem, 20vw, 5rem);
+    }
+
+    /* Single-column grid on mobile */
+    .prompts-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-12);
+    }
+
+    /* Scale card title down like .section-title (26 → 22) */
+    .prompt-card-title {
+        font-size: var(--spacing-16);
+    }
+
+    /* Scale body text down like .section-description (18 → 14) */
+    .prompt-body {
+        font-size: var(--spacing-14);
+        -webkit-line-clamp: 4;
+        line-clamp: 4;
+    }
+
+    /* Tighten separator gap */
+    .prompt-block-header {
+        padding-bottom: var(--spacing-12);
+        margin-bottom: var(--spacing-12);
+    }
+
+    /* Slightly smaller copy button */
+    .prompt-copy-btn {
+        width: 2.25rem;
+        height: 2.25rem;
+    }
+
+    /* Toast clears bottom nav */
+    .prompts-copy-status,
+    .prompts-copy-status.is-visible {
+        bottom: calc(5.5rem + env(safe-area-inset-bottom, 0));
+    }
+}
+
+/* Slightly larger phones 350–520px — bump sizes back up like homepage pattern */
+@media screen and (min-width: 350px) and (max-width: 520px) {
+    .prompt-card-title {
+        font-size: var(--spacing-18);
+    }
+
+    .prompt-body {
+        font-size: var(--spacing-14);
+        -webkit-line-clamp: 5;
+        line-clamp: 5;
+    }
+}
+
+/* Tablet 520–840px — container already gets padding-left/right: 40px from global rule */
+@media screen and (min-width: 520px) and (max-width: 840px) {
+    .prompts-lottie-area {
+        padding: var(--spacing-20) var(--spacing-40) var(--spacing-12);
+    }
+    .prompts-lottie-player {
+        width: clamp(7rem, 30vw, 9.5rem);
+        max-height: clamp(4.25rem, 14vw, 6rem);
+    }
+
+    /* Two columns with tighter gap at tablet width */
+    .prompts-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-12);
+    }
+}

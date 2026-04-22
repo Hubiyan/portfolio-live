@@ -310,12 +310,19 @@
         <!-- Hero section -->
         <section class="hero-section d-flex flex-column gap-40-box">
             <div class="top-bar d-flex w-100 justify-content-between align-items-center">
-
-                <img class="main-logo" src="images/logos/main-logo.png" alt="Hubiyan's brand Logo">
-                <!-- Time component -->
+                <div class="hamburger-wrap">
+                    <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false"
+                        aria-controls="hamburgerMenu">
+                        <span class="ham-bar"></span>
+                        <span class="ham-bar"></span>
+                        <span class="ham-bar"></span>
+                    </button>
+                    <div class="hamburger-menu" id="hamburgerMenu" role="menu" aria-hidden="true">
+                        <a href="prompts/" class="ham-link" role="menuitem">Prompts</a>
+                        <a href="#case-studies" class="ham-link" role="menuitem" id="hamCaseLink">Case studies</a>
+                    </div>
+                </div>
                 <div class="time-comp" id="uae-time-comp" role="timer" aria-live="polite">
-
-
                     <div class="time-comp" id="time-abu-dhabi" data-timezone="Asia/Dubai" data-city="Abu Dhabi"
                         role="timer" aria-live="polite">
                         <span class="clock">
@@ -324,12 +331,10 @@
                             <span class="ampm">AM</span>
                         </span>
                         <span class="place">
-                            
                             <span class="city">Abu Dhabi</span>
-                        </span>                        
+                        </span>
                     </div>
                 </div>
-
             </div>
             <div class="d-flex flex-column gap-08-box">
                 <h1 class="main-title">Designer, <span class="gradient-h">Solutionist</span></h1>
@@ -467,7 +472,7 @@
         <!-- Featured work section -->
 
         <!-- Case studies new -->
-        <section class="standard-section">
+        <section class="standard-section" id="case-studies">
             <div class="card d-flex flex-column gap-32-box about-card">
                 <div class="d-flex flex-column gap-04-box justify-content-between align-items-start w-100 about-head">
                     <h2 class="section-title">Case studies 🧠📝</h2>
