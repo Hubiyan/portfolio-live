@@ -2655,8 +2655,8 @@ body.prompts-page {
         height: 14rem;
     }
     .prompts-sky-content {
-        padding: var(--spacing-20);
-        gap: var(--spacing-08);
+        padding: var(--spacing-32) var(--spacing-20);
+        gap: var(--spacing-04);
     }
     .prompts-sky-br {
         display: inline;

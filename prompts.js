@@ -97,6 +97,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return ENCOURAGEMENTS[i];
     }
 
+    /* How long the green "copied" toast (and checkmark state) stay visible, ms. */
+    const COPIED_TOAST_MS = 4000;
+
     /* ---- Toast helper ---- */
     const live = document.getElementById('prompts-copy-status');
 
@@ -160,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
             /* 5. Show toast — pick a random encouraging message */
             showToast(pickEncouragement());
 
-            /* 6. Reset everything after 2 s */
+            /* 6. Reset button + hide toast after green message has been visible long enough */
             clearTimeout(resetTimers.get(card));
             resetTimers.set(card, setTimeout(() => {
                 btn.classList.remove('is-copied');
@@ -168,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 btn.setAttribute('aria-label',
                     title ? `Copy prompt: ${title}` : 'Copy prompt');
                 hideToast();
-            }, 2000));
+            }, COPIED_TOAST_MS));
         });
     });
 });
