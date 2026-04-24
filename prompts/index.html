@@ -36,8 +36,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
-    <script src="../confetti.min.js"></script>
-
     <script defer src="../bootstrap.bundle.min.js"></script>
     <script defer src="../script.js"></script>
     <script defer src="../prompts.js"></script>
@@ -56,9 +54,7 @@
                     Get in touch
                 </button>
                 <a href="../" class="btn my-button btn-seco icon-btn" aria-label="Go to portfolio home">
-                    <svg class="large-btn-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path d="M3 9.5L10 3L17 9.5V17C17 17.55 16.55 18 16 18H13V13.5H7V18H4C3.45 18 3 17.55 3 17V9.5Z" stroke="white" stroke-width="1.6" stroke-linejoin="round"/>
-                    </svg>
+                    <img class="large-btn-icon" src="../images/btn-icons/filled/home.png" alt="" decoding="async">
                 </a>
             </div>
         </div>
@@ -127,42 +123,14 @@
         </div>
     </div>
 
-    <section class="prompts-sky" aria-labelledby="prompts-hero-title">
-        <div class="bottom-grad-sky"></div>
-        <!-- SVG filter defs — creates the wispy edges by displacing the gradient-based clouds
-             with fractal noise. Kept off-screen so it doesn't affect layout. -->
-        <svg class="prompts-sky-defs" width="0" height="0" aria-hidden="true" focusable="false">
-            <defs>
-                <filter id="cloudTurbA" x="-20%" y="-40%" width="140%" height="180%" color-interpolation-filters="sRGB">
-                    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.022" numOctaves="2" seed="7" result="turb"/>
-                    <feDisplacementMap in="SourceGraphic" in2="turb" scale="42"/>
-                </filter>
-                <filter id="cloudTurbB" x="-20%" y="-40%" width="140%" height="180%" color-interpolation-filters="sRGB">
-                    <feTurbulence type="fractalNoise" baseFrequency="0.009 0.018" numOctaves="3" seed="23" result="turb"/>
-                    <feDisplacementMap in="SourceGraphic" in2="turb" scale="56"/>
-                </filter>
-                <filter id="cloudTurbC" x="-20%" y="-40%" width="140%" height="180%" color-interpolation-filters="sRGB">
-                    <feTurbulence type="fractalNoise" baseFrequency="0.016 0.030" numOctaves="2" seed="41" result="turb"/>
-                    <feDisplacementMap in="SourceGraphic" in2="turb" scale="34"/>
-                </filter>
-            </defs>
-        </svg>
-        <div class="prompts-sky-clouds" aria-hidden="true">
-            <div class="cloud cloud-1"></div>
-            <div class="cloud cloud-2"></div>
-            <div class="cloud cloud-3"></div>
-            <div class="cloud cloud-4"></div>
-            <div class="cloud cloud-5"></div>
-        </div>
-        <div class="prompts-sky-content">
-            <h1 class="prompts-sky-title" id="prompts-hero-title">Supercharged <br class="prompts-sky-br">prompts</h1>
-            <p class="prompts-sky-subtitle">Copy and paste these prompts into your AI. Always read the prompts and make your own tweaks or enhancements.</p>
-        </div>
-    </section>
-
     <div id="prompts-copy-status" class="prompts-copy-status" role="status" aria-live="polite"></div>
 
-    <main id="prompts-main" class="container prompts-content d-flex flex-column gap-32-box">
+    <main id="prompts-main" class="container prompts-content d-flex flex-column gap-40-box">
+        <header class="prompts-hero" aria-labelledby="prompts-hero-title">
+            <!-- Keep in sync with PROMPTS_HERO in ../prompts.js (no-JS fallback) -->
+            <h1 class="prompts-hero-title" id="prompts-hero-title" aria-label="Supercharged prompts">Supercharged pr*mpts</h1>
+            <p class="prompts-hero-subtitle">Prompts that fit how designers think and work. Use them to enhance your process, not replace it. Read & make your own tweaks.</p>
+        </header>
         <div class="prompts-grid">
 
             <article class="prompt-block card" tabindex="0">
@@ -177,8 +145,8 @@
                             </svg>
                         </span>
                         <span class="btn-icon-check">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                                <path d="M3 8L6.5 11.5L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                                <path fill="white" d="M6 10.78L3.22 8l-.95.94L6 12.67L14 4.67l-.94-.94z"/>
                             </svg>
                         </span>
                     </button>
@@ -221,8 +189,8 @@
                             </svg>
                         </span>
                         <span class="btn-icon-check">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                                <path d="M3 8L6.5 11.5L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                                <path fill="white" d="M6 10.78L3.22 8l-.95.94L6 12.67L14 4.67l-.94-.94z"/>
                             </svg>
                         </span>
                     </button>
@@ -243,8 +211,8 @@
                             </svg>
                         </span>
                         <span class="btn-icon-check">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                                <path d="M3 8L6.5 11.5L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                                <path fill="white" d="M6 10.78L3.22 8l-.95.94L6 12.67L14 4.67l-.94-.94z"/>
                             </svg>
                         </span>
                     </button>
@@ -265,8 +233,8 @@
                             </svg>
                         </span>
                         <span class="btn-icon-check">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                                <path d="M3 8L6.5 11.5L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                                <path fill="white" d="M6 10.78L3.22 8l-.95.94L6 12.67L14 4.67l-.94-.94z"/>
                             </svg>
                         </span>
                     </button>
