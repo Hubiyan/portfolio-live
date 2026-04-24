@@ -2294,128 +2294,22 @@ body.prompts-page {
     white-space: nowrap;
 }
 
-/* ---- Sky hero banner ---- */
-.prompts-sky {
-    position: relative;
-    width: 100%;
-    height: 20rem;
-    overflow: hidden;
-    /* Atmospheric gradient — deeper blue up high fading to a hazier horizon, like real sky. */
-    background:
-        radial-gradient(ellipse 120% 80% at 50% 110%, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 55%),
-        linear-gradient(180deg, #2E6FC4 0%, #4A8CD8 45%, #7CB0E8 100%);
-    isolation: isolate;
-}
-.bottom-grad-sky {
-    position: absolute;
-    width: 100%;
-    height: 50%;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #F8F8F8 100%);
-    bottom: 0;
-    left: 0;
-}
-.prompts-sky-defs {
-    position: absolute;
-    width: 0;
-    height: 0;
-    pointer-events: none;
-}
-.prompts-sky-clouds {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-}
-
-/* Realistic cloud = stack of soft white radial "puffs" inside a block,
-   then displaced by an SVG turbulence filter for organic wispy edges,
-   then blurred for atmospheric softness. */
-.prompts-sky .cloud {
-    position: absolute;
-    left: -30%;
-    width: 22rem;
-    height: 7rem;
-    pointer-events: none;
-    will-change: transform, opacity;
-    /* Layered puffs — irregular sizes/positions mimic how real cumulus builds. */
-    background:
-        radial-gradient(ellipse 30% 55% at 18% 62%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0) 72%),
-        radial-gradient(ellipse 28% 70% at 38% 38%, rgba(255, 255, 255, 1)    0%, rgba(255, 255, 255, 0) 70%),
-        radial-gradient(ellipse 35% 60% at 58% 48%, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0) 72%),
-        radial-gradient(ellipse 28% 55% at 78% 58%, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0) 70%),
-        /* Subtle shadow along the underside gives volume */
-        radial-gradient(ellipse 50% 30% at 50% 90%, rgba(140, 170, 200, 0.28) 0%, rgba(140, 170, 200, 0) 70%);
-}
-
-@keyframes cloud-drift {
-    from { transform: translate3d(0, 0, 0); }
-    to   { transform: translate3d(calc(100vw + 40rem), 0, 0); }
-}
-
-.prompts-sky .cloud-1 {
-    top: 8%;
-    width: 26rem;
-    height: 8rem;
-    opacity: 0.92;
-    filter: url(#cloudTurbA) blur(32px);
-    animation: cloud-drift 140s linear infinite;
-    animation-delay: -25s;
-}
-.prompts-sky .cloud-2 {
-    top: 48%;
-    width: 20rem;
-    height: 6.5rem;
-    opacity: 0.82;
-    filter: url(#cloudTurbB) blur(24px);
-    animation: cloud-drift 180s linear infinite;
-    animation-delay: -80s;
-}
-.prompts-sky .cloud-3 {
-    top: 28%;
-    width: 16rem;
-    height: 5rem;
-    opacity: 0.75;
-    filter: url(#cloudTurbC) blur(20px);
-    animation: cloud-drift 210s linear infinite;
-    animation-delay: -130s;
-}
-.prompts-sky .cloud-4 {
-    top: 62%;
-    width: 30rem;
-    height: 9rem;
-    opacity: 0.68;
-    filter: url(#cloudTurbA) blur(18px);
-    animation: cloud-drift 240s linear infinite;
-    animation-delay: -50s;
-}
-.prompts-sky .cloud-5 {
-    top: 2%;
-    width: 14rem;
-    height: 4.5rem;
-    opacity: 0.85;
-    filter: url(#cloudTurbB) blur(32px);
-    animation: cloud-drift 270s linear infinite;
-    animation-delay: -180s;
-}
-
-/* Content column — left-aligned, vertically centered within the banner */
-.prompts-sky-content {
-    position: relative;
-    z-index: 10;
-    max-width: 52rem;
-    margin: 0 auto;
-    height: 100%;
-    padding: 0 var(--spacing-40);
+/* ---- Prompts page intro (replaces sky banner) ---- */
+.prompts-hero {
     display: flex;
     flex-direction: column;
-    justify-content: top;
     align-items: flex-start;
     gap: var(--spacing-12);
+    width: 100%;
+    max-width: 52rem;
+    margin: 0;
     box-sizing: border-box;
-    padding-top: 3rem;
+    padding: 0;
 }
-.prompts-sky-title {
-    color: var(--bg-white);
+/* Prompts title — extra gap before the last word: set --prompts-title-word-gap on .prompts-hero-title */
+.prompts-hero-title {
+    --prompts-title-word-gap: 0.25em;
+    color: var(--grey-900);
     font-size: var(--spacing-44);
     font-weight: 600;
     line-height: 100%;
@@ -2423,31 +2317,140 @@ body.prompts-page {
     margin: 0;
     text-align: left;
 }
-.prompts-sky-subtitle {
-    color: var(--bg-white);
-    font-size: var(--spacing-18);
-    font-weight: 400;
+/* Last word in the title: keeps “p r ★ m p t s” from breaking the star to its own line */
+.prompts-hero-nowrap {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    min-width: 0;
+    flex: 0 0 auto;
+    white-space: nowrap;
+    letter-spacing: inherit;
+    font: inherit;
+    /* Extra space after “Supercharged ” (the normal space char is still in the DOM) */
+    margin-left: var(--prompts-title-word-gap);
+}
+/* Star image in “Supercharged pr*mpts” — replaces the * after reveal; .is-rotating added after the scramble completes */
+.prompts-hero-title-star-slot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    vertical-align: 0.05em;
+    align-self: center;
+    margin: 0 0.02em;
+}
+.prompts-hero-title-star {
+    display: block;
+    width: 0.6em;
+    height: 0.6em;
+    object-fit: contain;
+    object-position: center;
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
+    flex-shrink: 0;
+    transform-origin: 50% 50%;
+}
+@keyframes prompts-hero-star-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+.prompts-hero-title-star.is-rotating {
+    animation: prompts-hero-star-spin 5s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+    .prompts-hero-title-star.is-rotating {
+        animation: none;
+    }
+}
+/* Scramble title: 1 line = one nowrap row; 2+ lines = stacked rows (set by prompts.js) */
+.prompts-hero-scramble {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+.prompts-hero-scramble--measuring {
+    /* Flat inline spans, natural wrap — used only before line grouping */
+    display: block;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+/* Per-char flex items — both direct children and chars inside the nowrap group */
+.prompts-hero-scramble-line > span:not(.prompts-hero-nowrap),
+.prompts-hero-nowrap > span:not(.prompts-hero-title-star-slot) {
+    flex: 0 0 auto;
+    white-space: pre;
+}
+.prompts-hero-scramble.is-single-line {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: baseline;
+    width: 100%;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: visible;
+}
+.prompts-hero-scramble.is-single-line .prompts-hero-scramble-line {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    min-width: 0;
+    max-width: 100%;
+}
+.prompts-hero-scramble.is-multiline {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    min-width: 0;
+    row-gap: 0.12em;
+    white-space: normal;
+    overflow: visible;
+}
+.prompts-hero-scramble.is-multiline .prompts-hero-scramble-line {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    min-width: 0;
+    max-width: 100%;
+}
+/* Two-line title: breathing room (line-height: 100% is too tight for two rows) */
+.prompts-hero-title:has(.prompts-hero-scramble.is-multiline) {
+    line-height: 1.12;
+}
+.prompts-hero-subtitle {
+    color: var(--grey-500);
+    font-size: var(--spacing-20);
+    font-weight: 500;
     line-height: 150%;
     margin: 0;
     text-align: left;
-    max-width: 34rem;
-    opacity: 0.95;
+    /* Hidden start state — waits for heading scramble to finish */
+    opacity: 0;
+    filter: blur(20px);
+    transform: translateY(30px);
+    transition:
+        opacity   0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        filter    0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, filter, transform;
 }
-.prompts-sky-br {
-    display: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .prompts-sky .cloud {
-        animation: none !important;
-    }
+.prompts-hero-subtitle.is-visible {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0);
 }
 
 /* Main content column —
    Override .container's fixed min-width: 52rem so the page is fluid below desktop.
    width: 100% fills available space; max-width: 52rem caps it on wide screens. */
 .prompts-content {
-    padding-top: var(--spacing-32);
+    padding-top: var(--spacing-64);
     padding-bottom: var(--spacing-64);
     min-width: 0 !important;
     width: 100% !important;
@@ -2461,6 +2464,20 @@ body.prompts-page {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--spacing-16);
     align-items: start;
+    /* Hidden start state — waits for subtitle animation to finish */
+    opacity: 0;
+    filter: blur(20px);
+    transform: translateY(30px);
+    transition:
+        opacity   0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        filter    0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, filter, transform;
+}
+.prompts-grid.is-visible {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0);
 }
 
 /* Prompt card */
@@ -2489,6 +2506,34 @@ body.prompts-page {
     border-bottom: 0.5px solid var(--grey-100);
     padding-bottom: var(--spacing-16);
     margin-bottom: var(--spacing-16);
+}
+
+/* ASCII animation box — square, same height as the card title */
+.prompt-ascii-box {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0.5px solid var(--ascii-border, var(--grey-100));
+    border-radius: var(--spacing-04);
+    overflow: hidden;
+    box-sizing: border-box;
+    background: transparent;
+    min-width: 1.5rem;
+    min-height: 1.5rem;
+}
+.prompt-ascii-pre {
+    margin: 0;
+    padding: 0;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 5.5px;
+    line-height: 1.35;
+    color: var(--ascii-fg, var(--grey-400));
+    white-space: pre;
+    user-select: none;
+    display: block;
+    text-align: center;
+    letter-spacing: 0.02em;
 }
 
 .prompt-card-title {
@@ -2579,6 +2624,8 @@ body.prompts-page {
    but the prompt body is blurred and the copy button is visually disabled. */
 .prompt-block.is-coming-soon {
     cursor: pointer;
+    background: transparent;
+    border: 0.5px solid var(--grey-100);
 }
 .prompt-block.is-coming-soon:hover {
     transform: none;
@@ -2602,6 +2649,10 @@ body.prompts-page {
 .prompt-copy-btn[aria-disabled="true"] .btn-icon-copy svg path,
 .prompt-copy-btn[aria-disabled="true"] .btn-icon-copy svg rect {
     stroke: var(--grey-300);
+}
+.prompt-copy-btn:disabled .btn-icon-check svg path,
+.prompt-copy-btn[aria-disabled="true"] .btn-icon-check svg path {
+    fill: var(--grey-300);
 }
 
 /* Accessible live status toast — hidden until .is-visible is added by JS */
@@ -2651,22 +2702,15 @@ body.prompts-page {
         padding-right: var(--spacing-20);
     }
 
-    .prompts-sky {
-        height: 14rem;
+    .prompts-hero {
+        gap: var(--spacing-16);
     }
-    .prompts-sky-content {
-        padding: var(--spacing-32) var(--spacing-20);
-        gap: var(--spacing-04);
-    }
-    .prompts-sky-br {
-        display: inline;
-    }
-    .prompts-sky-title {
-        font-size: clamp(1.5rem, 8vw, 2.25rem);
+    .prompts-hero-title {
+        font-size: var(--spacing-32);
         line-height: 105%;
     }
-    .prompts-sky-subtitle {
-        font-size: var(--spacing-14);
+    .prompts-hero-subtitle {
+        font-size: var(--spacing-16);
         line-height: 140%;
     }
 
@@ -2726,13 +2770,6 @@ body.prompts-page {
 
 /* Tablet 520–840px — container already gets padding-left/right: 40px from global rule */
 @media screen and (min-width: 520px) and (max-width: 840px) {
-    .prompts-sky {
-        height: 14rem;
-    }
-    .prompts-sky-content {
-        padding: var(--spacing-40);
-    }
-
     /* Two columns with tighter gap at tablet width */
     .prompts-grid {
         grid-template-columns: repeat(2, 1fr);
