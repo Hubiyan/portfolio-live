@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Expert product designer for businesses and startups</title>
     <meta property="og:site_name" content="Expert web & app designer for better solutions" />
     <meta property="og:title"
@@ -13,6 +13,8 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="600">
     <meta property="og:description" content="Design solutions for better business & customers" />
+    <meta name="description"
+        content="Expert product designer specializing in web and app design solutions for businesses and startups. Creating user-centered designs that drive business success and customer growth.">
 
     <!-- Hotjar Tracking Code for hubiyan.com -->
     <script>
@@ -38,12 +40,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-    <script src="confetti.min.js"></script> <!-- the file you downloaded -->
-
+    <script defer src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <script defer src="confetti.min.js"></script>
 
     <script defer src="bootstrap.bundle.min.js"></script>
     <script defer src="script.js"></script>
+
 </head>
 
 <body>
@@ -51,7 +53,7 @@
         <div class="nav-blur-stack" id="navBlurStack" aria-hidden="true"></div>
         <div class="nav-floater d-flex align-items-center justify-content-center gap-32-box">
             <a href="https://hubiyan.com/"><img class="nav-logo-img" src="images/logos/main-logo.png"
-                    alt="https://hubiyan.com" class="home">
+                    alt="Hubiyan logo, go to homepage" class="home" width="42" height="42">
             </a>
             <div class="button-wrapper d-flex gap-04-box align-items-center res-0-520-w-100">
                 <button type="button" class="my-button btn-primary res-0-520-w-100" data-bs-toggle="modal"
@@ -59,8 +61,8 @@
                     Get in touch
                 </button>
                 <button class="btn my-button btn-seco icon-btn" type="button" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal1">
-                    <img class="large-btn-icon" src="images/btn-icons/play.png" alt="">
+                    data-bs-target="#exampleModal1" aria-label="Watch video reel">
+                    <img class="large-btn-icon" src="images/btn-icons/play.png" alt="Play">
                 </button>
             </div>
 
@@ -72,1349 +74,1500 @@
     </div>
 
     <div id="confetti-trigger" style="display:none;"></div>
+    <main id="main-content">
 
-<!-- In your HTML somewhere -->
-<div id="wave"></div>
+        <!-- In your HTML somewhere -->
+        <div id="wave"></div>
 
-    <!-- Button trigger modal -->
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="d-flex  w-100 justify-content-end"><button type="button" class="btn-close "
-                    data-bs-dismiss="modal" aria-label="Close"><img class="close-img" src="images/btn-icons/cross.png"
-                        alt=""></button></div>
-            <div class="modal-content d-flex flex-column gap-32-box">
-                <div class="d-flex w-100 justify-content-between align-items-center">
-                    <h2 class="section-title modal-title text-center w-100">Get in touch</h2>
-                </div>
-                <div class="card d-flex flex-column gap-32-box align-items-center res-0-520-gap-16">
-                    <div class="d-flex flex-column align-items-center gap-16-box w-100">
-                        <p class="button-cat text-center">
-                            Let's talk design!
-                        </p>
-                        <div class="button-wrapper d-flex flex-column gap-04-box align-items-center w-100">
-                            <div class="d-flex gap-08-box align-items-center">
-                                <p class="btn-help-text help-pop">Say hi 👋🏻</p>
-                                <div class="dot-div"></div>
-                                <p class="btn-help-text help-pop">20-30 mins</p>
-                                <div class="dot-div"></div>
-                                <p class="btn-help-text lighter-help help-pop">Free!</p>
-                            </div>
-                            <a href="https://cal.com/hubiyan/quick-intro"
-                                target="_blank" rel="noreferrer noopener" class="button-link w-100">
-                                <button type="button" class="my-button btn-primary w-100">
-                                    Schedule a meeting
-                                    <img class="large-btn-icon" src="images/btn-icons/calendar-light.png" alt="">
-                                </button>
-                            </a>
-
-                        </div>
+        <!-- Button trigger modal -->
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="d-flex  w-100 justify-content-end"><button type="button" class="btn-close "
+                        data-bs-dismiss="modal" aria-label="Close"><img class="close-img"
+                            src="images/btn-icons/cross.png" alt="Close"></button></div>
+                <div class="modal-content d-flex flex-column gap-32-box">
+                    <div class="d-flex w-100 justify-content-between align-items-center">
+                        <h2 class="section-title modal-title text-center w-100">Get in touch</h2>
                     </div>
-                    <div class="divider"></div>
-                    <div class="d-flex flex-column align-items-center gap-16-box w-100">
-                        <p class="button-cat">
-                            I'm most active on:
-                        </p>
-                        <div class="button-wrapper d-flex gap-04-box align-items-center w-100">
-                            <a href="https://www.linkedin.com/in/hubiyan/" target="_blank" rel="noreferrer noopener"
-                                class="button-link w-100">
-                                <button class="my-button btn-social w-100">
-                                    <img class="large-btn-icon social-btn-ico"
-                                        src="images/social-icons/linkedin-nude.png" alt="">
-                                </button>
-                            </a>
-                            <a href="https://www.instagram.com/hubiyxn/" target="_blank" rel="noreferrer noopener"
-                                class="button-link w-100">
-                                <button type="button" class="my-button btn-social w-100">
-                                    <img class="large-btn-icon" src="images/social-icons/ig-nude.png" alt="">
-                                </button>
-                            </a>
+                    <div class="card d-flex flex-column gap-32-box align-items-center res-0-520-gap-16">
+                        <div class="d-flex flex-column align-items-center gap-16-box w-100">
+                            <p class="button-cat text-center">
+                                Let's talk design!
+                            </p>
+                            <div class="button-wrapper d-flex flex-column gap-04-box align-items-center w-100">
+                                <div class="d-flex gap-08-box align-items-center">
+                                    <p class="btn-help-text help-pop">Say hi 👋🏻</p>
+                                    <div class="dot-div"></div>
+                                    <p class="btn-help-text help-pop">20-30 mins</p>
+                                    <div class="dot-div"></div>
+                                    <p class="btn-help-text lighter-help help-pop">Free!</p>
+                                </div>
+                                <a href="https://cal.com/hubiyan/quick-intro" target="_blank" rel="noreferrer noopener"
+                                    class="button-link w-100">
+                                    <button type="button" class="my-button btn-primary w-100">
+                                        Schedule a meeting
+                                        <img class="large-btn-icon" src="images/btn-icons/calendar-light.png"
+                                            alt="Calendar">
+                                    </button>
+                                </a>
+
+                            </div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="d-flex flex-column align-items-center gap-16-box w-100">
+                            <p class="button-cat">
+                                I'm most active on:
+                            </p>
+                            <div class="button-wrapper d-flex gap-04-box align-items-center w-100">
+                                <a href="https://www.linkedin.com/in/hubiyan/" target="_blank" rel="noreferrer noopener"
+                                    class="button-link w-100">
+                                    <button class="my-button btn-social w-100">
+                                        <img class="large-btn-icon social-btn-ico"
+                                            src="images/social-icons/linkedin-nude.png" alt="LinkedIn">
+                                    </button>
+                                </a>
+                                <a href="https://www.instagram.com/hubiyxn/" target="_blank" rel="noreferrer noopener"
+                                    class="button-link w-100">
+                                    <button type="button" class="my-button btn-social w-100">
+                                        <img class="large-btn-icon" src="images/social-icons/ig-nude.png"
+                                            alt="Instagram">
+                                    </button>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Featured work Modal -->
-    <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="d-flex  w-100 justify-content-end"><button type="button" class="btn-close"
-                    data-bs-dismiss="modal" aria-label="Close"><img class="close-img" src="images/btn-icons/cross.png"
-                        alt=""></button></div>
-            <div class="modal-content d-flex flex-column gap-32-box">
+        <!-- Featured work Modal -->
+        <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="d-flex  w-100 justify-content-end"><button type="button" class="btn-close"
+                        data-bs-dismiss="modal" aria-label="Close"><img class="close-img"
+                            src="images/btn-icons/cross.png" alt="Close"></button></div>
+                <div class="modal-content d-flex flex-column gap-32-box">
 
-                <div class="d-flex w-100 justify-content-between align-items-center">
-                    <h2 class="section-title modal-title text-center w-100">Shots</h2>
+                    <div class="d-flex w-100 justify-content-between align-items-center">
+                        <h2 class="section-title modal-title text-center w-100">Shots</h2>
 
-                </div>
-                <div class="card carousel-card d-flex flex-column gap-08-box align-items-center res-0-520-gap-08">
-                    <div id="carouselExampleIndicators" class="carousel carousel-dark">
-
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/1-1.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of banking app">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/1-2.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of banking app">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/1-3.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of banking app">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/1-4.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of banking app">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/1-5.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of banking app">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/1-6.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of banking app">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/1-7.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of company website">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/1-8.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of company website">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/2-01.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of company website">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/2-02.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of company website">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/2-03.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of company website">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/2-04.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of company website">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/3-01.png?raw=true"
-                                    class="d-block w-100 carousel-image"
-                                    alt="user interface shot of human resource management app">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/3-02.png?raw=true"
-                                    class="d-block w-100 carousel-image"
-                                    alt="user interface shot of human resource management app">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/3-03.png?raw=true"
-                                    class="d-block w-100 carousel-image"
-                                    alt="user interface shot of human resource management app">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/3-04.png?raw=true"
-                                    class="d-block w-100 carousel-image"
-                                    alt="user interface shot of human resource management app">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/3-05.png?raw=true"
-                                    class="d-block w-100 carousel-image"
-                                    alt="user interface shot of human resource management app">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/4-01.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of crypto wallet app">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/4-02.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of crypto wallet app">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/4-03.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of crypto wallet app">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/4-04.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of crypto wallet app">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/4-05.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of crypto wallet app">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/6-01.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of doctor's website">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/6-02.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of doctor's website">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/6-03.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of doctor's website">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/6-04.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of doctor's website">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/7-01.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of ed-tech website">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/7-02.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of ed-tech website">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/7-03.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of ed-tech website">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/8-01.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of ed-tech website">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/8-02.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of ed-tech website">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/8-03.png?raw=true"
-                                    class="d-block w-100 carousel-image" alt="user interface shot of ed-tech website">
-                            </div>
-
-                        </div>
                     </div>
-                    <div class="d-flex justify-content-between w-100 gap-16-box align-items-center">
-                        <button class="carousel-control-prev my-button btn-seco" type="button"
-                            data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                            <img class="large-btn-icon" src="images/btn-icons/arrow-left.png" alt="">
-                        </button>
-                        <div class="carou-progress-wrapper">
-                            <div class="carou-progress"></div>
+                    <div class="card carousel-card d-flex flex-column gap-08-box align-items-center res-0-520-gap-08">
+                        <div id="carouselExampleIndicators" class="carousel carousel-dark image-carousel">
+
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/1-1.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of banking app">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/1-2.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of banking app">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/1-3.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of banking app">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/1-4.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of banking app">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/1-5.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of banking app">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/1-6.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of banking app">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/1-7.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of company website">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/1-8.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of company website">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/2-01.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of company website">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/2-02.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of company website">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/2-03.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of company website">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/2-04.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of company website">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/3-01.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of human resource management app">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/3-02.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of human resource management app">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/3-03.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of human resource management app">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/3-04.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of human resource management app">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/3-05.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of human resource management app">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/4-01.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of crypto wallet app">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/4-02.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of crypto wallet app">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/4-03.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of crypto wallet app">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/4-04.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of crypto wallet app">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/4-05.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of crypto wallet app">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/6-01.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of doctor's website">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/6-02.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of doctor's website">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/6-03.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of doctor's website">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/6-04.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of doctor's website">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/7-01.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of ed-tech website">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/7-02.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of ed-tech website">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/7-03.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of ed-tech website">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/8-01.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of ed-tech website">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/8-02.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of ed-tech website">
+                                </div>
+                                <div class="carousel-item">
+                                    <img loading="lazy"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/showcase-images/8-03.png?raw=true"
+                                        width="540" height="540" class="d-block w-100 carousel-image"
+                                        alt="user interface shot of ed-tech website">
+                                </div>
+
+                            </div>
                         </div>
-                        <button class="carousel-control-next my-button btn-seco" type="button"
-                            data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                            <img class="large-btn-icon" src="images/btn-icons/arrow-right.png" alt="">
-                        </button>
+                        <div class="d-flex justify-content-between w-100 gap-16-box align-items-center">
+                            <button class="carousel-control-prev my-button btn-seco" type="button"
+                                data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                <img class="large-btn-icon" src="images/btn-icons/arrow-left.png" alt="Previous">
+                            </button>
+                            <div class="carou-progress-wrapper">
+                                <div class="carou-progress"></div>
+                            </div>
+                            <button class="carousel-control-next my-button btn-seco" type="button"
+                                data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                <img class="large-btn-icon" src="images/btn-icons/arrow-right.png" alt="Next">
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Modal -->
-    <!-- container -->
-    <div class="container d-flex flex-column gap-100-box">
-        <!-- Hero section -->
-        <section class="hero-section d-flex flex-column gap-40-box">
-            <div class="top-bar d-flex w-100 justify-content-between align-items-center">
+        <!-- Modal -->
+        <!-- container -->
+        <div class="container d-flex flex-column gap-100-box">
+            <!-- Hero section -->
+            <section class="hero-section d-flex flex-column gap-40-box">
+                <div class="top-bar d-flex w-100 justify-content-between align-items-center">
 
-                <img class="main-logo" src="images/logos/main-logo.png" alt="Hubiyan's brand Logo">
-                <!-- Time component -->
-                <div class="time-comp" id="uae-time-comp" role="timer" aria-live="polite">
+                    <img class="main-logo" src="images/logos/main-logo.png" alt="Hubiyan's brand Logo" width="48"
+                        height="48">
+                    <!-- Time component -->
+                    <div class="time-comp" id="uae-time-comp" role="timer" aria-live="polite">
 
 
-                    <div class="time-comp" id="time-abu-dhabi" data-timezone="Asia/Dubai" data-city="Abu Dhabi"
-                        role="timer" aria-live="polite">
-                        <span class="clock">
-                            <span class="pin" aria-hidden="true">📍</span>
-                            <span class="hm">--:--</span>
-                            <span class="ampm">AM</span>
-                        </span>
-                        <span class="place">
-                            
-                            <span class="city">Abu Dhabi</span>
-                        </span>                        
-                    </div>
-                </div>
+                        <div class="time-comp" id="time-abu-dhabi" data-timezone="Asia/Dubai" data-city="Abu Dhabi"
+                            role="timer" aria-live="polite">
+                            <span class="clock">
+                                <span class="pin" aria-hidden="true">📍</span>
+                                <span class="hm">--:--</span>
+                                <span class="ampm">AM</span>
+                            </span>
+                            <span class="place">
 
-            </div>
-            <div class="d-flex flex-column gap-08-box">
-                <h1 class="main-title">Designer, <span class="gradient-h">Solutionist</span></h1>
-                <p class="main-description">I design solutions and beyond, for you and your users</p>
-            </div>
-            <div class="bento-wrapper d-flex gap-16-box">
-                <div class="small-wrapper d-flex flex-column gap-16-box">
-                    <div class="small-card">
-                        <div class="inner-small-grey inner-grey-me d-flex flex-column align-items-center">
-                            <h6 class="card-name name-me">I'm Hubiyan</h6>
-                            <lottie-player class="main-character" id="heroAnim" src="assets/lottie/animation.json"
-                                background="transparent" speed="1" loop autoplay>
-                            </lottie-player>
-
-                        </div>
-
-                    </div>
-                    <div class="small-card">
-                        <div class="inner-small-grey inner-grey-me d-flex flex-column align-items-center">
-                            <h6 class="card-name name-me">Design advocate</h6>
-                            <lottie-player class="main-character" id="heroAnim" src="assets/lottie/advocacy.json"
-                                background="transparent" speed="1" loop autoplay>
-                            </lottie-player>
+                                <span class="city">Abu Dhabi</span>
+                            </span>
                         </div>
                     </div>
-                </div>
-                <div class="big-card d-flex flex-column gap-16-box">
-                    <h6 class="card-name">Product designer</h6>
-                    <div class="comp-frame-grey">
-                        <div class="comp-frame-black">
-                            <div class="comp-frame-white">
 
-                                <lottie-player class="animated-action" id="heroAnim"
-                                    src="assets/lottie/main-message.json" background="transparent" speed="1" loop
-                                    autoplay>
+                </div>
+                <div class="d-flex flex-column gap-08-box">
+                    <h1 class="main-title">Designer, <span class="gradient-h">Solutionist</span></h1>
+                    <p class="main-description">I design solutions and beyond, for you and your users</p>
+                </div>
+                <div class="bento-wrapper d-flex gap-16-box">
+                    <div class="small-wrapper d-flex flex-column gap-16-box">
+                        <div class="small-card">
+                            <div class="inner-small-grey inner-grey-me d-flex flex-column align-items-center">
+                                <p class="card-name name-me">I'm Hubiyan</p>
+                                <lottie-player class="main-character" id="heroAnim" src="assets/lottie/animation.json"
+                                    role="img" aria-label="Animated character illustration" background="transparent"
+                                    speed="1" loop autoplay>
+                                </lottie-player>
+
+                            </div>
+
+                        </div>
+                        <div class="small-card">
+                            <div class="inner-small-grey inner-grey-me d-flex flex-column align-items-center">
+                                <p class="card-name name-me">Design advocate</p>
+                                <lottie-player class="main-character" id="heroAnim" src="assets/lottie/advocacy.json"
+                                    role="img" aria-label="Design advocacy animation" background="transparent" speed="1"
+                                    loop autoplay>
                                 </lottie-player>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
+                    <div class="big-card d-flex flex-column gap-16-box">
+                        <p class="card-name">Product designer</p>
+                        <div class="comp-frame-grey">
+                            <div class="comp-frame-black">
+                                <div class="comp-frame-white">
 
-        <!-- Featured work section -->
-        <section class="standard-section showcase-section d-flex flex-column gap-32-box marg-top-100 h-fit-content">
-            <div class="d-flex w-100 justify-content-between res-0-520-column res-0-520-gap-16">
-                <div class="d-flex flex-column gap-08-box res-0-520-align-center">
-                    <h2 class="section-title">Featured work</h2>
-                    <p class="section-description">A slideshow of UI shots</p>
-                </div>
-                <div class="button-wrapper d-flex flex-column gap-02-box align-items-center">
-                    <button class="my-button btn-seco" type="button" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal1">
-                        Let's see it
-                        <img class="large-btn-icon" src="images/btn-icons/play.png"
-                            alt="Triangle icon indicating 'play'">
-                    </button>
-                    <p class="btn-help-text">~1.5min to view</p>
-                </div>
-            </div>
-            <div class="showcase-box">
-                <div class="show-gradient top-gradient"></div>
-                <div class="show-gradient bottom-gradient"></div>
-                <div class="marquee">
-                    <div class="marquee-inner">
-                        <div class="marquee-content">
-                            <img class="marquee-item"
-                                src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/11.png?raw=true"
-                                alt="banking app UI shot">
-                            <img class="marquee-item"
-                                src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/12.png?raw=true"
-                                alt="ed tech website user interface shot">
-                            <img class="marquee-item"
-                                src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/13-1.png?raw=true"
-                                alt="banking app UI shot">
-                            <img class="marquee-item"
-                                src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/13.png?raw=true"
-                                alt="education website user interface">
-                            <img class="marquee-item"
-                                src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/15.png?raw=true"
-                                alt="crypto wallet user interface">
-                            <img class="marquee-item"
-                                src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/21.png?raw=true"
-                                alt="Agency website">
-                            <img class="marquee-item"
-                                src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/22.png?raw=true"
-                                alt="Crypto wallet user interface">
-                            <img class="marquee-item"
-                                src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/23.png?raw=true"
-                                alt="Luxury car website user interface">
-                            <img class="marquee-item"
-                                src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/24.png?raw=true"
-                                alt="Ed tech website user interface">
-                            <img class="marquee-item"
-                                src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/25.png?raw=true"
-                                alt="Doctor's website user interface">
-                        </div>
-                        <!-- Duplicate the content for seamless looping -->
-                        <div class="marquee-content">
-                            <img class="marquee-item"
-                                src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/11.png?raw=true"
-                                alt="banking app UI shot">
-                            <img class="marquee-item"
-                                src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/12.png?raw=true"
-                                alt="ed tech website user interface shot">
-                            <img class="marquee-item"
-                                src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/13-1.png?raw=true"
-                                alt="banking app UI shot">
-                            <img class="marquee-item"
-                                src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/13.png?raw=true"
-                                alt="education website user interface">
-                            <img class="marquee-item"
-                                src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/15.png?raw=true"
-                                alt="crypto wallet user interface">
-                            <img class="marquee-item"
-                                src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/21.png?raw=true"
-                                alt="Agency website">
-                            <img class="marquee-item"
-                                src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/22.png?raw=true"
-                                alt="Crypto wallet user interface">
-                            <img class="marquee-item"
-                                src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/23.png?raw=true"
-                                alt="Luxury car website user interface">
-                            <img class="marquee-item"
-                                src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/24.png?raw=true"
-                                alt="Ed tech website user interface">
-                            <img class="marquee-item"
-                                src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/25.png?raw=true"
-                                alt="Doctor's website user interface">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Featured work section -->
-
-        <!-- Case studies new -->
-        <section class="standard-section">
-            <div class="card d-flex flex-column gap-32-box about-card">
-                <div class="d-flex flex-column gap-04-box justify-content-between align-items-start w-100 about-head">
-                    <h2 class="section-title">Case studies 🧠📝</h2>
-                    <p class="section-description">A deeper look into at my skills, how I think and work 👇🏻</p>
-                </div>
-                <div class="d-flex flex-row w-100 testimonial-container gap-16-box">
-                        <div class="testimonial-card align-items-end case-card d-flex flex-column w-75">
-                        <div class="d-flex flex-row gap-64-box case-study-card res-0-520-column-rev res-0-520-gap-32">
-                    <div class="image-wrapper d-flex justify-content-center w-50">
-                        <img class="case-study-image w-100"
-                            src="https://github.com/Hubiyan/portfolio-live/blob/main/linked-imgs-smaller/case-img.png?raw=true"
-                            alt="Image of a banking app user interface">
-                    </div>
-                    <div
-                        class="d-flex flex-column align-items-start gap-32-box justify-content-center w-100 res-0-520-gap-16">
-                        <div class="d-flex flex-column gap-08-box justify-content-center align-items-start w-100">
-                            <h4 class="case-title">The forces of old and new</h2>
-                            <p class="section-description">How each of my design decision is based on user research and design strategy (JTBD)</p>
-                        </div>
-                        <div
-                            class="button-wrapper d-flex gap-04-box align-items-center res-0-520-column res-0-520-w-100 res-0-520-gap-08">
-                            <a href="https://www.notion.so/hubiyan-designer/Designing-for-care-and-connection-Insure-tech-13d919b8f2318048a206cc20fd9da5ec"
-                                target="_blank" rel="noreferrer noopener" class="button-link res-0-520-w-100">
-                                <button class="my-button btn-seco case-btn res-0-520-w-100 case-btn">
-                                    Read case study
-                                    <img class="large-btn-icon" src="images/btn-icons/notion.png" alt="Notion app icon">
-                                </button>
-                            </a>
-                        </div>
-                    </div>
+                                    <lottie-player class="animated-action" id="heroAnim"
+                                        src="assets/lottie/main-message.json" background="transparent" speed="1" loop
+                                        autoplay>
+                                    </lottie-player>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Featured work section -->
+            <section class="standard-section showcase-section d-flex flex-column gap-32-box marg-top-100 h-fit-content">
+                <div class="d-flex w-100 justify-content-between res-0-520-column res-0-520-gap-16">
+                    <div class="d-flex flex-column gap-08-box res-0-520-align-center">
+                        <h2 class="section-title">Featured work</h2>
+                        <p class="section-description">A slideshow of UI shots</p>
+                    </div>
+                    <div class="button-wrapper d-flex flex-column gap-02-box align-items-center">
+                        <button class="my-button btn-seco" type="button" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal1">
+                            Let's see it
+                            <img class="large-btn-icon" src="images/btn-icons/play.png"
+                                alt="Triangle icon indicating 'play'">
+                        </button>
+                        <p class="btn-help-text">~1.5min to view</p>
+                    </div>
+                </div>
+                <div class="showcase-box">
+                    <div class="show-gradient top-gradient"></div>
+                    <div class="show-gradient bottom-gradient"></div>
+                    <div class="marquee">
+                        <div class="marquee-inner">
+                            <div class="marquee-content">
+                                <img class="marquee-item"
+                                    src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/11.png?raw=true"
+                                    alt="banking app UI shot">
+                                <img class="marquee-item"
+                                    src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/12.png?raw=true"
+                                    alt="ed tech website user interface shot">
+                                <img class="marquee-item"
+                                    src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/13-1.png?raw=true"
+                                    alt="banking app UI shot">
+                                <img class="marquee-item"
+                                    src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/13.png?raw=true"
+                                    alt="education website user interface">
+                                <img class="marquee-item"
+                                    src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/15.png?raw=true"
+                                    alt="crypto wallet user interface">
+                                <img class="marquee-item"
+                                    src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/21.png?raw=true"
+                                    alt="Agency website">
+                                <img class="marquee-item"
+                                    src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/22.png?raw=true"
+                                    alt="Crypto wallet user interface">
+                                <img class="marquee-item"
+                                    src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/23.png?raw=true"
+                                    alt="Luxury car website user interface">
+                                <img class="marquee-item"
+                                    src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/24.png?raw=true"
+                                    alt="Ed tech website user interface">
+                                <img class="marquee-item"
+                                    src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/25.png?raw=true"
+                                    alt="Doctor's website user interface">
+                            </div>
+                            <!-- Duplicate the content for seamless looping -->
+                            <div class="marquee-content">
+                                <img class="marquee-item"
+                                    src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/11.png?raw=true"
+                                    alt="banking app UI shot">
+                                <img class="marquee-item"
+                                    src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/12.png?raw=true"
+                                    alt="ed tech website user interface shot">
+                                <img class="marquee-item"
+                                    src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/13-1.png?raw=true"
+                                    alt="banking app UI shot">
+                                <img class="marquee-item"
+                                    src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/13.png?raw=true"
+                                    alt="education website user interface">
+                                <img class="marquee-item"
+                                    src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/15.png?raw=true"
+                                    alt="crypto wallet user interface">
+                                <img class="marquee-item"
+                                    src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/21.png?raw=true"
+                                    alt="Agency website">
+                                <img class="marquee-item"
+                                    src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/22.png?raw=true"
+                                    alt="Crypto wallet user interface">
+                                <img class="marquee-item"
+                                    src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/23.png?raw=true"
+                                    alt="Luxury car website user interface">
+                                <img class="marquee-item"
+                                    src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/24.png?raw=true"
+                                    alt="Ed tech website user interface">
+                                <img class="marquee-item"
+                                    src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/25.png?raw=true"
+                                    alt="Doctor's website user interface">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Featured work section -->
+
+            <!-- Case studies new -->
+            <section class="standard-section">
+                <div class="card d-flex flex-column gap-32-box about-card">
+                    <div
+                        class="d-flex flex-column gap-04-box justify-content-between align-items-start w-100 about-head">
+                        <h2 class="section-title">Case studies 🧠📝</h2>
+                        <p class="section-description">A deeper look into at my skills, how I think and work 👇🏻</p>
+                    </div>
+                    <div class="d-flex flex-row w-100 testimonial-container gap-16-box">
+                        <div class="testimonial-card align-items-end case-card d-flex flex-column w-75">
+                            <div
+                                class="d-flex flex-row gap-64-box case-study-card res-0-520-column-rev res-0-520-gap-32">
+                                <div class="image-wrapper d-flex justify-content-center w-50">
+                                    <img class="case-study-image w-100"
+                                        src="https://github.com/Hubiyan/portfolio-live/blob/main/linked-imgs-smaller/case-img.png?raw=true"
+                                        alt="Image of a banking app user interface">
+                                </div>
+                                <div
+                                    class="d-flex flex-column align-items-start gap-32-box justify-content-center w-100 res-0-520-gap-16">
+                                    <div
+                                        class="d-flex flex-column gap-08-box justify-content-center align-items-start w-100">
+                                        <h3 class="case-title">The forces of old and new</h3>
+                                        <p class="section-description">How each of my design decision is based on user
+                                            research and design strategy (JTBD)</p>
+                                    </div>
+                                    <div
+                                        class="button-wrapper d-flex gap-04-box align-items-center res-0-520-column res-0-520-w-100 res-0-520-gap-08">
+                                        <a href="case-study-insuretech.html" class="button-link res-0-520-w-100">
+                                            <button class="my-button btn-seco case-btn res-0-520-w-100 case-btn">
+                                                Read case study
+                                                <img class="large-btn-icon" src="images/btn-icons/arrow-right.png"
+                                                    alt="Arrow right">
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="testimonial-card align-items-end case-card d-flex flex-column gap-24-box w-75">
-                                        <div class="d-flex flex-row gap-64-box case-study-card res-0-520-column-rev res-0-520-gap-32">
-                    <div class="image-wrapper d-flex align-items-end justify-content-center w-50 h-100">
-                        <img class="case-study-image w-100"
-                            src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/work-marquee/main-marquee-01.png?raw=true"
-                            alt="Image of a banking app user interface">
+                            <div
+                                class="d-flex flex-row gap-64-box case-study-card res-0-520-column-rev res-0-520-gap-32">
+                                <div class="image-wrapper d-flex align-items-end justify-content-center w-50 h-100">
+                                    <img class="case-study-image w-100"
+                                        src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/work-marquee/main-marquee-01.png?raw=true"
+                                        alt="Image of a banking app user interface">
+                                </div>
+                                <div
+                                    class="d-flex flex-column align-items-start gap-32-box justify-content-center w-100 res-0-520-gap-16">
+                                    <div
+                                        class="d-flex flex-column gap-08-box justify-content-center align-items-start w-100">
+                                        <h3 class="case-title">Simplify Banking app</h3>
+                                        <p class="section-description">A case study of a banking app that outlines my
+                                            complete design
+                                            process</p>
+                                    </div>
+                                    <div
+                                        class="button-wrapper d-flex gap-04-box align-items-center res-0-520-column res-0-520-w-100 res-0-520-gap-08">
+                                        <a href="https://hubiyan-designer.notion.site/Simplify-Case-Study-9a7e720c5f35433abdd3af1656de286e?pvs=74"
+                                            target="_blank" rel="noreferrer noopener"
+                                            class="button-link res-0-520-w-100">
+                                            <button class="my-button btn-seco case-btn res-0-520-w-100">
+                                                Read case study
+                                                <img class="large-btn-icon" src="images/btn-icons/notion.png"
+                                                    alt="Notion app icon">
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div
-                        class="d-flex flex-column align-items-start gap-32-box justify-content-center w-100 res-0-520-gap-16">
-                        <div class="d-flex flex-column gap-08-box justify-content-center align-items-start w-100">
-                            <h4 class="case-title">Simplify Banking app</h2>
-                            <p class="section-description">A case study of a banking app that outlines my complete design
-                                process</p>
+                </div>
+            </section>
+
+            <!-- About me section -->
+            <section class="standard-section d-flex flex-column gap-32-box about-section mt-0">
+
+                <div class="card d-flex align-items-center abt-me-card gap-24-box">
+                    <div class="d-flex gap-04-box w-100 justify-content-between align-items-center">
+                        <h2 class="section-title">About me</h2>
+                        <div class="button-wrapper d-flex gap-04-box align-items-center">
+                            <a href="images/Mohammed-Farish-Hubiyan-CV-ProductDesigner.pdf" class="button-link"
+                                target="_blank" download="Mohammed-Farish-Hubiyan-CV-ProductDesigner.pdf">
+                                <button class="my-button btn-social btn-smaller res-0-520-w-100">
+                                    Download CV
+                                    <img class="large-btn-icon" src="images/btn-icons/download.png" alt="Download Icon">
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="w-75 res-0-520-w-100 loom-video-about-me">
+                        <script src="https://fast.wistia.com/player.js" async></script>
+                        <script src="https://fast.wistia.com/embed/9itf7hdei4.js" async type="module"></script>
+                        <style>
+                            wistia-player [media-id='9itf7hdei4']:not(:defined) {
+                                background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/9itf7hdei4/swatch');
+                                display: block;
+                                filter: blur(5px);
+                                padding-top: 133.33%;
+                            }
+                        </style> <wistia-player media-id="9itf7hdei4"></wistia-player>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Testimonials section -->
+            <section class="standard-section">
+                <div class="card d-flex flex-column gap-32-box about-card">
+                    <div class="d-flex justify-content-between align-items-center w-100 about-head">
+                        <h2 class="section-title">What they say</h2>
+                        <div class="d-flex avatars-holder">
+                            <img loading="lazy" class="people-avatar" src="images/people-img/01.png"
+                                alt="A person's image" width="40" height="40">
+                            <img loading="lazy" class="people-avatar" src="images/people-img/02.png"
+                                alt="A person's image" width="40" height="40">
+                            <img loading="lazy" class="people-avatar" src="images/people-img/03.png"
+                                alt="A person's image" width="40" height="40">
+                            <img loading="lazy" class="people-avatar" src="images/people-img/04.png"
+                                alt="A person's image" width="40" height="40">
+                            <img loading="lazy" class="people-avatar" src="images/people-img/05.png"
+                                alt="A person's image" width="40" height="40">
+                            <img loading="lazy" class="people-avatar" src="images/people-img/06.png"
+                                alt="A person's image" width="40" height="40">
+                        </div>
+                    </div>
+                    <div class="testimonial-container d-flex gap-12-box abt-full-w-box">
+                        <div class="testimonial-card d-flex flex-column gap-24-box">
+                            <div class="d-flex gap-12-box">
+                                <img loading="lazy" src="images/people-img/02.png" alt="person's image"
+                                    class="testi-avatar" width="40" height="40">
+                                <div class="d-flex flex-column">
+                                    <p class="testi-name">
+                                        Paula Rossbach
+                                    </p>
+                                    <p class="testi-tag">
+                                        Marketing manager
+                                    </p>
+                                </div>
+                            </div>
+                            <p class="testi-content">
+                                Hubiyan understands how design works from all perspectives. It is a breeze to
+                                collaborate as
+                                he is super organised & comes up with outputs that fits the puzzle.
+                            </p>
+                        </div>
+                        <div class="testimonial-card d-flex flex-column gap-24-box">
+                            <div class="d-flex gap-12-box">
+                                <img loading="lazy" src="images/people-img/04.png" alt="A person's image"
+                                    class="testi-avatar" width="40" height="40">
+                                <div class="d-flex flex-column">
+                                    <p class="testi-name">
+                                        Sunil Joseph
+                                    </p>
+                                    <p class="testi-tag">
+                                        Director - Digitrell
+                                    </p>
+                                </div>
+                            </div>
+                            <p class="testi-content">
+                                Apart from bringing an ultimate design leverage, Hubiyan has a method that is
+                                professional
+                                and adept for each different project that we handle.
+                            </p>
+                        </div>
+                        <div class="testimonial-card d-flex flex-column gap-24-box">
+                            <div class="d-flex gap-12-box">
+                                <img loading="lazy" src="images/people-img/01.png" alt="person's image"
+                                    class="testi-avatar" width="40" height="40">
+                                <div class="d-flex flex-column">
+                                    <p class="testi-name">
+                                        Jacob Olenick
+                                    </p>
+                                    <p class="testi-tag">
+                                        Lead product designer
+                                    </p>
+                                </div>
+                            </div>
+                            <p class="testi-content">
+                                You are a gem to the design community. Thank you.
+                            </p>
+                        </div>
+                        <div class="testimonial-card d-flex flex-column gap-24-box">
+                            <div class="d-flex gap-12-box">
+                                <img loading="lazy" src="images/people-img/03.png" alt="A person's image"
+                                    class="testi-avatar" width="40" height="40">
+                                <div class="d-flex flex-column">
+                                    <p class="testi-name">
+                                        Melissa Geissinger
+                                    </p>
+                                    <p class="testi-tag">
+                                        Senior content designer
+                                    </p>
+                                </div>
+                            </div>
+                            <p class="testi-content">
+                                Hubiyan has the ability to simplify complex ideas into user-friendly designs. He brings
+                                a
+                                lot of energy to his work, making him a great teammate, especially when tackling tough
+                                challenges.
+                            </p>
+                        </div>
+                        <div class="testimonial-card d-flex flex-column gap-24-box">
+                            <div class="d-flex gap-12-box">
+                                <img loading="lazy" src="images/people-img/06.png" alt="A person's image"
+                                    class="testi-avatar" width="40" height="40">
+                                <div class="d-flex flex-column">
+                                    <p class="testi-name">
+                                        Varun Vasudev
+                                    </p>
+                                    <p class="testi-tag">
+                                        Senior lead UX designer
+                                    </p>
+                                </div>
+                            </div>
+                            <p class="testi-content h-100">
+                                Hubiyan’s designs connect on an emotional level. His enthusiasm is inspiring, to create
+                                something exceptional. Hubiyan isn’t just a designer; he’s a creative force & a valuable
+                                teammate.
+                            </p>
+                        </div>
+                        <div class="testimonial-card d-flex flex-column gap-24-box">
+                            <div class="d-flex gap-12-box">
+                                <img loading="lazy" src="images/people-img/05.png" alt="A person's image"
+                                    class="testi-avatar" width="40" height="40">
+                                <div class="d-flex flex-column">
+                                    <p class="testi-name">
+                                        Haroon Al Hadi
+                                    </p>
+                                    <p class="testi-tag">
+                                        Senior UX designer
+                                    </p>
+                                </div>
+                            </div>
+                            <p class="testi-content">
+                                Hubiyan has excellent communication as a designer. Good instinct for design, creative
+                                solution and teamwork.
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Experience section -->
+            <section class="standard-section d-flex flex-column gap-16-box">
+                <div
+                    class="d-flex flex-column gap-08-box justify-content-center align-items-start w-75 res-0-520-w-100">
+                    <h2 class="section-title">My experience</h2>
+                    <p class="section-description">As a product designer, I've been fortunate to work with 3
+                        organisations
+                        with global operations 🌍</p>
+                </div>
+                <div class="card d-flex flex-row gap-08-box exp-card">
+                    <div class="company-box d-flex flex-column gap-16-box res-0-520-column w-100">
+                        <div class="d-flex flex-column align-items-center gap-08-box">
+                            <img loading="lazy" class="exp-img" src="images/logos/synechron.png" alt="Synechron logo">
+                            <p class="exp-comp-name">Synechron</p>
+                        </div>
+                        <div data-bs-toggle="modal" data-bs-target="#exampleModal6"
+                            class="button-wrapper d-flex flex-column gap-02-box align-items-center w-100">
+                            <button class="my-button btn-seco exp-desk-sm-btn w-100 disable">
+                                Read more
+
+                            </button>
+                        </div>
+                    </div>
+                    <div class="company-box d-flex flex-column gap-16-box res-0-520-column w-100">
+                        <div class="d-flex flex-column align-items-center gap-08-box">
+                            <img loading="lazy" class="exp-img" src="images/logos/payfuture.png" alt="Payfuture logo">
+                            <p class="exp-comp-name">Payfuture</p>
+                        </div>
+                        <div data-bs-toggle="modal" data-bs-target="#exampleModal4"
+                            class="button-wrapper d-flex flex-column gap-08-box align-items-center w-100">
+                            <button class="my-button btn-seco exp-desk-sm-btn w-100">
+                                Read more
+
+                            </button>
+                        </div>
+                    </div>
+                    <div class="company-box d-flex flex-column gap-16-box res-0-520-column w-100">
+                        <div class="d-flex flex-column align-items-center gap-08-box">
+                            <img loading="lazy" class="exp-img" src="images/logos/hnr-block.png" alt="H&R Block logo">
+                            <p class="exp-comp-name">H&R Block</p>
+                        </div>
+                        <div class="button-wrapper d-flex flex-column gap-02-box align-items-center w-100">
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal2"
+                                class="my-button btn-seco exp-desk-sm-btn w-100">
+                                Read more
+                            </button>
+                        </div>
+                    </div>
+                    <div class="company-box d-flex flex-column gap-16-box res-0-520-column w-100">
+                        <div class="d-flex flex-column align-items-center gap-08-box">
+                            <img loading="lazy" class="exp-img" src="images/logos/speridian.png" alt="Speridian logo">
+                            <p class="exp-comp-name">Speridian</p>
+                        </div>
+                        <div data-bs-toggle="modal" data-bs-target="#exampleModal3"
+                            class="button-wrapper d-flex flex-column gap-02-box align-items-center w-100">
+                            <button class="my-button btn-seco exp-desk-sm-btn w-100">
+                                Read more
+
+                            </button>
+                        </div>
+                    </div>
+                    <div class="company-box d-flex flex-column gap-16-box res-0-520-column w-100">
+                        <div class="d-flex flex-column align-items-center gap-08-box">
+                            <img loading="lazy" class="exp-img" src="images/logos/f-Thai.png" alt="Fitness Thai logo">
+                            <p class="exp-comp-name">Fitness Thai</p>
+                        </div>
+                        <div data-bs-toggle="modal" data-bs-target="#exampleModal5"
+                            class="button-wrapper d-flex flex-column gap-02-box align-items-center w-100">
+                            <button class="my-button btn-seco exp-desk-sm-btn w-100">
+                                Read more
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Synechron modal-->
+            <div class="modal fade" id="exampleModal6" tabindex="-1" aria-labelledby="exampleModalLabel6"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="d-flex  w-100 justify-content-end"><button type="button" class="btn-close "
+                            data-bs-dismiss="modal" aria-label="Close"><img class="close-img"
+                                src="images/btn-icons/cross.png" alt="Close"></button></div>
+                    <div class="modal-content d-flex flex-column gap-32-box">
+
+                        <div class="d-flex w-100 justify-content-center align-items-center gap-14-box">
+                            <img loading="lazy" class="modal-title-img" src="images/logos/synechron.png"
+                                alt="Synechron logo">
+                            <h2 class="section-title modal-title text-center">At Synechron</h2>
+
                         </div>
                         <div
-                            class="button-wrapper d-flex gap-04-box align-items-center res-0-520-column res-0-520-w-100 res-0-520-gap-08">
-                            <a href="https://hubiyan-designer.notion.site/Simplify-Case-Study-9a7e720c5f35433abdd3af1656de286e?pvs=74"
-                                target="_blank" rel="noreferrer noopener" class="button-link res-0-520-w-100">
-                                <button class="my-button btn-seco case-btn res-0-520-w-100">
-                                    Read case study
-                                    <img class="large-btn-icon" src="images/btn-icons/notion.png" alt="Notion app icon">
+                            class="card carousel-card d-flex flex-column gap-08-box align-items-center res-0-520-gap-08">
+                            <div id="carouselExampleIndicators1" class="carousel carousel-dark slide w-100">
+
+                                <div class="carousel-inner w-100">
+                                    <div class="carousel-item active w-100">
+                                        <div class="exp-inner-modal w-100 d-block w-100">
+                                            <div class="d-flex flex-column gap-16-box">
+                                                <div class="d-flex align-items-center gap-08-box w-100">
+                                                    <img src="images/emoji-exports/boom.png" alt="Highlight"
+                                                        class="modal-inner-img">
+                                                    <p class="modal-inner-head">
+                                                        Impact
+                                                    </p>
+                                                </div>
+                                                <p class="modal-inner-body">
+                                                    Synechron is where I’ve led and contributed to high-impact design
+                                                    initiatives across UX, research, and systems design that supports
+                                                    large-scale project rollouts. I’ve been working on some incredible
+                                                    initiatives (the perks of fintech, can’t share much).
+                                                </p>
+                                                <p class="modal-inner-body">
+                                                    However I can say that my work is now at more scale, in terms of the
+                                                    projects I am designing, scale of userbase, number of teams, team
+                                                    members, depth and specificy of the solutions and so on.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <div class="exp-inner-modal d-block w-100">
+                                            <div class="d-flex flex-column gap-16-box">
+                                                <div class="d-flex align-items-center gap-08-box w-100">
+                                                    <img src="images/emoji-exports/clock.png" alt="Duration"
+                                                        class="modal-inner-img">
+                                                    <p class="modal-inner-head">
+                                                        While working
+                                                    </p>
+                                                </div>
+                                                <p class="modal-inner-body">
+                                                    I am fortunate to have some amazing leadership that has inspired me
+                                                    to
+                                                    understand more about the emotional quotient that is needed to be a
+                                                    good
+                                                    leader.
+                                                </p>
+                                                <p class="modal-inner-body">
+                                                    Also amazing teammates who are a breeze to collaborate with and are
+                                                    great friends. Makes going to office on Mondays a bit easier,
+                                                    exciting
+                                                    even 😉
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <div class="exp-inner-modal d-block w-100">
+                                            <div class="d-flex flex-column gap-16-box">
+                                                <div class="d-flex align-items-center gap-08-box w-100">
+                                                    <img src="images/emoji-exports/briefcase.png" alt="Role"
+                                                        class="modal-inner-img">
+                                                    <p class="modal-inner-head">
+                                                        Before joining
+                                                    </p>
+                                                </div>
+                                                <p class="modal-inner-body">
+                                                    I was a UX designer who had just started off and stepping into a
+                                                    team of
+                                                    veteran
+                                                    designers (most of whom were working out of US) was the most amazing
+                                                    experience
+                                                    of my career. I had a ton of things to learn and the team was super
+                                                    amazing and
+                                                    accommodating.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between w-100">
+                                <button class="carousel-control-prev my-button btn-seco" type="button"
+                                    data-bs-target="#carouselExampleIndicators1" data-bs-slide="prev">
+                                    <img class="large-btn-icon" src="images/btn-icons/arrow-left.png" alt="Previous">
                                 </button>
-                            </a>
-                        </div>
-                    </div>
-                                </div>
-                        </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- About me section -->
-        <section class="standard-section d-flex flex-column gap-32-box about-section mt-0">
-
-            <div class="card d-flex align-items-center abt-me-card gap-24-box">
-                <div class="d-flex gap-04-box w-100 justify-content-between align-items-center">
-                    <h2 class="section-title">About me</h2>
-                    <div class="button-wrapper d-flex gap-04-box align-items-center">
-                        <a href="images/Mohammed-Farish-Hubiyan-CV-ProductDesigner.pdf" class="button-link"
-                            target="_blank" download="Mohammed-Farish-Hubiyan-CV-ProductDesigner.pdf">
-                            <button class="my-button btn-social btn-smaller res-0-520-w-100">
-                                Download CV
-                                <img class="large-btn-icon" src="images/btn-icons/download.png" alt="Download Icon">
-                            </button>
-                        </a>
-                    </div>
-                </div>
-                <div class="w-75 res-0-520-w-100 loom-video-about-me">
-                    <script src="https://fast.wistia.com/player.js" async></script>
-                    <script src="https://fast.wistia.com/embed/9itf7hdei4.js" async type="module"></script>
-                    <style>
-                        wistia-player [media-id='9itf7hdei4']:not(:defined) {
-                            background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/9itf7hdei4/swatch');
-                            display: block;
-                            filter: blur(5px);
-                            padding-top: 133.33%;
-                        }
-                    </style> <wistia-player media-id="9itf7hdei4"></wistia-player>
-                </div>
-            </div>
-
-        </section>
-         
-        <!-- Testimonials section -->
-        <section class="standard-section">
-            <div class="card d-flex flex-column gap-32-box about-card">
-                <div class="d-flex justify-content-between align-items-center w-100 about-head">
-                    <h2 class="section-title">What they say</h2>
-                    <div class="d-flex avatars-holder">
-                        <img class="people-avatar" src="images/people-img/01.png" alt="A person's image">
-                        <img class="people-avatar" src="images/people-img/02.png" alt="A person's image">
-                        <img class="people-avatar" src="images/people-img/03.png" alt="A person's image">
-                        <img class="people-avatar" src="images/people-img/04.png" alt="A person's image">
-                        <img class="people-avatar" src="images/people-img/05.png" alt="A person's image">
-                        <img class="people-avatar" src="images/people-img/06.png" alt="A person's image">
-                    </div>
-                </div>
-                <div class="testimonial-container d-flex gap-12-box abt-full-w-box">
-                    <div class="testimonial-card d-flex flex-column gap-24-box">
-                        <div class="d-flex gap-12-box">
-                            <img src="images/people-img/02.png" alt="person's image" class="testi-avatar">
-                            <div class="d-flex flex-column">
-                                <h6 class="testi-name">
-                                    Paula Rossbach
-                                </h6>
-                                <p class="testi-tag">
-                                    Marketing manager
-                                </p>
+                                <button class="carousel-control-next  my-button btn-seco" type="button"
+                                    data-bs-target="#carouselExampleIndicators1" data-bs-slide="next">
+                                    <img class="large-btn-icon" src="images/btn-icons/arrow-right.png" alt="Next">
+                                </button>
                             </div>
                         </div>
-                        <p class="testi-content">
-                            Hubiyan understands how design works from all perspectives. It is a breeze to collaborate as
-                            he is super organised & comes up with outputs that fits the puzzle.
-                        </p>
-                    </div>
-                    <div class="testimonial-card d-flex flex-column gap-24-box">
-                        <div class="d-flex gap-12-box">
-                            <img src="images/people-img/04.png" alt="A person's image" class="testi-avatar">
-                            <div class="d-flex flex-column">
-                                <h6 class="testi-name">
-                                    Sunil Joseph
-                                </h6>
-                                <p class="testi-tag">
-                                    Director - Digitrell
-                                </p>
-                            </div>
-                        </div>
-                        <p class="testi-content">
-                            Apart from bringing an ultimate design leverage, Hubiyan has a method that is professional
-                            and adept for each different project that we handle.
-                        </p>
-                    </div>
-                    <div class="testimonial-card d-flex flex-column gap-24-box">
-                        <div class="d-flex gap-12-box">
-                            <img src="images/people-img/01.png" alt="person's image" class="testi-avatar">
-                            <div class="d-flex flex-column">
-                                <h6 class="testi-name">
-                                    Jacob Olenick
-                                </h6>
-                                <p class="testi-tag">
-                                    Lead product designer
-                                </p>
-                            </div>
-                        </div>
-                        <p class="testi-content">
-                            You are a gem to the design community. Thank you.
-                        </p>
-                    </div>
-                    <div class="testimonial-card d-flex flex-column gap-24-box">
-                        <div class="d-flex gap-12-box">
-                            <img src="images/people-img/03.png" alt="A person's image" class="testi-avatar">
-                            <div class="d-flex flex-column">
-                                <h6 class="testi-name">
-                                    Melissa Geissinger
-                                </h6>
-                                <p class="testi-tag">
-                                    Senior content designer
-                                </p>
-                            </div>
-                        </div>
-                        <p class="testi-content">
-                            Hubiyan has the ability to simplify complex ideas into user-friendly designs. He brings a
-                            lot of energy to his work, making him a great teammate, especially when tackling tough
-                            challenges.
-                        </p>
-                    </div>
-                    <div class="testimonial-card d-flex flex-column gap-24-box">
-                        <div class="d-flex gap-12-box">
-                            <img src="images/people-img/06.png" alt="A person's image" class="testi-avatar">
-                            <div class="d-flex flex-column">
-                                <h6 class="testi-name">
-                                    Varun Vasudev
-                                </h6>
-                                <p class="testi-tag">
-                                    Senior lead UX designer
-                                </p>
-                            </div>
-                        </div>
-                        <p class="testi-content h-100">
-                            Hubiyan’s designs connect on an emotional level. His enthusiasm is inspiring, to create
-                            something exceptional. Hubiyan isn’t just a designer; he’s a creative force & a valuable
-                            teammate.
-                        </p>
-                    </div>
-                    <div class="testimonial-card d-flex flex-column gap-24-box">
-                        <div class="d-flex gap-12-box">
-                            <img src="images/people-img/05.png" alt="A person's image" class="testi-avatar">
-                            <div class="d-flex flex-column">
-                                <h6 class="testi-name">
-                                    Haroon Al Hadi
-                                </h6>
-                                <p class="testi-tag">
-                                    Senior UX designer
-                                </p>
-                            </div>
-                        </div>
-                        <p class="testi-content">
-                            Hubiyan has excellent communication as a designer. Good instinct for design, creative
-                            solution and teamwork.
-                        </p>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- Experience section -->
-        <section class="standard-section d-flex flex-column gap-16-box">
-            <div class="d-flex flex-column gap-08-box justify-content-center align-items-start w-75 res-0-520-w-100">
-                <h2 class="section-title">My experience</h2>
-                <p class="section-description">As a product designer, I've been fortunate to work with 3 organisations
-                    with global operations 🌍</p>
-            </div>
-            <div class="card d-flex flex-row gap-08-box exp-card">
-                <div class="company-box d-flex flex-column gap-16-box res-0-520-column w-100">
-                    <div class="d-flex flex-column align-items-center gap-08-box">
-                        <img class="exp-img" src="images/logos/synechron.png" alt="">
-                        <p class="exp-comp-name">Synechron</p>
-                    </div>
-                    <div data-bs-toggle="modal" data-bs-target="#exampleModal6"
-                        class="button-wrapper d-flex flex-column gap-02-box align-items-center w-100">
-                        <button class="my-button btn-seco exp-desk-sm-btn w-100 disable">
-                            Read more
-
-                        </button>
-                    </div>
-                </div>
-                <div class="company-box d-flex flex-column gap-16-box res-0-520-column w-100">
-                    <div class="d-flex flex-column align-items-center gap-08-box">
-                        <img class="exp-img" src="images/logos/payfuture.png" alt="">
-                        <p class="exp-comp-name">Payfuture</p>
-                    </div>
-                    <div data-bs-toggle="modal" data-bs-target="#exampleModal4"
-                        class="button-wrapper d-flex flex-column gap-08-box align-items-center w-100">
-                        <button class="my-button btn-seco exp-desk-sm-btn w-100">
-                            Read more
-
-                        </button>
-                    </div>
-                </div>
-                <div class="company-box d-flex flex-column gap-16-box res-0-520-column w-100">
-                    <div class="d-flex flex-column align-items-center gap-08-box">
-                        <img class="exp-img" src="images/logos/hnr-block.png" alt="">
-                        <p class="exp-comp-name">H&R Block</p>
-                    </div>
-                    <div class="button-wrapper d-flex flex-column gap-02-box align-items-center w-100">
-                        <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal2"
-                            class="my-button btn-seco exp-desk-sm-btn w-100">
-                            Read more
-                        </button>
-                    </div>
-                </div>
-                <div class="company-box d-flex flex-column gap-16-box res-0-520-column w-100">
-                    <div class="d-flex flex-column align-items-center gap-08-box">
-                        <img class="exp-img" src="images/logos/speridian.png" alt="">
-                        <p class="exp-comp-name">Speridian</p>
-                    </div>
-                    <div data-bs-toggle="modal" data-bs-target="#exampleModal3"
-                        class="button-wrapper d-flex flex-column gap-02-box align-items-center w-100">
-                        <button class="my-button btn-seco exp-desk-sm-btn w-100">
-                            Read more
-
-                        </button>
-                    </div>
-                </div>
-                <div class="company-box d-flex flex-column gap-16-box res-0-520-column w-100">
-                    <div class="d-flex flex-column align-items-center gap-08-box">
-                        <img class="exp-img" src="images/logos/f-Thai.png" alt="">
-                        <p class="exp-comp-name">Fitness Thai</p>
-                    </div>
-                    <div data-bs-toggle="modal" data-bs-target="#exampleModal5"
-                        class="button-wrapper d-flex flex-column gap-02-box align-items-center w-100">
-                        <button class="my-button btn-seco exp-desk-sm-btn w-100">
-                            Read more
-                        </button>
                     </div>
                 </div>
             </div>
-        </section>
+            <!-- Synechron modal-->
+            <!-- H&R block modal-->
+            <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="d-flex  w-100 justify-content-end"><button type="button" class="btn-close "
+                            data-bs-dismiss="modal" aria-label="Close"><img class="close-img"
+                                src="images/btn-icons/cross.png" alt="Close"></button></div>
+                    <div class="modal-content d-flex flex-column gap-32-box">
 
-        <!-- Synechron modal-->
-        <div class="modal fade" id="exampleModal6" tabindex="-1" aria-labelledby="exampleModalLabel6"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="d-flex  w-100 justify-content-end"><button type="button" class="btn-close "
-                        data-bs-dismiss="modal" aria-label="Close"><img class="close-img"
-                            src="images/btn-icons/cross.png" alt=""></button></div>
-                <div class="modal-content d-flex flex-column gap-32-box">
+                        <div class="d-flex w-100 justify-content-center align-items-center gap-14-box">
+                            <img loading="lazy" class="modal-title-img" src="images/logos/hnr-block.png"
+                                alt="H&R Block logo">
+                            <h2 class="section-title modal-title text-center">At H&R Block</h2>
 
-                    <div class="d-flex w-100 justify-content-center align-items-center gap-14-box">
-                        <img class="modal-title-img" src="images/logos/synechron.png" alt="">
-                        <h2 class="section-title modal-title text-center">At Synechron</h2>
+                        </div>
+                        <div
+                            class="card carousel-card d-flex flex-column gap-08-box align-items-center res-0-520-gap-08">
+                            <div id="carouselExampleIndicators1" class="carousel carousel-dark slide w-100">
 
-                    </div>
-                    <div class="card carousel-card d-flex flex-column gap-08-box align-items-center res-0-520-gap-08">
-                        <div id="carouselExampleIndicators1" class="carousel carousel-dark slide w-100">
-
-                            <div class="carousel-inner w-100">
-                                <div class="carousel-item active w-100">
-                                    <div class="exp-inner-modal w-100 d-block w-100 carousel-image">
-                                        <div class="d-flex flex-column gap-16-box">
-                                            <div class="d-flex align-items-center gap-08-box w-100">
-                                                <img src="images/emoji-exports/boom.png" alt="" class="modal-inner-img">
-                                                <p class="modal-inner-head">
-                                                    Impact
+                                <div class="carousel-inner w-100">
+                                    <div class="carousel-item active w-100">
+                                        <div class="exp-inner-modal w-100 d-block w-100">
+                                            <div class="d-flex flex-column gap-16-box">
+                                                <div class="d-flex align-items-center gap-08-box w-100">
+                                                    <img src="images/emoji-exports/boom.png" alt="Highlight"
+                                                        class="modal-inner-img">
+                                                    <p class="modal-inner-head">
+                                                        Impact
+                                                    </p>
+                                                </div>
+                                                <p class="modal-inner-body">
+                                                    H&R block was already a UX mature organisation and as a UX designer,
+                                                    I
+                                                    could integrate some third party solutions, create designs for new
+                                                    features, new tax rules and create designs for A/B testing by
+                                                    evaluating metrics from the product.
+                                                </p>
+                                                <p class="modal-inner-body">
+                                                    My role helped me learn core concepts of product, creating design
+                                                    solutions & multidisciplinary collaboration.
+                                                </p>
+                                                <p class="modal-inner-body">
+                                                    I was able to contribute to the design force of H&R block, adhere to
+                                                    the
+                                                    standards of their design culture & create some designs that
+                                                    returned
+                                                    some positive metrics.
                                                 </p>
                                             </div>
-                                            <p class="modal-inner-body">
-                                                Synechron is where I’ve led and contributed to high-impact design initiatives across UX, research, and systems design that supports large-scale project rollouts. I’ve been working on some incredible initiatives (the perks of fintech, can’t share much).
-                                            </p>
-                                            <p class="modal-inner-body">
-                                               However I can say that my work is now at more scale, in terms of the projects I am designing, scale of userbase, number of teams, team members, depth and specificy of the solutions and so on.
-                                            </p>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="carousel-item">
-                                    <div class="exp-inner-modal d-block w-100 carousel-image">
-                                        <div class="d-flex flex-column gap-16-box">
-                                            <div class="d-flex align-items-center gap-08-box w-100">
-                                                <img src="images/emoji-exports/clock.png" alt=""
-                                                    class="modal-inner-img">
-                                                <p class="modal-inner-head">
-                                                    While working
+                                    <div class="carousel-item">
+                                        <div class="exp-inner-modal d-block w-100">
+                                            <div class="d-flex flex-column gap-16-box">
+                                                <div class="d-flex align-items-center gap-08-box w-100">
+                                                    <img src="images/emoji-exports/clock.png" alt="Duration"
+                                                        class="modal-inner-img">
+                                                    <p class="modal-inner-head">
+                                                        While working
+                                                    </p>
+                                                </div>
+                                                <p class="modal-inner-body">
+                                                    Collaborated with the super amazing content team, where I learned
+                                                    the importance of UX writing & worked with a few members of the
+                                                    product
+                                                    team, where we would get into the depth of the problem. Working at
+                                                    H&R
+                                                    Block with a specialised design team and their powerful design
+                                                    system
+                                                    would shape me for the future of my career!
                                                 </p>
                                             </div>
-                                             <p class="modal-inner-body">
-                                               I am fortunate to have some amazing leadership that has inspired me to understand more about the emotional quotient that is needed to be a good leader.
-                                            </p>
-                                            <p class="modal-inner-body">
-                                                Also amazing teammates who are a breeze to collaborate with and are great friends. Makes going to office on Mondays a bit easier, exciting even 😉
-                                            </p>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="carousel-item">
-                                    <div class="exp-inner-modal d-block w-100 carousel-image">
-                                        <div class="d-flex flex-column gap-16-box">
-                                            <div class="d-flex align-items-center gap-08-box w-100">
-                                                <img src="images/emoji-exports/briefcase.png" alt=""
-                                                    class="modal-inner-img">
-                                                <p class="modal-inner-head">
-                                                    Before joining
+                                    <div class="carousel-item">
+                                        <div class="exp-inner-modal d-block w-100">
+                                            <div class="d-flex flex-column gap-16-box">
+                                                <div class="d-flex align-items-center gap-08-box w-100">
+                                                    <img src="images/emoji-exports/briefcase.png" alt="Role"
+                                                        class="modal-inner-img">
+                                                    <p class="modal-inner-head">
+                                                        Before joining
+                                                    </p>
+                                                </div>
+                                                <p class="modal-inner-body">
+                                                    I was a UX designer who had just started off and stepping into a
+                                                    team of
+                                                    veteran
+                                                    designers (most of whom were working out of US) was the most amazing
+                                                    experience
+                                                    of my career. I had a ton of things to learn and the team was super
+                                                    amazing and
+                                                    accommodating.
                                                 </p>
                                             </div>
-                                            <p class="modal-inner-body">
-                                                I was a UX designer who had just started off and stepping into a team of
-                                                veteran
-                                                designers (most of whom were working out of US) was the most amazing
-                                                experience
-                                                of my career. I had a ton of things to learn and the team was super
-                                                amazing and
-                                                accommodating.
-                                            </p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="d-flex justify-content-between w-100">
-                            <button class="carousel-control-prev my-button btn-seco" type="button"
-                                data-bs-target="#carouselExampleIndicators1" data-bs-slide="prev">
-                                <img class="large-btn-icon" src="images/btn-icons/arrow-left.png" alt="">
-                            </button>
-                            <button class="carousel-control-next  my-button btn-seco" type="button"
-                                data-bs-target="#carouselExampleIndicators1" data-bs-slide="next">
-                                <img class="large-btn-icon" src="images/btn-icons/arrow-right.png" alt="">
-                            </button>
+                            <div class="d-flex justify-content-between w-100">
+                                <button class="carousel-control-prev my-button btn-seco" type="button"
+                                    data-bs-target="#carouselExampleIndicators1" data-bs-slide="prev">
+                                    <img class="large-btn-icon" src="images/btn-icons/arrow-left.png" alt="Previous">
+                                </button>
+                                <button class="carousel-control-next  my-button btn-seco" type="button"
+                                    data-bs-target="#carouselExampleIndicators1" data-bs-slide="next">
+                                    <img class="large-btn-icon" src="images/btn-icons/arrow-right.png" alt="Next">
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- H&R block modal-->
+            <!-- Speridian modal-->
+            <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="d-flex  w-100 justify-content-end"><button type="button" class="btn-close "
+                            data-bs-dismiss="modal" aria-label="Close"><img class="close-img"
+                                src="images/btn-icons/cross.png" alt="Close"></button></div>
+                    <div class="modal-content d-flex flex-column gap-32-box">
+
+                        <div class="d-flex w-100 justify-content-center align-items-center gap-14-box">
+                            <img loading="lazy" class="modal-title-img" src="images/logos/speridian.png"
+                                alt="Speridian logo">
+                            <h2 class="section-title modal-title text-center">At Speridian</h2>
+
+                        </div>
+                        <div
+                            class="card carousel-card d-flex flex-column gap-08-box align-items-center res-0-520-gap-08">
+                            <div id="carouselExampleIndicators3" class="carousel carousel-dark slide w-100">
+                                <div class="carousel-inner w-100">
+                                    <div class="carousel-item active w-100">
+                                        <div class="exp-inner-modal w-100 d-block w-100">
+                                            <div class="d-flex flex-column gap-16-box">
+                                                <div class="d-flex align-items-center gap-08-box w-100">
+                                                    <img src="images/emoji-exports/boom.png" alt="Highlight"
+                                                        class="modal-inner-img">
+                                                    <p class="modal-inner-head">
+                                                        Impact
+                                                    </p>
+                                                </div>
+                                                <p class="modal-inner-body">
+                                                    I was able to deliver design solutions for Easyhealth, a health tech
+                                                    portal based
+                                                    out of Hong Kong, worked on O360, Speridian's HRM solution & as well
+                                                    as
+                                                    many
+                                                    other tasks that supported the sales team and generated revenue for
+                                                    us.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <div class="exp-inner-modal d-block w-100">
+                                            <div class="d-flex flex-column gap-16-box">
+                                                <div class="d-flex align-items-center gap-08-box w-100">
+                                                    <img src="images/emoji-exports/clock.png" alt="Duration"
+                                                        class="modal-inner-img">
+                                                    <p class="modal-inner-head">
+                                                        While working
+                                                    </p>
+                                                </div>
+                                                <p class="modal-inner-body">
+                                                    I had a super amazing design team with whom I shared my learnings,
+                                                    stayed in
+                                                    close connection even though we were fully remote and as well as
+                                                    learning from a
+                                                    multi talented team about design, development and teamwork.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <div class="exp-inner-modal d-block w-100">
+                                            <div class="d-flex flex-column gap-16-box">
+                                                <div class="d-flex align-items-center gap-08-box w-100">
+                                                    <img src="images/emoji-exports/briefcase.png" alt="Role"
+                                                        class="modal-inner-img">
+                                                    <p class="modal-inner-head">
+                                                        Before joining
+                                                    </p>
+                                                </div>
+                                                <p class="modal-inner-body">
+                                                    Speridian was my first corporate experience. I had the experience of
+                                                    working on
+                                                    concepts. When I joined the team my fresh perspective was welcomed &
+                                                    there I
+                                                    learned that all designers, junior to senior are an asset to the
+                                                    team!
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between w-100">
+                                <button class="carousel-control-prev my-button btn-seco" type="button"
+                                    data-bs-target="#carouselExampleIndicators3" data-bs-slide="prev">
+                                    <img class="large-btn-icon" src="images/btn-icons/arrow-left.png" alt="Previous">
+                                </button>
+                                <button class="carousel-control-next  my-button btn-seco" type="button"
+                                    data-bs-target="#carouselExampleIndicators3" data-bs-slide="next">
+                                    <img class="large-btn-icon" src="images/btn-icons/arrow-right.png" alt="Next">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- speridian modal-->
+            <!-- Payfuture modal-->
+            <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel4"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="d-flex  w-100 justify-content-end"><button type="button" class="btn-close "
+                            data-bs-dismiss="modal" aria-label="Close"><img class="close-img"
+                                src="images/btn-icons/cross.png" alt="Close"></button></div>
+                    <div class="modal-content d-flex flex-column gap-32-box">
+
+                        <div class="d-flex w-100 justify-content-center align-items-center gap-14-box">
+                            <img loading="lazy" class="modal-title-img" src="images/logos/payfuture.png"
+                                alt="Payfuture logo">
+                            <h2 class="section-title modal-title text-center">At Payfuture</h2>
+
+                        </div>
+                        <div
+                            class="card carousel-card d-flex flex-column gap-08-box align-items-center res-0-520-gap-08">
+                            <div id="carouselExampleIndicators4" class="carousel carousel-dark slide w-100">
+
+                                <div class="carousel-inner w-100">
+                                    <div class="carousel-item active w-100">
+                                        <div class="exp-inner-modal w-100 d-block w-100">
+                                            <div class="d-flex flex-column gap-16-box">
+                                                <div class="d-flex align-items-center gap-08-box w-100">
+                                                    <img src="images/emoji-exports/boom.png" alt="Highlight"
+                                                        class="modal-inner-img">
+                                                    <p class="modal-inner-head">
+                                                        Impact
+                                                    </p>
+                                                </div>
+                                                <p class="modal-inner-body">
+                                                    As the only UX designer hire, I built a robust design function in
+                                                    the
+                                                    organisation.
+                                                </p>
+                                                <p class="modal-inner-body">
+                                                    Payfuture currently has a proper product design function, which the
+                                                    product team can
+                                                    utilise, the dev team can take advantage of for faster & efficient
+                                                    production and the
+                                                    business can leverage for better organisation.
+                                                </p>
+                                                <p class="modal-inner-body">
+                                                    I was able to create design
+                                                    systems and a proper positioning for design function at Payfuture &
+                                                    advocate design to the organisation.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <div class="exp-inner-modal d-block w-100">
+                                            <div class="d-flex flex-column gap-16-box">
+                                                <div class="d-flex align-items-center gap-08-box w-100">
+                                                    <img src="images/emoji-exports/clock.png" alt="Duration"
+                                                        class="modal-inner-img">
+                                                    <p class="modal-inner-head">
+                                                        While working
+                                                    </p>
+                                                </div>
+                                                <p class="modal-inner-body">
+                                                    I worked closely with the product team, to create solution and
+                                                    establish
+                                                    a
+                                                    strategic method for development, help QA evaluate with more
+                                                    detailed
+                                                    design standards checklist & create design stylesheets for various
+                                                    projects for the changes and scaling to lean back on.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between w-100">
+                                <button class="carousel-control-prev my-button btn-seco" type="button"
+                                    data-bs-target="#carouselExampleIndicators4" data-bs-slide="prev">
+                                    <img class="large-btn-icon" src="images/btn-icons/arrow-left.png" alt="Previous">
+                                </button>
+                                <button class="carousel-control-next  my-button btn-seco" type="button"
+                                    data-bs-target="#carouselExampleIndicators4" data-bs-slide="next">
+                                    <img class="large-btn-icon" src="images/btn-icons/arrow-right.png" alt="Next">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Payfuture modal-->
+            <!-- Fitness thai modal-->
+            <div class="modal fade" id="exampleModal5" tabindex="-1" aria-labelledby="exampleModalLabel5"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="d-flex  w-100 justify-content-end"><button type="button" class="btn-close "
+                            data-bs-dismiss="modal" aria-label="Close"><img class="close-img"
+                                src="images/btn-icons/cross.png" alt="Close"></button></div>
+                    <div class="modal-content d-flex flex-column gap-32-box">
+
+                        <div class="d-flex w-100 justify-content-center align-items-center gap-14-box">
+                            <img loading="lazy" class="modal-title-img" src="images/logos/f-Thai.png"
+                                alt="Fitness Thai logo">
+                            <h2 class="section-title modal-title text-center">At Fitness Thai</h2>
+
+                        </div>
+                        <div
+                            class="card carousel-card d-flex flex-column gap-08-box align-items-center res-0-520-gap-08">
+                            <div id="carouselExampleIndicators5" class="carousel carousel-dark slide w-100">
+
+                                <div class="carousel-inner w-100">
+                                    <div class="carousel-item active w-100">
+                                        <div class="exp-inner-modal w-100 d-block w-100">
+                                            <div class="d-flex flex-column gap-16-box">
+                                                <div class="d-flex align-items-center gap-08-box w-100">
+                                                    <img src="images/emoji-exports/boom.png" alt="Highlight"
+                                                        class="modal-inner-img">
+                                                    <p class="modal-inner-head">
+                                                        Impact
+                                                    </p>
+                                                </div>
+                                                <p class="modal-inner-body">
+                                                    Designed a QR based gym management solution from scratch.
+                                                </p>
+                                                <strong>Results</strong>
+                                                <p class="modal-inner-body">
+                                                    - Regenerated 95% lost revenue
+                                                </p>
+                                                <p class="modal-inner-body">
+                                                    - Created a proper Ops system
+                                                </p>
+                                                <p class="modal-inner-body">
+                                                    - Created 45% customer retention
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <div class="exp-inner-modal d-block w-100">
+                                            <div class="d-flex flex-column gap-16-box">
+                                                <div class="d-flex align-items-center gap-08-box w-100">
+                                                    <img src="images/emoji-exports/clock.png" alt="Duration"
+                                                        class="modal-inner-img">
+                                                    <p class="modal-inner-head">
+                                                        While working.
+                                                    </p>
+                                                </div>
+                                                <p class="modal-inner-body">
+                                                    Chalked out the list of features from initial research and defining
+                                                    the
+                                                    problems, distilling them into product features and success metrics.
+                                                </p>
+                                                <strong>List of Features</strong>
+                                                <p class="modal-inner-body">
+                                                    - Fee tracking
+                                                </p>
+                                                <p class="modal-inner-body">
+                                                    - Attendance tracking
+                                                </p>
+                                                <p class="modal-inner-body">
+                                                    - Human resource management
+                                                </p>
+                                                <p class="modal-inner-body">
+                                                    - Automated SMS alerts
+                                                </p>
+                                                <p class="modal-inner-body">
+                                                    - User profiles & data collection
+                                                </p>
+                                                <p class="modal-inner-body">
+                                                    - Billing & accounts
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between w-100">
+                                <button class="carousel-control-prev my-button btn-seco" type="button"
+                                    data-bs-target="#carouselExampleIndicators5" data-bs-slide="prev">
+                                    <img class="large-btn-icon" src="images/btn-icons/arrow-left.png" alt="Previous">
+                                </button>
+                                <button class="carousel-control-next  my-button btn-seco" type="button"
+                                    data-bs-target="#carouselExampleIndicators5" data-bs-slide="next">
+                                    <img class="large-btn-icon" src="images/btn-icons/arrow-right.png" alt="Next">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Fitness thai modal-->
         </div>
-        <!-- Synechron modal-->
-        <!-- H&R block modal-->
-        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="d-flex  w-100 justify-content-end"><button type="button" class="btn-close "
-                        data-bs-dismiss="modal" aria-label="Close"><img class="close-img"
-                            src="images/btn-icons/cross.png" alt=""></button></div>
-                <div class="modal-content d-flex flex-column gap-32-box">
-
-                    <div class="d-flex w-100 justify-content-center align-items-center gap-14-box">
-                        <img class="modal-title-img" src="images/logos/hnr-block.png" alt="">
-                        <h2 class="section-title modal-title text-center">At H&R Block</h2>
-
+        <!-- container -->
+        <!-- full width div -->
+        <div class="fill-width dark-card w-100">
+            <div class="container">
+                <div class="standard-section d-flex flex-column gap-64-box">
+                    <div class="d-flex flex-column gap-12-box justify-content-center align-items-center w-100">
+                        <h2 class="section-title design-adv-title">As a design advocate 🪄🔮</h2>
+                        <p class="section-description text-center w-75">My design advocacy is based on creating better,
+                            ethical designs for a better & easier world</p>
                     </div>
-                    <div class="card carousel-card d-flex flex-column gap-08-box align-items-center res-0-520-gap-08">
-                        <div id="carouselExampleIndicators1" class="carousel carousel-dark slide w-100">
-
-                            <div class="carousel-inner w-100">
-                                <div class="carousel-item active w-100">
-                                    <div class="exp-inner-modal w-100 d-block w-100 carousel-image">
-                                        <div class="d-flex flex-column gap-16-box">
-                                            <div class="d-flex align-items-center gap-08-box w-100">
-                                                <img src="images/emoji-exports/boom.png" alt="" class="modal-inner-img">
-                                                <p class="modal-inner-head">
-                                                    Impact
-                                                </p>
-                                            </div>
-                                            <p class="modal-inner-body">
-                                                H&R block was already a UX mature organisation and as a UX designer, I
-                                                could integrate some third party solutions, create designs for new
-                                                features, new tax rules and create designs for A/B testing by
-                                                evaluating metrics from the product.
-                                            </p>
-                                            <p class="modal-inner-body">
-                                                My role helped me learn core concepts of product, creating design
-                                                solutions & multidisciplinary collaboration.
-                                            </p>
-                                            <p class="modal-inner-body">
-                                                I was able to contribute to the design force of H&R block, adhere to the
-                                                standards of their design culture & create some designs that returned
-                                                some positive metrics.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="carousel-item">
-                                    <div class="exp-inner-modal d-block w-100 carousel-image">
-                                        <div class="d-flex flex-column gap-16-box">
-                                            <div class="d-flex align-items-center gap-08-box w-100">
-                                                <img src="images/emoji-exports/clock.png" alt=""
-                                                    class="modal-inner-img">
-                                                <p class="modal-inner-head">
-                                                    While working
-                                                </p>
-                                            </div>
-                                            <p class="modal-inner-body">
-                                                Collaborated with the super amazing content team, where I learned
-                                                the importance of UX writing & worked with a few members of the product
-                                                team, where we would get into the depth of the problem. Working at H&R
-                                                Block with a specialised design team and their powerful design system
-                                                would shape me for the future of my career!
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="carousel-item">
-                                    <div class="exp-inner-modal d-block w-100 carousel-image">
-                                        <div class="d-flex flex-column gap-16-box">
-                                            <div class="d-flex align-items-center gap-08-box w-100">
-                                                <img src="images/emoji-exports/briefcase.png" alt=""
-                                                    class="modal-inner-img">
-                                                <p class="modal-inner-head">
-                                                    Before joining
-                                                </p>
-                                            </div>
-                                            <p class="modal-inner-body">
-                                                I was a UX designer who had just started off and stepping into a team of
-                                                veteran
-                                                designers (most of whom were working out of US) was the most amazing
-                                                experience
-                                                of my career. I had a ton of things to learn and the team was super
-                                                amazing and
-                                                accommodating.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div class="d-flex flex-column">
+                        <div class="showcase-box">
+                            <img class="advocate w-100"
+                                src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/advocate-images/adv-main.png?raw=true"
+                                alt="Social media content by Farish Hubiyan">
+                        </div>
+                        <div class="d-flex gap-16-box res-0-520-column">
+                            <div class="company-box adv-comp-box d-flex flex-column gap-08-box justify-content-center">
+                                <img loading="lazy" class="advocate-img" src="images/emoji-exports/letter.png"
+                                    alt="Newsletter">
+                                <p class="section-description text-start 100">Aid create better designs</p>
+                                <p class="btn-help-text">
+                                    For designers
+                                </p>
+                            </div>
+                            <div class="company-box adv-comp-box d-flex flex-column gap-08-box justify-content-center">
+                                <img loading="lazy" class="advocate-img" src="images/emoji-exports/speaker.png"
+                                    alt="Speaking">
+                                <p class="section-description text-start 100">Help stakeholders understand design</p>
+                                <p class="btn-help-text">
+                                    For non-designers
+                                </p>
+                            </div>
+                            <div class="company-box adv-comp-box d-flex flex-column gap-08-box justify-content-center">
+                                <img loading="lazy" class="advocate-img" src="images/emoji-exports/cloud.png"
+                                    alt="Ideas">
+                                <p class="section-description text-start 100">Give easier, happier & ethical designs for
+                                    users!</p>
+                                <p class="btn-help-text">
+                                    For users
+                                </p>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-between w-100">
-                            <button class="carousel-control-prev my-button btn-seco" type="button"
-                                data-bs-target="#carouselExampleIndicators1" data-bs-slide="prev">
-                                <img class="large-btn-icon" src="images/btn-icons/arrow-left.png" alt="">
-                            </button>
-                            <button class="carousel-control-next  my-button btn-seco" type="button"
-                                data-bs-target="#carouselExampleIndicators1" data-bs-slide="next">
-                                <img class="large-btn-icon" src="images/btn-icons/arrow-right.png" alt="">
-                            </button>
+                    </div>
+                    <div class="d-flex flex-column gap-32-box adv-content-box event-pic-box res-0-520-gap-16">
+                        <h2 class="section-title">By community and connections!</h2>
+                        <div class="d-flex flex-column gap-04-box">
+                            <img loading="lazy"
+                                src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/advocate-images/first-im.png?raw=true"
+                                alt="People sitting at an event listening to the speaker"
+                                class="adv-images first-im w-100">
+                            <p class="btn-help-txt">Ubuntu design book launch by Batsi Madzonga</p>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- H&R block modal-->
-        <!-- Speridian modal-->
-        <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="d-flex  w-100 justify-content-end"><button type="button" class="btn-close "
-                        data-bs-dismiss="modal" aria-label="Close"><img class="close-img"
-                            src="images/btn-icons/cross.png" alt=""></button></div>
-                <div class="modal-content d-flex flex-column gap-32-box">
-
-                    <div class="d-flex w-100 justify-content-center align-items-center gap-14-box">
-                        <img class="modal-title-img" src="images/logos/speridian.png" alt="">
-                        <h2 class="section-title modal-title text-center">At Speridian</h2>
-
-                    </div>
-                    <div class="card carousel-card d-flex flex-column gap-08-box align-items-center res-0-520-gap-08">
-                        <div id="carouselExampleIndicators3" class="carousel carousel-dark slide w-100">
-                            <div class="carousel-inner w-100">
-                                <div class="carousel-item active w-100">
-                                    <div class="exp-inner-modal w-100 d-block w-100 carousel-image">
-                                        <div class="d-flex flex-column gap-16-box">
-                                            <div class="d-flex align-items-center gap-08-box w-100">
-                                                <img src="images/emoji-exports/boom.png" alt="" class="modal-inner-img">
-                                                <p class="modal-inner-head">
-                                                    Impact
-                                                </p>
-                                            </div>
-                                            <p class="modal-inner-body">
-                                                I was able to deliver design solutions for Easyhealth, a health tech
-                                                portal based
-                                                out of Hong Kong, worked on O360, Speridian's HRM solution & as well as
-                                                many
-                                                other tasks that supported the sales team and generated revenue for us.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="carousel-item">
-                                    <div class="exp-inner-modal d-block w-100 carousel-image">
-                                        <div class="d-flex flex-column gap-16-box">
-                                            <div class="d-flex align-items-center gap-08-box w-100">
-                                                <img src="images/emoji-exports/clock.png" alt=""
-                                                    class="modal-inner-img">
-                                                <p class="modal-inner-head">
-                                                    While working
-                                                </p>
-                                            </div>
-                                            <p class="modal-inner-body">
-                                                I had a super amazing design team with whom I shared my learnings,
-                                                stayed in
-                                                close connection even though we were fully remote and as well as
-                                                learning from a
-                                                multi talented team about design, development and teamwork.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="carousel-item">
-                                    <div class="exp-inner-modal d-block w-100 carousel-image">
-                                        <div class="d-flex flex-column gap-16-box">
-                                            <div class="d-flex align-items-center gap-08-box w-100">
-                                                <img src="images/emoji-exports/briefcase.png" alt=""
-                                                    class="modal-inner-img">
-                                                <p class="modal-inner-head">
-                                                    Before joining
-                                                </p>
-                                            </div>
-                                            <p class="modal-inner-body">
-                                                Speridian was my first corporate experience. I had the experience of
-                                                working on
-                                                concepts. When I joined the team my fresh perspective was welcomed &
-                                                there I
-                                                learned that all designers, junior to senior are an asset to the team!
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="d-flex gap-32-box res-0-520-gap-16 w-100">
+                            <div class="d-flex flex-column gap-04-box w-100">
+                                <img class="adv-images"
+                                    src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/advocate-images/sec-im.png?raw=true"
+                                    alt="Image of a copy of a book">
+                                <p class="btn-help-txt">With a signed copy of Ubuntu design framework</p>
+                            </div>
+                            <div class="d-flex flex-column gap-04-box w-100">
+                                <img class="adv-images"
+                                    src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/advocate-images/third-im.png?raw=true"
+                                    alt="revolut Design meetup photo">
+                                <p class="btn-help-txt">Design meetup by Revolut</p>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-between w-100">
-                            <button class="carousel-control-prev my-button btn-seco" type="button"
-                                data-bs-target="#carouselExampleIndicators3" data-bs-slide="prev">
-                                <img class="large-btn-icon" src="images/btn-icons/arrow-left.png" alt="">
-                            </button>
-                            <button class="carousel-control-next  my-button btn-seco" type="button"
-                                data-bs-target="#carouselExampleIndicators3" data-bs-slide="next">
-                                <img class="large-btn-icon" src="images/btn-icons/arrow-right.png" alt="">
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- speridian modal-->
-        <!-- Payfuture modal-->
-        <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel4"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="d-flex  w-100 justify-content-end"><button type="button" class="btn-close "
-                        data-bs-dismiss="modal" aria-label="Close"><img class="close-img"
-                            src="images/btn-icons/cross.png" alt=""></button></div>
-                <div class="modal-content d-flex flex-column gap-32-box">
 
-                    <div class="d-flex w-100 justify-content-center align-items-center gap-14-box">
-                        <img class="modal-title-img" src="images/logos/payfuture.png" alt="">
-                        <h2 class="section-title modal-title text-center">At Payfuture</h2>
-
-                    </div>
-                    <div class="card carousel-card d-flex flex-column gap-08-box align-items-center res-0-520-gap-08">
-                        <div id="carouselExampleIndicators4" class="carousel carousel-dark slide w-100">
-
-                            <div class="carousel-inner w-100">
-                                <div class="carousel-item active w-100">
-                                    <div class="exp-inner-modal w-100 d-block w-100 carousel-image">
-                                        <div class="d-flex flex-column gap-16-box">
-                                            <div class="d-flex align-items-center gap-08-box w-100">
-                                                <img src="images/emoji-exports/boom.png" alt="" class="modal-inner-img">
-                                                <p class="modal-inner-head">
-                                                    Impact
-                                                </p>
-                                            </div>
-                                            <p class="modal-inner-body">
-                                                As the only UX designer hire, I built a robust design function in the
-                                                organisation.
-                                            </p>
-                                            <p class="modal-inner-body">
-                                                Payfuture currently has a proper product design function, which the
-                                                product team can
-                                                utilise, the dev team can take advantage of for faster & efficient
-                                                production and the
-                                                business can leverage for better organisation.
-                                            </p>
-                                            <p class="modal-inner-body">
-                                                I was able to create design
-                                                systems and a proper positioning for design function at Payfuture &
-                                                advocate design to the organisation.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="carousel-item">
-                                    <div class="exp-inner-modal d-block w-100 carousel-image">
-                                        <div class="d-flex flex-column gap-16-box">
-                                            <div class="d-flex align-items-center gap-08-box w-100">
-                                                <img src="images/emoji-exports/clock.png" alt=""
-                                                    class="modal-inner-img">
-                                                <p class="modal-inner-head">
-                                                    While working
-                                                </p>
-                                            </div>
-                                            <p class="modal-inner-body">
-                                                I worked closely with the product team, to create solution and establish
-                                                a
-                                                strategic method for development, help QA evaluate with more detailed
-                                                design standards checklist & create design stylesheets for various
-                                                projects for the changes and scaling to lean back on.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-between w-100">
-                            <button class="carousel-control-prev my-button btn-seco" type="button"
-                                data-bs-target="#carouselExampleIndicators4" data-bs-slide="prev">
-                                <img class="large-btn-icon" src="images/btn-icons/arrow-left.png" alt="">
-                            </button>
-                            <button class="carousel-control-next  my-button btn-seco" type="button"
-                                data-bs-target="#carouselExampleIndicators4" data-bs-slide="next">
-                                <img class="large-btn-icon" src="images/btn-icons/arrow-right.png" alt="">
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Payfuture modal-->
-        <!-- Fitness thai modal-->
-        <div class="modal fade" id="exampleModal5" tabindex="-1" aria-labelledby="exampleModalLabel5"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="d-flex  w-100 justify-content-end"><button type="button" class="btn-close "
-                        data-bs-dismiss="modal" aria-label="Close"><img class="close-img"
-                            src="images/btn-icons/cross.png" alt=""></button></div>
-                <div class="modal-content d-flex flex-column gap-32-box">
-
-                    <div class="d-flex w-100 justify-content-center align-items-center gap-14-box">
-                        <img class="modal-title-img" src="images/logos/f-Thai.png" alt="">
-                        <h2 class="section-title modal-title text-center">At Fitness Thai</h2>
-
-                    </div>
-                    <div class="card carousel-card d-flex flex-column gap-08-box align-items-center res-0-520-gap-08">
-                        <div id="carouselExampleIndicators5" class="carousel carousel-dark slide w-100">
-
-                            <div class="carousel-inner w-100">
-                                <div class="carousel-item active w-100">
-                                    <div class="exp-inner-modal w-100 d-block w-100 carousel-image">
-                                        <div class="d-flex flex-column gap-16-box">
-                                            <div class="d-flex align-items-center gap-08-box w-100">
-                                                <img src="images/emoji-exports/boom.png" alt="" class="modal-inner-img">
-                                                <p class="modal-inner-head">
-                                                    Impact
-                                                </p>
-                                            </div>
-                                            <p class="modal-inner-body">
-                                                Designed a QR based gym management solution from scratch.
-                                            </p>
-                                            <strong>Results</strong>
-                                            <p class="modal-inner-body">
-                                                - Regenerated 95% lost revenue
-                                            </p>
-                                            <p class="modal-inner-body">
-                                                - Created a proper Ops system
-                                            </p>
-                                            <p class="modal-inner-body">
-                                                - Created 45% customer retention
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="carousel-item">
-                                    <div class="exp-inner-modal d-block w-100 carousel-image">
-                                        <div class="d-flex flex-column gap-16-box">
-                                            <div class="d-flex align-items-center gap-08-box w-100">
-                                                <img src="images/emoji-exports/clock.png" alt=""
-                                                    class="modal-inner-img">
-                                                <p class="modal-inner-head">
-                                                    While working.
-                                                </p>
-                                            </div>
-                                            <p class="modal-inner-body">
-                                                Chalked out the list of features from initial research and defining the
-                                                problems, distilling them into product features and success metrics.
-                                            </p>
-                                            <strong>List of Features</strong>
-                                            <p class="modal-inner-body">
-                                                - Fee tracking
-                                            </p>
-                                            <p class="modal-inner-body">
-                                                - Attendance tracking
-                                            </p>
-                                            <p class="modal-inner-body">
-                                                - Human resource management
-                                            </p>
-                                            <p class="modal-inner-body">
-                                                - Automated SMS alerts
-                                            </p>
-                                            <p class="modal-inner-body">
-                                                - User profiles & data collection
-                                            </p>
-                                            <p class="modal-inner-body">
-                                                - Billing & accounts
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-between w-100">
-                            <button class="carousel-control-prev my-button btn-seco" type="button"
-                                data-bs-target="#carouselExampleIndicators5" data-bs-slide="prev">
-                                <img class="large-btn-icon" src="images/btn-icons/arrow-left.png" alt="">
-                            </button>
-                            <button class="carousel-control-next  my-button btn-seco" type="button"
-                                data-bs-target="#carouselExampleIndicators5" data-bs-slide="next">
-                                <img class="large-btn-icon" src="images/btn-icons/arrow-right.png" alt="">
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Fitness thai modal-->
-    </div>
-    <!-- container -->
-    <!-- full width div -->
-    <div class="fill-width dark-card w-100">
-        <div class="container">
-            <div class="standard-section d-flex flex-column gap-64-box">
-                <div class="d-flex flex-column gap-12-box justify-content-center align-items-center w-100">
-                    <h2 class="section-title design-adv-title">As a design advocate 🪄🔮</h2>
-                    <p class="section-description text-center w-75">My design advocacy is based on creating better,
-                        ethical designs for a better & easier world</p>
-                </div>
-                <div class="d-flex flex-column">
-                    <div class="showcase-box">
-                        <img class="advocate w-100"
-                            src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/advocate-images/adv-main.png?raw=true"
-                            alt="Social media content by Farish Hubiyan">
-                    </div>
-                    <div class="d-flex gap-16-box res-0-520-column">
-                        <div class="company-box adv-comp-box d-flex flex-column gap-08-box justify-content-center">
-                            <img class="advocate-img" src="images/emoji-exports/letter.png" alt="">
-                            <p class="section-description text-start 100">Aid create better designs</p>
-                            <p class="btn-help-text">
-                                For designers
-                            </p>
-                        </div>
-                        <div class="company-box adv-comp-box d-flex flex-column gap-08-box justify-content-center">
-                            <img class="advocate-img" src="images/emoji-exports/speaker.png" alt="">
-                            <p class="section-description text-start 100">Help stakeholders understand design</p>
-                            <p class="btn-help-text">
-                                For non-designers
-                            </p>
-                        </div>
-                        <div class="company-box adv-comp-box d-flex flex-column gap-08-box justify-content-center">
-                            <img class="advocate-img" src="images/emoji-exports/cloud.png" alt="">
-                            <p class="section-description text-start 100">Give easier, happier & ethical designs for
-                                users!</p>
-                            <p class="btn-help-text">
-                                For users
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex flex-column gap-32-box adv-content-box event-pic-box res-0-520-gap-16">
-                    <h2 class="section-title">By community and connections!</h2>
-                    <div class="d-flex flex-column gap-04-box">
-                        <img src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/advocate-images/first-im.png?raw=true"
-                            alt="People sitting at an event listening to the speaker" class="adv-images first-im w-100">
-                        <p class="btn-help-txt">Ubuntu design book launch by Batsi Madzonga</p>
-                    </div>
-                    <div class="d-flex gap-32-box res-0-520-gap-16 w-100">
-                        <div class="d-flex flex-column gap-04-box w-100">
+                        <div class="d-flex flex-column gap-04-box ">
                             <img class="adv-images"
-                                src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/advocate-images/sec-im.png?raw=true"
-                                alt="Image of a copy of a book">
-                            <p class="btn-help-txt">With a signed copy of Ubuntu design framework</p>
-                        </div>
-                        <div class="d-flex flex-column gap-04-box w-100">
-                            <img class="adv-images"
-                                src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/advocate-images/third-im.png?raw=true"
-                                alt="revolut Design meetup photo">
-                            <p class="btn-help-txt">Design meetup by Revolut</p>
+                                src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/advocate-images/fourth-im.png?raw=true"
+                                alt="Speaker talking to attendees at an event">
+                            <p class="btn-help-txt">Those who wander by Nayla Sabbagh</p>
                         </div>
                     </div>
-
-                    <div class="d-flex flex-column gap-04-box ">
-                        <img class="adv-images"
-                            src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/advocate-images/fourth-im.png?raw=true"
-                            alt="Speaker talking to attendees at an event">
-                        <p class="btn-help-txt">Those who wander by Nayla Sabbagh</p>
-                    </div>
+                    <p class="section-description text-start w-75 italic">I am not in these pictures cos I clicked them.
+                        I
+                        love clicking pictures!</p>
                 </div>
-                <p class="section-description text-start w-75 italic">I am not in these pictures cos I clicked them. I
-                    love clicking pictures!</p>
             </div>
         </div>
-    </div>
-    <!-- full width div -->
-    <footer class="container marg-top-100">
-        <section class="standard-section d-flex flex-column gap-16-box">
-            <div class="d-flex flex-column gap-04-box justify-content-center align-items-start w-75">
-                <h2 class="section-title">Hope you liked it!</h2>
-                <p class="section-description">Follow me anywhere</p>
-            </div>
-            <div class="footer-bx-wrapper d-flex flex-column gap-12-box">
-                <div class="d-flex gap-12-box">
-                    <div class="socials-box d-flex flex-column gap-16-box h-100 justify-content-between w-100">
-                        <div class="d-flex flex-column gap-08-box">
-                            <img class="social-icons" src="images/social-icons/linkedin.png" alt="">
-                            <div class="socials-txt w-75">
-                                Sharing experience and insights with my valuable connections
-                            </div>
-                        </div>
-                        <div class="button-wrapper d-flex gap-04-box align-items-center">
-                            <a href="https://www.linkedin.com/in/hubiyan/" target="_blank" rel="noreferrer noopener"
-                                class="button-link">
-                                <button class="my-button btn-social btn-smaller res-0-520-w-100">
-                                    Connect
-                                    <img class="large-btn-icon" src="images/btn-icons/arrow-up-right-blue.png" alt="">
-                                </button>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="socials-box d-flex flex-column gap-16-box h-100 justify-content-between w-100">
-                        <div class="d-flex flex-column gap-08-box">
-                            <img class="social-icons" src="images/social-icons/Instagram.png" alt="">
-                            <div class="socials-txt w-75">
-                                Content about design and the impact it makes
-                            </div>
-                        </div>
-                        <div class="button-wrapper d-flex gap-04-box align-items-center">
-                            <a href="https://www.instagram.com/hubiyxn/" target="_blank" class="button-link">
-                                <button class="my-button btn-social btn-smaller res-0-520-w-100">
-                                    Follow
-                                    <img class="large-btn-icon" src="images/btn-icons/arrow-up-right-blue.png" alt="">
-                                </button>
-                            </a>
-                        </div>
-                    </div>
+        <!-- full width div -->
+        <footer class="container marg-top-100">
+            <section class="standard-section d-flex flex-column gap-16-box">
+                <div class="d-flex flex-column gap-04-box justify-content-center align-items-start w-75">
+                    <h2 class="section-title">Hope you liked it!</h2>
+                    <p class="section-description">Follow me anywhere</p>
                 </div>
-                <div class="d-flex gap-12-box res-0-520-column">
-                    <div class="socials-box d-flex flex-column gap-16-box h-100 justify-content-between">
-                        <div class="d-flex flex-column gap-08-box">
-                            <img class="social-icons" src="images/social-icons/figma.png" alt="">
-                            <div class="socials-txt">
-                                Valuable assets that you can use in your projects!
-                            </div>
-                        </div>
-                        <div class="button-wrapper d-flex gap-04-box align-items-center">
-                            <a href="https://www.figma.com/@hubiyan" target="_blank" rel="noreferrer noopener"
-                                class="button-link">
-                                <button class="my-button btn-social btn-smaller res-0-520-w-100">
-                                    Follow on figma
-                                    <img class="large-btn-icon" src="images/btn-icons/arrow-up-right-blue.png" alt="">
-                                </button>
-                            </a>
-                        </div>
-                    </div>
+                <div class="footer-bx-wrapper d-flex flex-column gap-12-box">
                     <div class="d-flex gap-12-box">
-                        <div class="socials-box d-flex flex-column gap-16-box h-100 justify-content-between">
+                        <div class="socials-box d-flex flex-column gap-16-box h-100 justify-content-between w-100">
                             <div class="d-flex flex-column gap-08-box">
-                                <img class="social-icons" src="images/social-icons/twitter.png" alt="">
-                                <div class="socials-txt">
-                                    Snapshots, memes and content about design
+                                <img loading="lazy" class="social-icons" src="images/social-icons/linkedin.png"
+                                    alt="LinkedIn">
+                                <div class="socials-txt w-75">
+                                    Sharing experience and insights with my valuable connections
                                 </div>
                             </div>
                             <div class="button-wrapper d-flex gap-04-box align-items-center">
-                                <a href="https://x.com/hubiyxxn" target="_blank" class="button-link">
+                                <a href="https://www.linkedin.com/in/hubiyan/" target="_blank" rel="noreferrer noopener"
+                                    class="button-link">
+                                    <button class="my-button btn-social btn-smaller res-0-520-w-100">
+                                        Connect
+                                        <img class="large-btn-icon" src="images/btn-icons/arrow-up-right-blue.png"
+                                            alt="Open link">
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="socials-box d-flex flex-column gap-16-box h-100 justify-content-between w-100">
+                            <div class="d-flex flex-column gap-08-box">
+                                <img loading="lazy" class="social-icons" src="images/social-icons/Instagram.png"
+                                    alt="Instagram">
+                                <div class="socials-txt w-75">
+                                    Content about design and the impact it makes
+                                </div>
+                            </div>
+                            <div class="button-wrapper d-flex gap-04-box align-items-center">
+                                <a href="https://www.instagram.com/hubiyxn/" target="_blank" class="button-link">
                                     <button class="my-button btn-social btn-smaller res-0-520-w-100">
                                         Follow
                                         <img class="large-btn-icon" src="images/btn-icons/arrow-up-right-blue.png"
-                                            alt="">
-                                    </button>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="socials-box d-flex flex-column gap-16-box h-100 justify-content-between">
-                            <div class="d-flex flex-column gap-08-box">
-                                <img class="social-icons" src="images/social-icons/Youtube.png" alt="">
-                                <div class="socials-txt">
-                                    Give me some time to add some real value, I’m on it!
-                                </div>
-                            </div>
-                            <div class="button-wrapper d-flex gap-04-box align-items-center">
-                                <a href="#" class="button-link">
-                                    <button class="my-button btn-social btn-smaller res-0-520-w-100 opacity-50">
-                                        Soon
-                                        <img class="large-btn-icon" src="images/btn-icons/peace-sign.png" alt="">
+                                            alt="Open link">
                                     </button>
                                 </a>
                             </div>
                         </div>
                     </div>
+                    <div class="d-flex gap-12-box res-0-520-column">
+                        <div class="socials-box d-flex flex-column gap-16-box h-100 justify-content-between">
+                            <div class="d-flex flex-column gap-08-box">
+                                <img loading="lazy" class="social-icons" src="images/social-icons/figma.png"
+                                    alt="Figma">
+                                <div class="socials-txt">
+                                    Valuable assets that you can use in your projects!
+                                </div>
+                            </div>
+                            <div class="button-wrapper d-flex gap-04-box align-items-center">
+                                <a href="https://www.figma.com/@hubiyan" target="_blank" rel="noreferrer noopener"
+                                    class="button-link">
+                                    <button class="my-button btn-social btn-smaller res-0-520-w-100">
+                                        Follow on figma
+                                        <img class="large-btn-icon" src="images/btn-icons/arrow-up-right-blue.png"
+                                            alt="Open link">
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-12-box">
+                            <div class="socials-box d-flex flex-column gap-16-box h-100 justify-content-between">
+                                <div class="d-flex flex-column gap-08-box">
+                                    <img loading="lazy" class="social-icons" src="images/social-icons/twitter.png"
+                                        alt="X (Twitter)">
+                                    <div class="socials-txt">
+                                        Snapshots, memes and content about design
+                                    </div>
+                                </div>
+                                <div class="button-wrapper d-flex gap-04-box align-items-center">
+                                    <a href="https://x.com/hubiyxxn" target="_blank" class="button-link">
+                                        <button class="my-button btn-social btn-smaller res-0-520-w-100">
+                                            Follow
+                                            <img class="large-btn-icon" src="images/btn-icons/arrow-up-right-blue.png"
+                                                alt="Open link">
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="socials-box d-flex flex-column gap-16-box h-100 justify-content-between">
+                                <div class="d-flex flex-column gap-08-box">
+                                    <img loading="lazy" class="social-icons" src="images/social-icons/Youtube.png"
+                                        alt="YouTube">
+                                    <div class="socials-txt">
+                                        Give me some time to add some real value, I’m on it!
+                                    </div>
+                                </div>
+                                <div class="button-wrapper d-flex gap-04-box align-items-center">
+                                    <a href="#" class="button-link">
+                                        <button class="my-button btn-social btn-smaller res-0-520-w-100" disabled>
+                                            Soon
+                                            <img class="large-btn-icon" src="images/btn-icons/peace-sign.png"
+                                                alt="Peace sign">
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="footnote d-flex flex-column align-items-center justify-content-center gap-16-box">
-                <p class="footnote-txt">
-                    Built with:
-                </p>
-                <div class="footnote-gif-wrapper d-flex justify-content-center align-items-start">
-                    <img src="images/animated-gifs/footnote-gif.gif" alt="" class="footnotegif">
+                <div class="footnote d-flex flex-column align-items-center justify-content-center gap-16-box">
+                    <p class="footnote-txt">
+                        Built with:
+                    </p>
+                    <div class="footnote-gif-wrapper d-flex justify-content-center align-items-start">
+                        <img src="images/animated-gifs/footnote-gif.webp" alt="Design process animation" loading="lazy"
+                            class="footnotegif">
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-    </footer>
+        </footer>
+    </main>
 </body>
 
 </html>
