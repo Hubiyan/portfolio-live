@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Prompts | Hubiyan — product design</title>
+    <meta name="description" content="Copy-ready prompts I use and share for design, product thinking, and AI workflows." />
+    <meta property="og:site_name" content="Hubiyan" />
+    <meta property="og:title" content="Prompts | Hubiyan" />
+    <meta property="og:image"
+        content="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/og-image.jpg?raw=true">
+    <meta property="og:description" content="Copy-ready prompts for design, product, and AI workflows." />
+
+    <!-- Hotjar Tracking Code for hubiyan.com -->
+    <script>
+        (function (h, o, t, j, a, r) {
+            h.hj = h.hj || function () {
+                (h.hj.q = h.hj.q || []).push(arguments)
+            };
+            h._hjSettings = {
+                hjid: 5202657,
+                hjsv: 6
+            };
+            a = o.getElementsByTagName('head')[0];
+            r = o.createElement('script');
+            r.async = 1;
+            r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+    </script>
+
+    <link rel="icon" type="image/x-icon" href="../images/logos/main-logo.png">
+    <link rel="stylesheet" href="../bootstrap.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <script defer src="../bootstrap.bundle.min.js"></script>
+    <script defer src="../script.js"></script>
+    <script defer src="../prompts.js"></script>
+</head>
+
+<body class="prompts-page">
+    <a href="#prompts-main" class="visually-hidden-focusable">Skip to prompts</a>
+
+    <nav class="my-nav d-flex w-100 justify-content-center align-items-end">
+        <div class="nav-blur-stack" id="navBlurStack" aria-hidden="true"></div>
+        <div class="nav-floater d-flex align-items-center justify-content-center gap-32-box">
+            <a href="../"><img class="nav-logo-img" src="../images/logos/main-logo.png" alt="Hubiyan — home"></a>
+            <div class="button-wrapper d-flex gap-04-box align-items-center res-0-520-w-100">
+                <button type="button" class="my-button btn-primary res-0-520-w-100" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">
+                    Get in touch
+                </button>
+                <a href="../" class="btn my-button btn-seco icon-btn" aria-label="Go to portfolio home">
+                    <img class="large-btn-icon" src="../images/btn-icons/home.png" alt="" decoding="async">
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="full-width-scroller">
+        <div class="scroller-indicator"></div>
+    </div>
+
+    <div id="confetti-trigger" style="display:none;"></div>
+    <div id="wave"></div>
+
+    <!-- Get in touch modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="d-flex w-100 justify-content-end">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <img class="close-img" src="../images/btn-icons/cross.png" alt="">
+                </button>
+            </div>
+            <div class="modal-content d-flex flex-column gap-32-box">
+                <div class="d-flex w-100 justify-content-between align-items-center">
+                    <h2 class="section-title modal-title text-center w-100">Get in touch</h2>
+                </div>
+                <div class="card d-flex flex-column gap-32-box align-items-center res-0-520-gap-16">
+                    <div class="d-flex flex-column align-items-center gap-16-box w-100">
+                        <p class="button-cat text-center">Let's talk design!</p>
+                        <div class="button-wrapper d-flex flex-column gap-04-box align-items-center w-100">
+                            <div class="d-flex gap-08-box align-items-center">
+                                <p class="btn-help-text help-pop">Say hi 👋🏻</p>
+                                <div class="dot-div"></div>
+                                <p class="btn-help-text help-pop">20-30 mins</p>
+                                <div class="dot-div"></div>
+                                <p class="btn-help-text lighter-help help-pop">Free!</p>
+                            </div>
+                            <a href="https://cal.com/hubiyan/quick-intro" target="_blank" rel="noreferrer noopener"
+                                class="button-link w-100">
+                                <button type="button" class="my-button btn-primary w-100">
+                                    Schedule a meeting
+                                    <img class="large-btn-icon" src="../images/btn-icons/calendar-light.png" alt="">
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="d-flex flex-column align-items-center gap-16-box w-100">
+                        <p class="button-cat">I'm most active on:</p>
+                        <div class="button-wrapper d-flex gap-04-box align-items-center w-100">
+                            <a href="https://www.linkedin.com/in/hubiyan/" target="_blank" rel="noreferrer noopener"
+                                class="button-link w-100">
+                                <button class="my-button btn-social w-100">
+                                    <img class="large-btn-icon social-btn-ico"
+                                        src="../images/social-icons/linkedin-nude.png" alt="">
+                                </button>
+                            </a>
+                            <a href="https://www.instagram.com/hubiyxn/" target="_blank" rel="noreferrer noopener"
+                                class="button-link w-100">
+                                <button type="button" class="my-button btn-social w-100">
+                                    <img class="large-btn-icon" src="../images/social-icons/ig-nude.png" alt="">
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="prompts-copy-status" class="prompts-copy-status" role="status" aria-live="polite"></div>
+
+    <main id="prompts-main" class="container prompts-content d-flex flex-column gap-40-box">
+        <header class="prompts-hero" aria-labelledby="prompts-hero-title">
+            <!-- Keep in sync with PROMPTS_HERO in ../prompts.js (no-JS fallback) -->
+            <h1 class="prompts-hero-title" id="prompts-hero-title" aria-label="Supercharged prompts">Supercharged pr*mpts</h1>
+            <p class="prompts-hero-subtitle">Prompts that fit how designers think and work. Use them to enhance your process, not replace it. Read & make your own tweaks.</p>
+        </header>
+        <div class="prompts-grid">
+
+            <article class="prompt-block card" tabindex="0">
+                <div class="prompt-block-header">
+                    <h2 class="prompt-card-title">Problem framing</h2>
+                    <button type="button" class="prompt-copy-btn" data-copy-for="prompt-1"
+                        aria-label="Copy prompt: Critique a UI with clarity">
+                        <span class="btn-icon-copy">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                <path d="M5 3.5V3C5 2.45 5.45 2 6 2H13C13.55 2 14 2.45 14 3V11C14 11.55 13.55 12 13 12H12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <rect x="2" y="5" width="9" height="9" rx="1.5" stroke="white" stroke-width="1.5"/>
+                            </svg>
+                        </span>
+                        <span class="btn-icon-check">
+                            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                                <path fill="white" d="M6 10.78L3.22 8l-.95.94L6 12.67L14 4.67l-.94-.94z"/>
+                            </svg>
+                        </span>
+                    </button>
+                </div>
+                <p class="prompt-body" id="prompt-1">You are a product design problem framing expert and thinking partner. You help product designers rigorously frame problems before jumping to solutions — ensuring the right problem is being solved, from both the business and user perspective.
+                    Follow this exact conversation flow. Never skip or combine steps.
+                    Step 1 — Opening message: Say exactly this and nothing else: "Enter your problem, the situational context and cause of the problem to create a proper problem framing that will point you towards a plausible solution. Add any additional details if you would like to."
+                    Step 2 — After the designer shares their problem: Ask exactly this and nothing else: "What kind of business are you creating a solution for?"
+                    Step 3 — After they answer: Ask exactly this and nothing else: "What does success in this particular context look like for this business?"
+                    Step 4 — After they answer, generate the full structured output:
+                    A. Possible causes of the user problem (JTBD lens) Using Jobs To Be Done theory, identify 3–5 root causes of the problem. Focus on the functional, emotional, and social jobs the user is trying to get done that are currently unmet or frustrated.
+                    B. Other issues users may be facing because of this problem List 3–5 downstream pain points or consequences the user experiences as a result of the core problem. These often reveal additional design opportunities.
+                    C. Dual-axis problem framing table Present a table with these exact columns: Perspective | Problem(s) | Goals | Possible Solutions | Measurement Points
+                    
+                    * Row 1: Business standpoint
+                    * Row 2: User standpoint
+                    This table is the core deliverable. It should clearly show where business goals and user goals align — that intersection is where the most viable solutions live.
+                    D. All possible ways to solve the problem for the user List every realistic user-facing solution. Think across the full solution space — do not default to the most obvious answer.
+                    E. All possible ways to solve the problem for the business List every realistic business-side solution, including operational, product, and strategic options.
+                    F. Solutions — advantages and disadvantages Compile all solutions from D and E into a table: Solution | Advantages | Disadvantages
+                    Be honest about trade-offs. A good designer needs to see the full picture, not just the positives.
+                    Output rules:
+                    
+                    * Use clear, simple language. Avoid unnecessary jargon.
+                    * Format everything for scannability — tables, short bullet points, clear section headers.
+                    * Be thorough but concise. A designer should be able to read the output quickly and act on it.
+                    * Never combine steps. Always wait for the designer's response before moving forward.</p>
+            </article>
+
+            <article class="prompt-block card is-coming-soon" tabindex="0" aria-disabled="true">
+                <div class="prompt-block-header">
+                    <h2 class="prompt-card-title">Designer knowledge</h2>
+                    <button type="button" class="prompt-copy-btn" data-copy-for="prompt-2"
+                        disabled aria-disabled="true"
+                        aria-label="Designer knowledge — coming soon">
+                        <span class="btn-icon-copy">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                <path d="M5 3.5V3C5 2.45 5.45 2 6 2H13C13.55 2 14 2.45 14 3V11C14 11.55 13.55 12 13 12H12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <rect x="2" y="5" width="9" height="9" rx="1.5" stroke="white" stroke-width="1.5"/>
+                            </svg>
+                        </span>
+                        <span class="btn-icon-check">
+                            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                                <path fill="white" d="M6 10.78L3.22 8l-.95.94L6 12.67L14 4.67l-.94-.94z"/>
+                            </svg>
+                        </span>
+                    </button>
+                </div>
+                <p class="prompt-body" id="prompt-2" aria-hidden="true">Turn my rough idea into a one-page design brief. Include: problem statement, target users, success metrics, must-have / nice-to-have, open questions, and a suggested next workshop agenda. Ask only if something essential is missing.Turn my rough idea into a one-page design brief. Include: problem statement, target users, success metrics, must-have / nice-to-have, open questions, and a suggested next workshop agenda. Ask only if something essential is missing.Turn my rough idea into a one-page design brief. Include: problem statement, target users, success metrics, must-have / nice-to-have, open questions, and a suggested next workshop agenda. Ask only if something essential is missing.</p>
+            </article>
+
+            <article class="prompt-block card is-coming-soon" tabindex="0" aria-disabled="true">
+                <div class="prompt-block-header">
+                    <h2 class="prompt-card-title">Making decisions as a designer</h2>
+                    <button type="button" class="prompt-copy-btn" data-copy-for="prompt-3"
+                        disabled aria-disabled="true"
+                        aria-label="Making decisions as a designer — coming soon">
+                        <span class="btn-icon-copy">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                <path d="M5 3.5V3C5 2.45 5.45 2 6 2H13C13.55 2 14 2.45 14 3V11C14 11.55 13.55 12 13 12H12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <rect x="2" y="5" width="9" height="9" rx="1.5" stroke="white" stroke-width="1.5"/>
+                            </svg>
+                        </span>
+                        <span class="btn-icon-check">
+                            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                                <path fill="white" d="M6 10.78L3.22 8l-.95.94L6 12.67L14 4.67l-.94-.94z"/>
+                            </svg>
+                        </span>
+                    </button>
+                </div>
+                <p class="prompt-body" id="prompt-3" aria-hidden="true">Write a 6-sentence project update for executives: what shipped, what we learned, risks, what we need from them, and the next checkpoint date. No jargon — tie each sentence to a business outcome.</p>
+            </article>
+
+            <article class="prompt-block card is-coming-soon" tabindex="0" aria-disabled="true">
+                <div class="prompt-block-header">
+                    <h2 class="prompt-card-title">AI + design</h2>
+                    <button type="button" class="prompt-copy-btn" data-copy-for="prompt-4"
+                        disabled aria-disabled="true"
+                        aria-label="AI + design — coming soon">
+                        <span class="btn-icon-copy">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                <path d="M5 3.5V3C5 2.45 5.45 2 6 2H13C13.55 2 14 2.45 14 3V11C14 11.55 13.55 12 13 12H12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <rect x="2" y="5" width="9" height="9" rx="1.5" stroke="white" stroke-width="1.5"/>
+                            </svg>
+                        </span>
+                        <span class="btn-icon-check">
+                            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                                <path fill="white" d="M6 10.78L3.22 8l-.95.94L6 12.67L14 4.67l-.94-.94z"/>
+                            </svg>
+                        </span>
+                    </button>
+                </div>
+                <p class="prompt-body" id="prompt-4" aria-hidden="true">Given the feature I describe, write 5 user stories in the format "As a [persona], I want [action] so that [outcome]". Add one edge-case acceptance criterion per story. Flag any story where the scope seems too large to ship in one sprint.</p>
+            </article>
+
+        </div>
+    </main>
+</body>
+
+</html>

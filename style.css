@@ -3146,4 +3146,512 @@ p {
 
 .gap-200-box {
     gap: var(--spacing-200);
+}/* ----- Prompts page (/prompts/) ----- */
+body.prompts-page {
+    padding-bottom: var(--spacing-100);
+}
+
+/* heading colour override — blue on home, dark on prompts */
+.prompts-page .main-title {
+    color: var(--grey-500);
+}
+
+.nav-prompts-link {
+    font-size: var(--spacing-16);
+    font-weight: 600;
+    color: var(--grey-400);
+    text-decoration: none;
+    white-space: nowrap;
+}
+.nav-prompts-link:hover {
+    color: var(--blue-400);
+}
+.nav-prompts-current {
+    font-size: var(--spacing-16);
+    font-weight: 600;
+    color: var(--blue-300);
+    white-space: nowrap;
+}
+
+/* ---- Prompts page intro (replaces sky banner) ---- */
+.prompts-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-12);
+    width: 100%;
+    max-width: 52rem;
+    margin: 0;
+    box-sizing: border-box;
+    padding: 0;
+}
+/* Prompts title — extra gap before the last word: set --prompts-title-word-gap on .prompts-hero-title */
+.prompts-hero-title {
+    --prompts-title-word-gap: 0.25em;
+    color: var(--grey-900);
+    font-size: var(--spacing-44);
+    font-weight: 600;
+    line-height: 100%;
+    letter-spacing: -0.02em;
+    margin: 0;
+    text-align: left;
+}
+/* Last word in the title: keeps “p r ★ m p t s” from breaking the star to its own line */
+.prompts-hero-nowrap {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    min-width: 0;
+    flex: 0 0 auto;
+    white-space: nowrap;
+    letter-spacing: inherit;
+    font: inherit;
+    /* Extra space after “Supercharged ” (the normal space char is still in the DOM) */
+    margin-left: var(--prompts-title-word-gap);
+}
+/* Star image in “Supercharged pr*mpts” — replaces the * after reveal; .is-rotating added after the scramble completes */
+.prompts-hero-title-star-slot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    vertical-align: 0.05em;
+    align-self: center;
+    margin: 0 0.02em;
+}
+.prompts-hero-title-star {
+    display: block;
+    width: 0.6em;
+    height: 0.6em;
+    object-fit: contain;
+    object-position: center;
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
+    flex-shrink: 0;
+    transform-origin: 50% 50%;
+}
+@keyframes prompts-hero-star-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+.prompts-hero-title-star.is-rotating {
+    animation: prompts-hero-star-spin 5s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+    .prompts-hero-title-star.is-rotating {
+        animation: none;
+    }
+}
+/* Scramble title: 1 line = one nowrap row; 2+ lines = stacked rows (set by prompts.js) */
+.prompts-hero-scramble {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+.prompts-hero-scramble--measuring {
+    /* Flat inline spans, natural wrap — used only before line grouping */
+    display: block;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+/* Per-char flex items — both direct children and chars inside the nowrap group */
+.prompts-hero-scramble-line > span:not(.prompts-hero-nowrap),
+.prompts-hero-nowrap > span:not(.prompts-hero-title-star-slot) {
+    flex: 0 0 auto;
+    white-space: pre;
+}
+.prompts-hero-scramble.is-single-line {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: baseline;
+    width: 100%;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: visible;
+}
+.prompts-hero-scramble.is-single-line .prompts-hero-scramble-line {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    min-width: 0;
+    max-width: 100%;
+}
+.prompts-hero-scramble.is-multiline {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    min-width: 0;
+    row-gap: 0.12em;
+    white-space: normal;
+    overflow: visible;
+}
+.prompts-hero-scramble.is-multiline .prompts-hero-scramble-line {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    min-width: 0;
+    max-width: 100%;
+}
+/* Two-line title: breathing room (line-height: 100% is too tight for two rows) */
+.prompts-hero-title:has(.prompts-hero-scramble.is-multiline) {
+    line-height: 1.12;
+}
+.prompts-hero-subtitle {
+    color: var(--grey-500);
+    font-size: var(--spacing-20);
+    font-weight: 500;
+    line-height: 150%;
+    margin: 0;
+    text-align: left;
+    /* Hidden start state — waits for heading scramble to finish */
+    opacity: 0;
+    filter: blur(20px);
+    transform: translateY(30px);
+    transition:
+        opacity   0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        filter    0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, filter, transform;
+}
+.prompts-hero-subtitle.is-visible {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0);
+}
+
+/* Main content column —
+   Override .container's fixed min-width: 52rem so the page is fluid below desktop.
+   width: 100% fills available space; max-width: 52rem caps it on wide screens. */
+.prompts-content {
+    padding-top: var(--spacing-64);
+    padding-bottom: var(--spacing-64);
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 52rem;
+    box-sizing: border-box;
+}
+
+/* 2-column prompt grid */
+.prompts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-16);
+    align-items: start;
+    /* Hidden start state — waits for subtitle animation to finish */
+    opacity: 0;
+    filter: blur(20px);
+    transform: translateY(30px);
+    transition:
+        opacity   0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        filter    0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, filter, transform;
+}
+.prompts-grid.is-visible {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0);
+}
+
+/* Prompt card */
+.prompt-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    cursor: pointer;
+    overflow: visible !important;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.prompt-block:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.07), 0px 4px 12px rgba(0, 0, 0, 0.04);
+}
+.prompt-block:focus-visible {
+    outline: 2px solid var(--blue-300);
+    outline-offset: 3px;
+}
+
+.prompt-block-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-12);
+    border-bottom: 0.5px solid var(--grey-100);
+    padding-bottom: var(--spacing-16);
+    margin-bottom: var(--spacing-16);
+}
+
+/* ASCII animation box — square, same height as the card title */
+.prompt-ascii-box {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0.5px solid var(--ascii-border, var(--grey-100));
+    border-radius: var(--spacing-04);
+    overflow: hidden;
+    box-sizing: border-box;
+    background: transparent;
+    min-width: 1.5rem;
+    min-height: 1.5rem;
+}
+.prompt-ascii-pre {
+    margin: 0;
+    padding: 0;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 5.5px;
+    line-height: 1.35;
+    color: var(--ascii-fg, var(--grey-400));
+    white-space: pre;
+    user-select: none;
+    display: block;
+    text-align: center;
+    letter-spacing: 0.02em;
+}
+
+.prompt-card-title {
+    font-size: var(--spacing-18);
+    font-weight: 500;
+    color: var(--grey-500);
+    margin: 0;
+    line-height: 130%;
+    flex: 1;
+}
+
+/* Body text — clamped at 5 lines */
+.prompt-body {
+    margin: 0;
+    font-size: var(--spacing-16);
+    font-weight: 400;
+    color: var(--grey-300);
+    line-height: 160%;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ---- Copy button ---- */
+.prompt-copy-btn {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    background: var(--grey-700);
+    border: none;
+    cursor: pointer;
+    flex-shrink: 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* only transition background — transform handled by animation */
+    transition: background-color 0.35s ease;
+}
+.prompt-copy-btn:hover:not(.is-copied) {
+    background: var(--grey-900);
+}
+
+/* Icon layers */
+.btn-icon-copy,
+.btn-icon-check {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s ease 0.08s,
+                transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) 0.08s;
+}
+.btn-icon-check {
+    opacity: 0;
+    transform: scale(0.3) rotate(-20deg);
+}
+
+/* Copied state */
+.prompt-copy-btn.is-copied {
+    background: #19a14b;
+}
+.prompt-copy-btn.is-copied .btn-icon-copy {
+    opacity: 0;
+    transform: scale(0.3) rotate(20deg);
+}
+.prompt-copy-btn.is-copied .btn-icon-check {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+}
+
+/* Bounce keyframe */
+@keyframes prompt-btn-bounce {
+    0%   { transform: scale(1); }
+    28%  { transform: scale(0.84); }
+    62%  { transform: scale(1.12); }
+    84%  { transform: scale(0.96); }
+    100% { transform: scale(1); }
+}
+.prompt-copy-btn.is-bouncing {
+    animation: prompt-btn-bounce 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* ---- Coming soon state ---- */
+/* Card stays clickable (so we can still surface the "Dropping soon" toast)
+   but the prompt body is blurred and the copy button is visually disabled. */
+.prompt-block.is-coming-soon {
+    cursor: pointer;
+    background: transparent;
+    border: 0.5px solid var(--grey-100);
+}
+.prompt-block.is-coming-soon:hover {
+    transform: none;
+    box-shadow: none;
+}
+.prompt-block.is-coming-soon .prompt-body {
+    filter: blur(5px);
+    user-select: none;
+    pointer-events: none;
+    color: var(--grey-300);
+    opacity: 0.85;
+}
+.prompt-copy-btn:disabled,
+.prompt-copy-btn[aria-disabled="true"] {
+    background: var(--grey-50);
+    cursor: not-allowed;
+    pointer-events: none;
+}
+.prompt-copy-btn:disabled .btn-icon-copy svg path,
+.prompt-copy-btn:disabled .btn-icon-copy svg rect,
+.prompt-copy-btn[aria-disabled="true"] .btn-icon-copy svg path,
+.prompt-copy-btn[aria-disabled="true"] .btn-icon-copy svg rect {
+    stroke: var(--grey-300);
+}
+.prompt-copy-btn:disabled .btn-icon-check svg path,
+.prompt-copy-btn[aria-disabled="true"] .btn-icon-check svg path {
+    fill: var(--grey-300);
+}
+
+/* Accessible live status toast — hidden until .is-visible is added by JS */
+.prompts-copy-status {
+    position: fixed;
+    left: 50%;
+    z-index: 1001;
+    padding: var(--spacing-10) var(--spacing-16);
+    font-size: var(--spacing-18);
+    font-weight: 400;
+    color: var(--bg-white);
+    background: #17a74c;
+    border-radius: var(--spacing-10);
+    box-shadow: 0 4px 24px rgba(34, 197, 94, 0.25);
+    pointer-events: none;
+    width: max-content;
+    max-width: calc(100vw - 2.5rem);
+    box-sizing: border-box;
+    /* hidden state */
+    bottom: calc(var(--spacing-100) + env(safe-area-inset-bottom, 0));
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50%) translateY(6px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
+    text-align: left;
+}
+.prompts-copy-status.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s;
+}
+/* Dark grey variant for "Dropping soon" / coming-soon feedback */
+.prompts-copy-status.is-soon {
+    background: var(--grey-700);
+    color: var(--bg-white);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+}
+
+/* ----- Prompts page — responsive (mirrors homepage breakpoint structure) ----- */
+
+/* All phones ≤ 520px — primary mobile block */
+@media screen and (min-width: 0px) and (max-width: 520px) {
+    /* Restore horizontal breathing room — global .container loses padding: 0 at this width */
+    .prompts-page .prompts-content {
+        padding-left: var(--spacing-20);
+        padding-right: var(--spacing-20);
+    }
+
+    .prompts-hero {
+        gap: var(--spacing-16);
+    }
+    .prompts-hero-title {
+        font-size: var(--spacing-32);
+        line-height: 105%;
+    }
+    .prompts-hero-subtitle {
+        font-size: var(--spacing-16);
+        line-height: 140%;
+    }
+
+    /* Single-column grid on mobile */
+    .prompts-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-12);
+    }
+
+    /* Scale card title down like .section-title (26 → 22) */
+    .prompt-card-title {
+        font-size: var(--spacing-16);
+    }
+
+    /* Scale body text down like .section-description (18 → 14) */
+    .prompt-body {
+        font-size: var(--spacing-14);
+        -webkit-line-clamp: 4;
+        line-clamp: 4;
+    }
+
+    /* Tighten separator gap */
+    .prompt-block-header {
+        padding-bottom: var(--spacing-12);
+        margin-bottom: var(--spacing-12);
+    }
+
+    /* Slightly smaller copy button */
+    .prompt-copy-btn {
+        width: 2.25rem;
+        height: 2.25rem;
+    }
+
+    /* Toast clears bottom nav + scales down on phones */
+    .prompts-copy-status,
+    .prompts-copy-status.is-visible {
+        bottom: calc(5.5rem + env(safe-area-inset-bottom, 0));
+    }
+    .prompts-copy-status {
+        font-size: var(--spacing-14);
+        max-width: calc(100vw - 2.5rem);
+    }
+}
+
+/* Slightly larger phones 350–520px — bump sizes back up like homepage pattern */
+@media screen and (min-width: 350px) and (max-width: 520px) {
+    .prompt-card-title {
+        font-size: var(--spacing-18);
+    }
+
+    .prompt-body {
+        font-size: var(--spacing-14);
+        -webkit-line-clamp: 5;
+        line-clamp: 5;
+    }
+}
+
+/* Tablet 520–840px — container already gets padding-left/right: 40px from global rule */
+@media screen and (min-width: 520px) and (max-width: 840px) {
+    /* Two columns with tighter gap at tablet width */
+    .prompts-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-12);
+    }
 }
