@@ -55,7 +55,6 @@
             <a href="https://hubiyan.com/"><img class="nav-logo-img" src="images/logos/main-logo.png"
                     alt="Hubiyan logo, go to homepage" class="home" width="42" height="42">
             </a>
-            <a href="prompts/" class="nav-prompts-link">Prompts</a>
             <div class="button-wrapper d-flex gap-04-box align-items-center res-0-520-w-100">
                 <button type="button" class="my-button btn-primary res-0-520-w-100" data-bs-toggle="modal"
                     data-bs-target="#exampleModal">
@@ -376,9 +375,20 @@
             <!-- Hero section -->
             <section class="hero-section d-flex flex-column gap-40-box">
                 <div class="top-bar d-flex w-100 justify-content-between align-items-center">
+                    <div class="d-flex align-items-center gap-12-box">
+                        <div class="hamburger-wrap">
+                            <button class="hamburger-btn" id="hamburgerBtn" type="button" aria-label="Open menu"
+                                aria-expanded="false" aria-controls="hamburgerMenu">
+                                <img class="hamburger-star-icon" src="images/btn-icons/star-blue.png" alt="" width="16"
+                                    height="16" decoding="async" draggable="false">
+                            </button>
+                            <div class="hamburger-menu" id="hamburgerMenu" role="menu" aria-hidden="true">
+                                <a href="prompts/" class="ham-link" role="menuitem">Prompts</a>
+                                <a href="#case-studies" class="ham-link" role="menuitem" id="hamCaseLink">Case studies</a>
+                            </div>
+                        </div>
 
-                    <img class="main-logo" src="images/logos/main-logo.png" alt="Hubiyan's brand Logo" width="48"
-                        height="48">
+                    </div>
                     <!-- Time component -->
                     <div class="time-comp" id="uae-time-comp" role="timer" aria-live="polite">
 
@@ -536,7 +546,7 @@
             <!-- Featured work section -->
 
             <!-- Case studies new -->
-            <section class="standard-section">
+            <section class="standard-section" id="case-studies">
                 <div class="card d-flex flex-column gap-32-box about-card">
                     <div
                         class="d-flex flex-column gap-04-box justify-content-between align-items-start w-100 about-head">

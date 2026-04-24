@@ -214,6 +214,102 @@ body {
     padding-top: var(--spacing-24);
 }
 
+/* ----- Hamburger menu (hero top-bar) ----- */
+.hamburger-wrap {
+    position: relative;
+}
+
+.hamburger-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 3rem;
+    height: 3rem;
+    padding: var(--spacing-08);
+    background: var(--bg-white);
+    border: none;
+    border-radius: var(--spacing-12);
+    cursor: pointer;
+    box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.03), 0px 1px 1px 0px rgba(0, 0, 0, 0.04);
+    transition: background 0.15s ease;
+}
+
+.hamburger-btn:hover {
+    background: var(--grey-50);
+}
+
+.hamburger-btn[aria-expanded="true"] {
+    background: var(--grey-50);
+}
+
+/* Spin when menu closed — class + bounce toggled in script.js */
+.hamburger-star-icon {
+    display: block;
+    width: 1.2rem;
+    height: 1.2rem;
+    object-fit: contain;
+    object-position: center;
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
+    flex-shrink: 0;
+    transform-origin: 50% 50%;
+}
+
+.hamburger-star-icon.hamburger-star-spinning {
+    animation: prompts-hero-star-spin 5s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hamburger-star-icon.hamburger-star-spinning {
+        animation: none;
+    }
+}
+
+.hamburger-menu {
+    position: absolute;
+    top: calc(100% + var(--spacing-08));
+    left: 0;
+    right: auto;
+    min-width: 10rem;
+    background: var(--bg-white);
+    border-radius: var(--spacing-14);
+    box-shadow: 0px 17px 5px 0px rgba(0, 0, 0, 0), 0px 11px 4px 0px rgba(0, 0, 0, 0.01), 0px 6px 4px 0px rgba(0, 0, 0, 0.02), 0px 3px 3px 0px rgba(0, 0, 0, 0.04), 0px 1px 1px 0px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-06);
+    z-index: 998;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-6px) scale(0.97);
+    transform-origin: top left;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.hamburger-menu.is-open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+}
+
+.ham-link {
+    display: block;
+    padding: var(--spacing-10) var(--spacing-14);
+    font-size: var(--spacing-16);
+    font-weight: 500;
+    color: var(--blue-400);
+    text-decoration: none;
+    border-radius: var(--spacing-08);
+    white-space: nowrap;
+    transition: background 0.12s ease, color 0.12s ease;
+}
+
+.ham-link:hover {
+    background: var(--blue-50);
+    color: var(--blue-300);
+}
+
 .hi-there {
     font-size: var(--spacing-24);
     font-weight: 500;
@@ -232,12 +328,6 @@ body {
 
 }
 
-.main-logo {
-    width: var(--spacing-40);
-    height: var(--spacing-40);
-    box-shadow: 0px 63.48px 17.91px 0px rgba(0, 0, 0, 0), 0px 40.69px 16.28px 0px rgba(0, 0, 0, 0), 0px 22.79px 13.02px 0px rgba(0, 0, 0, 0.02), 0px 9.77px 9.77px 0px rgba(0, 0, 0, 0.03), 0px 3.26px 4.88px 0px rgba(0, 0, 0, 0.03);
-    border-radius: var(--spacing-08);
-}
 
 h1,
 h2,
@@ -3156,22 +3246,6 @@ body.prompts-page {
     color: var(--grey-500);
 }
 
-.nav-prompts-link {
-    font-size: var(--spacing-16);
-    font-weight: 600;
-    color: var(--grey-400);
-    text-decoration: none;
-    white-space: nowrap;
-}
-.nav-prompts-link:hover {
-    color: var(--blue-400);
-}
-.nav-prompts-current {
-    font-size: var(--spacing-16);
-    font-weight: 600;
-    color: var(--blue-300);
-    white-space: nowrap;
-}
 
 /* ---- Prompts page intro (replaces sky banner) ---- */
 .prompts-hero {
