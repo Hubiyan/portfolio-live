@@ -232,16 +232,107 @@ document.addEventListener("DOMContentLoaded", () => {
         const caseLink = document.getElementById('hamCaseLink');
         if (!btn || !menu) return;
 
+        const star = btn.querySelector('.hamburger-star-icon');
+        const SPIN_CLASS = 'hamburger-star-spinning';
+        const BOUNCE_MS = 520;
+        const mqReduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+        let starAnimGen = 0;
+
+        function rotationDegFromTransform(el) {
+            const t = getComputedStyle(el).transform;
+            if (!t || t === 'none') return 0;
+            const m = new DOMMatrix(t);
+            return (Math.atan2(m.m21, m.m11) * 180) / Math.PI;
+        }
+
+        function clearStarInlineMotion() {
+            if (!star) return;
+            star.style.animation = '';
+            star.style.transition = '';
+            star.style.transform = '';
+        }
+
+        function stopStarSpinWithBounce() {
+            if (!star) return;
+            starAnimGen += 1;
+            const gen = starAnimGen;
+            if (mqReduce.matches) {
+                star.classList.remove(SPIN_CLASS);
+                clearStarInlineMotion();
+                return;
+            }
+            const angle = rotationDegFromTransform(star);
+            star.classList.remove(SPIN_CLASS);
+            star.style.animation = 'none';
+            star.style.transform = `rotate(${angle}deg)`;
+            void star.offsetWidth;
+            star.style.transition = `transform ${BOUNCE_MS}ms cubic-bezier(0.34, 1.56, 0.64, 1)`;
+            requestAnimationFrame(() => {
+                if (gen !== starAnimGen) return;
+                star.style.transform = 'rotate(0deg)';
+            });
+            function onEnd(e) {
+                star.removeEventListener('transitionend', onEnd);
+                if (e.propertyName !== 'transform' || gen !== starAnimGen) return;
+                clearStarInlineMotion();
+            }
+            star.addEventListener('transitionend', onEnd);
+            setTimeout(() => {
+                star.removeEventListener('transitionend', onEnd);
+                if (gen !== starAnimGen) return;
+                clearStarInlineMotion();
+            }, BOUNCE_MS + 80);
+        }
+
+        function startStarSpinWithBounce() {
+            if (!star) return;
+            starAnimGen += 1;
+            const gen = starAnimGen;
+            if (mqReduce.matches) {
+                clearStarInlineMotion();
+                star.classList.add(SPIN_CLASS);
+                return;
+            }
+            star.classList.remove(SPIN_CLASS);
+            star.style.animation = 'none';
+            star.style.transform = 'scale(0.78)';
+            void star.offsetWidth;
+            star.style.transition = `transform ${BOUNCE_MS}ms cubic-bezier(0.34, 1.56, 0.64, 1)`;
+            requestAnimationFrame(() => {
+                if (gen !== starAnimGen) return;
+                star.style.transform = 'scale(1)';
+            });
+            function onEnd(e) {
+                star.removeEventListener('transitionend', onEnd);
+                if (e.propertyName !== 'transform' || gen !== starAnimGen) return;
+                clearStarInlineMotion();
+                star.classList.add(SPIN_CLASS);
+            }
+            star.addEventListener('transitionend', onEnd);
+            setTimeout(() => {
+                star.removeEventListener('transitionend', onEnd);
+                if (gen !== starAnimGen) return;
+                clearStarInlineMotion();
+                star.classList.add(SPIN_CLASS);
+            }, BOUNCE_MS + 80);
+        }
+
+        if (star && btn.getAttribute('aria-expanded') === 'false') {
+            star.classList.add(SPIN_CLASS);
+        }
+
         function openMenu() {
             btn.setAttribute('aria-expanded', 'true');
             menu.setAttribute('aria-hidden', 'false');
             menu.classList.add('is-open');
+            stopStarSpinWithBounce();
         }
 
         function closeMenu() {
             btn.setAttribute('aria-expanded', 'false');
             menu.setAttribute('aria-hidden', 'true');
             menu.classList.remove('is-open');
+            startStarSpinWithBounce();
         }
 
         btn.addEventListener('click', (e) => {
