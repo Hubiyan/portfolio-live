@@ -660,24 +660,46 @@ document.addEventListener('DOMContentLoaded', () => {
     /* How long the green "copied" toast (and checkmark state) stay visible, ms. */
     const COPIED_TOAST_MS = 4000;
 
-    /* ---- Toast helper ---- */
+    /* ---- Toast helper ----
+       Single slot: a new showToast() invalidates pending hide + delayed DOM clear
+       (avoids empty green bar / wrong variant if user switches between cards). */
     const live = document.getElementById('prompts-copy-status');
+    let clearToastTextTimer = null;
+    let toastToken = 0;
 
     function showToast(msg, variant) {
-        if (!live) return;
+        if (!live) return 0;
+        if (clearToastTextTimer) {
+            clearTimeout(clearToastTextTimer);
+            clearToastTextTimer = null;
+        }
+        toastToken += 1;
+        const token = toastToken;
         live.textContent = msg;
         live.classList.toggle('is-soon', variant === 'soon');
         live.classList.add('is-visible');
+        return token;
     }
 
     function hideToast() {
         if (!live) return;
+        if (clearToastTextTimer) {
+            clearTimeout(clearToastTextTimer);
+            clearToastTextTimer = null;
+        }
         live.classList.remove('is-visible');
         /* clear text + reset variant after fade-out transition (200ms) */
-        setTimeout(() => {
+        clearToastTextTimer = setTimeout(() => {
+            clearToastTextTimer = null;
             live.textContent = '';
             live.classList.remove('is-soon');
         }, 220);
+    }
+
+    function hideToastIfToken(token) {
+        if (token === toastToken) {
+            hideToast();
+        }
     }
 
     /* ---- Card-level click — entire card is the copy target ---- */
@@ -686,15 +708,17 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.prompt-block').forEach((card) => {
         card.addEventListener('click', async () => {
             const btn = card.querySelector('.prompt-copy-btn');
-            if (!btn || btn.classList.contains('is-copied')) return;
+            if (!btn) return;
 
-            /* Coming-soon cards: show grey "Dropping shortly" toast and stop. */
+            /* Coming-soon cards: dark toast, always (even if another card just showed green). */
             if (card.classList.contains('is-coming-soon')) {
-                showToast('Dropping shortly', 'soon');
+                const t = showToast('Dropping soon', 'soon');
                 clearTimeout(resetTimers.get(card));
-                resetTimers.set(card, setTimeout(hideToast, 1800));
+                resetTimers.set(card, setTimeout(() => hideToastIfToken(t), 1800));
                 return;
             }
+
+            if (btn.classList.contains('is-copied')) return;
 
             const targetId = btn.getAttribute('data-copy-for');
             const block = targetId ? document.getElementById(targetId) : null;
@@ -721,7 +745,7 @@ document.addEventListener('DOMContentLoaded', () => {
             fireConfettiAt(btn);
 
             /* 5. Show toast — pick a random encouraging message */
-            showToast(pickEncouragement());
+            const copyToastToken = showToast(pickEncouragement());
 
             /* 6. Reset button + hide toast after green message has been visible long enough */
             clearTimeout(resetTimers.get(card));
@@ -730,7 +754,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const title = card.querySelector('.prompt-card-title')?.textContent;
                 btn.setAttribute('aria-label',
                     title ? `Copy prompt: ${title}` : 'Copy prompt');
-                hideToast();
+                hideToastIfToken(copyToastToken);
             }, COPIED_TOAST_MS));
         });
     });
