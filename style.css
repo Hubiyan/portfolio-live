@@ -2620,7 +2620,7 @@ body.prompts-page {
 }
 
 /* ---- Coming soon state ---- */
-/* Card stays clickable (so we can still surface the "Dropping shortly" toast)
+/* Card stays clickable (so we can still surface the "Dropping soon" toast)
    but the prompt body is blurred and the copy button is visually disabled. */
 .prompt-block.is-coming-soon {
     cursor: pointer;
@@ -2685,7 +2685,7 @@ body.prompts-page {
     transform: translateX(-50%) translateY(0);
     transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s;
 }
-/* Grey variant for "Dropping shortly" / coming-soon feedback */
+/* Dark grey variant for "Dropping soon" / coming-soon feedback */
 .prompts-copy-status.is-soon {
     background: var(--grey-700);
     color: var(--bg-white);
