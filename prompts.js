@@ -18,12 +18,10 @@
 // Wide multi-script glyph pool.
 // Add / remove characters here to change what appears during scramble.
 const SCRAMBLE_CHARSET = [
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-    'abcdefghijklmnopqrstuvwxyz',
-    '@#$%&*?~',
-    '🔥✨🚀🎯🤖🧠🌈',
-    '你好世界日',
-    'アイウエオカキクケコサ',
+    'ABCDHIMNOZ',
+    'abcdefghz',
+    '✨🚀🤖🧠',
+    'アウエオカキクケコサ',
     'अआइकह',
     'عربيحروفكتاب',
 ].join('');
@@ -70,8 +68,8 @@ const PROMPTS_HERO = {
     scrambleColorPalette: [
         '#000000', // black
         '#FF7B00', // orange
-        '#25E000', // green
         '#4871F7', // blue
+        '#25E000', // green
     ],
     // In `text`, this character is replaced with `starImageSrc` once revealed. Infinite
     // rotation after the full title run. Asset: images/btn-icons/star.png
