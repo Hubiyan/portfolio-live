@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI Bro Detector | Hubiyan — lab</title>
+    <meta name="description" content="Paste any AI post, thread, or screenshot. Get an instant BS Radar reading — how much hype, absolutism, and bro-energy is in there." />
+    <meta property="og:site_name" content="Hubiyan" />
+    <meta property="og:title" content="AI Bro Detector | Hubiyan" />
+    <meta property="og:image" content="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/og-image.jpg?raw=true">
+    <meta property="og:description" content="Paste any AI post, thread, or screenshot. Get an instant BS Radar reading." />
+
+    <!-- Hotjar Tracking Code for hubiyan.com -->
+    <script>
+        (function (h, o, t, j, a, r) {
+            h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments) };
+            h._hjSettings = { hjid: 5202657, hjsv: 6 };
+            a = o.getElementsByTagName('head')[0];
+            r = o.createElement('script');
+            r.async = 1;
+            r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+    </script>
+
+    <link rel="icon" type="image/x-icon" href="../../images/logos/main-logo.png">
+    <link rel="stylesheet" href="../../bootstrap.min.css">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <script defer src="../../bootstrap.bundle.min.js"></script>
+    <script defer src="../../script.js"></script>
+    <script defer src="./ai-bro-detector.js"></script>
+</head>
+
+<body class="ds-subpage ai-bro-lab">
+    <a href="#ai-bro-main" class="visually-hidden-focusable">Skip to AI Bro Detector</a>
+
+    <nav class="my-nav d-flex w-100 justify-content-center align-items-end">
+        <div class="nav-blur-stack" id="navBlurStack" aria-hidden="true"></div>
+        <div class="nav-floater d-flex align-items-center justify-content-center gap-32-box">
+            <a href="../../"><img class="nav-logo-img" src="../../images/logos/main-logo.png" alt="Hubiyan — home"></a>
+            <div class="button-wrapper d-flex gap-04-box align-items-center res-0-520-w-100">
+                <button type="button" class="my-button btn-primary res-0-520-w-100" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">
+                    Get in touch
+                </button>
+                <a href="../../" class="btn my-button btn-seco icon-btn" aria-label="Go to portfolio home">
+                    <img class="large-btn-icon" src="../../images/btn-icons/home.png" alt="" decoding="async">
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="full-width-scroller">
+        <div class="scroller-indicator"></div>
+    </div>
+
+    <div id="confetti-trigger" style="display:none;"></div>
+    <div id="wave"></div>
+
+    <!-- Get in touch modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="d-flex w-100 justify-content-end">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <img class="close-img" src="../../images/btn-icons/cross.png" alt="">
+                </button>
+            </div>
+            <div class="modal-content d-flex flex-column gap-32-box">
+                <div class="d-flex w-100 justify-content-between align-items-center">
+                    <h2 class="section-title modal-title text-center w-100">Get in touch</h2>
+                </div>
+                <div class="card d-flex flex-column gap-32-box align-items-center res-0-520-gap-16">
+                    <div class="d-flex flex-column align-items-center gap-16-box w-100">
+                        <p class="button-cat text-center">Let's talk design!</p>
+                        <div class="button-wrapper d-flex flex-column gap-04-box align-items-center w-100">
+                            <div class="d-flex gap-08-box align-items-center">
+                                <p class="btn-help-text help-pop">Say hi 👋🏻</p>
+                                <div class="dot-div"></div>
+                                <p class="btn-help-text help-pop">20-30 mins</p>
+                                <div class="dot-div"></div>
+                                <p class="btn-help-text lighter-help help-pop">Free!</p>
+                            </div>
+                            <a href="https://cal.com/hubiyan/quick-intro" target="_blank" rel="noreferrer noopener"
+                                class="button-link w-100">
+                                <button type="button" class="my-button btn-primary w-100">
+                                    Schedule a meeting
+                                    <img class="large-btn-icon" src="../../images/btn-icons/calendar-light.png" alt="">
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="d-flex flex-column align-items-center gap-16-box w-100">
+                        <p class="button-cat">I'm most active on:</p>
+                        <div class="button-wrapper d-flex gap-04-box align-items-center w-100">
+                            <a href="https://www.linkedin.com/in/hubiyan/" target="_blank" rel="noreferrer noopener"
+                                class="button-link w-100">
+                                <button class="my-button btn-social w-100">
+                                    <img class="large-btn-icon social-btn-ico"
+                                        src="../../images/social-icons/linkedin-nude.png" alt="">
+                                </button>
+                            </a>
+                            <a href="https://www.instagram.com/hubiyxn/" target="_blank" rel="noreferrer noopener"
+                                class="button-link w-100">
+                                <button type="button" class="my-button btn-social w-100">
+                                    <img class="large-btn-icon" src="../../images/social-icons/ig-nude.png" alt="">
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main id="ai-bro-main" class="container ds-subpage-main d-flex flex-column gap-40-box">
+
+        <!-- Hero -->
+        <header class="ds-subpage-hero">
+            <h1 class="ds-subpage-hero-title">AI Bro Detector</h1>
+            <p class="ds-subpage-hero-subtitle">Paste a post, drop a link, or paste a screenshot. Get an instant BS Radar — how much hype, absolutism, and bro-energy is actually in there.</p>
+        </header>
+
+        <!-- Privacy callout -->
+        <div class="ai-bro-privacy" role="note">
+            <span class="ai-bro-privacy-icon" aria-hidden="true">🔒</span>
+            <p>Whatever you paste is sent to the analysis server and then to Google Gemini for classification. Nothing is stored after the request completes — v1.</p>
+        </div>
+
+        <!-- Input section -->
+        <section class="d-flex flex-column gap-16-box" aria-label="Paste your content">
+
+            <!-- Paste zone: real textarea so Cmd/Ctrl+V works reliably in all browsers -->
+            <div class="ai-bro-paste is-empty" id="aibroPasteWrap"
+                aria-label="Paste or type your content">
+                <p class="ai-bro-paste-hint" id="aiBroPasteHint">
+                    Click below and paste (or type). You can also paste a screenshot while this area is focused.
+                </p>
+                <label class="visually-hidden" for="aiBroTextInput">Post text or notes to analyze</label>
+                <textarea id="aiBroTextInput" class="ai-bro-textarea" spellcheck="true" rows="8"
+                    maxlength="20000"
+                    placeholder="Paste a post, thread, caption, or URL here…"
+                    autocomplete="off"></textarea>
+            </div>
+
+            <!-- Preview panel -->
+            <div class="ai-bro-preview ai-bro-preview--hidden" id="aiBroPreview" aria-label="Pasted content preview">
+
+                <!-- Text excerpt -->
+                <div class="ai-bro-preview-text" id="aiBroPreviewText" style="display:none">
+                    <p class="button-cat">Text</p>
+                    <p class="ai-bro-preview-excerpt" id="aiBroExcerpt"></p>
+                </div>
+
+                <!-- URL chips -->
+                <div class="ai-bro-url-row" id="aiBroUrlRow" style="display:none">
+                    <p class="button-cat">Links detected</p>
+                    <div class="ai-bro-url-chips" id="aiBroUrlChips"></div>
+                </div>
+
+                <!-- Image thumb -->
+                <div class="ai-bro-thumb" id="aiBroThumb" style="display:none">
+                    <p class="button-cat">Image</p>
+                    <img class="ai-bro-thumb-img" id="aiBroThumbImg" src="" alt="Pasted image preview">
+                    <p class="ai-bro-thumb-size" id="aiBroThumbSize"></p>
+                </div>
+            </div>
+
+            <!-- Toolbar -->
+            <div class="ai-bro-toolbar d-flex gap-08-box align-items-center">
+                <button type="button" class="my-button btn-primary ai-bro-analyze" id="aiBroAnalyze"
+                    disabled aria-disabled="true" aria-busy="false">
+                    Analyze
+                    <span class="ai-bro-analyze-spinner" aria-hidden="true"></span>
+                </button>
+                <button type="button" class="my-button btn-seco" id="aiBroClear" style="display:none"
+                    aria-label="Clear pasted content">
+                    Clear
+                </button>
+            </div>
+
+            <!-- Status / error -->
+            <div class="ai-bro-status" id="aiBroStatus" role="status" aria-live="polite" style="display:none"></div>
+
+        </section>
+
+        <!-- Results -->
+        <section class="ai-bro-result ai-bro-result--empty" id="aiBroResult" aria-label="BS Radar results" aria-live="polite">
+
+            <!-- Dial -->
+            <div class="ai-bro-dial-wrap card">
+                <div class="ai-bro-dial" aria-hidden="true">
+                    <svg class="ai-bro-dial-svg" viewBox="0 0 200 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Track -->
+                        <path class="ai-bro-dial-track" d="M 15 100 A 85 85 0 0 1 185 100" stroke-width="14" stroke-linecap="round"/>
+                        <!-- Fill arc (dynamic width via JS) -->
+                        <path class="ai-bro-dial-fill" id="aiBroDialFill" d="M 15 100 A 85 85 0 0 1 185 100" stroke-width="14" stroke-linecap="round" stroke-dasharray="267" stroke-dashoffset="267"/>
+                        <!-- Needle -->
+                        <line class="ai-bro-dial-needle" id="aiBroNeedle"
+                            x1="100" y1="100" x2="100" y2="24"
+                            stroke-width="2.5" stroke-linecap="round"
+                            transform="rotate(-90, 100, 100)"/>
+                        <!-- Centre dot -->
+                        <circle cx="100" cy="100" r="5" class="ai-bro-dial-dot"/>
+                    </svg>
+                    <!-- Labels -->
+                    <div class="ai-bro-dial-labels" aria-hidden="true">
+                        <span class="ai-bro-dial-label-low">Low BS</span>
+                        <span class="ai-bro-dial-label-high">High BS</span>
+                    </div>
+                </div>
+
+                <!-- Score + label -->
+                <div class="ai-bro-score d-flex flex-column align-items-center gap-08-box">
+                    <p class="ai-bro-score-number" id="aiBroScoreNumber">—</p>
+                    <p class="ai-bro-score-label" id="aiBroScoreLabel"></p>
+                </div>
+
+                <!-- Reading legend -->
+                <div class="ai-bro-legend" id="aiBroLegend">
+                    <p class="ai-bro-legend-text" id="aiBroLegendText"></p>
+                    <p class="ai-bro-legend-note">
+                        Here, <strong>positive</strong> means more hype / bro-energy — not praise.
+                        <strong>Negative</strong> means low BS / mostly grounded.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Reasons -->
+            <div class="card d-flex flex-column gap-16-box" id="aiBroReasonsWrap" style="display:none">
+                <p class="section-title">Why this score</p>
+                <ul class="ai-bro-reasons" id="aiBroReasons"></ul>
+            </div>
+
+            <!-- Signals (collapsible) -->
+            <div class="card" id="aiBroSignalsWrap" style="display:none">
+                <button type="button" class="ai-bro-signals-toggle d-flex w-100 align-items-center justify-content-between"
+                    aria-expanded="false" aria-controls="aiBroSignalsList">
+                    <p class="section-title" style="margin:0">Signals detected</p>
+                    <span class="ai-bro-signals-chevron" aria-hidden="true"></span>
+                </button>
+                <ul class="ai-bro-signals" id="aiBroSignalsList" hidden></ul>
+            </div>
+
+            <!-- Input summary -->
+            <div class="card ai-bro-input-summary" id="aiBroSummaryWrap" style="display:none">
+                <p class="button-cat">What we analysed</p>
+                <p class="section-description" id="aiBroSummaryText"></p>
+            </div>
+
+        </section>
+
+    </main>
+</body>
+
+</html>

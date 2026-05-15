@@ -1,0 +1,11 @@
+{
+  "name": "portfolio-live",
+  "private": true,
+  "description": "Static portfolio (GitHub Pages) + Vercel serverless API for lab tools",
+  "engines": {
+    "node": "20.x"
+  },
+  "scripts": {
+    "dev": "vercel dev"
+  }
+}

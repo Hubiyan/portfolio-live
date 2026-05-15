@@ -90,3 +90,11 @@ Class names and roles as implemented in [`style.css`](../style.css). Compose wit
 Markup uses Bootstrap `.modal`, `.carousel`, `.carousel-item`, controls. Custom progress: `.carou-progress`. IDs such as `#carouselExampleIndicators` are tied to **both** HTML and [`script.js`](../script.js).
 
 When adding new modals/carousels, either **reuse the established ID pattern and JS hooks** or update JS explicitly.
+
+## Lab tool UI ([`design-system.md`](../design-system.md) registry)
+
+Interactive labs (e.g. AI Bro Detector) register **scoped** classes under [`design-system.md`](../design-system.md) **Lab / interactive tool components**. Implement them in [`style.css`](../style.css) under `body.ai-bro-lab` (or the documented page scope); do not add lab-only visual rules globally.
+
+## Prompts / subpage editorial (`.ds-*` twins)
+
+Prompt-specific classes (`.prompts-*`, `.prompt-*`) are paired in [`style.css`](../style.css) with design-system twins (`.ds-subpage-*`, `.ds-editorial-card`, `.ds-clipboard-action`, etc.). See the class map in [`design-system.md`](../design-system.md). New lab subpages that do not use [`prompts.js`](../prompts.js) should prefer **`.ds-*`** in markup plus shared portfolio utilities (`.card`, `.my-button`, …).

@@ -3236,19 +3236,26 @@ p {
 
 .gap-200-box {
     gap: var(--spacing-200);
-}/* ----- Prompts page (/prompts/) ----- */
-body.prompts-page {
+}
+
+/* ----- Prompts + design-system twins (.ds-*) — /prompts/ and sibling subpages -----
+   Legacy .prompts-* / .prompt-* selectors stay for prompts.js. .ds-* share identical rules. */
+
+body.prompts-page,
+body.ds-subpage {
     padding-bottom: var(--spacing-100);
 }
 
-/* heading colour override — blue on home, dark on prompts */
-.prompts-page .main-title {
+/* heading colour override — blue on home, dark on prompts / subpages */
+.prompts-page .main-title,
+body.ds-subpage .main-title {
     color: var(--grey-500);
 }
 
 
-/* ---- Prompts page intro (replaces sky banner) ---- */
-.prompts-hero {
+/* ---- Subpage intro hero (Prompts + reusable) ---- */
+.prompts-hero,
+.ds-subpage-hero {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -3259,8 +3266,9 @@ body.prompts-page {
     box-sizing: border-box;
     padding: 0;
 }
-/* Prompts title — extra gap before the last word: set --prompts-title-word-gap on .prompts-hero-title */
-.prompts-hero-title {
+/* Title — extra gap before the last word: --prompts-title-word-gap on title class */
+.prompts-hero-title,
+.ds-subpage-hero-title {
     --prompts-title-word-gap: 0.25em;
     color: var(--grey-900);
     font-size: var(--spacing-44);
@@ -3271,7 +3279,8 @@ body.prompts-page {
     text-align: left;
 }
 /* Last word in the title: keeps “p r ★ m p t s” from breaking the star to its own line */
-.prompts-hero-nowrap {
+.prompts-hero-nowrap,
+.ds-subpage-hero-nowrap {
     display: inline-flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -3284,8 +3293,9 @@ body.prompts-page {
     /* Extra space after “Supercharged ” (the normal space char is still in the DOM) */
     margin-left: var(--prompts-title-word-gap);
 }
-/* Star image in “Supercharged pr*mpts” — replaces the * after reveal; .is-rotating added after the scramble completes */
-.prompts-hero-title-star-slot {
+/* Star image — replaces the * after reveal; .is-rotating after scramble completes */
+.prompts-hero-title-star-slot,
+.ds-subpage-hero-title-star-slot {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -3294,7 +3304,8 @@ body.prompts-page {
     align-self: center;
     margin: 0 0.02em;
 }
-.prompts-hero-title-star {
+.prompts-hero-title-star,
+.ds-subpage-hero-title-star {
     display: block;
     width: 0.6em;
     height: 0.6em;
@@ -3311,22 +3322,26 @@ body.prompts-page {
         transform: rotate(360deg);
     }
 }
-.prompts-hero-title-star.is-rotating {
+.prompts-hero-title-star.is-rotating,
+.ds-subpage-hero-title-star.is-rotating {
     animation: prompts-hero-star-spin 5s linear infinite;
 }
 @media (prefers-reduced-motion: reduce) {
-    .prompts-hero-title-star.is-rotating {
+    .prompts-hero-title-star.is-rotating,
+    .ds-subpage-hero-title-star.is-rotating {
         animation: none;
     }
 }
 /* Scramble title: 1 line = one nowrap row; 2+ lines = stacked rows (set by prompts.js) */
-.prompts-hero-scramble {
+.prompts-hero-scramble,
+.ds-subpage-hero-scramble {
     display: block;
     width: 100%;
     min-width: 0;
     box-sizing: border-box;
 }
-.prompts-hero-scramble--measuring {
+.prompts-hero-scramble--measuring,
+.ds-subpage-hero-scramble--measuring {
     /* Flat inline spans, natural wrap — used only before line grouping */
     display: block;
     white-space: normal;
@@ -3335,11 +3350,14 @@ body.prompts-page {
 }
 /* Per-char flex items — both direct children and chars inside the nowrap group */
 .prompts-hero-scramble-line > span:not(.prompts-hero-nowrap),
-.prompts-hero-nowrap > span:not(.prompts-hero-title-star-slot) {
+.prompts-hero-nowrap > span:not(.prompts-hero-title-star-slot),
+.ds-subpage-hero-scramble-line > span:not(.ds-subpage-hero-nowrap),
+.ds-subpage-hero-nowrap > span:not(.ds-subpage-hero-title-star-slot) {
     flex: 0 0 auto;
     white-space: pre;
 }
-.prompts-hero-scramble.is-single-line {
+.prompts-hero-scramble.is-single-line,
+.ds-subpage-hero-scramble.is-single-line {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -3349,14 +3367,16 @@ body.prompts-page {
     white-space: nowrap;
     overflow: visible;
 }
-.prompts-hero-scramble.is-single-line .prompts-hero-scramble-line {
+.prompts-hero-scramble.is-single-line .prompts-hero-scramble-line,
+.ds-subpage-hero-scramble.is-single-line .ds-subpage-hero-scramble-line {
     display: inline-flex;
     flex-wrap: nowrap;
     white-space: nowrap;
     min-width: 0;
     max-width: 100%;
 }
-.prompts-hero-scramble.is-multiline {
+.prompts-hero-scramble.is-multiline,
+.ds-subpage-hero-scramble.is-multiline {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -3366,17 +3386,21 @@ body.prompts-page {
     white-space: normal;
     overflow: visible;
 }
-.prompts-hero-scramble.is-multiline .prompts-hero-scramble-line {
+.prompts-hero-scramble.is-multiline .prompts-hero-scramble-line,
+.ds-subpage-hero-scramble.is-multiline .ds-subpage-hero-scramble-line {
     display: inline-flex;
     flex-wrap: nowrap;
     min-width: 0;
     max-width: 100%;
 }
 /* Two-line title: breathing room (line-height: 100% is too tight for two rows) */
-.prompts-hero-title:has(.prompts-hero-scramble.is-multiline) {
+.prompts-hero-title:has(.prompts-hero-scramble.is-multiline),
+.ds-subpage-hero-title:has(.prompts-hero-scramble.is-multiline),
+.ds-subpage-hero-title:has(.ds-subpage-hero-scramble.is-multiline) {
     line-height: 1.12;
 }
-.prompts-hero-subtitle {
+.prompts-hero-subtitle,
+.ds-subpage-hero-subtitle {
     color: var(--grey-500);
     font-size: var(--spacing-20);
     font-weight: 500;
@@ -3393,7 +3417,8 @@ body.prompts-page {
         transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
     will-change: opacity, filter, transform;
 }
-.prompts-hero-subtitle.is-visible {
+.prompts-hero-subtitle.is-visible,
+.ds-subpage-hero-subtitle.is-visible {
     opacity: 1;
     filter: blur(0px);
     transform: translateY(0);
@@ -3402,7 +3427,8 @@ body.prompts-page {
 /* Main content column —
    Override .container's fixed min-width: 52rem so the page is fluid below desktop.
    width: 100% fills available space; max-width: 52rem caps it on wide screens. */
-.prompts-content {
+.prompts-content,
+.ds-subpage-main {
     padding-top: var(--spacing-64);
     padding-bottom: var(--spacing-64);
     min-width: 0 !important;
@@ -3411,8 +3437,9 @@ body.prompts-page {
     box-sizing: border-box;
 }
 
-/* 2-column prompt grid */
-.prompts-grid {
+/* 2-column prompt / editorial grid */
+.prompts-grid,
+.ds-card-grid-2 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: var(--spacing-16);
@@ -3427,14 +3454,16 @@ body.prompts-page {
         transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
     will-change: opacity, filter, transform;
 }
-.prompts-grid.is-visible {
+.prompts-grid.is-visible,
+.ds-card-grid-2.is-visible {
     opacity: 1;
     filter: blur(0px);
     transform: translateY(0);
 }
 
-/* Prompt card */
-.prompt-block {
+/* Prompt / editorial card */
+.prompt-block,
+.ds-editorial-card {
     display: flex;
     flex-direction: column;
     gap: 0;
@@ -3442,16 +3471,19 @@ body.prompts-page {
     overflow: visible !important;
     transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
-.prompt-block:hover {
+.prompt-block:hover,
+.ds-editorial-card:hover {
     transform: translateY(-3px);
     box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.07), 0px 4px 12px rgba(0, 0, 0, 0.04);
 }
-.prompt-block:focus-visible {
+.prompt-block:focus-visible,
+.ds-editorial-card:focus-visible {
     outline: 2px solid var(--blue-300);
     outline-offset: 3px;
 }
 
-.prompt-block-header {
+.prompt-block-header,
+.ds-editorial-card-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -3462,7 +3494,8 @@ body.prompts-page {
 }
 
 /* ASCII animation box — square, same height as the card title */
-.prompt-ascii-box {
+.prompt-ascii-box,
+.ds-ascii-badge {
     flex: 0 0 auto;
     display: flex;
     align-items: center;
@@ -3475,7 +3508,8 @@ body.prompts-page {
     min-width: 1.5rem;
     min-height: 1.5rem;
 }
-.prompt-ascii-pre {
+.prompt-ascii-pre,
+.ds-ascii-badge-pre {
     margin: 0;
     padding: 0;
     font-family: 'Courier New', Courier, monospace;
@@ -3489,7 +3523,8 @@ body.prompts-page {
     letter-spacing: 0.02em;
 }
 
-.prompt-card-title {
+.prompt-card-title,
+.ds-editorial-card-title {
     font-size: var(--spacing-18);
     font-weight: 500;
     color: var(--grey-500);
@@ -3499,7 +3534,8 @@ body.prompts-page {
 }
 
 /* Body text — clamped at 5 lines */
-.prompt-body {
+.prompt-body,
+.ds-editorial-card-body {
     margin: 0;
     font-size: var(--spacing-16);
     font-weight: 400;
@@ -3512,8 +3548,9 @@ body.prompts-page {
     overflow: hidden;
 }
 
-/* ---- Copy button ---- */
-.prompt-copy-btn {
+/* ---- Circular copy / action button ---- */
+.prompt-copy-btn,
+.ds-clipboard-action {
     width: 2.75rem;
     height: 2.75rem;
     border-radius: 50%;
@@ -3528,7 +3565,8 @@ body.prompts-page {
     /* only transition background — transform handled by animation */
     transition: background-color 0.35s ease;
 }
-.prompt-copy-btn:hover:not(.is-copied) {
+.prompt-copy-btn:hover:not(.is-copied),
+.ds-clipboard-action:hover:not(.is-copied) {
     background: var(--grey-900);
 }
 
@@ -3548,14 +3586,17 @@ body.prompts-page {
 }
 
 /* Copied state */
-.prompt-copy-btn.is-copied {
+.prompt-copy-btn.is-copied,
+.ds-clipboard-action.is-copied {
     background: #19a14b;
 }
-.prompt-copy-btn.is-copied .btn-icon-copy {
+.prompt-copy-btn.is-copied .btn-icon-copy,
+.ds-clipboard-action.is-copied .btn-icon-copy {
     opacity: 0;
     transform: scale(0.3) rotate(20deg);
 }
-.prompt-copy-btn.is-copied .btn-icon-check {
+.prompt-copy-btn.is-copied .btn-icon-check,
+.ds-clipboard-action.is-copied .btn-icon-check {
     opacity: 1;
     transform: scale(1) rotate(0deg);
 }
@@ -3568,23 +3609,27 @@ body.prompts-page {
     84%  { transform: scale(0.96); }
     100% { transform: scale(1); }
 }
-.prompt-copy-btn.is-bouncing {
+.prompt-copy-btn.is-bouncing,
+.ds-clipboard-action.is-bouncing {
     animation: prompt-btn-bounce 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 /* ---- Coming soon state ---- */
 /* Card stays clickable (so we can still surface the "Dropping soon" toast)
    but the prompt body is blurred and the copy button is visually disabled. */
-.prompt-block.is-coming-soon {
+.prompt-block.is-coming-soon,
+.ds-editorial-card.is-coming-soon {
     cursor: pointer;
     background: transparent;
     border: 0.5px solid var(--grey-100);
 }
-.prompt-block.is-coming-soon:hover {
+.prompt-block.is-coming-soon:hover,
+.ds-editorial-card.is-coming-soon:hover {
     transform: none;
     box-shadow: none;
 }
-.prompt-block.is-coming-soon .prompt-body {
+.prompt-block.is-coming-soon .prompt-body,
+.ds-editorial-card.is-coming-soon .ds-editorial-card-body {
     filter: blur(5px);
     user-select: none;
     pointer-events: none;
@@ -3592,7 +3637,9 @@ body.prompts-page {
     opacity: 0.85;
 }
 .prompt-copy-btn:disabled,
-.prompt-copy-btn[aria-disabled="true"] {
+.prompt-copy-btn[aria-disabled="true"],
+.ds-clipboard-action:disabled,
+.ds-clipboard-action[aria-disabled="true"] {
     background: var(--grey-50);
     cursor: not-allowed;
     pointer-events: none;
@@ -3600,16 +3647,23 @@ body.prompts-page {
 .prompt-copy-btn:disabled .btn-icon-copy svg path,
 .prompt-copy-btn:disabled .btn-icon-copy svg rect,
 .prompt-copy-btn[aria-disabled="true"] .btn-icon-copy svg path,
-.prompt-copy-btn[aria-disabled="true"] .btn-icon-copy svg rect {
+.prompt-copy-btn[aria-disabled="true"] .btn-icon-copy svg rect,
+.ds-clipboard-action:disabled .btn-icon-copy svg path,
+.ds-clipboard-action:disabled .btn-icon-copy svg rect,
+.ds-clipboard-action[aria-disabled="true"] .btn-icon-copy svg path,
+.ds-clipboard-action[aria-disabled="true"] .btn-icon-copy svg rect {
     stroke: var(--grey-300);
 }
 .prompt-copy-btn:disabled .btn-icon-check svg path,
-.prompt-copy-btn[aria-disabled="true"] .btn-icon-check svg path {
+.prompt-copy-btn[aria-disabled="true"] .btn-icon-check svg path,
+.ds-clipboard-action:disabled .btn-icon-check svg path,
+.ds-clipboard-action[aria-disabled="true"] .btn-icon-check svg path {
     fill: var(--grey-300);
 }
 
 /* Accessible live status toast — hidden until .is-visible is added by JS */
-.prompts-copy-status {
+.prompts-copy-status,
+.ds-live-toast {
     position: fixed;
     left: 50%;
     z-index: 1001;
@@ -3632,14 +3686,16 @@ body.prompts-page {
     transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
     text-align: left;
 }
-.prompts-copy-status.is-visible {
+.prompts-copy-status.is-visible,
+.ds-live-toast.is-visible {
     opacity: 1;
     visibility: visible;
     transform: translateX(-50%) translateY(0);
     transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s;
 }
 /* Dark grey variant for "Dropping soon" / coming-soon feedback */
-.prompts-copy-status.is-soon {
+.prompts-copy-status.is-soon,
+.ds-live-toast.is-soon {
     background: var(--grey-700);
     color: var(--bg-white);
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
@@ -3650,59 +3706,71 @@ body.prompts-page {
 /* All phones ≤ 520px — primary mobile block */
 @media screen and (min-width: 0px) and (max-width: 520px) {
     /* Restore horizontal breathing room — global .container loses padding: 0 at this width */
-    .prompts-page .prompts-content {
+    .prompts-page .prompts-content,
+    body.ds-subpage .ds-subpage-main {
         padding-left: var(--spacing-20);
         padding-right: var(--spacing-20);
     }
 
-    .prompts-hero {
+    .prompts-hero,
+    .ds-subpage-hero {
         gap: var(--spacing-16);
     }
-    .prompts-hero-title {
+    .prompts-hero-title,
+    .ds-subpage-hero-title {
         font-size: var(--spacing-32);
         line-height: 105%;
     }
-    .prompts-hero-subtitle {
+    .prompts-hero-subtitle,
+    .ds-subpage-hero-subtitle {
         font-size: var(--spacing-16);
         line-height: 140%;
     }
 
     /* Single-column grid on mobile */
-    .prompts-grid {
+    .prompts-grid,
+    .ds-card-grid-2 {
         grid-template-columns: 1fr;
         gap: var(--spacing-12);
     }
 
     /* Scale card title down like .section-title (26 → 22) */
-    .prompt-card-title {
+    .prompt-card-title,
+    .ds-editorial-card-title {
         font-size: var(--spacing-16);
     }
 
     /* Scale body text down like .section-description (18 → 14) */
-    .prompt-body {
+    .prompt-body,
+    .ds-editorial-card-body {
         font-size: var(--spacing-14);
         -webkit-line-clamp: 4;
         line-clamp: 4;
     }
 
     /* Tighten separator gap */
-    .prompt-block-header {
+    .prompt-block-header,
+    .ds-editorial-card-header {
         padding-bottom: var(--spacing-12);
         margin-bottom: var(--spacing-12);
     }
 
     /* Slightly smaller copy button */
-    .prompt-copy-btn {
+    .prompt-copy-btn,
+    .ds-clipboard-action {
         width: 2.25rem;
         height: 2.25rem;
     }
 
     /* Toast clears bottom nav + scales down on phones */
     .prompts-copy-status,
-    .prompts-copy-status.is-visible {
+    .prompts-copy-status.is-visible,
+    .ds-live-toast,
+    .ds-live-toast.is-visible {
         bottom: calc(5.5rem + env(safe-area-inset-bottom, 0));
     }
-    .prompts-copy-status {
+    .prompts-copy-status,
+    .ds-live-toast {
         font-size: var(--spacing-14);
         max-width: calc(100vw - 2.5rem);
     }
@@ -3710,11 +3778,13 @@ body.prompts-page {
 
 /* Slightly larger phones 350–520px — bump sizes back up like homepage pattern */
 @media screen and (min-width: 350px) and (max-width: 520px) {
-    .prompt-card-title {
+    .prompt-card-title,
+    .ds-editorial-card-title {
         font-size: var(--spacing-18);
     }
 
-    .prompt-body {
+    .prompt-body,
+    .ds-editorial-card-body {
         font-size: var(--spacing-14);
         -webkit-line-clamp: 5;
         line-clamp: 5;
@@ -3724,8 +3794,412 @@ body.prompts-page {
 /* Tablet 520–840px — container already gets padding-left/right: 40px from global rule */
 @media screen and (min-width: 520px) and (max-width: 840px) {
     /* Two columns with tighter gap at tablet width */
-    .prompts-grid {
+    .prompts-grid,
+    .ds-card-grid-2 {
         grid-template-columns: repeat(2, 1fr);
         gap: var(--spacing-12);
+    }
+}
+
+/* =====================================================
+   AI Bro Detector lab — /lab/ai-bro-detector/
+   All rules scoped under body.ai-bro-lab to prevent
+   any effect on portfolio home or /prompts/.
+   Uses only existing tokens (--spacing-*, --grey-*, --blue-*, --bg-*).
+   ===================================================== */
+
+/* Hero subtitle: show immediately (no blur-in JS on this page) */
+body.ai-bro-lab .ds-subpage-hero-subtitle {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    transition: none;
+}
+
+/* ----- Privacy callout ----- */
+body.ai-bro-lab .ai-bro-privacy {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-10);
+    padding: var(--spacing-12) var(--spacing-16);
+    border: 0.5px solid var(--grey-100);
+    border-radius: var(--spacing-14);
+    background: transparent;
+}
+body.ai-bro-lab .ai-bro-privacy p {
+    margin: 0;
+    font-size: var(--spacing-14);
+    font-weight: 400;
+    color: var(--grey-300);
+    line-height: 155%;
+}
+body.ai-bro-lab .ai-bro-privacy-icon {
+    flex-shrink: 0;
+    font-size: var(--spacing-16);
+    line-height: 1.4;
+}
+body.ai-bro-lab .ai-bro-privacy--compact {
+    padding: var(--spacing-08) var(--spacing-12);
+}
+
+/* ----- Paste zone (wrap + textarea) ----- */
+body.ai-bro-lab .ai-bro-paste {
+    min-height: 10rem;
+    border: 1.5px dashed var(--grey-100);
+    border-radius: var(--spacing-22);
+    padding: var(--spacing-20) var(--spacing-24);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-12);
+    cursor: text;
+    background: var(--bg-white);
+    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+    box-sizing: border-box;
+}
+body.ai-bro-lab .ai-bro-paste:focus-within {
+    border-color: var(--blue-300);
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.15);
+}
+body.ai-bro-lab .ai-bro-paste.is-empty .ai-bro-paste-hint {
+    text-align: left;
+}
+body.ai-bro-lab .ai-bro-paste.is-filled {
+    border-style: solid;
+    border-color: var(--grey-100);
+}
+body.ai-bro-lab .ai-bro-paste-hint {
+    margin: 0;
+    font-size: var(--spacing-14);
+    font-weight: 400;
+    color: var(--grey-300);
+    line-height: 150%;
+    pointer-events: none;
+    user-select: none;
+}
+body.ai-bro-lab .ai-bro-textarea {
+    display: block;
+    width: 100%;
+    min-height: 8rem;
+    margin: 0;
+    padding: var(--spacing-12);
+    border: 0.5px solid var(--grey-100);
+    border-radius: var(--spacing-12);
+    background: var(--bg-grey);
+    color: var(--grey-700);
+    font-family: inherit;
+    font-size: var(--spacing-16);
+    font-weight: 400;
+    line-height: 160%;
+    resize: vertical;
+    box-sizing: border-box;
+}
+body.ai-bro-lab .ai-bro-textarea::placeholder {
+    color: var(--grey-300);
+}
+body.ai-bro-lab .ai-bro-textarea:focus {
+    outline: none;
+    border-color: var(--blue-300);
+    background: var(--bg-white);
+}
+
+/* ----- Preview panel ----- */
+body.ai-bro-lab .ai-bro-preview {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-12);
+    padding: var(--spacing-16);
+    border: 0.5px solid var(--grey-100);
+    border-radius: var(--spacing-16);
+    background: var(--bg-white);
+}
+body.ai-bro-lab .ai-bro-preview--hidden {
+    display: none;
+}
+body.ai-bro-lab .ai-bro-preview-excerpt {
+    margin: var(--spacing-04) 0 0;
+    font-size: var(--spacing-14);
+    color: var(--grey-500);
+    line-height: 160%;
+    word-break: break-word;
+}
+
+/* ----- URL chips row ----- */
+body.ai-bro-lab .ai-bro-url-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-06);
+    margin-top: var(--spacing-06);
+}
+body.ai-bro-lab .ai-bro-url-chip {
+    max-width: 16rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+body.ai-bro-lab .ai-bro-url-chip--invalid {
+    opacity: 0.5;
+    text-decoration: line-through;
+}
+
+/* ----- Image thumb ----- */
+body.ai-bro-lab .ai-bro-thumb-img {
+    display: block;
+    max-height: 10rem;
+    max-width: 100%;
+    border-radius: var(--spacing-08);
+    object-fit: contain;
+    margin-top: var(--spacing-06);
+    border: 0.5px solid var(--grey-100);
+}
+body.ai-bro-lab .ai-bro-thumb-size {
+    margin: var(--spacing-04) 0 0;
+    font-size: var(--spacing-12);
+    color: var(--grey-300);
+}
+body.ai-bro-lab .ai-bro-thumb .is-too-large .ai-bro-thumb-size {
+    color: #e44;
+}
+
+/* ----- Toolbar ----- */
+body.ai-bro-lab .ai-bro-toolbar {
+    flex-wrap: wrap;
+}
+
+/* Loading spinner on Analyze button */
+body.ai-bro-lab .ai-bro-analyze-spinner {
+    display: none;
+    width: var(--spacing-16);
+    height: var(--spacing-16);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+body.ai-bro-lab .ai-bro-analyze.is-loading .ai-bro-analyze-spinner {
+    display: inline-block;
+}
+@media (prefers-reduced-motion: no-preference) {
+    body.ai-bro-lab .ai-bro-analyze-spinner {
+        animation: ai-bro-spin 0.7s linear infinite;
+    }
+}
+@keyframes ai-bro-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ----- Status message ----- */
+body.ai-bro-lab .ai-bro-status {
+    padding: var(--spacing-10) var(--spacing-16);
+    border-radius: var(--spacing-10);
+    font-size: var(--spacing-14);
+    line-height: 150%;
+}
+body.ai-bro-lab .ai-bro-status--error {
+    background: rgba(220, 38, 38, 0.08);
+    color: #b91c1c;
+    border: 0.5px solid rgba(220, 38, 38, 0.2);
+}
+body.ai-bro-lab .ai-bro-status--success {
+    background: rgba(22, 163, 74, 0.08);
+    color: #15803d;
+    border: 0.5px solid rgba(22, 163, 74, 0.2);
+}
+
+/* ----- Result section ----- */
+body.ai-bro-lab .ai-bro-result {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-16);
+}
+body.ai-bro-lab .ai-bro-result--empty {
+    display: none;
+}
+
+/* ----- BS Dial ----- */
+body.ai-bro-lab .ai-bro-dial-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-16);
+}
+body.ai-bro-lab .ai-bro-dial {
+    position: relative;
+    width: 100%;
+    max-width: 18rem;
+}
+body.ai-bro-lab .ai-bro-dial-svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+}
+body.ai-bro-lab .ai-bro-dial-track {
+    stroke: var(--grey-100);
+}
+body.ai-bro-lab .ai-bro-dial-fill {
+    stroke: var(--blue-300);
+}
+body.ai-bro-lab .ai-bro-dial-needle {
+    stroke: var(--grey-900);
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    transform: rotate(-90deg);
+}
+body.ai-bro-lab .ai-bro-dial-dot {
+    fill: var(--grey-900);
+}
+body.ai-bro-lab .ai-bro-dial-labels {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 var(--spacing-04);
+    margin-top: var(--spacing-04);
+}
+body.ai-bro-lab .ai-bro-dial-label-low,
+body.ai-bro-lab .ai-bro-dial-label-high {
+    font-size: var(--spacing-12);
+    font-weight: 500;
+    color: var(--grey-300);
+}
+
+/* ----- Score + label ----- */
+body.ai-bro-lab .ai-bro-score-number {
+    font-size: var(--spacing-44);
+    font-weight: 700;
+    color: var(--grey-900);
+    line-height: 1;
+    margin: 0;
+}
+body.ai-bro-lab .ai-bro-score-label {
+    font-size: var(--spacing-18);
+    font-weight: 500;
+    color: var(--grey-500);
+    margin: 0;
+    text-align: center;
+}
+
+/* ----- Reading legend ----- */
+body.ai-bro-lab .ai-bro-legend {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-06);
+    max-width: 28rem;
+}
+body.ai-bro-lab .ai-bro-legend-text {
+    margin: 0;
+    font-size: var(--spacing-16);
+    font-weight: 500;
+    color: var(--grey-700);
+}
+body.ai-bro-lab .ai-bro-legend--positive .ai-bro-legend-text {
+    color: var(--grey-900);
+}
+body.ai-bro-lab .ai-bro-legend--negative .ai-bro-legend-text {
+    color: var(--grey-500);
+}
+body.ai-bro-lab .ai-bro-legend-note {
+    margin: 0;
+    font-size: var(--spacing-13);
+    color: var(--grey-300);
+    line-height: 150%;
+}
+
+/* ----- Reasons list ----- */
+body.ai-bro-lab .ai-bro-reasons {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-10);
+}
+body.ai-bro-lab .ai-bro-reasons-item {
+    font-size: var(--spacing-16);
+    color: var(--grey-500);
+    line-height: 155%;
+    padding-left: var(--spacing-20);
+    position: relative;
+}
+body.ai-bro-lab .ai-bro-reasons-item::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: var(--grey-300);
+}
+
+/* ----- Signals (collapsible) ----- */
+body.ai-bro-lab .ai-bro-signals-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    text-align: left;
+    width: 100%;
+}
+body.ai-bro-lab .ai-bro-signals-toggle:focus-visible {
+    outline: 2px solid var(--blue-300);
+    outline-offset: 3px;
+    border-radius: var(--spacing-04);
+}
+body.ai-bro-lab .ai-bro-signals-chevron {
+    display: inline-block;
+    width: var(--spacing-16);
+    height: var(--spacing-16);
+    border-right: 2px solid var(--grey-300);
+    border-bottom: 2px solid var(--grey-300);
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+    margin-right: var(--spacing-02);
+}
+body.ai-bro-lab .ai-bro-signals-wrap.is-open .ai-bro-signals-chevron {
+    transform: rotate(-135deg);
+}
+body.ai-bro-lab .ai-bro-signals {
+    margin: var(--spacing-12) 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-10);
+}
+body.ai-bro-lab .ai-bro-signal {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-04);
+}
+body.ai-bro-lab .ai-bro-signal-kind {
+    align-self: flex-start;
+    font-size: var(--spacing-12);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+body.ai-bro-lab .ai-bro-signal-snippet {
+    font-size: var(--spacing-14);
+    color: var(--grey-300);
+    line-height: 155%;
+    font-style: italic;
+}
+
+/* ----- Input summary ----- */
+body.ai-bro-lab .ai-bro-input-summary .section-description {
+    margin-top: var(--spacing-04);
+}
+
+/* ----- Responsive — phones ≤ 520px ----- */
+@media screen and (min-width: 0px) and (max-width: 520px) {
+    body.ai-bro-lab .ds-subpage-main {
+        padding-left: var(--spacing-20);
+        padding-right: var(--spacing-20);
+    }
+    body.ai-bro-lab .ai-bro-paste {
+        padding: var(--spacing-20);
+        min-height: 7rem;
+    }
+    body.ai-bro-lab .ai-bro-score-number {
+        font-size: var(--spacing-32);
+    }
+    body.ai-bro-lab .ai-bro-score-label {
+        font-size: var(--spacing-16);
     }
 }
