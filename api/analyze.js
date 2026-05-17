@@ -2,94 +2,35 @@
  * POST /api/analyze
  *
  * Vercel Serverless Function (Node.js runtime).
- * Uses Google Gemini (generateContent API + AI Studio key).
+ * Uses Groq Chat Completions (OpenAI-compatible) + Llama 4 Scout (text JSON).
  *
  * Environment variables required (set in Vercel dashboard):
- *   GEMINI_API_KEY      — Google AI Studio API key
- *   MODEL_ID            — optional override, default "gemini-2.5-flash"
+ *   GROQ_API_KEY        — Groq API key (https://console.groq.com/keys)
+ *   MODEL_ID            — optional override, default meta-llama/llama-4-scout-17b-16e-instruct
  *   ALLOWED_ORIGIN      — optional extra origins (space-separated exact URLs)
+ *   KV_REST_API_URL     — Vercel KV (rate limit); optional locally (in-memory fallback)
+ *   KV_REST_API_TOKEN   — Vercel KV token
+ *   RATE_LIMIT_SALT     — secret for hashing client IPs in KV
  *
  * Request body (JSON):
- *   { text?, urls?: string[], image_base64?: string, image_mime?: string }
+ *   { text, urls?: string[], content_from_image?: boolean, typed_text_length?: number }
  *
  * Response body (JSON):
- *   { bs_score, bs_reading, bs_label, reasons, signals, input_summary }
+ *   { bs_score, meter_tier, bro_signals, positive_signals, signals, reasons,
+ *     post_summary, market_context_note, narrative_verdict, narrative_flags,
+ *     show_positive_on_bro, score_reconciled, rate_limit? }
  */
 
-const GEMINI_API_ROOT = 'https://generativelanguage.googleapis.com/v1beta/';
-const DEFAULT_MODEL   = 'gemini-2.5-flash';
+const { sendJson, corsHeaders } = require('./cors');
+const { getClientIp, checkAndRecord, rateLimitPayload } = require('./rate-limit');
+const { buildSystemPrompt, normalizeAnalysis } = require('./bro-taxonomy');
+
+const GROQ_API_URL  = 'https://api.groq.com/openai/v1/chat/completions';
+const DEFAULT_MODEL = 'meta-llama/llama-4-scout-17b-16e-instruct';
 
 const MAX_TEXT_CHARS  = 20000;
-const MAX_IMAGE_BYTES = 4 * 1024 * 1024;      // 4 MB
 const MAX_FETCH_BYTES = 512 * 1024;            // 512 KB per URL
 const FETCH_TIMEOUT   = 9000;                  // 9 s
-
-/* ---- CORS ---- */
-function hostMatchesPortfolio(hostname) {
-    if (!hostname) return false;
-    return (
-        hostname === 'portfolio-live-rose.vercel.app' ||
-        /^portfolio-live(-[a-z0-9]+)?\.vercel\.app$/i.test(hostname)
-    );
-}
-
-function hostMatchesHubiyan(hostname) {
-    if (!hostname) return false;
-    return hostname === 'hubiyan.com' || hostname === 'www.hubiyan.com' || hostname.endsWith('.hubiyan.com');
-}
-
-function isOriginAllowed(origin, explicitList) {
-    if (!origin) return false;
-    if (explicitList.includes(origin)) return true;
-    try {
-        const u = new URL(origin);
-        if (u.protocol === 'http:' && (u.hostname === 'localhost' || u.hostname === '127.0.0.1')) return true;
-        if (u.protocol === 'https:' && hostMatchesHubiyan(u.hostname)) return true;
-        if (u.protocol === 'https:' && hostMatchesPortfolio(u.hostname)) return true;
-        return false;
-    } catch {
-        return false;
-    }
-}
-
-function corsHeaders(req) {
-    const explicit = (process.env.ALLOWED_ORIGIN || '')
-        .split(/\s+/)
-        .map(s => s.trim())
-        .filter(Boolean);
-
-    const origin = (req.headers && req.headers.origin) || '';
-
-    const base = {
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Cache-Control':                'no-store',
-    };
-
-    if (origin && isOriginAllowed(origin, explicit)) {
-        return {
-            ...base,
-            'Access-Control-Allow-Origin': origin,
-            'Vary':                        'Origin',
-        };
-    }
-
-    if (!origin) {
-        return { ...base, 'Access-Control-Allow-Origin': '*' };
-    }
-
-    return base;
-}
-
-function sendJson(req, res, status, obj) {
-    const h = corsHeaders(req);
-    for (const [k, v] of Object.entries(h)) {
-        res.setHeader(k, v);
-    }
-    res.setHeader('Content-Type', 'application/json; charset=utf-8');
-    res.statusCode = status;
-    res.end(JSON.stringify(obj));
-}
 
 function parseReqBody(req) {
     let raw = req.body;
@@ -106,8 +47,26 @@ function parseReqBody(req) {
     return null;
 }
 
+/* ---- SSRF guard: block private / reserved hostnames ---- */
+function isPrivateUrl(rawUrl) {
+    try {
+        const { hostname } = new URL(rawUrl);
+        // Block IP literals — loopback, private ranges, link-local (cloud metadata), unspecified
+        if (/^(127\.|10\.|192\.168\.|169\.254\.|0\.|::1$|fc00:|fd[0-9a-f]{2}:)/i.test(hostname)) return true;
+        // 172.16.0.0/12
+        const m = /^172\.(\d{1,3})\./.exec(hostname);
+        if (m && Number(m[1]) >= 16 && Number(m[1]) <= 31) return true;
+        // Block internal hostnames
+        if (hostname === 'localhost' || hostname.endsWith('.local') || hostname.endsWith('.internal')) return true;
+        return false;
+    } catch {
+        return true; // unparseable → block
+    }
+}
+
 /* ---- URL snippet fetcher ---- */
 async function fetchSnippet(url) {
+    if (isPrivateUrl(url)) return null;
     try {
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
@@ -126,7 +85,6 @@ async function fetchSnippet(url) {
         const contentType = res.headers.get('content-type') || '';
         if (!contentType.includes('text/html') && !contentType.includes('text/plain')) return null;
 
-        // Read up to MAX_FETCH_BYTES
         const reader = res.body.getReader();
         let bytes = 0;
         const chunks = [];
@@ -147,7 +105,6 @@ async function fetchSnippet(url) {
             }, new Uint8Array(0))
         );
 
-        // Extract OG title / description
         const ogTitle  = (text.match(/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)/i) || [])[1];
         const ogDesc   = (text.match(/<meta[^>]+property=["']og:description["'][^>]+content=["']([^"']+)/i) || [])[1];
         const title    = (text.match(/<title[^>]*>([^<]+)<\/title>/i) || [])[1];
@@ -159,33 +116,16 @@ async function fetchSnippet(url) {
     }
 }
 
-/* ---- Gemini (native generateContent — reliable with AI Studio keys) ---- */
-function modelResourceName(modelId) {
-    const m = (modelId || DEFAULT_MODEL).trim();
-    if (m.startsWith('models/')) return m;
-    return `models/${m}`;
-}
-
-function userPartsToGeminiParts(userParts) {
-    const parts = [];
-    if (!Array.isArray(userParts)) return parts;
+/* ---- Groq (OpenAI-compatible chat completions) ---- */
+function userPartsToOpenAIContent(userParts) {
+    const content = [];
+    if (!Array.isArray(userParts)) return content;
     for (const p of userParts) {
         if (p && p.type === 'text' && typeof p.text === 'string') {
-            parts.push({ text: p.text });
-        } else if (p && p.type === 'image_url' && p.image_url && typeof p.image_url.url === 'string') {
-            const url = p.image_url.url;
-            const m = /^data:([^;]+);base64,([\s\S]+)$/i.exec(url);
-            if (m) {
-                parts.push({
-                    inlineData: {
-                        mimeType: m[1],
-                        data:     m[2].replace(/\s/g, ''),
-                    },
-                });
-            }
+            content.push({ type: 'text', text: p.text });
         }
     }
-    return parts;
+    return content;
 }
 
 function parseModelJson(raw) {
@@ -207,76 +147,77 @@ function parseModelJson(raw) {
     }
 }
 
-async function callGemini(systemPrompt, userParts) {
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) throw new Error('GEMINI_API_KEY not set');
+function sleep(ms) {
+    return new Promise((r) => setTimeout(r, ms));
+}
 
-    const model = modelResourceName(process.env.MODEL_ID || DEFAULT_MODEL);
-    const parts = userPartsToGeminiParts(userParts);
-    if (!parts.length) throw new Error('No content parts for model');
+async function callGroq(systemPrompt, userParts) {
+    const apiKey = process.env.GROQ_API_KEY;
+    if (!apiKey) throw new Error('GROQ_API_KEY not set');
 
-    const url = `${GEMINI_API_ROOT}${model}:generateContent`;
+    const model = (process.env.MODEL_ID || DEFAULT_MODEL).trim();
+    const content = userPartsToOpenAIContent(userParts);
+    if (!content.length) throw new Error('No content parts for model');
 
-    const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type':  'application/json',
-            'x-goog-api-key': apiKey,
-        },
-        body: JSON.stringify({
-            systemInstruction: { parts: [{ text: systemPrompt }] },
-            contents:          [{ role: 'user', parts }],
-            generationConfig: {
-                responseMimeType:  'application/json',
-                temperature:       0.2,
-                maxOutputTokens:   1024,
+    const baseBody = {
+        model,
+        messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user',   content },
+        ],
+        response_format: { type: 'json_object' },
+        temperature:     0.2,
+        max_tokens:      2048,
+    };
+
+    for (let attempt = 0; attempt < 3; attempt++) {
+        const res = await fetch(GROQ_API_URL, {
+            method:  'POST',
+            headers: {
+                'Content-Type':  'application/json',
+                Authorization:   `Bearer ${apiKey}`,
             },
-        }),
-    });
+            body: JSON.stringify(baseBody),
+        });
 
-    if (!res.ok) {
-        const err = await res.text();
-        throw new Error(`Gemini API error ${res.status}: ${err.slice(0, 300)}`);
+        if (res.status === 429 && attempt < 2) {
+            let waitMs = 2500 * (attempt + 1);
+            const errText = await res.text();
+            try {
+                const errJson = JSON.parse(errText);
+                const msg = errJson?.error?.message || '';
+                const m = /retry in ([\d.]+)\s*s/i.exec(msg);
+                if (m) waitMs = Math.min(32000, Math.ceil(parseFloat(m[1]) * 1000) + 400);
+            } catch {
+                /* keep default wait */
+            }
+            await sleep(waitMs);
+            continue;
+        }
+
+        if (!res.ok) {
+            const err = await res.text();
+            throw new Error(`Groq API error ${res.status}: ${err.slice(0, 300)}`);
+        }
+
+        const data = await res.json();
+        const raw = data?.choices?.[0]?.message?.content;
+        if (!raw) throw new Error('Empty response from model');
+        return parseModelJson(raw);
     }
 
-    const data = await res.json();
-    const cand = data?.candidates?.[0];
-    const reason = cand?.finishReason;
-    const blocked = new Set(['SAFETY', 'RECITATION', 'BLOCKLIST', 'PROHIBITED_CONTENT', 'SPII']);
-    if (reason && blocked.has(reason)) {
-        throw new Error(`Model stopped: ${reason}`);
-    }
-    const raw = cand?.content?.parts?.map((x) => x.text).filter(Boolean).join('');
-    if (!raw) throw new Error('Empty response from model');
-    return parseModelJson(raw);
+    throw new Error('Groq request failed after retries');
 }
 
-/* ---- System prompt ---- */
-const SYSTEM_PROMPT = `You are a BS Radar for AI discourse. Evaluate the provided content for hype, absolutism, unfounded certainty, "AI replaces X" claims, engagement-bait, and bro-energy.
-
-Be fair: genuine critique of AI, measured enthusiasm, or grounded analysis is NOT high BS. Satire is ambiguous — score mixed.
-
-Return ONLY valid JSON matching this schema:
-{
-  "bs_score": number,          // 0–100, higher = more BS
-  "bs_reading": string,        // "negative" | "mixed" | "positive"
-  "bs_label": string,          // e.g. "Low BS — mostly grounded" or "High BS — strong bro energy"
-  "reasons": string[],         // 2–5 short bullets explaining the score
-  "signals": [{ "kind": string, "snippet": string }],  // detected signal types: absolutism | replacement_claim | engagement_bait | unfounded_certainty | vague_hype | false_urgency
-  "input_summary": string      // 1–2 sentences: what the content was about
+// Rebuilt per request so prompt changes apply without redeploy cache issues in dev
+function getSystemPrompt() {
+    return buildSystemPrompt();
 }
-
-bs_reading key:
-  "positive"  = high bullshit / strong hype (score ≥ 60)
-  "negative"  = low bullshit / mostly grounded (score < 35)
-  "mixed"     = somewhere in between or genuinely ambiguous
-
-Refuse (return { "error": "reason" }) only if: content is entirely empty, contains hate speech, or is totally unrelated to any public discourse (e.g. just private PII).`;
 
 /* ---- Main handler ---- */
 module.exports = async function handler(req, res) {
     try {
-        const headers = corsHeaders(req);
+        const headers = corsHeaders(req, 'POST, OPTIONS');
 
         if (req.method === 'OPTIONS') {
             return res.writeHead(204, headers).end();
@@ -294,20 +235,25 @@ module.exports = async function handler(req, res) {
             return sendJson(req, res, 400, { error: 'Request body required' });
         }
 
-        const rawText    = typeof body.text === 'string' ? body.text.trim().slice(0, MAX_TEXT_CHARS) : '';
-        const urls       = Array.isArray(body.urls) ? body.urls.filter(u => /^https?:\/\//i.test(u)).slice(0, 5) : [];
-        const imageB64   = typeof body.image_base64 === 'string' ? body.image_base64 : null;
-        const imageMime  = typeof body.image_mime === 'string' ? body.image_mime : 'image/png';
+        const rawText         = typeof body.text === 'string' ? body.text.trim().slice(0, MAX_TEXT_CHARS) : '';
+        const urls            = Array.isArray(body.urls) ? body.urls.filter(u => /^https?:\/\//i.test(u)).slice(0, 5) : [];
+        const contentFromImage = body.content_from_image === true;
+        const typedTextLength  = Number.isFinite(Number(body.typed_text_length))
+            ? Math.max(0, Math.round(Number(body.typed_text_length)))
+            : 0;
 
-        if (!rawText && !urls.length && !imageB64) {
-            return sendJson(req, res, 400, { error: 'No content provided. Paste some text, a URL, or an image.' });
+        if (!rawText && !urls.length) {
+            return sendJson(req, res, 400, { error: 'No content provided. Paste text or a URL (screenshots must include OCR text).' });
         }
 
-        if (imageB64) {
-            const approxBytes = Math.round((imageB64.length * 3) / 4);
-            if (approxBytes > MAX_IMAGE_BYTES) {
-                return sendJson(req, res, 400, { error: 'Image exceeds the 4 MB limit.' });
-            }
+        const ip = getClientIp(req);
+        const rlCheck = await checkAndRecord(ip, { record: false });
+        if (!rlCheck.allowed) {
+            res.setHeader('Retry-After', String(rlCheck.retryAfterSeconds));
+            return sendJson(req, res, 429, {
+                error:      'Rate limit reached. You can run 5 analyses every 12 hours.',
+                rate_limit: rateLimitPayload(rlCheck),
+            });
         }
 
         let urlContext = '';
@@ -319,26 +265,19 @@ module.exports = async function handler(req, res) {
             urlContext = snippets.join('\n\n');
         }
 
-        const userParts = [];
-
         const textParts = [rawText, urlContext].filter(Boolean).join('\n\n---\n\n').trim();
-        if (textParts) {
-            userParts.push({ type: 'text', text: `Evaluate this content:\n\n${textParts}` });
+        if (!textParts) {
+            return sendJson(req, res, 400, { error: 'No text to analyse. Paste content or wait for OCR from a screenshot.' });
         }
 
-        if (imageB64) {
-            if (!textParts) {
-                userParts.push({ type: 'text', text: 'Evaluate the content in this screenshot:' });
-            }
-            userParts.push({
-                type:      'image_url',
-                image_url: { url: `data:${imageMime};base64,${imageB64}` },
-            });
-        }
+        const userParts = [{
+            type: 'text',
+            text: `Evaluate ONLY the following text transcript. Read the entire transcript before scoring:\n\n${textParts}`,
+        }];
 
         let result;
         try {
-            result = await callGemini(SYSTEM_PROMPT, userParts);
+            result = await callGroq(getSystemPrompt(), userParts);
         } catch (err) {
             console.error('[analyze] model error:', err.message);
             return sendJson(req, res, 502, { error: 'The analysis model returned an error. Try again.' });
@@ -348,17 +287,18 @@ module.exports = async function handler(req, res) {
             return sendJson(req, res, 400, { error: result.error });
         }
 
-        const VALID_READINGS = ['negative', 'mixed', 'positive'];
-        const bs_score   = Math.max(0, Math.min(100, Number(result.bs_score) || 0));
-        const bs_reading = VALID_READINGS.includes(result.bs_reading) ? result.bs_reading : 'mixed';
+        const imageOnly = contentFromImage && typedTextLength === 0;
+        const normalized = normalizeAnalysis(result, {
+            hasImage:         contentFromImage,
+            imageOnly,
+            transcriptLength: rawText.length,
+            rawText,
+        });
+        const rlAfter = await checkAndRecord(ip, { record: true });
 
         const response = {
-            bs_score,
-            bs_reading,
-            bs_label:      typeof result.bs_label === 'string' ? result.bs_label : '',
-            reasons:       Array.isArray(result.reasons) ? result.reasons.slice(0, 5) : [],
-            signals:       Array.isArray(result.signals) ? result.signals.slice(0, 10) : [],
-            input_summary: typeof result.input_summary === 'string' ? result.input_summary : '',
+            ...normalized,
+            rate_limit: rateLimitPayload(rlAfter),
         };
 
         return sendJson(req, res, 200, response);

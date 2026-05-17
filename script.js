@@ -222,10 +222,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // -------------- HAMBURGER MENU (star-blue) --------------
 (function initHamburger() {
-  function setup() {
-    const btn = document.getElementById('hamburgerBtn');
-    const menu = document.getElementById('hamburgerMenu');
-    const caseLink = document.getElementById('hamCaseLink');
+  function initHamburgerWrap(wrap) {
+    const btn = wrap.querySelector('.hamburger-btn');
+    const menu = wrap.querySelector('.hamburger-menu');
     if (!btn || !menu) return;
 
     const star = btn.querySelector('.hamburger-star-icon');
@@ -349,9 +348,13 @@ document.addEventListener("DOMContentLoaded", () => {
       if (e.key === 'Escape') closeMenu();
     });
 
-    if (caseLink) {
-      caseLink.addEventListener('click', () => closeMenu());
-    }
+    menu.querySelectorAll('.ham-link').forEach((link) => {
+      link.addEventListener('click', () => closeMenu());
+    });
+  }
+
+  function setup() {
+    document.querySelectorAll('.hamburger-wrap').forEach(initHamburgerWrap);
   }
 
   if (document.readyState === 'loading') {

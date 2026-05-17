@@ -6,6 +6,11 @@
     "node": "20.x"
   },
   "scripts": {
-    "dev": "vercel dev"
+    "start": "vercel dev",
+    "test": "node --test api/bro-taxonomy.test.js",
+    "test:bro-regression": "node scripts/bro-regression.mjs"
+  },
+  "dependencies": {
+    "@vercel/kv": "^3.0.0"
   }
 }

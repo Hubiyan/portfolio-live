@@ -32,7 +32,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
     <script defer src="../../bootstrap.bundle.min.js"></script>
     <script defer src="../../script.js"></script>
-    <script defer src="./ai-bro-detector.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" crossorigin="anonymous"></script>
+    <script defer src="./ai-bro-detector.js?v=1"></script>
 </head>
 
 <body class="ds-subpage ai-bro-lab">
@@ -53,10 +55,6 @@
             </div>
         </div>
     </nav>
-
-    <div class="full-width-scroller">
-        <div class="scroller-indicator"></div>
-    </div>
 
     <div id="confetti-trigger" style="display:none;"></div>
     <div id="wave"></div>
@@ -119,86 +117,157 @@
 
     <main id="ai-bro-main" class="container ds-subpage-main d-flex flex-column gap-40-box">
 
-        <!-- Hero -->
-        <header class="ds-subpage-hero">
-            <h1 class="ds-subpage-hero-title">AI Bro Detector</h1>
-            <p class="ds-subpage-hero-subtitle">Paste a post, drop a link, or paste a screenshot. Get an instant BS Radar — how much hype, absolutism, and bro-energy is actually in there.</p>
-        </header>
-
-        <!-- Privacy callout -->
-        <div class="ai-bro-privacy" role="note">
-            <span class="ai-bro-privacy-icon" aria-hidden="true">🔒</span>
-            <p>Whatever you paste is sent to the analysis server and then to Google Gemini for classification. Nothing is stored after the request completes — v1.</p>
+        <div class="ai-bro-top-bar d-flex w-100 justify-content-start align-items-center">
+            <div class="hamburger-wrap">
+                <button class="hamburger-btn" type="button" aria-label="Open menu"
+                    aria-expanded="false" aria-controls="aiBroHamburgerMenu">
+                    <img class="hamburger-star-icon" src="../../images/btn-icons/star-blue.png" alt="" width="16"
+                        height="16" decoding="async" draggable="false">
+                </button>
+                <div class="hamburger-menu" id="aiBroHamburgerMenu" role="menu" aria-hidden="true">
+                    <a href="../../" class="ham-link" role="menuitem">Home</a>
+                    <a href="../../prompts/" class="ham-link" role="menuitem">Prompts</a>
+                    <a href="./" class="ham-link" role="menuitem" aria-current="page">AI Bro Detector</a>
+                </div>
+            </div>
         </div>
 
+        <!-- Hero -->
+        <header class="ds-subpage-hero">
+            <h1 class="ds-subpage-hero-title">AI bro detector</h1>
+            <p class="ds-subpage-hero-subtitle">For when "AI will replace you" deserves a second opinion</p>
+        </header>
+
         <!-- Input section -->
-        <section class="d-flex flex-column gap-16-box" aria-label="Paste your content">
+        <section class="d-flex flex-column gap-16-box" id="aiBroInputSection" aria-label="Paste your content">
 
-            <!-- Paste zone: real textarea so Cmd/Ctrl+V works reliably in all browsers -->
-            <div class="ai-bro-paste is-empty" id="aibroPasteWrap"
-                aria-label="Paste or type your content">
-                <p class="ai-bro-paste-hint" id="aiBroPasteHint">
-                    Click below and paste (or type). You can also paste a screenshot while this area is focused.
-                </p>
-                <label class="visually-hidden" for="aiBroTextInput">Post text or notes to analyze</label>
-                <textarea id="aiBroTextInput" class="ai-bro-textarea" spellcheck="true" rows="8"
-                    maxlength="20000"
-                    placeholder="Paste a post, thread, caption, or URL here…"
-                    autocomplete="off"></textarea>
-            </div>
-
-            <!-- Preview panel -->
-            <div class="ai-bro-preview ai-bro-preview--hidden" id="aiBroPreview" aria-label="Pasted content preview">
-
-                <!-- Text excerpt -->
-                <div class="ai-bro-preview-text" id="aiBroPreviewText" style="display:none">
-                    <p class="button-cat">Text</p>
-                    <p class="ai-bro-preview-excerpt" id="aiBroExcerpt"></p>
-                </div>
-
-                <!-- URL chips -->
-                <div class="ai-bro-url-row" id="aiBroUrlRow" style="display:none">
-                    <p class="button-cat">Links detected</p>
-                    <div class="ai-bro-url-chips" id="aiBroUrlChips"></div>
-                </div>
-
-                <!-- Image thumb -->
-                <div class="ai-bro-thumb" id="aiBroThumb" style="display:none">
-                    <p class="button-cat">Image</p>
-                    <img class="ai-bro-thumb-img" id="aiBroThumbImg" src="" alt="Pasted image preview">
-                    <p class="ai-bro-thumb-size" id="aiBroThumbSize"></p>
-                </div>
-            </div>
-
-            <!-- Toolbar -->
-            <div class="ai-bro-toolbar d-flex gap-08-box align-items-center">
-                <button type="button" class="my-button btn-primary ai-bro-analyze" id="aiBroAnalyze"
-                    disabled aria-disabled="true" aria-busy="false">
-                    Analyze
-                    <span class="ai-bro-analyze-spinner" aria-hidden="true"></span>
-                </button>
-                <button type="button" class="my-button btn-seco" id="aiBroClear" style="display:none"
-                    aria-label="Clear pasted content">
-                    Clear
+            <div class="ai-bro-input-header d-flex justify-content-end align-items-center">
+                <p class="ai-bro-quota ai-bro-quota--header" id="aiBroQuota" aria-live="polite" hidden></p>
+                <button type="button" class="ai-bro-how-link" data-bs-toggle="modal"
+                    data-bs-target="#aiBroHowModal" aria-haspopup="dialog">
+                    How it works?
                 </button>
             </div>
+
+            <div class="ai-bro-input-wrap" id="aiBroInputWrap">
+                <div class="ai-bro-input-box ai-bro-input-box--empty" id="aiBroInputBox" data-input-state="empty">
+                    <div class="ai-bro-media-strip" id="aiBroMediaStrip" hidden>
+                        <ul class="ai-bro-thumb-list" id="aiBroThumbList" aria-label="Pasted screenshots"></ul>
+                    </div>
+                    <label class="visually-hidden" for="aiBroTextInput">Post text or notes to analyze</label>
+                    <textarea id="aiBroTextInput" class="ai-bro-textarea" spellcheck="true" rows="8"
+                        maxlength="20000"
+                        placeholder="Click to paste suspected content"
+                        autocomplete="off"></textarea>
+                    <button type="button" class="ai-bro-mobile-paste-btn" id="aiBroMobilePasteBtn"
+                        aria-label="Paste from clipboard">
+                        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <rect x="5.5" y="1" width="5" height="3" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M10.5 2.5H12a1.5 1.5 0 0 1 1.5 1.5v10A1.5 1.5 0 0 1 12 15.5H4A1.5 1.5 0 0 1 2.5 14V4A1.5 1.5 0 0 1 4 2.5H5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        Paste
+                    </button>
+                    <div class="ai-bro-toolbar d-flex gap-08-box align-items-center">
+                        <button type="button" class="my-button btn-social ai-bro-upload-btn" id="aiBroUploadBtn"
+                            aria-label="Upload images">
+                            <svg class="ai-bro-upload-icon large-btn-icon" width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 15V5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M8 9l4-4 4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M5 19h14" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                        <div class="ai-bro-toolbar-actions d-flex gap-08-box align-items-center">
+                            <button type="button" class="my-button btn-primary ai-bro-analyze" id="aiBroAnalyze"
+                                disabled aria-disabled="true" aria-busy="false">
+                                Analyze
+                                <span class="ai-bro-analyze-spinner" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- File input lives outside the overflow:hidden input-box so iOS Safari opens the picker -->
+            <input type="file" id="aiBroImageUpload" class="ai-bro-file-hidden"
+                accept="image/*" multiple tabindex="-1">
+
+            <!-- Inline validation hint -->
+            <p class="ai-bro-input-hint" id="aiBroInputHint" aria-live="polite" hidden></p>
+
+            <p class="ai-bro-disclaimer">One post at a time for the most accurate reading. Text content works better than images.</p>
 
             <!-- Status / error -->
             <div class="ai-bro-status" id="aiBroStatus" role="status" aria-live="polite" style="display:none"></div>
 
         </section>
 
-        <!-- Results -->
-        <section class="ai-bro-result ai-bro-result--empty" id="aiBroResult" aria-label="BS Radar results" aria-live="polite">
+        <!-- Loading state -->
+        <section class="ai-bro-loading" id="aiBroLoading" aria-live="polite" style="display:none">
+            <div class="ai-bro-loader">
+                <div class="ai-bro-loader-ring" aria-hidden="true"></div>
+                <p class="ai-bro-loader-text" id="aiBroLoaderText">Calibrating BS sensors…</p>
+            </div>
+        </section>
 
-            <!-- Dial -->
-            <div class="ai-bro-dial-wrap card">
+        <!-- Results -->
+        <section class="ai-bro-result ai-bro-result--empty" id="aiBroResult" aria-label="AI bro energy results" aria-live="polite">
+
+            <div class="ai-bro-result-toolbar" id="aiBroResultToolbar" hidden>
+                <button type="button" class="ai-bro-try-another" id="aiBroTryAnother">
+                    <span class="ai-bro-back-arrow" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12.5 4.5L6.5 10l6 5.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    Analyse another AI bro
+                </button>
+                <button type="button" class="ai-bro-export-btn" id="aiBroExportBtn">
+                    <svg class="ai-bro-export-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M8 2v7M8 9l3-3M8 9L5 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M3 11v1.5A1.5 1.5 0 0 0 4.5 14h7a1.5 1.5 0 0 0 1.5-1.5V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    Save as image
+                </button>
+            </div>
+
+            <div class="ai-bro-breathe-banner" id="aiBroBreathe" hidden>
+                <p class="ai-bro-breathe-heading">You are here because you suspected this post</p>
+                <p class="ai-bro-breathe-body">Breathe... take a minute, read it again yourself. Disagree as much as you want after that. No one is an expert these days&nbsp;:)</p>
+            </div>
+
+            <div id="aiBroExportCapture" class="ai-bro-export-capture">
+            <div class="card d-flex flex-column gap-12-box ai-bro-post-summary-card" id="aiBroPostSummaryWrap" style="display:none">
+                <div class="ai-bro-post-summary-header d-flex justify-content-between align-items-start gap-08-box">
+                    <p class="section-title">What this post says</p>
+                    <button type="button" class="ai-bro-how-link ai-bro-view-pasted ai-bro-export-ignore" id="aiBroViewPasted"
+                        data-bs-toggle="modal" data-bs-target="#aiBroPasteModal" aria-haspopup="dialog">
+                        What you pasted
+                    </button>
+                </div>
+                <p class="section-description ai-bro-post-summary-text" id="aiBroPostSummaryText"></p>
+            </div>
+
+            <div class="ai-bro-meter-gif-row">
+
+             <!-- Dial -->
+            <div class="ai-bro-dial-wrap card w-100 d-flex flex-column gap-16-box">
+                <p class="section-title" id="aiBroMeterTitle">AI bro energy</p>
                 <div class="ai-bro-dial" aria-hidden="true">
                     <svg class="ai-bro-dial-svg" viewBox="0 0 200 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="aiBroDialSpectrum" gradientUnits="userSpaceOnUse"
+                                x1="15" y1="100" x2="185" y2="100">
+                                <stop offset="0%" stop-color="#22c55e"/>
+                                <stop offset="32%" stop-color="#84cc16"/>
+                                <stop offset="48%" stop-color="#eab308"/>
+                                <stop offset="68%" stop-color="#f97316"/>
+                                <stop offset="100%" stop-color="#dc2626"/>
+                            </linearGradient>
+                        </defs>
                         <!-- Track -->
                         <path class="ai-bro-dial-track" d="M 15 100 A 85 85 0 0 1 185 100" stroke-width="14" stroke-linecap="round"/>
                         <!-- Fill arc (dynamic width via JS) -->
-                        <path class="ai-bro-dial-fill" id="aiBroDialFill" d="M 15 100 A 85 85 0 0 1 185 100" stroke-width="14" stroke-linecap="round" stroke-dasharray="267" stroke-dashoffset="267"/>
+                        <path class="ai-bro-dial-fill" id="aiBroDialFill" d="M 15 100 A 85 85 0 0 1 185 100" stroke-width="14" stroke-linecap="round" stroke="url(#aiBroDialSpectrum)" stroke-dasharray="267" stroke-dashoffset="267"/>
                         <!-- Needle -->
                         <line class="ai-bro-dial-needle" id="aiBroNeedle"
                             x1="100" y1="100" x2="100" y2="24"
@@ -209,52 +278,170 @@
                     </svg>
                     <!-- Labels -->
                     <div class="ai-bro-dial-labels" aria-hidden="true">
-                        <span class="ai-bro-dial-label-low">Low BS</span>
-                        <span class="ai-bro-dial-label-high">High BS</span>
+                        <span class="ai-bro-dial-label-low">Low energy</span>
+                        <span class="ai-bro-dial-label-high">Peak bro</span>
                     </div>
                 </div>
 
-                <!-- Score + label -->
-                <div class="ai-bro-score d-flex flex-column align-items-center gap-08-box">
+                <!-- Score -->
+                <div class="ai-bro-score d-flex flex-column align-items-center gap-08-box" aria-labelledby="aiBroMeterTitle">
                     <p class="ai-bro-score-number" id="aiBroScoreNumber">—</p>
-                    <p class="ai-bro-score-label" id="aiBroScoreLabel"></p>
-                </div>
-
-                <!-- Reading legend -->
-                <div class="ai-bro-legend" id="aiBroLegend">
-                    <p class="ai-bro-legend-text" id="aiBroLegendText"></p>
-                    <p class="ai-bro-legend-note">
-                        Here, <strong>positive</strong> means more hype / bro-energy — not praise.
-                        <strong>Negative</strong> means low BS / mostly grounded.
-                    </p>
                 </div>
             </div>
-
-            <!-- Reasons -->
-            <div class="card d-flex flex-column gap-16-box" id="aiBroReasonsWrap" style="display:none">
-                <p class="section-title">Why this score</p>
-                <ul class="ai-bro-reasons" id="aiBroReasons"></ul>
+            <!-- Score-tier reaction GIF (Tenor) -->
+            <div class="ai-bro-gif-wrap card w-100" id="aiBroGifWrap" hidden aria-hidden="true">
+                <div class="ai-bro-gif-pane" data-tier="0-10">
+                    <div class="tenor-gif-embed" data-postid="9388313" data-share-method="host" data-aspect-ratio="1.78" data-width="100%"></div>
+                </div>
+                <div class="ai-bro-gif-pane" data-tier="11-25">
+                    <div class="tenor-gif-embed" data-postid="1302676710766719675" data-share-method="host" data-aspect-ratio="1.11659" data-width="100%"></div>
+                </div>
+                <div class="ai-bro-gif-pane" data-tier="26-40">
+                    <div class="tenor-gif-embed" data-postid="1343162792415382650" data-share-method="host" data-aspect-ratio="1.08108" data-width="100%"></div>
+                </div>
+                <div class="ai-bro-gif-pane" data-tier="41-55">
+                    <div class="tenor-gif-embed" data-postid="12313683" data-share-method="host" data-aspect-ratio="1.336" data-width="100%"></div>
+                </div>
+                <div class="ai-bro-gif-pane" data-tier="56-100">
+                    <div class="tenor-gif-embed" data-postid="12533315" data-share-method="host" data-aspect-ratio="1.33333" data-width="100%"></div>
+                </div>
             </div>
 
-            <!-- Signals (collapsible) -->
-            <div class="card" id="aiBroSignalsWrap" style="display:none">
-                <button type="button" class="ai-bro-signals-toggle d-flex w-100 align-items-center justify-content-between"
-                    aria-expanded="false" aria-controls="aiBroSignalsList">
-                    <p class="section-title" style="margin:0">Signals detected</p>
-                    <span class="ai-bro-signals-chevron" aria-hidden="true"></span>
-                </button>
-                <ul class="ai-bro-signals" id="aiBroSignalsList" hidden></ul>
+
+
+            </div><!-- .ai-bro-meter-gif-row -->
+
+            <!-- Why this score -->
+            <div class="card d-flex flex-column gap-16-box ai-bro-reasons-card" id="aiBroReasonsWrap" style="display:none">
+                <p class="section-title" id="aiBroReasonsTitle">Why this score</p>
+                <ol class="ai-bro-reasons" id="aiBroReasons"></ol>
             </div>
 
-            <!-- Input summary -->
-            <div class="card ai-bro-input-summary" id="aiBroSummaryWrap" style="display:none">
-                <p class="button-cat">What we analysed</p>
-                <p class="section-description" id="aiBroSummaryText"></p>
+            <!-- What checks out (positive / green) -->
+            <div class="card ai-bro-signals-card gap-16-box ai-bro-positive-signals-card" id="aiBroPositiveSignalsWrap" style="display:none">
+                <p class="section-title" id="aiBroPositiveSignalsTitle">What checks out</p>
+                <ul class="ai-bro-signals ai-bro-signals--positive" id="aiBroPositiveSignalsList" role="list" aria-label="Grounded traits in your post"></ul>
             </div>
+
+            <!-- What stood out — bro patterns (red) -->
+            <div class="card ai-bro-signals-card gap-16-box" id="aiBroSignalsWrap" style="display:none">
+                <p class="section-title" id="aiBroSignalsTitle">What is sus about this</p>
+                <ul class="ai-bro-signals" id="aiBroSignalsList" role="list" aria-label="Bro-energy patterns and quotes from your post"></ul>
+            </div>
+            </div><!-- #aiBroExportCapture -->
 
         </section>
 
     </main>
+
+    <!-- What you pasted (portfolio modal → bottom sheet on mobile) -->
+    <div class="modal fade" id="aiBroPasteModal" tabindex="-1" aria-labelledby="aiBroPasteModalTitle" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="d-flex w-100 justify-content-end">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <img class="close-img" src="../../images/btn-icons/cross.png" alt="">
+                </button>
+            </div>
+            <div class="modal-content d-flex flex-column gap-32-box ai-bro-paste-modal-content">
+                <div class="d-flex w-100 justify-content-between align-items-center ai-bro-paste-modal-header">
+                    <h2 class="section-title modal-title text-center w-100" id="aiBroPasteModalTitle">What you pasted</h2>
+                </div>
+                <div class="card d-flex flex-column gap-16-box res-0-520-gap-16 ai-bro-paste-modal-scroll">
+                    <div class="ai-bro-paste-preview-body" id="aiBroPastePreviewBody" aria-readonly="true"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- How it works (portfolio modal → bottom sheet on mobile) -->
+    <div class="modal fade" id="aiBroHowModal" tabindex="-1" aria-labelledby="aiBroHowModalTitle" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="d-flex w-100 justify-content-end">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <img class="close-img" src="../../images/btn-icons/cross.png" alt="">
+                </button>
+            </div>
+            <div class="modal-content d-flex flex-column gap-32-box ai-bro-how-modal-content">
+                <div class="d-flex w-100 justify-content-between align-items-center ai-bro-how-modal-header">
+                    <h2 class="section-title modal-title text-center w-100" id="aiBroHowModalTitle">How it works</h2>
+                </div>
+                <div class="card d-flex flex-column gap-32-box res-0-520-gap-16 ai-bro-how-modal-scroll">
+                    <div class="d-flex flex-column gap-12-box w-100">
+                        <p class="button-cat">What you&apos;re doing here</p>
+                        <p class="section-description ai-bro-how-text">
+                        Paste a suspicious post, thread, caption, or screenshot — the kind of stuff that sounds like
+                        &ldquo;I built a $10M AI agency before breakfast.&rdquo; Hit <strong>Analyze</strong>.
+                        You get an <strong>AI bro energy</strong> score (0–100), plain-English reasons, and the exact
+                        lines that set off the alarm. Lower is more grounded. Higher is more LinkedIn thought-leader energy.
+                        Very grounded posts score <strong>0–10</strong> and may show green &ldquo;what checks out&rdquo; chips.
+                        </p>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="d-flex flex-column gap-12-box w-100">
+                        <p class="button-cat">How the score is calculated</p>
+                        <p class="section-description ai-bro-how-text">
+                        An AI reads what you pasted (screenshots are analysed via OCR text only, not the image). It&apos;s trained to spot
+                        <strong>rhetoric</strong>, not to fact-check your uncle&apos;s crypto thread.
+                    </p>
+                    <ul class="ai-bro-how-list section-description">
+                        <li><strong>High meter</strong> — hype, fearmongering, course/DM funnels (&ldquo;Comment X I&apos;ll send&hellip;&rdquo;), fake &ldquo;research,&rdquo; claims that ignore adoption/cost for the domain</li>
+                        <li><strong>Low meter (0–10)</strong> — tool framing, steps, named studies/news, market-aware limits — not engagement farming</li>
+                        <li><strong>Summary</strong> — short neutral recap of what the post argues before the score</li>
+                    </ul>
+                    <p class="section-description ai-bro-how-text">
+                        Very short OCR from a screenshot gets a minimum score (~25).
+                    </p>
+                    <p class="section-description ai-bro-how-text">
+                        This is rhetoric + model judgment, not a court of law. Market notes are indicative, not verified data.
+                    </p>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="d-flex flex-column gap-12-box w-100">
+                        <p class="button-cat">The bro tokens thing</p>
+                    <p class="section-description ai-bro-how-text">
+                        This runs on real API calls (they cost money). So each browser gets
+                        <strong>5 bro tokens per rolling 12 hours</strong> — not unlimited, not a ChatGPT subscription,
+                        just five full scans. The counter at the top of the input field shows how many tokens you have left.
+                    </p>
+                    <p class="section-description ai-bro-how-text">
+                        Hit zero? Wait until your oldest scan falls outside the 12-hour window, or go touch grass.
+                        VPN won&apos;t mint extra tokens — the limit is per IP, best-effort. Shared Wi‑Fi means shared patience.
+                        </p>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="d-flex flex-column gap-12-box w-100">
+                        <p class="button-cat">Bonus: the reaction GIF</p>
+                        <p class="section-description ai-bro-how-text">
+                        The meter comes with a GIF that gets more judgmental as the score climbs — Stanley at the very low end,
+                        Doakes, then Batman slap at the peak. You&apos;re welcome.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rate limit exhausted modal -->
+    <div class="modal fade" id="aiBroRateLimitModal" tabindex="-1" aria-labelledby="aiBroRateLimitModalTitle" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="d-flex w-100 justify-content-end">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <img class="close-img" src="../../images/btn-icons/cross.png" alt="">
+                </button>
+            </div>
+            <div class="modal-content d-flex flex-column gap-24-box ai-bro-rl-modal-content">
+                <div class="ai-bro-rl-gif-wrap">
+                    <div class="tenor-gif-embed" data-postid="13360981" data-share-method="host" data-aspect-ratio="1.333" data-width="100%"></div>
+                </div>
+                <div class="d-flex flex-column gap-12-box">
+                    <h2 class="section-title" id="aiBroRateLimitModalTitle">You have come across too many AI bros for now</h2>
+                    <p class="section-description">Take a step back and save yourself. It's not AI takeover day just yet. Bro tokens refresh every 12 hours.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://tenor.com/embed.js" async></script>
 </body>
 
 </html>
