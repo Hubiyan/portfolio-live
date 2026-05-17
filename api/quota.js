@@ -21,7 +21,7 @@ module.exports = async function handler(req, res) {
         }
 
         const ip = getClientIp(req);
-        const rl = await checkAndRecord(ip, { record: false });
+        const rl = await checkAndRecord(ip, { record: false, req });
 
         return sendJson(req, res, 200, {
             rate_limit: rateLimitPayload(rl),

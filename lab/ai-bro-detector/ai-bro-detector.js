@@ -40,33 +40,9 @@ const MAX_IMAGES = 5;
 
 const URL_REGEX       = /https?:\/\/[^\s"'<>()[\]{}]+/g;
 
-const LOADING_TEXTS = [
-    'Calibrating the BS sensors…',
-    'Sniffing for thought leadership™…',
-    'Consulting the Cringe Oracle…',
-    'Counting buzzwords per sentence…',
-    'Detecting unsolicited LinkedIn wisdom…',
-    'Measuring hype-to-substance ratio…',
-    'Cross-referencing 10x founder rhetoric…',
-    'Checking if "disrupt" was used unironically…',
-    'Scanning for fake urgency…',
-    'Running the bro-energy algorithm…',
-    'Tallying vague calls to action…',
-    'Asking what Elon would tweet…',
-    'Looking for "🚀" usage per paragraph…',
-    'Detecting passive income mentions…',
-    'Checking if "journey" was used as a verb…',
-    'Scanning for unprompted crypto references…',
-    'Evaluating rise-and-grind coefficient…',
-    'Googling "what is thought leadership"…',
-    'Checking if this starts with "Unpopular opinion:"…',
-    'Counting ellipsis abuse…',
-    'Looking for self-reported 7-figure founders…',
-    'Detecting AI-generated confidence…',
-];
+const LOADING_MESSAGE = 'Detecting AI led expert bro energy';
 
-let ocrJob      = null;
-let loaderTimer = null;
+let ocrJob = null;
 
 // Sequential OCR queue — one Tesseract job at a time to avoid worker stalls
 let ocrQueue   = [];
@@ -306,25 +282,15 @@ function setInputSectionHidden(hidden) {
     inputSection.setAttribute('aria-hidden', hidden ? 'true' : 'false');
 }
 
-/* ---- Loader text cycling ---- */
+/* ---- Loader text ---- */
 function startLoaderText() {
     if (!loaderTextEl) return;
-    let i = 0;
-    loaderTextEl.textContent = LOADING_TEXTS[0];
+    loaderTextEl.textContent = LOADING_MESSAGE;
     loaderTextEl.classList.remove('is-fading');
-    loaderTimer = setInterval(() => {
-        loaderTextEl.classList.add('is-fading');
-        setTimeout(() => {
-            i = (i + 1) % LOADING_TEXTS.length;
-            loaderTextEl.textContent = LOADING_TEXTS[i];
-            loaderTextEl.classList.remove('is-fading');
-        }, 220);
-    }, 2000);
 }
 
 function stopLoaderText() {
-    clearInterval(loaderTimer);
-    loaderTimer = null;
+    /* no-op — kept for call sites */
 }
 
 /* ---- Utilities ---- */
@@ -685,8 +651,16 @@ function renderQuotaLine() {
     }
 }
 
+function isLocalDevHost() {
+    const h = window.location.hostname;
+    return h === 'localhost'
+        || h === '127.0.0.1'
+        || /^192\.168\.\d{1,3}\.\d{1,3}$/.test(h)
+        || h.endsWith('.trycloudflare.com');
+}
+
 function isRateLimited() {
-    if (rateLimitState.unlimited) return false;
+    if (isLocalDevHost() || rateLimitState.unlimited) return false;
     return rateLimitState.remaining === 0;
 }
 

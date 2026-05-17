@@ -247,7 +247,7 @@ module.exports = async function handler(req, res) {
         }
 
         const ip = getClientIp(req);
-        const rlCheck = await checkAndRecord(ip, { record: false });
+        const rlCheck = await checkAndRecord(ip, { record: false, req });
         if (!rlCheck.allowed) {
             res.setHeader('Retry-After', String(rlCheck.retryAfterSeconds));
             return sendJson(req, res, 429, {
@@ -294,7 +294,7 @@ module.exports = async function handler(req, res) {
             transcriptLength: rawText.length,
             rawText,
         });
-        const rlAfter = await checkAndRecord(ip, { record: true });
+        const rlAfter = await checkAndRecord(ip, { record: true, req });
 
         const response = {
             ...normalized,

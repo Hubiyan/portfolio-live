@@ -156,8 +156,27 @@ function buildResult(recent, { record, now }) {
  * @param {string} ip
  * @param {{ record: boolean }} opts — record:true appends a timestamp after a successful analyze
  */
-async function checkAndRecord(ip, { record }) {
-    if (isWhitelisted(ip)) return whitelistResult();
+function isRateLimitDisabled() {
+    if (process.env.VERCEL_ENV === 'development') return true;
+    const v = process.env.DISABLE_RATE_LIMIT;
+    return v === '1' || v === 'true' || String(v || '').toLowerCase() === 'yes';
+}
+
+/** Local `vercel dev` / LAN testing — Host is localhost or private IP. */
+function isLocalDevRequest(req) {
+    if (!req || !req.headers) return false;
+    const host = String(req.headers.host || '').split(',')[0].trim().toLowerCase();
+    if (!host) return false;
+    const hostname = host.split(':')[0];
+    return hostname === 'localhost'
+        || hostname === '127.0.0.1'
+        || hostname.endsWith('.local')
+        || /^192\.168\.\d{1,3}\.\d{1,3}$/.test(hostname)
+        || host.endsWith('.trycloudflare.com');
+}
+
+async function checkAndRecord(ip, { record, req } = {}) {
+    if (isRateLimitDisabled() || isLocalDevRequest(req) || isWhitelisted(ip)) return whitelistResult();
 
     const key = ipKey(ip);
     const now = Date.now();
