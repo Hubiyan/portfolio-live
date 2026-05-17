@@ -3429,8 +3429,7 @@ body.ds-subpage .main-title {
    width: 100% fills available space; max-width: 52rem caps it on wide screens. */
 .prompts-content,
 .ds-subpage-main {
-    padding-top: var(--spacing-64);
-    padding-bottom: var(--spacing-64);
+    padding-top: var(--spacing-24);
     min-width: 0 !important;
     width: 100% !important;
     max-width: 52rem;
