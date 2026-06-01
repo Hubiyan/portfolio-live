@@ -9,6 +9,14 @@
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
     },
     {
+      "source": "/scripts/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/assets/lottie/(.*\\.(?:webm|mp4|json|webp))",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
       "source": "/(style\\.css|script\\.js)",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" }]
     },

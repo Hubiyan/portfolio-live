@@ -429,3 +429,27 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener('orientationchange', render);
 })();
 
+
+
+// -------------- LAZY LOAD WISTIA VIDEO --------------
+(function () {
+  var section = document.querySelector('.loom-video-about-me');
+  if (!section) return;
+  var loaded = false;
+  var observer = new IntersectionObserver(function (entries) {
+    if (!loaded && entries[0].isIntersecting) {
+      loaded = true;
+      var s1 = document.createElement('script');
+      s1.src = 'https://fast.wistia.com/player.js';
+      s1.async = true;
+      document.head.appendChild(s1);
+      var s2 = document.createElement('script');
+      s2.src = 'https://fast.wistia.com/embed/9itf7hdei4.js';
+      s2.async = true;
+      s2.type = 'module';
+      document.head.appendChild(s2);
+      observer.disconnect();
+    }
+  }, { rootMargin: '300px' });
+  observer.observe(section);
+})();

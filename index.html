@@ -46,7 +46,7 @@
     <link rel="preconnect" href="https://fast.wistia.com" crossorigin>
     <link rel="dns-prefetch" href="https://static.hotjar.com">
     <link rel="dns-prefetch" href="https://www.hotjar.com">
-    <script defer src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <script defer src="scripts/lottie-player.min.js"></script>
     <script defer src="confetti.min.js"></script>
 
     <script defer src="bootstrap.bundle.min.js"></script>
@@ -424,10 +424,11 @@
                         <div class="small-card">
                             <div class="inner-small-grey inner-grey-me d-flex flex-column align-items-center">
                                 <p class="card-name name-me">I'm Hubiyan</p>
-                                <lottie-player class="main-character" id="heroAnim" src="assets/lottie/animation.json"
-                                    role="img" aria-label="Animated character illustration" background="transparent"
-                                    speed="1" loop autoplay>
-                                </lottie-player>
+                                <video class="main-character" autoplay loop muted playsinline
+                                    role="img" aria-label="Animated character illustration">
+                                    <source src="assets/lottie/animation.webm" type="video/webm">
+                                    <source src="assets/lottie/animation.mp4" type="video/mp4">
+                                </video>
 
                             </div>
 
@@ -643,8 +644,6 @@
                         </div>
                     </div>
                     <div class="w-75 res-0-520-w-100 loom-video-about-me">
-                        <script src="https://fast.wistia.com/player.js" async></script>
-                        <script src="https://fast.wistia.com/embed/9itf7hdei4.js" async type="module"></script>
                         <style>
                             wistia-player [media-id='9itf7hdei4']:not(:defined) {
                                 background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/9itf7hdei4/swatch');
@@ -652,7 +651,8 @@
                                 filter: blur(5px);
                                 padding-top: 133.33%;
                             }
-                        </style> <wistia-player media-id="9itf7hdei4"></wistia-player>
+                        </style>
+                        <wistia-player media-id="9itf7hdei4"></wistia-player>
                     </div>
                 </div>
 
