@@ -18,20 +18,22 @@
 
     <!-- Hotjar Tracking Code for hubiyan.com -->
     <script>
-        (function (h, o, t, j, a, r) {
-            h.hj = h.hj || function () {
-                (h.hj.q = h.hj.q || []).push(arguments)
-            };
-            h._hjSettings = {
-                hjid: 5202657,
-                hjsv: 6
-            };
-            a = o.getElementsByTagName('head')[0];
-            r = o.createElement('script');
-            r.async = 1;
-            r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
-            a.appendChild(r);
-        })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+        window.addEventListener('load', function () {
+            (function (h, o, t, j, a, r) {
+                h.hj = h.hj || function () {
+                    (h.hj.q = h.hj.q || []).push(arguments)
+                };
+                h._hjSettings = {
+                    hjid: 5202657,
+                    hjsv: 6
+                };
+                a = o.getElementsByTagName('head')[0];
+                r = o.createElement('script');
+                r.async = 1;
+                r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+                a.appendChild(r);
+            })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+        });
     </script>
 
     <link rel="icon" type="image/x-icon" href="images/logos/main-logo.png">
@@ -39,7 +41,11 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap"></noscript>
+    <link rel="preconnect" href="https://fast.wistia.com" crossorigin>
+    <link rel="dns-prefetch" href="https://static.hotjar.com">
+    <link rel="dns-prefetch" href="https://www.hotjar.com">
     <script defer src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <script defer src="confetti.min.js"></script>
 
@@ -476,67 +482,67 @@
                     <div class="marquee">
                         <div class="marquee-inner">
                             <div class="marquee-content">
-                                <img class="marquee-item"
+                                <img loading="lazy" class="marquee-item"
                                     src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/11.png?raw=true"
                                     alt="banking app UI shot">
-                                <img class="marquee-item"
+                                <img loading="lazy" class="marquee-item"
                                     src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/12.png?raw=true"
                                     alt="ed tech website user interface shot">
-                                <img class="marquee-item"
+                                <img loading="lazy" class="marquee-item"
                                     src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/13-1.png?raw=true"
                                     alt="banking app UI shot">
-                                <img class="marquee-item"
+                                <img loading="lazy" class="marquee-item"
                                     src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/13.png?raw=true"
                                     alt="education website user interface">
-                                <img class="marquee-item"
+                                <img loading="lazy" class="marquee-item"
                                     src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/15.png?raw=true"
                                     alt="crypto wallet user interface">
-                                <img class="marquee-item"
+                                <img loading="lazy" class="marquee-item"
                                     src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/21.png?raw=true"
                                     alt="Agency website">
-                                <img class="marquee-item"
+                                <img loading="lazy" class="marquee-item"
                                     src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/22.png?raw=true"
                                     alt="Crypto wallet user interface">
-                                <img class="marquee-item"
+                                <img loading="lazy" class="marquee-item"
                                     src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/23.png?raw=true"
                                     alt="Luxury car website user interface">
-                                <img class="marquee-item"
+                                <img loading="lazy" class="marquee-item"
                                     src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/24.png?raw=true"
                                     alt="Ed tech website user interface">
-                                <img class="marquee-item"
+                                <img loading="lazy" class="marquee-item"
                                     src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/25.png?raw=true"
                                     alt="Doctor's website user interface">
                             </div>
                             <!-- Duplicate the content for seamless looping -->
                             <div class="marquee-content">
-                                <img class="marquee-item"
+                                <img loading="lazy" class="marquee-item"
                                     src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/11.png?raw=true"
                                     alt="banking app UI shot">
-                                <img class="marquee-item"
+                                <img loading="lazy" class="marquee-item"
                                     src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/12.png?raw=true"
                                     alt="ed tech website user interface shot">
-                                <img class="marquee-item"
+                                <img loading="lazy" class="marquee-item"
                                     src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/13-1.png?raw=true"
                                     alt="banking app UI shot">
-                                <img class="marquee-item"
+                                <img loading="lazy" class="marquee-item"
                                     src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/13.png?raw=true"
                                     alt="education website user interface">
-                                <img class="marquee-item"
+                                <img loading="lazy" class="marquee-item"
                                     src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/15.png?raw=true"
                                     alt="crypto wallet user interface">
-                                <img class="marquee-item"
+                                <img loading="lazy" class="marquee-item"
                                     src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/21.png?raw=true"
                                     alt="Agency website">
-                                <img class="marquee-item"
+                                <img loading="lazy" class="marquee-item"
                                     src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/22.png?raw=true"
                                     alt="Crypto wallet user interface">
-                                <img class="marquee-item"
+                                <img loading="lazy" class="marquee-item"
                                     src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/23.png?raw=true"
                                     alt="Luxury car website user interface">
-                                <img class="marquee-item"
+                                <img loading="lazy" class="marquee-item"
                                     src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/24.png?raw=true"
                                     alt="Ed tech website user interface">
-                                <img class="marquee-item"
+                                <img loading="lazy" class="marquee-item"
                                     src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/marquee-images/25.png?raw=true"
                                     alt="Doctor's website user interface">
                             </div>
@@ -559,7 +565,7 @@
                             <div
                                 class="d-flex flex-row gap-64-box case-study-card res-0-520-column-rev res-0-520-gap-32">
                                 <div class="image-wrapper d-flex justify-content-center w-50">
-                                    <img class="case-study-image w-100"
+                                    <img loading="lazy" class="case-study-image w-100"
                                         src="https://github.com/Hubiyan/portfolio-live/blob/main/linked-imgs-smaller/case-img.png?raw=true"
                                         alt="Image of a banking app user interface">
                                 </div>
@@ -588,7 +594,7 @@
                             <div
                                 class="d-flex flex-row gap-64-box case-study-card res-0-520-column-rev res-0-520-gap-32">
                                 <div class="image-wrapper d-flex align-items-end justify-content-center w-50 h-100">
-                                    <img class="case-study-image w-100"
+                                    <img loading="lazy" class="case-study-image w-100"
                                         src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/work-marquee/main-marquee-01.png?raw=true"
                                         alt="Image of a banking app user interface">
                                 </div>
@@ -1391,7 +1397,7 @@
                     </div>
                     <div class="d-flex flex-column">
                         <div class="showcase-box">
-                            <img class="advocate w-100"
+                            <img loading="lazy" class="advocate w-100"
                                 src="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/advocate-images/adv-main.png?raw=true"
                                 alt="Social media content by Farish Hubiyan">
                         </div>

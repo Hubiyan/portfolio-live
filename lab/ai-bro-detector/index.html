@@ -100,14 +100,14 @@
                         Paste
                     </button>
                     <div class="ai-bro-toolbar d-flex gap-08-box align-items-center">
-                        <button type="button" class="my-button btn-social ai-bro-upload-btn" id="aiBroUploadBtn"
-                            aria-label="Upload images">
+                        <label class="my-button btn-social ai-bro-upload-btn" id="aiBroUploadBtn"
+                            for="aiBroImageUpload" role="button" tabindex="0" aria-label="Upload images">
                             <svg class="ai-bro-upload-icon large-btn-icon" width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M12 15V5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M8 9l4-4 4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M5 19h14" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
                             </svg>
-                        </button>
+                        </label>
                         <div class="ai-bro-toolbar-actions d-flex gap-08-box align-items-center">
                             <button type="button" class="my-button btn-primary ai-bro-analyze" id="aiBroAnalyze"
                                 disabled aria-disabled="true" aria-busy="false">
@@ -153,7 +153,7 @@
                     </span>
                     Analyse another AI bro
                 </button>
-                <button type="button" class="ai-bro-export-btn" id="aiBroExportBtn">
+                <button type="button" class="my-button btn-primary ai-bro-export-btn" id="aiBroExportBtn">
                     <svg class="ai-bro-export-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <path d="M8 2v7M8 9l3-3M8 9L5 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M3 11v1.5A1.5 1.5 0 0 0 4.5 14h7a1.5 1.5 0 0 0 1.5-1.5V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>

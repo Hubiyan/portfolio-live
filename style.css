@@ -4245,8 +4245,9 @@ body.ai-bro-lab .ai-bro-upload-btn {
     border-radius: var(--spacing-100);
     line-height: 0;
     touch-action: manipulation;
+    cursor: pointer;
+    user-select: none;
 }
-body.ai-bro-lab .ai-bro-upload-btn:disabled,
 body.ai-bro-lab .ai-bro-upload-btn.is-disabled {
     opacity: 0.35;
     cursor: not-allowed;
@@ -4344,6 +4345,11 @@ body.ai-bro-lab .ai-bro-status--success {
     background: rgba(22, 163, 74, 0.08);
     color: #15803d;
     border: 0.5px solid rgba(22, 163, 74, 0.2);
+}
+body.ai-bro-lab .ai-bro-status--info {
+    background: rgba(59, 130, 246, 0.08);
+    color: #1d4ed8;
+    border: 0.5px solid rgba(59, 130, 246, 0.2);
 }
 
 /* ----- Result section ----- */
@@ -4459,25 +4465,8 @@ body.ai-bro-lab .ai-bro-view-pasted {
     text-align: right;
 }
 body.ai-bro-lab .ai-bro-export-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-08);
     flex-shrink: 0;
-    margin-left: auto;
-    padding: var(--spacing-12) 0;
-    border: none;
-    background: none;
-    color: var(--blue-400);
-    font-family: inherit;
-    font-size: var(--spacing-14);
-    font-weight: 600;
-    line-height: 1.25;
     white-space: nowrap;
-    cursor: pointer;
-    transition: color 0.15s ease;
-}
-body.ai-bro-lab .ai-bro-export-btn:hover {
-    color: var(--blue-500);
 }
 body.ai-bro-lab .ai-bro-export-btn[aria-busy="true"] {
     opacity: 0.65;

@@ -14,7 +14,7 @@
 const ANALYZE_API_URL = (() => {
     if (typeof window === 'undefined') return 'https://portfolio-live-rose.vercel.app/api/analyze';
     const h = window.location.hostname;
-    if (h === 'localhost' || h === '127.0.0.1') {
+    if (h === 'localhost' || h === '127.0.0.1' || /^192\.168\./.test(h) || h.endsWith('.trycloudflare.com')) {
         return `${window.location.origin}/api/analyze`;
     }
     return 'https://portfolio-live-rose.vercel.app/api/analyze';
@@ -23,7 +23,7 @@ const ANALYZE_API_URL = (() => {
 const QUOTA_API_URL = (() => {
     if (typeof window === 'undefined') return 'https://portfolio-live-rose.vercel.app/api/quota';
     const h = window.location.hostname;
-    if (h === 'localhost' || h === '127.0.0.1') {
+    if (h === 'localhost' || h === '127.0.0.1' || /^192\.168\./.test(h) || h.endsWith('.trycloudflare.com')) {
         return `${window.location.origin}/api/quota`;
     }
     return 'https://portfolio-live-rose.vercel.app/api/quota';
@@ -43,6 +43,7 @@ const URL_REGEX       = /https?:\/\/[^\s"'<>()[\]{}]+/g;
 const LOADING_MESSAGE = 'Detecting AI led expert bro energy';
 
 let ocrJob = null;
+let lastResult = null;
 
 // Sequential OCR queue — one Tesseract job at a time to avoid worker stalls
 let ocrQueue   = [];
@@ -353,7 +354,7 @@ async function pasteFromSystemClipboard() {
     if (!navigator.clipboard) {
         showStatus(
             IS_TOUCH_DEVICE
-                ? 'Long-press in the text box, then tap Paste.'
+                ? 'Long-press inside the text box, then tap Paste.'
                 : 'Clipboard not available — use Ctrl+V / ⌘V to paste.',
             'error'
         );
@@ -410,10 +411,7 @@ async function pasteFromSystemClipboard() {
     } catch (err) {
         console.warn('[ai-bro-detector] clipboard read failed', err);
         if (IS_TOUCH_DEVICE) {
-            const msg = err?.name === 'NotAllowedError'
-                ? 'Tap "Allow Paste" when your browser prompts you.'
-                : 'Long-press in the text box, then tap Paste.';
-            showStatus(msg, 'error');
+            showStatus('Long-press inside the text box, then tap Paste.', 'error');
             didShowError = true;
         } else if (err?.name === 'NotAllowedError') {
             showStatus('Allow clipboard access in the browser prompt to paste on click.', 'error');
@@ -426,7 +424,7 @@ async function pasteFromSystemClipboard() {
     if (!didPaste) {
         // Show feedback when clipboard was accessible but empty or contained only an image
         if (IS_TOUCH_DEVICE && !didShowError) {
-            showStatus('Nothing to paste — copy some text first, then tap Paste.', 'error');
+            showStatus('Nothing to paste — copy the post first, or long-press inside the text box to paste.', 'error');
         }
         textInput.focus();
     } else if (IS_TOUCH_DEVICE) {
@@ -559,7 +557,8 @@ if (inputBox) {
         if (IS_TOUCH_DEVICE) {
             // On mobile: just focus the textarea so the keyboard appears and
             // the user can type or use native long-press → Paste.
-            if (!e.target.closest('button') && !e.target.closest('.ai-bro-thumb-remove')) {
+            // Skip for buttons and labels (upload, paste, remove) — they handle their own actions.
+            if (!e.target.closest('button') && !e.target.closest('label') && !e.target.closest('.ai-bro-thumb-remove')) {
                 textInput.focus();
             }
             return;
@@ -746,12 +745,6 @@ function validateInput() {
     if (raw.length < 100 && /^(what|who|where|when|why|how|is|are|can|could|should|do|does)\b/i.test(raw) && raw.trimEnd().endsWith('?'))
         return false;
 
-    // Personal / private messages — check anywhere
-    if (/\b(hope you'?re (well|doing well|okay)|just checking in|wanted to (let you know|reach out)|miss you|thinking of you)\b/i.test(raw))
-        return false;
-    if (/^(hey|hi|dear|hello)\s+[a-z]/i.test(raw) && raw.length < 200)
-        return false;
-
     // To-do / shopping lists — majority of lines are short list items
     const lines = raw.split('\n').filter(l => l.trim().length > 0);
     if (lines.length >= 4) {
@@ -809,19 +802,7 @@ if (mobilePasteBtn) {
         mobilePasteBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             e.preventDefault();
-            // readText() MUST be called synchronously inside the click handler —
-            // iOS drops the user-gesture token across async/await boundaries.
-            if (!navigator.clipboard?.readText) {
-                textInput.focus();
-                return;
-            }
-            navigator.clipboard.readText()
-                .then((text) => {
-                    if (applyPastedText(text)) textInput.focus();
-                })
-                .catch(() => {
-                    textInput.focus();
-                });
+            pasteFromSystemClipboard();
         });
     } else {
         mobilePasteBtn.hidden = true;
@@ -830,10 +811,15 @@ if (mobilePasteBtn) {
 if (exportBtn) exportBtn.addEventListener('click', () => { exportResultsAsImage(); });
 
 if (uploadBtn && imageUploadInput) {
-    // Programmatic click is more reliable than label-for on iOS Chrome/WKWebView.
-    // The button directly opens the picker within the user-gesture context.
-    uploadBtn.addEventListener('click', () => {
-        imageUploadInput.click();
+    // The upload trigger is now a <label for="aiBroImageUpload"> — the browser opens the
+    // file picker natively without any JS. We only need to stop the click from bubbling
+    // to the inputBox handler (which would steal focus back to the textarea).
+    uploadBtn.addEventListener('click', (e) => {
+        if (uploadBtn.classList.contains('is-disabled')) {
+            e.preventDefault();
+            return;
+        }
+        e.stopPropagation();
     });
 
     imageUploadInput.addEventListener('change', () => {
@@ -1030,6 +1016,15 @@ function ensureTenorEmbeds() {
     document.body.appendChild(s);
 }
 
+/** Maps score tier to the tenor post ID used in the HTML markup. */
+const TIER_TO_POSTID = {
+    '0-10':   '9388313',
+    '11-25':  '1302676710766719675',
+    '26-40':  '1343162792415382650',
+    '41-55':  '12313683',
+    '56-100': '12533315',
+};
+
 /** Direct Tenor media URLs for export (iframes are not canvas-safe). */
 const GIF_EXPORT_SRC_BY_POSTID = {
     '9388313': 'https://media.tenor.com/VPqmYWo4-98AAAAC/leslie-david-baker-annoyed.gif',
@@ -1106,26 +1101,215 @@ function dialSettleDelayMs() {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 300;
 }
 
-function downloadBlob(blob, filename) {
+async function downloadBlob(blob, filename) {
+    if (IS_TOUCH_DEVICE) {
+        // Web Share API: shows the native iOS/Android save sheet
+        if (navigator.canShare) {
+            const file = new File([blob], filename, { type: 'image/png' });
+            if (navigator.canShare({ files: [file] })) {
+                try {
+                    await navigator.share({ files: [file], title: 'AI Bro Energy Score' });
+                    return;
+                } catch (err) {
+                    if (err.name === 'AbortError') return;
+                    // Non-abort (e.g. NotAllowedError): fall through
+                }
+            }
+        }
+        // iOS Safari doesn't support <a download> for blob URLs — they open in a new tab.
+        // Open the tab deliberately so the image fills the screen, then tell the user to long-press.
+        const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+            (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        const url = URL.createObjectURL(blob);
+        if (isIos) {
+            window.open(url, '_blank');
+            showStatus('Tap and hold the image, then choose "Save to Photos".', 'info');
+            setTimeout(() => URL.revokeObjectURL(url), 60000);
+            return;
+        }
+        // Android/other mobile: anchor download works fine
+        const a = document.createElement('a');
+        a.href = url; a.download = filename; a.rel = 'noopener';
+        document.body.appendChild(a); a.click(); a.remove();
+        URL.revokeObjectURL(url);
+        return;
+    }
+    // Desktop: anchor click → Downloads folder
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    a.rel = 'noopener';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+    a.href = url; a.download = filename; a.rel = 'noopener';
+    document.body.appendChild(a); a.click(); a.remove();
     URL.revokeObjectURL(url);
 }
 
+/** Build a self-contained HTML document for the export image (800px fixed, no media queries). */
+function buildExportHtml(result) {
+    const score     = Math.max(0, Math.min(100, Number(result.bs_score) || 0));
+    const tier      = meterTierFromData(result);
+    const gifSrc    = GIF_EXPORT_SRC_BY_POSTID[TIER_TO_POSTID[tier]] || '';
+    const summary   = (result.post_summary || result.input_summary || '').trim();
+    const reasons   = Array.isArray(result.reasons) ? result.reasons : [];
+    const broSigs   = Array.isArray(result.bro_signals) && result.bro_signals.length
+        ? result.bro_signals
+        : (Array.isArray(result.signals) ? result.signals : []);
+    const posSigs   = Array.isArray(result.positive_signals) ? result.positive_signals : [];
+
+    const needleDeg  = (score / 100) * 180 - 90;
+    const dashOffset = 267 - (score / 100) * 267;
+
+    const card = 'background:#fff;border:0.5px solid rgba(0,0,0,0.08);border-radius:16px;padding:20px 24px;box-sizing:border-box;';
+    const title = 'margin:0 0 12px;font-size:20px;font-weight:700;color:#1a1a1a;line-height:1.3;';
+    const desc  = 'margin:0;font-size:15px;color:#505050;line-height:1.6;';
+
+    function chipHtml(label, variant) {
+        const bg    = variant === 'positive' ? 'rgba(22,163,74,.12)' : 'rgba(220,38,38,.12)';
+        const color = variant === 'positive' ? '#15803d' : '#b91c1c';
+        return `<span style="display:inline-block;background:${bg};color:${color};font-size:12px;font-weight:600;padding:3px 9px;border-radius:20px;white-space:nowrap;">${escapeHtml(label)}</span>`;
+    }
+
+    function signalItemHtml(s, variant) {
+        const label = signalKindToChipLabel(s.kind, variant);
+        return `<li style="display:flex;flex-direction:column;gap:6px;flex:1 1 46%;min-width:200px;padding:12px;border:0.5px solid rgba(0,0,0,0.08);border-radius:14px;background:#fff;list-style:none;">
+            ${chipHtml(label, variant)}
+            <span style="font-size:14px;color:#6b7280;line-height:1.5;font-style:italic;">${escapeHtml(s.snippet || '')}</span>
+        </li>`;
+    }
+
+    const summaryBlock = summary ? `
+        <div style="${card}margin-bottom:16px;">
+            <p style="${title}">What this post says</p>
+            <p style="${desc}">${escapeHtml(summary)}</p>
+        </div>` : '';
+
+    const gifBlock = gifSrc ? `
+        <div style="${card}display:flex;align-items:center;justify-content:center;overflow:hidden;padding:12px;flex:1 1 0;min-width:0;">
+            <img src="${escapeHtml(gifSrc)}" crossorigin="anonymous" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:10px;display:block;">
+        </div>` : '';
+
+    const reasonsBlock = reasons.length ? `
+        <div style="${card}margin-bottom:16px;">
+            <p style="${title}">Why this score</p>
+            <ol style="margin:0;padding-left:22px;display:flex;flex-direction:column;gap:10px;">
+                ${reasons.map(r => `<li style="${desc}">${escapeHtml(r)}</li>`).join('')}
+            </ol>
+        </div>` : '';
+
+    const posSigsBlock = posSigs.length ? `
+        <div style="${card}margin-bottom:16px;">
+            <p style="${title}">What checks out</p>
+            <ul style="margin:0;padding:0;display:flex;flex-wrap:wrap;gap:12px;">
+                ${posSigs.map(s => signalItemHtml(s, 'positive')).join('')}
+            </ul>
+        </div>` : '';
+
+    const broSigsBlock = broSigs.length ? `
+        <div style="${card}margin-bottom:16px;">
+            <p style="${title}">What is sus about this</p>
+            <ul style="margin:0;padding:0;display:flex;flex-wrap:wrap;gap:12px;">
+                ${broSigs.map(s => signalItemHtml(s, 'bro')).join('')}
+            </ul>
+        </div>` : '';
+
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
+* { box-sizing: border-box; }
+body { margin: 0; padding: 24px; width: 800px; background: #f9f9f9; font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif; }
+</style>
+</head>
+<body>
+${summaryBlock}
+<div style="display:flex;flex-direction:row;gap:16px;align-items:stretch;margin-bottom:16px;">
+    <div style="${card}display:flex;flex-direction:column;gap:16px;flex:1 1 0;min-width:0;">
+        <p style="${title}">AI bro energy</p>
+        <div style="display:flex;flex-direction:column;align-items:center;">
+            <svg viewBox="0 0 200 110" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:220px;">
+                <defs>
+                    <linearGradient id="expSpec" gradientUnits="userSpaceOnUse" x1="15" y1="100" x2="185" y2="100">
+                        <stop offset="0%" stop-color="#22c55e"/>
+                        <stop offset="32%" stop-color="#84cc16"/>
+                        <stop offset="48%" stop-color="#eab308"/>
+                        <stop offset="68%" stop-color="#f97316"/>
+                        <stop offset="100%" stop-color="#dc2626"/>
+                    </linearGradient>
+                </defs>
+                <path d="M 15 100 A 85 85 0 0 1 185 100" stroke="#e5e7eb" stroke-width="14" stroke-linecap="round" fill="none"/>
+                <path d="M 15 100 A 85 85 0 0 1 185 100" stroke="url(#expSpec)" stroke-width="14" stroke-linecap="round" fill="none"
+                    stroke-dasharray="267" stroke-dashoffset="${dashOffset.toFixed(2)}"/>
+                <line x1="100" y1="100" x2="100" y2="24" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round"
+                    transform="rotate(${needleDeg.toFixed(2)}, 100, 100)"/>
+                <circle cx="100" cy="100" r="5" fill="#1a1a1a"/>
+            </svg>
+            <div style="display:flex;justify-content:space-between;width:100%;max-width:220px;margin-top:4px;">
+                <span style="font-size:12px;color:#9ca3af;">Low energy</span>
+                <span style="font-size:12px;color:#9ca3af;">Peak bro</span>
+            </div>
+        </div>
+        <p style="margin:0;text-align:center;font-size:56px;font-weight:700;color:#1a1a1a;line-height:1;">${score}</p>
+    </div>
+    ${gifBlock}
+</div>
+${reasonsBlock}
+${posSigsBlock}
+${broSigsBlock}
+</body>
+</html>`;
+}
+
+/** Render an HTML string in a hidden same-origin iframe and return a PNG blob. */
+async function renderHtmlToBlob(html) {
+    if (typeof html2canvas !== 'function') throw new Error('html2canvas not loaded');
+
+    const iframe = document.createElement('iframe');
+    iframe.style.cssText = 'position:fixed;top:0;left:0;width:800px;height:1px;border:none;opacity:0;pointer-events:none;z-index:-1;';
+    document.body.appendChild(iframe);
+
+    try {
+        const doc = iframe.contentDocument;
+        doc.open();
+        doc.write(html);
+        doc.close();
+
+        await new Promise((r) => {
+            if (doc.readyState === 'complete') { r(); return; }
+            iframe.addEventListener('load', r, { once: true });
+        });
+
+        if (doc.fonts?.ready) await doc.fonts.ready;
+
+        const bodyEl   = doc.body;
+        const fullH    = doc.documentElement.scrollHeight || bodyEl.scrollHeight;
+        iframe.style.height = fullH + 'px';
+
+        await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+
+        const canvas = await html2canvas(bodyEl, {
+            scale:       2,
+            useCORS:     true,
+            backgroundColor: '#f9f9f9',
+            logging:     false,
+            windowWidth: 800,
+        });
+
+        return new Promise((resolve, reject) => {
+            canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('toBlob failed'))), 'image/png');
+        });
+    } finally {
+        document.body.removeChild(iframe);
+    }
+}
+
 async function exportResultsAsImage() {
-    if (!exportCaptureEl || resultSection.classList.contains('ai-bro-result--empty')) return;
+    if (!lastResult || resultSection.classList.contains('ai-bro-result--empty')) return;
     if (typeof html2canvas !== 'function') {
         showStatus('Image export is unavailable. Check your connection and refresh.', 'error');
         return;
     }
 
-    const score = (scoreNumber.textContent || '0').trim().replace(/[^\d]/g, '') || '0';
+    const score    = Math.max(0, Math.min(100, Number(lastResult.bs_score) || 0));
     const filename = `ai-bro-energy-${score}.png`;
 
     if (exportBtn) {
@@ -1134,29 +1318,12 @@ async function exportResultsAsImage() {
     }
 
     try {
-        await document.fonts.ready;
-        await new Promise((r) => setTimeout(r, dialSettleDelayMs()));
-
-        await prepareGifForExport();
-
-        const canvas = await html2canvas(exportCaptureEl, {
-            scale: 2,
-            useCORS: true,
-            backgroundColor: exportCaptureBackground(),
-            logging: false,
-            ignoreElements: (el) => el.classList && el.classList.contains('ai-bro-export-ignore'),
-        });
-
-        const blob = await new Promise((resolve, reject) => {
-            canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('toBlob failed'))), 'image/png');
-        });
-
-        downloadBlob(blob, filename);
+        const blob = await renderHtmlToBlob(buildExportHtml(lastResult));
+        await downloadBlob(blob, filename);
         hideStatus();
     } catch {
         showStatus('Could not save image. Try again.', 'error');
     } finally {
-        restoreGifAfterExport();
         if (exportBtn) {
             exportBtn.disabled = false;
             exportBtn.removeAttribute('aria-busy');
@@ -1248,6 +1415,7 @@ function clearPastePreview() {
 }
 
 function renderResult(data) {
+    lastResult = data;
     setInputSectionHidden(true);
     renderPastePreview();
     renderPostSummary(data);
