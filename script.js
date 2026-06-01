@@ -321,6 +321,7 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.setAttribute('aria-label', 'Close menu');
       menu.setAttribute('aria-hidden', 'false');
       menu.classList.add('is-open');
+      menu.querySelectorAll('a').forEach(a => a.removeAttribute('tabindex'));
       stopStarSpinWithBounce();
     }
 
@@ -329,6 +330,7 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.setAttribute('aria-label', 'Open menu');
       menu.setAttribute('aria-hidden', 'true');
       menu.classList.remove('is-open');
+      menu.querySelectorAll('a').forEach(a => a.setAttribute('tabindex', '-1'));
       startStarSpinWithBounce();
     }
 
@@ -351,6 +353,9 @@ document.addEventListener("DOMContentLoaded", () => {
     menu.querySelectorAll('.ham-link').forEach((link) => {
       link.addEventListener('click', () => closeMenu());
     });
+
+    // Initialise: menu starts closed, so links must not be keyboard-reachable
+    menu.querySelectorAll('a').forEach(a => a.setAttribute('tabindex', '-1'));
   }
 
   function setup() {
