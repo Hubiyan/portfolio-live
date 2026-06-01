@@ -188,37 +188,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-document.addEventListener("DOMContentLoaded", () => {
-  // Initialize Confetti with the hidden trigger
-  const confetti = new Confetti("confetti-trigger");
-  confetti.destroyTarget(false); // prevent hiding trigger
+// -------------- CONFETTI (lazy-load on scroll to bottom) --------------
+(function () {
+  var fired = false;
 
-  let fired = false;
-
-  function isAtBottom(offset = 10) {
-    return (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - offset);
+  function isAtBottom(offset) {
+    return (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - (offset || 10));
   }
 
   function fireConfettiAtCenter() {
-    const x = window.innerWidth / 2;
-    const y = window.innerHeight / 2;
-
-    const trigger = document.getElementById("confetti-trigger");
-    const event = new MouseEvent("click", {
-      clientX: x,
-      clientY: y,
+    var trigger = document.getElementById("confetti-trigger");
+    if (!trigger) return;
+    trigger.dispatchEvent(new MouseEvent("click", {
+      clientX: window.innerWidth / 2,
+      clientY: window.innerHeight / 2,
       bubbles: true
-    });
-    trigger.dispatchEvent(event);
+    }));
   }
 
-  window.addEventListener("scroll", () => {
-    if (!fired && isAtBottom()) {
-      fired = true;
+  window.addEventListener("scroll", function () {
+    if (fired || !isAtBottom()) return;
+    fired = true;
+    var s = document.createElement('script');
+    s.src = 'confetti.min.js';
+    s.onload = function () {
+      var c = new Confetti("confetti-trigger");
+      c.destroyTarget(false);
       fireConfettiAtCenter();
-    }
-  });
-});
+    };
+    document.head.appendChild(s);
+  }, { passive: true });
+})();
 
 // -------------- HAMBURGER MENU (star-blue) --------------
 (function initHamburger() {
@@ -436,25 +436,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-// -------------- LAZY LOAD WISTIA VIDEO --------------
-(function () {
-  var section = document.querySelector('.loom-video-about-me');
-  if (!section) return;
-  var loaded = false;
-  var observer = new IntersectionObserver(function (entries) {
-    if (!loaded && entries[0].isIntersecting) {
-      loaded = true;
-      var s1 = document.createElement('script');
-      s1.src = 'https://fast.wistia.com/player.js';
-      s1.async = true;
-      document.head.appendChild(s1);
-      var s2 = document.createElement('script');
-      s2.src = 'https://fast.wistia.com/embed/9itf7hdei4.js';
-      s2.async = true;
-      s2.type = 'module';
-      document.head.appendChild(s2);
-      observer.disconnect();
-    }
-  }, { rootMargin: '300px' });
-  observer.observe(section);
-})();
