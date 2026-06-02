@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lab | Hubiyan</title>
+    <meta name="description" content="Hubiyan Lab: experiments, tools, and prototypes.">
+    <link rel="icon" type="image/x-icon" href="../images/logos/main-logo.png">
+    <link rel="stylesheet" href="../bootstrap.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../lab.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="ds-subpage lab-page" data-mat-color="green">
+
+    <main id="lab-main" class="lab-main" aria-label="Lab canvas">
+
+        <!-- Closed project boxes -->
+        <div class="lab-box"
+             data-href="/lab/prompts/"
+             data-box-id="prompts"
+             style="left: 12%; top: 28%; --box-rot: -2.5deg;"
+             tabindex="0" role="link"
+             aria-label="Prompts — open project">
+            <div class="lab-box-tape"><span>Prompts</span></div>
+        </div>
+
+        <div class="lab-box"
+             data-href="/lab/ai-bro-detector/"
+             data-box-id="ai-bro"
+             style="left: 50%; top: 22%; --box-rot: 3.2deg;"
+             tabindex="0" role="link"
+             aria-label="AI Bro Detector — open project">
+            <div class="lab-box-tape"><span>AI Bro<br>Detector</span></div>
+        </div>
+
+        <!-- Open box: Visual Explorations -->
+        <div class="lab-box lab-box--open"
+             data-box-id="visual-exp"
+             data-action="open-explorer"
+             style="left: 28%; top: 52%; --box-rot: -1.4deg;"
+             tabindex="0" role="button"
+             aria-haspopup="dialog"
+             aria-label="Visual Explorations — open box">
+            <!-- Printed photos peeking above the box -->
+            <div class="lab-box-photos">
+                <div class="lab-photo lab-photo--1">
+                    <img src="../images/wallpapers/thumbs/Andromeda-horizon.webp" alt="Andromeda Horizon wallpaper preview" draggable="false">
+                </div>
+                <div class="lab-photo lab-photo--2">
+                    <img src="../images/wallpapers/thumbs/Andromeda-horizon-1.webp" alt="Andromeda Horizon 1 wallpaper preview" draggable="false">
+                </div>
+                <div class="lab-photo lab-photo--3">
+                    <img src="../images/wallpapers/thumbs/Andromeda-horizon-2.webp" alt="Andromeda Horizon 2 wallpaper preview" draggable="false">
+                </div>
+            </div>
+            <div class="lab-box-tape lab-box-tape--small"><span>Visual<br>Explorations</span></div>
+        </div>
+
+    </main>
+
+    <!-- ============================================================
+         Visual Explorations modal (box contents)
+    ============================================================ -->
+    <div class="lab-explorer" id="labExplorer" role="dialog" aria-modal="true"
+         aria-label="Visual Explorations" hidden>
+        <div class="lab-explorer-backdrop" data-close="explorer"></div>
+        <div class="lab-explorer-panel">
+            <button class="lab-explorer-close" aria-label="Close" data-close="explorer">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+            <p class="lab-explorer-eyebrow">Inside the box</p>
+            <h2 class="lab-explorer-title">Visual Explorations</h2>
+
+            <!-- Wallpapers plastic sleeve -->
+            <div class="lab-sleeve" role="button" tabindex="0" data-action="open-wallpapers"
+                 aria-label="Wallpapers — open slideshow">
+                <div class="lab-sleeve-seal"></div>
+                <div class="lab-sleeve-photos">
+                    <img class="lab-sleeve-photo" src="../images/wallpapers/thumbs/Andromeda-horizon.webp" alt="" draggable="false">
+                    <img class="lab-sleeve-photo" src="../images/wallpapers/thumbs/Andromeda-horizon-1.webp" alt="" draggable="false">
+                    <img class="lab-sleeve-photo" src="../images/wallpapers/thumbs/Andromeda-horizon-2.webp" alt="" draggable="false">
+                </div>
+                <div class="lab-sleeve-footer">
+                    <span class="lab-sleeve-label">Wallpapers</span>
+                    <span class="lab-sleeve-count">3 images</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         Lightbox / Slideshow
+    ============================================================ -->
+    <div class="lab-lightbox" id="labLightbox" role="dialog" aria-modal="true"
+         aria-label="Wallpaper slideshow" hidden>
+        <div class="lab-lightbox-backdrop" data-close="lightbox"></div>
+
+        <button class="lab-lightbox-close" aria-label="Close slideshow" data-close="lightbox">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </button>
+
+        <button class="lab-lightbox-nav lab-lightbox-nav--prev" id="lbPrev" aria-label="Previous wallpaper">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M13 3l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+        <button class="lab-lightbox-nav lab-lightbox-nav--next" id="lbNext" aria-label="Next wallpaper">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M7 3l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+
+        <div class="lab-lightbox-stage">
+            <div class="lab-lightbox-print">
+                <img class="lab-lightbox-img" id="lbImg" src="" alt="">
+            </div>
+        </div>
+
+        <div class="lab-lightbox-footer">
+            <div class="lab-lightbox-info">
+                <span class="lab-lightbox-name" id="lbName"></span>
+                <span class="lab-lightbox-counter" id="lbCounter"></span>
+            </div>
+            <a class="lab-lightbox-download" id="lbDownload" href="" target="_blank" rel="noopener">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <path d="M7 1v8M4 6l3 3 3-3M2 11h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Download full resolution
+            </a>
+        </div>
+
+        <div class="lab-lightbox-dots" id="lbDots" aria-hidden="true"></div>
+    </div>
+
+    <!-- ============================================================
+         Colour switcher
+    ============================================================ -->
+    <div class="lab-color-switcher" role="group" aria-label="Background colour">
+        <button class="lab-swatch" data-color="green"  aria-label="Green mat"  aria-pressed="true"></button>
+        <button class="lab-swatch" data-color="blue"   aria-label="Blue mat"   aria-pressed="false"></button>
+        <button class="lab-swatch" data-color="black"  aria-label="Black mat"  aria-pressed="false"></button>
+    </div>
+
+    <script>
+    /* ============================================================
+       Colour switcher
+    ============================================================ */
+    (function () {
+        var body = document.body;
+        var swatches = document.querySelectorAll('.lab-swatch');
+        var saved = localStorage.getItem('lab-mat-color');
+        if (saved) {
+            body.setAttribute('data-mat-color', saved);
+            swatches.forEach(function (s) {
+                s.setAttribute('aria-pressed', s.dataset.color === saved ? 'true' : 'false');
+            });
+        }
+        swatches.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var color = btn.dataset.color;
+                body.setAttribute('data-mat-color', color);
+                localStorage.setItem('lab-mat-color', color);
+                swatches.forEach(function (s) {
+                    s.setAttribute('aria-pressed', s.dataset.color === color ? 'true' : 'false');
+                });
+            });
+        });
+    })();
+
+    /* ============================================================
+       Wallpaper data
+    ============================================================ */
+    var WALLPAPERS = [
+        {
+            name: 'Andromeda Horizon',
+            thumb: '/images/wallpapers/thumbs/Andromeda-horizon.webp',
+            full: 'https://raw.githubusercontent.com/Hubiyan/portfolio-live/main/images/wallpapers/Andromeda-horizon.png',
+            filename: 'Andromeda-horizon.png'
+        },
+        {
+            name: 'Andromeda Horizon No.1',
+            thumb: '/images/wallpapers/thumbs/Andromeda-horizon-1.webp',
+            full: 'https://raw.githubusercontent.com/Hubiyan/portfolio-live/main/images/wallpapers/Andromeda-horizon-1.png',
+            filename: 'Andromeda-horizon-1.png'
+        },
+        {
+            name: 'Andromeda Horizon No.2',
+            thumb: '/images/wallpapers/thumbs/Andromeda-horizon-2.webp',
+            full: 'https://raw.githubusercontent.com/Hubiyan/portfolio-live/main/images/wallpapers/Andromeda-horizon-2.png',
+            filename: 'Andromeda-horizon-2.png'
+        }
+    ];
+
+    /* ============================================================
+       Draggable boxes
+    ============================================================ */
+    (function initLabBoxes() {
+        var STORE = 'lab-box-pos';
+        function loadPos() {
+            try { return JSON.parse(localStorage.getItem(STORE) || '{}'); } catch (e) { return {}; }
+        }
+        function savePos(id, x, y) {
+            var pos = loadPos();
+            pos[id] = { x: x, y: y };
+            localStorage.setItem(STORE, JSON.stringify(pos));
+        }
+
+        var saved = loadPos();
+
+        document.querySelectorAll('.lab-box').forEach(function (box) {
+            var id = box.dataset.boxId;
+            if (saved[id]) {
+                box.style.left = saved[id].x + 'px';
+                box.style.top  = saved[id].y + 'px';
+            }
+
+            var dragging = false, moved = false;
+            var startX, startY, startL, startT;
+
+            box.addEventListener('pointerdown', function (e) {
+                if (e.button !== 0) return;
+                dragging = true; moved = false;
+                startX = e.clientX; startY = e.clientY;
+                startL = box.offsetLeft; startT = box.offsetTop;
+                box.classList.add('is-dragging');
+                box.setPointerCapture(e.pointerId);
+                e.preventDefault();
+            });
+
+            box.addEventListener('pointermove', function (e) {
+                if (!dragging) return;
+                var dx = e.clientX - startX, dy = e.clientY - startY;
+                if (Math.abs(dx) > 5 || Math.abs(dy) > 5) moved = true;
+                box.style.left = (startL + dx) + 'px';
+                box.style.top  = (startT + dy) + 'px';
+            });
+
+            box.addEventListener('pointerup', function () {
+                if (!dragging) return;
+                dragging = false;
+                box.classList.remove('is-dragging');
+                if (!moved) {
+                    if (box.dataset.href) { window.location.href = box.dataset.href; return; }
+                    if (box.dataset.action === 'open-explorer') { openExplorer(); return; }
+                }
+                if (moved) savePos(id, box.offsetLeft, box.offsetTop);
+            });
+
+            box.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    if (box.dataset.href) { window.location.href = box.dataset.href; return; }
+                    if (box.dataset.action === 'open-explorer') openExplorer();
+                }
+            });
+        });
+    })();
+
+    /* ============================================================
+       Explorer modal (box contents)
+    ============================================================ */
+    var explorer = document.getElementById('labExplorer');
+
+    function openExplorer() {
+        explorer.hidden = false;
+        document.body.classList.add('lab-modal-open');
+        explorer.querySelector('.lab-explorer-close').focus();
+    }
+
+    function closeExplorer() {
+        explorer.hidden = true;
+        document.body.classList.remove('lab-modal-open');
+    }
+
+    explorer.addEventListener('click', function (e) {
+        if (e.target.dataset.close === 'explorer') closeExplorer();
+        if (e.target.closest('[data-action="open-wallpapers"]')) {
+            closeExplorer();
+            openLightbox(0);
+        }
+    });
+
+    explorer.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeExplorer();
+        var sleeve = e.target.closest('[data-action="open-wallpapers"]');
+        if (sleeve && (e.key === 'Enter' || e.key === ' ')) {
+            e.preventDefault();
+            closeExplorer();
+            openLightbox(0);
+        }
+    });
+
+    /* ============================================================
+       Lightbox / Slideshow
+    ============================================================ */
+    var lightbox  = document.getElementById('labLightbox');
+    var lbImg     = document.getElementById('lbImg');
+    var lbName    = document.getElementById('lbName');
+    var lbCounter = document.getElementById('lbCounter');
+    var lbDl      = document.getElementById('lbDownload');
+    var lbDots    = document.getElementById('lbDots');
+    var lbPrev    = document.getElementById('lbPrev');
+    var lbNext    = document.getElementById('lbNext');
+    var lbCurrent = 0;
+
+    /* Build dot indicators */
+    WALLPAPERS.forEach(function (_, i) {
+        var d = document.createElement('button');
+        d.className = 'lab-lightbox-dot';
+        d.setAttribute('aria-label', 'Go to wallpaper ' + (i + 1));
+        d.addEventListener('click', function () { goTo(i); });
+        lbDots.appendChild(d);
+    });
+
+    function goTo(index) {
+        lbCurrent = (index + WALLPAPERS.length) % WALLPAPERS.length;
+        var wp = WALLPAPERS[lbCurrent];
+        lbImg.src = wp.thumb;
+        lbImg.alt = wp.name;
+        lbName.textContent = wp.name;
+        lbCounter.textContent = (lbCurrent + 1) + ' / ' + WALLPAPERS.length;
+        lbDl.href = wp.full;
+        lbDl.setAttribute('download', wp.filename);
+        /* update dots */
+        lbDots.querySelectorAll('.lab-lightbox-dot').forEach(function (d, i) {
+            d.classList.toggle('is-active', i === lbCurrent);
+            d.setAttribute('aria-pressed', i === lbCurrent ? 'true' : 'false');
+        });
+    }
+
+    function openLightbox(index) {
+        lightbox.hidden = false;
+        document.body.classList.add('lab-modal-open');
+        goTo(index);
+        lbImg.focus();
+    }
+
+    function closeLightbox() {
+        lightbox.hidden = true;
+        document.body.classList.remove('lab-modal-open');
+    }
+
+    lbPrev.addEventListener('click', function () { goTo(lbCurrent - 1); });
+    lbNext.addEventListener('click', function () { goTo(lbCurrent + 1); });
+
+    lightbox.addEventListener('click', function (e) {
+        if (e.target.dataset.close === 'lightbox') closeLightbox();
+    });
+
+    lightbox.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape')       closeLightbox();
+        if (e.key === 'ArrowLeft')    goTo(lbCurrent - 1);
+        if (e.key === 'ArrowRight')   goTo(lbCurrent + 1);
+    });
+
+    /* Swipe support */
+    (function () {
+        var touchStartX = 0;
+        lightbox.addEventListener('touchstart', function (e) {
+            touchStartX = e.changedTouches[0].clientX;
+        }, { passive: true });
+        lightbox.addEventListener('touchend', function (e) {
+            var dx = e.changedTouches[0].clientX - touchStartX;
+            if (Math.abs(dx) > 50) goTo(lbCurrent + (dx < 0 ? 1 : -1));
+        }, { passive: true });
+    })();
+    </script>
+</body>
+
+</html>

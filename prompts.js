@@ -72,8 +72,8 @@ const PROMPTS_HERO = {
         '#25E000', // green
     ],
     // In `text`, this character is replaced with `starImageSrc` once revealed. Infinite
-    // rotation after the full title run. Asset: images/btn-icons/star.png
-    starImageSrc: '../images/btn-icons/star.png',
+    // rotation after the full title run. Matches Home / AI Bro star visual.
+    starImageSrc: '/images/btn-icons/star-blue.png',
     starChar: '*',
     // Wrap the last word in a no-break group so the star can’t end up on its own line.
     lastWordNoWrap: true,

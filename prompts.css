@@ -1,0 +1,421 @@
+/* =====================================================
+   Prompts page — page-specific styles
+   Depends on: style.css (shared ds-subpage base)
+   ===================================================== */
+
+.prompts-hero-nowrap {
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  min-width: 0;
+  flex: 0 0 auto;
+  white-space: nowrap;
+  letter-spacing: inherit;
+  font: inherit;
+  margin-left: var(--prompts-title-word-gap);
+}
+.prompts-hero-title-star-slot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  vertical-align: 0.05em;
+  align-self: center;
+  margin: 0 0.02em;
+}
+.prompts-hero-title-star {
+  display: block;
+  width: 0.6em;
+  height: 0.6em;
+  object-fit: contain;
+  object-position: center;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+  flex-shrink: 0;
+  transform-origin: 50% 50%;
+}
+@keyframes prompts-hero-star-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.prompts-hero-title-star.is-rotating {
+  animation: prompts-hero-star-spin 5s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .prompts-hero-title-star.is-rotating {
+    animation: none;
+  }
+}
+.prompts-hero-scramble {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+.prompts-hero-scramble--measuring {
+  display: block;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+.prompts-hero-scramble-line > span:not(.prompts-hero-nowrap),
+.prompts-hero-nowrap > span:not(.prompts-hero-title-star-slot) {
+  flex: 0 0 auto;
+  white-space: pre;
+}
+.prompts-hero-scramble.is-single-line {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  width: 100%;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: visible;
+}
+.prompts-hero-scramble.is-single-line .prompts-hero-scramble-line {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  min-width: 0;
+  max-width: 100%;
+}
+.prompts-hero-scramble.is-multiline {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  min-width: 0;
+  row-gap: 0.12em;
+  white-space: normal;
+  overflow: visible;
+}
+.prompts-hero-scramble.is-multiline .prompts-hero-scramble-line {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  min-width: 0;
+  max-width: 100%;
+}
+.prompts-hero-title:has(.prompts-hero-scramble.is-multiline),
+.ds-subpage-hero-title:has(.prompts-hero-scramble.is-multiline),
+.ds-subpage-hero-title:has(.ds-subpage-hero-scramble.is-multiline) {
+  line-height: 1.12;
+}
+.prompts-grid,
+.ds-card-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-16);
+  align-items: start;
+  opacity: 0;
+  filter: blur(20px);
+  transform: translateY(30px);
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, filter, transform;
+}
+.prompts-grid.is-visible,
+.ds-card-grid-2.is-visible {
+  opacity: 1;
+  filter: blur(0px);
+  transform: translateY(0);
+}
+.prompt-block,
+.ds-editorial-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  cursor: pointer;
+  overflow: visible !important;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+.prompt-block:hover,
+.ds-editorial-card:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0px 20px 40px rgba(0, 0, 0, 0.07),
+    0px 4px 12px rgba(0, 0, 0, 0.04);
+}
+.prompt-block:focus-visible,
+.ds-editorial-card:focus-visible {
+  outline: 2px solid var(--blue-300);
+  outline-offset: 3px;
+}
+.prompt-block-header,
+.ds-editorial-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-12);
+  border-bottom: 0.5px solid var(--grey-100);
+  padding-bottom: var(--spacing-16);
+  margin-bottom: var(--spacing-16);
+}
+.prompt-ascii-box {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.5px solid var(--ascii-border, var(--grey-100));
+  border-radius: var(--spacing-04);
+  overflow: hidden;
+  box-sizing: border-box;
+  background: transparent;
+  min-width: var(--spacing-24);
+  min-height: var(--spacing-24);
+}
+.prompt-ascii-pre {
+  margin: 0;
+  padding: 0;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 5.5px;
+  line-height: 1.35;
+  color: var(--ascii-fg, var(--grey-400));
+  white-space: pre;
+  user-select: none;
+  display: block;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+.prompt-card-title,
+.ds-editorial-card-title {
+  font-size: var(--spacing-18);
+  font-weight: 500;
+  color: var(--grey-500);
+  margin: 0;
+  line-height: 130%;
+  flex: 1;
+}
+.prompt-body,
+.ds-editorial-card-body {
+  margin: 0;
+  font-size: var(--spacing-16);
+  font-weight: 400;
+  color: var(--grey-300);
+  line-height: 160%;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.prompt-copy-btn,
+.ds-clipboard-action {
+  width: var(--spacing-44);
+  height: var(--spacing-44);
+  border-radius: 50%;
+  background: var(--grey-700);
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.35s ease;
+}
+.prompt-copy-btn:hover:not(.is-copied),
+.ds-clipboard-action:hover:not(.is-copied) {
+  background: var(--grey-900);
+}
+.btn-icon-copy,
+.btn-icon-check {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    opacity 0.2s ease 0.08s,
+    transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) 0.08s;
+}
+.btn-icon-check {
+  opacity: 0;
+  transform: scale(0.3) rotate(-20deg);
+}
+.prompt-copy-btn.is-copied,
+.ds-clipboard-action.is-copied {
+  background: #19a14b;
+}
+.prompt-copy-btn.is-copied .btn-icon-copy,
+.ds-clipboard-action.is-copied .btn-icon-copy {
+  opacity: 0;
+  transform: scale(0.3) rotate(20deg);
+}
+.prompt-copy-btn.is-copied .btn-icon-check,
+.ds-clipboard-action.is-copied .btn-icon-check {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+@keyframes prompt-btn-bounce {
+  0% {
+    transform: scale(1);
+  }
+  28% {
+    transform: scale(0.84);
+  }
+  62% {
+    transform: scale(1.12);
+  }
+  84% {
+    transform: scale(0.96);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.prompt-copy-btn.is-bouncing,
+.ds-clipboard-action.is-bouncing {
+  animation: prompt-btn-bounce 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.prompt-block.is-coming-soon,
+.ds-editorial-card.is-coming-soon {
+  cursor: pointer;
+  background: transparent;
+  border: 0.5px solid var(--grey-100);
+}
+.prompt-block.is-coming-soon:hover,
+.ds-editorial-card.is-coming-soon:hover {
+  transform: none;
+  box-shadow: none;
+}
+.prompt-block.is-coming-soon .prompt-body,
+.ds-editorial-card.is-coming-soon .ds-editorial-card-body {
+  filter: blur(5px);
+  user-select: none;
+  pointer-events: none;
+  color: var(--grey-300);
+  opacity: 0.85;
+}
+.prompt-copy-btn:disabled,
+.prompt-copy-btn[aria-disabled="true"],
+.ds-clipboard-action:disabled,
+.ds-clipboard-action[aria-disabled="true"] {
+  background: var(--grey-50);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.prompt-copy-btn:disabled .btn-icon-copy svg path,
+.prompt-copy-btn:disabled .btn-icon-copy svg rect,
+.prompt-copy-btn[aria-disabled="true"] .btn-icon-copy svg path,
+.prompt-copy-btn[aria-disabled="true"] .btn-icon-copy svg rect,
+.ds-clipboard-action:disabled .btn-icon-copy svg path,
+.ds-clipboard-action:disabled .btn-icon-copy svg rect,
+.ds-clipboard-action[aria-disabled="true"] .btn-icon-copy svg path,
+.ds-clipboard-action[aria-disabled="true"] .btn-icon-copy svg rect {
+  stroke: var(--grey-300);
+}
+.prompt-copy-btn:disabled .btn-icon-check svg path,
+.prompt-copy-btn[aria-disabled="true"] .btn-icon-check svg path,
+.ds-clipboard-action:disabled .btn-icon-check svg path,
+.ds-clipboard-action[aria-disabled="true"] .btn-icon-check svg path {
+  fill: var(--grey-300);
+}
+.prompts-copy-status,
+.ds-live-toast {
+  position: fixed;
+  left: 50%;
+  z-index: 1001;
+  padding: var(--spacing-10) var(--spacing-16);
+  font-size: var(--spacing-18);
+  font-weight: 400;
+  color: var(--bg-white);
+  background: #17a74c;
+  border-radius: var(--spacing-10);
+  box-shadow: 0 4px 24px rgba(34, 197, 94, 0.25);
+  pointer-events: none;
+  width: max-content;
+  max-width: calc(100vw - var(--spacing-40));
+  box-sizing: border-box;
+  bottom: calc(var(--spacing-100)+env(safe-area-inset-bottom, 0));
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-50%) translateY(6px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0s linear 0.2s;
+  text-align: left;
+}
+.prompts-copy-status.is-visible,
+.ds-live-toast.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0s;
+}
+.prompts-copy-status.is-soon,
+.ds-live-toast.is-soon {
+  background: var(--grey-700);
+  color: var(--bg-white);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+}
+@media screen and (min-width: 0px) and (max-width: 520px) {
+  .prompts-grid,
+  .ds-card-grid-2 {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-12);
+  }
+  .prompt-card-title,
+  .ds-editorial-card-title {
+    font-size: var(--spacing-16);
+  }
+  .prompt-body,
+  .ds-editorial-card-body {
+    font-size: var(--spacing-14);
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+  }
+  .prompt-block-header,
+  .ds-editorial-card-header {
+    padding-bottom: var(--spacing-12);
+    margin-bottom: var(--spacing-12);
+  }
+  .prompt-copy-btn,
+  .ds-clipboard-action {
+    width: var(--spacing-36);
+    height: var(--spacing-36);
+  }
+  .prompts-copy-status,
+  .prompts-copy-status.is-visible,
+  .ds-live-toast,
+  .ds-live-toast.is-visible {
+    bottom: calc(var(--spacing-88) + env(safe-area-inset-bottom, 0));
+  }
+  .prompts-copy-status,
+  .ds-live-toast {
+    font-size: var(--spacing-14);
+    max-width: calc(100vw - var(--spacing-40));
+  }
+}
+
+@media screen and (min-width: 350px) and (max-width: 520px) {
+  .prompt-card-title,
+  .ds-editorial-card-title {
+    font-size: var(--spacing-18);
+  }
+  .prompt-body,
+  .ds-editorial-card-body {
+    font-size: var(--spacing-14);
+    -webkit-line-clamp: 5;
+    line-clamp: 5;
+  }
+}
+
+@media screen and (min-width: 520px) and (max-width: 840px) {
+  .prompts-grid,
+  .ds-card-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-12);
+  }
+}
+
