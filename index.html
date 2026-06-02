@@ -72,35 +72,7 @@
     <noscript><link rel="stylesheet" href="bootstrap.min.css"></noscript>
     <link rel="preload" href="style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="style.css"></noscript>
-    <script>
-        (function lazyLoadLottiePlayer() {
-            if (!document.querySelector('lottie-player')) return;
-            var loaded = false;
-            function loadLottie() {
-                if (loaded || (window.customElements && customElements.get('lottie-player'))) return;
-                loaded = true;
-                var s = document.createElement('script');
-                s.src = 'scripts/lottie-player.min.js';
-                s.defer = true;
-                document.head.appendChild(s);
-            }
-            var firstLottie = document.querySelector('lottie-player');
-            if ('IntersectionObserver' in window && firstLottie) {
-                var io = new IntersectionObserver(function (entries) {
-                    if (entries[0] && entries[0].isIntersecting) {
-                        loadLottie();
-                        io.disconnect();
-                    }
-                }, { rootMargin: '300px 0px' });
-                io.observe(firstLottie);
-            } else {
-                loadLottie();
-            }
-            window.addEventListener('load', function () {
-                setTimeout(loadLottie, 1500);
-            }, { once: true });
-        })();
-    </script>
+    <script defer src="scripts/lottie-player.min.js"></script>
 
     <script defer src="bootstrap.bundle.min.js"></script>
     <script defer src="script.js"></script>
@@ -112,7 +84,7 @@
         <div class="nav-blur-stack" id="navBlurStack" aria-hidden="true"></div>
         <div class="nav-floater d-flex align-items-center justify-content-center gap-32-box">
             <a href="https://hubiyan.com/"><img class="nav-logo-img" src="images/logos/main-logo.png"
-                    alt="Hubiyan logo, go to homepage" width="42" height="42" class="home">
+                    alt="Hubiyan logo, go to homepage" class="home">
             </a>
             <div class="button-wrapper d-flex gap-04-box align-items-center res-0-520-w-100">
                 <button type="button" class="my-button btn-primary res-0-520-w-100" data-bs-toggle="modal"
@@ -121,7 +93,7 @@
                 </button>
                 <button class="btn my-button btn-seco icon-btn" type="button" data-bs-toggle="modal"
                     data-bs-target="#exampleModal1" aria-label="Watch video reel">
-                    <img class="large-btn-icon" src="images/btn-icons/play.png" alt="Play" width="19" height="19">
+                    <img class="large-btn-icon" src="images/btn-icons/play.png" alt="Play">
                 </button>
             </div>
 

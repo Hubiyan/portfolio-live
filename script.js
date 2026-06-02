@@ -29,27 +29,33 @@ window.addEventListener('load', () => {
 
 
 // -------------- MOBILE NAVIGATION FIX --------------
-(function initMobileNavFix() {
-  const mq = window.matchMedia('(max-width: 520px)');
+function fixNav() {
+  const nav = document.querySelector('.my-nav');
 
-  function syncMobileNav() {
-    const nav = document.querySelector('.my-nav');
-    if (!nav) return;
-    nav.classList.toggle('is-mobile-fixed', mq.matches);
+  function forceNavPosition() {
+    if (window.innerWidth <= 520) {
+      nav.style.cssText = `
+                position: fixed !important;
+                bottom: 0 !important;
+                left: 0 !important;
+                z-index: 997 !important;
+                transform: none !important;
+                -webkit-transform: none !important;
+            `;
+      window.scrollTo(window.scrollX, window.scrollY); // Prevent scroll from moving nav
+    }
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', syncMobileNav, { once: true });
-  } else {
-    syncMobileNav();
-  }
+  forceNavPosition();
+  window.addEventListener('scroll', forceNavPosition, { passive: true });
+  document.addEventListener('touchmove', forceNavPosition, { passive: true });
+  document.addEventListener('touchend', forceNavPosition, { passive: true });
+}
 
-  if (typeof mq.addEventListener === 'function') {
-    mq.addEventListener('change', syncMobileNav);
-  } else {
-    mq.addListener(syncMobileNav);
-  }
-})();
+// Initialize mobile navigation fix
+document.addEventListener('DOMContentLoaded', fixNav);
+window.addEventListener('resize', fixNav);
+window.addEventListener('orientationchange', fixNav);
 
 
 // -------------- TESTIMONIAL SCROLLING (Reusable) --------------
