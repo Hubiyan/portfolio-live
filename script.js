@@ -29,33 +29,27 @@ window.addEventListener('load', () => {
 
 
 // -------------- MOBILE NAVIGATION FIX --------------
-function fixNav() {
-  const nav = document.querySelector('.my-nav');
+(function initMobileNavFix() {
+  const mq = window.matchMedia('(max-width: 520px)');
 
-  function forceNavPosition() {
-    if (window.innerWidth <= 520) {
-      nav.style.cssText = `
-                position: fixed !important;
-                bottom: 0 !important;
-                left: 0 !important;
-                z-index: 997 !important;
-                transform: none !important;
-                -webkit-transform: none !important;
-            `;
-      window.scrollTo(window.scrollX, window.scrollY); // Prevent scroll from moving nav
-    }
+  function syncMobileNav() {
+    const nav = document.querySelector('.my-nav');
+    if (!nav) return;
+    nav.classList.toggle('is-mobile-fixed', mq.matches);
   }
 
-  forceNavPosition();
-  window.addEventListener('scroll', forceNavPosition, { passive: true });
-  document.addEventListener('touchmove', forceNavPosition, { passive: true });
-  document.addEventListener('touchend', forceNavPosition, { passive: true });
-}
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', syncMobileNav, { once: true });
+  } else {
+    syncMobileNav();
+  }
 
-// Initialize mobile navigation fix
-document.addEventListener('DOMContentLoaded', fixNav);
-window.addEventListener('resize', fixNav);
-window.addEventListener('orientationchange', fixNav);
+  if (typeof mq.addEventListener === 'function') {
+    mq.addEventListener('change', syncMobileNav);
+  } else {
+    mq.addListener(syncMobileNav);
+  }
+})();
 
 
 // -------------- TESTIMONIAL SCROLLING (Reusable) --------------

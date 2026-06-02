@@ -150,6 +150,7 @@ body {
 .nav-logo-img {
   border: 1px solid var(--grey-50);
   width: var(--spacing-42);
+  height: var(--spacing-42);
   border-radius: 9.75px;
 }
 .container {
@@ -1221,12 +1222,19 @@ p {
   display: inline-flex;
   align-items: flex-end;
   gap: 3px;
+  min-width: 7ch;
+  justify-content: flex-end;
+  font-variant-numeric: tabular-nums;
 }
 .time-comp .hm {
   font-size: 16px;
   line-height: 1.2;
   color: #000;
   font-weight: 300;
+  display: inline-block;
+  min-width: 4ch;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 .time-comp {
   font-size: 12px;
@@ -1240,6 +1248,17 @@ p {
   line-height: 1.2;
   color: #000;
   font-weight: 300;
+  display: inline-block;
+  min-width: 2.5ch;
+  text-align: left;
+}
+.my-nav.is-mobile-fixed {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  z-index: 997 !important;
+  transform: none !important;
+  -webkit-transform: none !important;
 }
 .animated-action {
   width: 100%;
