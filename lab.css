@@ -336,59 +336,139 @@ body.lab-modal-open {
 }
 
 /* ============================================================
-   Plastic sleeve (category wrapper)
+   Plastic sleeve (category wrapper) — crumpled irregular look
 ============================================================ */
 
 .lab-sleeve {
   position: relative;
   cursor: pointer;
-  border-radius: var(--spacing-08);
-  border: 1.5px solid rgba(255, 255, 255, 0.45);
-  overflow: hidden;
-  background: linear-gradient(
-    145deg,
-    rgba(255, 255, 255, 0.22) 0%,
-    rgba(200, 220, 255, 0.12) 50%,
-    rgba(255, 255, 255, 0.18) 100%
-  );
+  /* Asymmetric corners — each side bows slightly */
+  border-radius: 9px 5px 8px 6px / 7px 9px 5px 8px;
+  border: 1.5px solid rgba(255, 255, 255, 0.38);
+  overflow: visible;        /* allow warped edges to bleed out */
+
+  /* Crease lines baked into the gradient stack */
+  background:
+    /* bright crease top-left ↘ */
+    linear-gradient(
+      158deg,
+      transparent 28%,
+      rgba(255, 255, 255, 0.22) 29.5%,
+      rgba(255, 255, 255, 0.06) 31.5%,
+      transparent 33%
+    ),
+    /* dark fold shadow upper-right ↙ */
+    linear-gradient(
+      72deg,
+      transparent 52%,
+      rgba(0, 0, 0, 0.09) 53.5%,
+      transparent 55.5%
+    ),
+    /* faint lower crease ↘ */
+    linear-gradient(
+      135deg,
+      transparent 62%,
+      rgba(255, 255, 255, 0.10) 63.5%,
+      transparent 65%
+    ),
+    /* base plastic tint */
+    linear-gradient(
+      145deg,
+      rgba(235, 245, 255, 0.26) 0%,
+      rgba(190, 215, 250, 0.10) 40%,
+      rgba(225, 238, 255, 0.20) 100%
+    );
+
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
     2px 4px 14px rgba(0, 0, 0, 0.28);
+
+  /* SVG mesh-warp filter makes the whole thing read as crumpled */
+  filter: url(#plastic-crumple);
+
+  /* Slight off-axis skew adds to the irregular feeling */
+  transform: skew(-0.6deg, 0.3deg);
+  transform-origin: center center;
+
   transition: box-shadow 0.18s ease, transform 0.18s ease;
 }
 
 .lab-sleeve:hover,
 .lab-sleeve:focus-visible {
-  transform: translateY(-3px);
+  transform: skew(-0.6deg, 0.3deg) translateY(-3px);
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.18),
     3px 8px 20px rgba(0, 0, 0, 0.38);
   outline: none;
 }
 
-/* Sealed top fold */
+/* Sealed top fold — uneven heat-seal look */
 .lab-sleeve-seal {
-  height: var(--spacing-20);
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.38) 0%,
-    rgba(200, 220, 255, 0.18) 100%
+  height: 22px;
+  background:
+    /* uneven seal bumps */
+    repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 11px,
+      rgba(255, 255, 255, 0.18) 11px,
+      rgba(255, 255, 255, 0.18) 14px,
+      transparent 14px
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.42) 0%,
+      rgba(200, 220, 255, 0.22) 100%
+    );
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  /* slight wavy clip at the seal edge */
+  clip-path: polygon(
+    0% 0%, 100% 0%,
+    100% 78%, 97% 84%, 94% 78%, 91% 85%, 88% 79%,
+    85% 85%, 82% 80%, 79% 86%, 76% 80%, 73% 85%,
+    70% 79%, 67% 84%, 64% 80%, 61% 85%, 58% 79%,
+    55% 85%, 52% 79%, 49% 84%, 46% 79%, 43% 84%,
+    40% 78%, 37% 85%, 34% 79%, 31% 85%, 28% 79%,
+    25% 84%, 22% 80%, 19% 85%, 16% 79%, 13% 85%,
+    10% 79%, 7% 84%, 4% 80%, 0% 84%
   );
-  border-bottom: 1px solid rgba(255, 255, 255, 0.28);
 }
 
-/* Plastic sheen */
-.lab-sleeve::after {
+/* Plastic sheen + edge crinkle highlight */
+.lab-sleeve::before {
   content: '';
   position: absolute;
   inset: 0;
+  /* wide diagonal sheen */
   background: linear-gradient(
-    115deg,
-    transparent 35%,
-    rgba(255, 255, 255, 0.07) 55%,
-    transparent 75%
+    112deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.13) 42%,
+    rgba(255, 255, 255, 0.05) 50%,
+    transparent 68%
   );
   pointer-events: none;
+  z-index: 4;
+  border-radius: inherit;
+}
+
+/* Right-edge crinkle shadow */
+.lab-sleeve::after {
+  content: '';
+  position: absolute;
+  top: 10%;
+  right: -1px;
+  width: 6px;
+  height: 80%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.12) 40%,
+    rgba(255, 255, 255, 0.08) 70%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 4;
 }
 
 .lab-sleeve-photos {

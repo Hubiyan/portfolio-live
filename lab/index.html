@@ -141,6 +141,29 @@
         <div class="lab-lightbox-dots" id="lbDots" aria-hidden="true"></div>
     </div>
 
+    <!-- SVG filter: mesh-warp the plastic sleeve to look crumpled -->
+    <svg style="display:none;position:absolute" aria-hidden="true" focusable="false">
+        <defs>
+            <filter id="plastic-crumple" x="-8%" y="-8%" width="116%" height="116%"
+                    color-interpolation-filters="sRGB">
+                <!-- coarse turbulence = large folds -->
+                <feTurbulence type="fractalNoise" baseFrequency="0.048 0.032"
+                              numOctaves="3" seed="17" result="noise-coarse"/>
+                <!-- fine turbulence = surface micro-crinkles -->
+                <feTurbulence type="turbulence" baseFrequency="0.14 0.09"
+                              numOctaves="2" seed="5" result="noise-fine"/>
+                <!-- blend the two noise layers -->
+                <feMerge result="noise-combined">
+                    <feMergeNode in="noise-coarse"/>
+                    <feMergeNode in="noise-fine"/>
+                </feMerge>
+                <!-- displace: scale 9 gives visible but not extreme crumpling -->
+                <feDisplacementMap in="SourceGraphic" in2="noise-combined"
+                                   scale="9" xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+        </defs>
+    </svg>
+
     <!-- ============================================================
          Colour switcher
     ============================================================ -->
