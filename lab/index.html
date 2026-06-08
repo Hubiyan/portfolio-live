@@ -10,94 +10,44 @@
     <link rel="stylesheet" href="../bootstrap.min.css">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../lab.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap" rel="stylesheet">
 </head>
 
 <body class="ds-subpage lab-page" data-mat-color="green">
 
-    <main id="lab-main" class="lab-main" aria-label="Lab canvas">
+    <main id="lab-main" class="lab-main" aria-label="Lab projects">
 
-        <!-- Closed project boxes -->
-        <div class="lab-box"
-             data-href="/lab/prompts/"
-             data-box-id="prompts"
-             style="left: 12%; top: 28%; --box-rot: -2.5deg;"
-             tabindex="0" role="link"
-             aria-label="Prompts — open project">
-            <div class="lab-box-tape"><span>Prompts</span></div>
-        </div>
+        <header class="lab-header">
+            <p class="lab-eyebrow">Hubiyan presents:</p>
+            <h1 class="lab-title">The lab</h1>
+            <p class="lab-subtitle">Experiments, tools, and things I ship when the main site is behaving.</p>
+        </header>
 
-        <div class="lab-box"
-             data-href="/lab/ai-bro-detector/"
-             data-box-id="ai-bro"
-             style="left: 50%; top: 22%; --box-rot: 3.2deg;"
-             tabindex="0" role="link"
-             aria-label="AI Bro Detector — open project">
-            <div class="lab-box-tape"><span>AI Bro<br>Detector</span></div>
-        </div>
+        <div class="lab-cards">
 
-        <!-- Open box: Visual Explorations -->
-        <div class="lab-box lab-box--open"
-             data-box-id="visual-exp"
-             data-action="open-explorer"
-             style="left: 28%; top: 52%; --box-rot: -1.4deg;"
-             tabindex="0" role="button"
-             aria-haspopup="dialog"
-             aria-label="Visual Explorations — open box">
-            <!-- Printed photos peeking above the box -->
-            <div class="lab-box-photos">
-                <div class="lab-photo lab-photo--1">
-                    <img src="../images/wallpapers/thumbs/Andromeda-horizon.webp" alt="Andromeda Horizon wallpaper preview" draggable="false">
-                </div>
-                <div class="lab-photo lab-photo--2">
-                    <img src="../images/wallpapers/thumbs/Andromeda-horizon-1.webp" alt="Andromeda Horizon 1 wallpaper preview" draggable="false">
-                </div>
-                <div class="lab-photo lab-photo--3">
-                    <img src="../images/wallpapers/thumbs/Andromeda-horizon-2.webp" alt="Andromeda Horizon 2 wallpaper preview" draggable="false">
-                </div>
-            </div>
-            <div class="lab-box-tape lab-box-tape--small"><span>Visual<br>Explorations</span></div>
+            <a class="lab-card" href="/lab/prompts/">
+                <h2 class="lab-card-title">Prompts</h2>
+                <p class="lab-card-desc">Copy-paste fuel for when your blank doc is silently judging you.</p>
+                <span class="lab-card-arrow" aria-hidden="true">→</span>
+            </a>
+
+            <a class="lab-card" href="/lab/ai-bro-detector/">
+                <h2 class="lab-card-title">AI Bro Detector</h2>
+                <p class="lab-card-desc">Sniffs out bro energy in LinkedIn posts before you cringe-reply.</p>
+                <span class="lab-card-arrow" aria-hidden="true">→</span>
+            </a>
+
+            <button type="button" class="lab-card lab-card--action" data-action="open-wallpapers"
+                    aria-label="Visual Explorations — open wallpapers">
+                <h2 class="lab-card-title">Visual Explorations</h2>
+                <p class="lab-card-desc">Wallpapers for people who stare at their lock screen a little too long.</p>
+                <span class="lab-card-arrow" aria-hidden="true">→</span>
+            </button>
+
         </div>
 
     </main>
 
-    <!-- ============================================================
-         Visual Explorations modal (box contents)
-    ============================================================ -->
-    <div class="lab-explorer" id="labExplorer" role="dialog" aria-modal="true"
-         aria-label="Visual Explorations" hidden>
-        <div class="lab-explorer-backdrop" data-close="explorer"></div>
-        <div class="lab-explorer-panel">
-            <button class="lab-explorer-close" aria-label="Close" data-close="explorer">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                    <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-            </button>
-            <p class="lab-explorer-eyebrow">Inside the box</p>
-            <h2 class="lab-explorer-title">Visual Explorations</h2>
-
-            <!-- Wallpapers plastic sleeve -->
-            <div class="lab-sleeve" role="button" tabindex="0" data-action="open-wallpapers"
-                 aria-label="Wallpapers — open slideshow">
-                <div class="lab-sleeve-seal"></div>
-                <div class="lab-sleeve-photos">
-                    <img class="lab-sleeve-photo" src="../images/wallpapers/thumbs/Andromeda-horizon.webp" alt="" draggable="false">
-                    <img class="lab-sleeve-photo" src="../images/wallpapers/thumbs/Andromeda-horizon-1.webp" alt="" draggable="false">
-                    <img class="lab-sleeve-photo" src="../images/wallpapers/thumbs/Andromeda-horizon-2.webp" alt="" draggable="false">
-                </div>
-                <div class="lab-sleeve-footer">
-                    <span class="lab-sleeve-label">Wallpapers</span>
-                    <span class="lab-sleeve-count">3 images</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============================================================
-         Lightbox / Slideshow
-    ============================================================ -->
+    <!-- Lightbox / Slideshow -->
     <div class="lab-lightbox" id="labLightbox" role="dialog" aria-modal="true"
          aria-label="Wallpaper slideshow" hidden>
         <div class="lab-lightbox-backdrop" data-close="lightbox"></div>
@@ -121,7 +71,7 @@
 
         <div class="lab-lightbox-stage">
             <div class="lab-lightbox-print">
-                <img class="lab-lightbox-img" id="lbImg" src="" alt="">
+                <img class="lab-lightbox-img" id="lbImg" src="" alt="" width="360" height="640">
             </div>
         </div>
 
@@ -141,32 +91,6 @@
         <div class="lab-lightbox-dots" id="lbDots" aria-hidden="true"></div>
     </div>
 
-    <!-- SVG filter: mesh-warp the plastic sleeve to look crumpled -->
-    <svg style="display:none;position:absolute" aria-hidden="true" focusable="false">
-        <defs>
-            <filter id="plastic-crumple" x="-8%" y="-8%" width="116%" height="116%"
-                    color-interpolation-filters="sRGB">
-                <!-- coarse turbulence = large folds -->
-                <feTurbulence type="fractalNoise" baseFrequency="0.048 0.032"
-                              numOctaves="3" seed="17" result="noise-coarse"/>
-                <!-- fine turbulence = surface micro-crinkles -->
-                <feTurbulence type="turbulence" baseFrequency="0.14 0.09"
-                              numOctaves="2" seed="5" result="noise-fine"/>
-                <!-- blend the two noise layers -->
-                <feMerge result="noise-combined">
-                    <feMergeNode in="noise-coarse"/>
-                    <feMergeNode in="noise-fine"/>
-                </feMerge>
-                <!-- displace: scale 9 gives visible but not extreme crumpling -->
-                <feDisplacementMap in="SourceGraphic" in2="noise-combined"
-                                   scale="9" xChannelSelector="R" yChannelSelector="G"/>
-            </filter>
-        </defs>
-    </svg>
-
-    <!-- ============================================================
-         Colour switcher
-    ============================================================ -->
     <div class="lab-color-switcher" role="group" aria-label="Background colour">
         <button class="lab-swatch" data-color="green"  aria-label="Green mat"  aria-pressed="true"></button>
         <button class="lab-swatch" data-color="blue"   aria-label="Blue mat"   aria-pressed="false"></button>
@@ -174,9 +98,6 @@
     </div>
 
     <script>
-    /* ============================================================
-       Colour switcher
-    ============================================================ */
     (function () {
         var body = document.body;
         var swatches = document.querySelectorAll('.lab-swatch');
@@ -199,9 +120,6 @@
         });
     })();
 
-    /* ============================================================
-       Wallpaper data
-    ============================================================ */
     var WALLPAPERS = [
         {
             name: 'Andromeda Horizon',
@@ -223,108 +141,6 @@
         }
     ];
 
-    /* ============================================================
-       Draggable boxes
-    ============================================================ */
-    (function initLabBoxes() {
-        var STORE = 'lab-box-pos';
-        function loadPos() {
-            try { return JSON.parse(localStorage.getItem(STORE) || '{}'); } catch (e) { return {}; }
-        }
-        function savePos(id, x, y) {
-            var pos = loadPos();
-            pos[id] = { x: x, y: y };
-            localStorage.setItem(STORE, JSON.stringify(pos));
-        }
-
-        var saved = loadPos();
-
-        document.querySelectorAll('.lab-box').forEach(function (box) {
-            var id = box.dataset.boxId;
-            if (saved[id]) {
-                box.style.left = saved[id].x + 'px';
-                box.style.top  = saved[id].y + 'px';
-            }
-
-            var dragging = false, moved = false;
-            var startX, startY, startL, startT;
-
-            box.addEventListener('pointerdown', function (e) {
-                if (e.button !== 0) return;
-                dragging = true; moved = false;
-                startX = e.clientX; startY = e.clientY;
-                startL = box.offsetLeft; startT = box.offsetTop;
-                box.classList.add('is-dragging');
-                box.setPointerCapture(e.pointerId);
-                e.preventDefault();
-            });
-
-            box.addEventListener('pointermove', function (e) {
-                if (!dragging) return;
-                var dx = e.clientX - startX, dy = e.clientY - startY;
-                if (Math.abs(dx) > 5 || Math.abs(dy) > 5) moved = true;
-                box.style.left = (startL + dx) + 'px';
-                box.style.top  = (startT + dy) + 'px';
-            });
-
-            box.addEventListener('pointerup', function () {
-                if (!dragging) return;
-                dragging = false;
-                box.classList.remove('is-dragging');
-                if (!moved) {
-                    if (box.dataset.href) { window.location.href = box.dataset.href; return; }
-                    if (box.dataset.action === 'open-explorer') { openExplorer(); return; }
-                }
-                if (moved) savePos(id, box.offsetLeft, box.offsetTop);
-            });
-
-            box.addEventListener('keydown', function (e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    if (box.dataset.href) { window.location.href = box.dataset.href; return; }
-                    if (box.dataset.action === 'open-explorer') openExplorer();
-                }
-            });
-        });
-    })();
-
-    /* ============================================================
-       Explorer modal (box contents)
-    ============================================================ */
-    var explorer = document.getElementById('labExplorer');
-
-    function openExplorer() {
-        explorer.hidden = false;
-        document.body.classList.add('lab-modal-open');
-        explorer.querySelector('.lab-explorer-close').focus();
-    }
-
-    function closeExplorer() {
-        explorer.hidden = true;
-        document.body.classList.remove('lab-modal-open');
-    }
-
-    explorer.addEventListener('click', function (e) {
-        if (e.target.dataset.close === 'explorer') closeExplorer();
-        if (e.target.closest('[data-action="open-wallpapers"]')) {
-            closeExplorer();
-            openLightbox(0);
-        }
-    });
-
-    explorer.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') closeExplorer();
-        var sleeve = e.target.closest('[data-action="open-wallpapers"]');
-        if (sleeve && (e.key === 'Enter' || e.key === ' ')) {
-            e.preventDefault();
-            closeExplorer();
-            openLightbox(0);
-        }
-    });
-
-    /* ============================================================
-       Lightbox / Slideshow
-    ============================================================ */
     var lightbox  = document.getElementById('labLightbox');
     var lbImg     = document.getElementById('lbImg');
     var lbName    = document.getElementById('lbName');
@@ -335,7 +151,6 @@
     var lbNext    = document.getElementById('lbNext');
     var lbCurrent = 0;
 
-    /* Build dot indicators */
     WALLPAPERS.forEach(function (_, i) {
         var d = document.createElement('button');
         d.className = 'lab-lightbox-dot';
@@ -353,7 +168,6 @@
         lbCounter.textContent = (lbCurrent + 1) + ' / ' + WALLPAPERS.length;
         lbDl.href = wp.full;
         lbDl.setAttribute('download', wp.filename);
-        /* update dots */
         lbDots.querySelectorAll('.lab-lightbox-dot').forEach(function (d, i) {
             d.classList.toggle('is-active', i === lbCurrent);
             d.setAttribute('aria-pressed', i === lbCurrent ? 'true' : 'false');
@@ -364,13 +178,17 @@
         lightbox.hidden = false;
         document.body.classList.add('lab-modal-open');
         goTo(index);
-        lbImg.focus();
+        lightbox.querySelector('.lab-lightbox-close').focus();
     }
 
     function closeLightbox() {
         lightbox.hidden = true;
         document.body.classList.remove('lab-modal-open');
     }
+
+    document.querySelector('[data-action="open-wallpapers"]').addEventListener('click', function () {
+        openLightbox(0);
+    });
 
     lbPrev.addEventListener('click', function () { goTo(lbCurrent - 1); });
     lbNext.addEventListener('click', function () { goTo(lbCurrent + 1); });
@@ -380,12 +198,11 @@
     });
 
     lightbox.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape')       closeLightbox();
-        if (e.key === 'ArrowLeft')    goTo(lbCurrent - 1);
-        if (e.key === 'ArrowRight')   goTo(lbCurrent + 1);
+        if (e.key === 'Escape')     closeLightbox();
+        if (e.key === 'ArrowLeft')  goTo(lbCurrent - 1);
+        if (e.key === 'ArrowRight') goTo(lbCurrent + 1);
     });
 
-    /* Swipe support */
     (function () {
         var touchStartX = 0;
         lightbox.addEventListener('touchstart', function (e) {

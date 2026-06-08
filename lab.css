@@ -5,7 +5,6 @@
 
 /* ----- Lab page (textured minimal grid + colour switcher) ----- */
 
-/* shared texture: grain + grid lines + radial vignettes, colour comes from CSS vars */
 body.lab-page {
   --lab-base:    #0f6b43;
   --lab-mid:     #0f7347;
@@ -29,7 +28,6 @@ body.lab-page {
   background-size: 200px 200px, auto, auto, auto, auto, auto;
 }
 
-/* --- green (default) --- */
 body.lab-page[data-mat-color="green"] {
   --lab-base:   #0f6b43;
   --lab-mid:    #0f7347;
@@ -39,7 +37,6 @@ body.lab-page[data-mat-color="green"] {
   --lab-shadow: rgba(0, 0, 0, 0.11);
 }
 
-/* --- blue --- */
 body.lab-page[data-mat-color="blue"] {
   --lab-base:   #1a3a6b;
   --lab-mid:    #1e4880;
@@ -49,7 +46,6 @@ body.lab-page[data-mat-color="blue"] {
   --lab-shadow: rgba(0, 0, 0, 0.14);
 }
 
-/* --- black --- */
 body.lab-page[data-mat-color="black"] {
   --lab-base:   #141414;
   --lab-mid:    #1c1c1c;
@@ -59,468 +55,156 @@ body.lab-page[data-mat-color="black"] {
   --lab-shadow: rgba(0, 0, 0, 0.4);
 }
 
-
 body.lab-page .lab-main {
-  position: relative;
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: clamp(var(--spacing-32), 8vw, var(--spacing-64)) var(--spacing-24)
+           clamp(var(--spacing-48), 10vw, var(--spacing-80));
   min-height: 100vh;
-  width: 100%;
-}
-
-/* ---- Draggable cardboard boxes ---- */
-
-.lab-box {
-  position: absolute;
-  width: 138px;
-  height: 108px;
-  cursor: grab;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: none;
-  outline: none;
-  border-radius: 3px 3px 2px 2px;
-  transform: rotate(var(--box-rot, 0deg));
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-  /* Cardboard: dark lid zone → thin crease → lighter body */
-  background:
-    repeating-linear-gradient(
-      102deg,
-      transparent 0,
-      transparent 4px,
-      rgba(0, 0, 0, 0.022) 4px,
-      rgba(0, 0, 0, 0.022) 5px
-    ),
-    linear-gradient(
-      180deg,
-      #9b5c22 0px,
-      #9b5c22 24px,
-      rgba(0, 0, 0, 0.18) 24px,
-      rgba(0, 0, 0, 0.18) 26px,
-      #c47d3c 26px,
-      #bd7535 100%
-    );
-
-  /* right-edge depth + drop shadow on mat */
-  box-shadow:
-    3px 3px 0 0 #7a4215,
-    6px 10px 22px rgba(0, 0, 0, 0.42),
-    0 0 0 1px rgba(0, 0, 0, 0.1);
-
-  z-index: 2;
-}
-
-/* Focus ring (keyboard nav) */
-.lab-box:focus-visible {
-  outline: 3px solid rgba(255, 255, 255, 0.7);
-  outline-offset: 3px;
-}
-
-.lab-box:hover {
-  transform: rotate(var(--box-rot, 0deg)) translateY(-5px) scale(1.03);
-  box-shadow:
-    3px 3px 0 0 #7a4215,
-    8px 15px 28px rgba(0, 0, 0, 0.52),
-    0 0 0 1px rgba(0, 0, 0, 0.1);
-}
-
-.lab-box.is-dragging {
-  cursor: grabbing;
-  transform: rotate(calc(var(--box-rot, 0deg) + 1.8deg)) scale(1.04);
-  box-shadow:
-    3px 3px 0 0 #7a4215,
-    12px 20px 36px rgba(0, 0, 0, 0.58),
-    0 0 0 1px rgba(0, 0, 0, 0.1);
-  z-index: 98;
-  transition: none;
-}
-
-/* Masking-tape label */
-.lab-box-tape {
-  position: absolute;
-  top: 13px;
-  left: -11px;
-  right: -11px;
-  min-height: 34px;
-  padding: 5px 16px;
-  background: #f0e8b8;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Caveat', cursive;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1.2;
-  color: #1d1003;
+  flex-direction: column;
+  gap: clamp(var(--spacing-32), 6vw, var(--spacing-48));
+}
+
+/* ----- Header ----- */
+
+body.lab-page .lab-header {
   text-align: center;
-  transform: rotate(-0.9deg);
-  pointer-events: none;
-  z-index: 3;
-  /* tape lift shadow */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.22);
-  /* subtle tape grain */
-  background-image:
-    repeating-linear-gradient(
-      90deg,
-      transparent 0,
-      transparent 6px,
-      rgba(160, 110, 20, 0.045) 6px,
-      rgba(160, 110, 20, 0.045) 7px
-    ),
-    linear-gradient(180deg, #f2eabc 0%, #ede3b2 100%);
+  max-width: 36rem;
+  margin: 0 auto;
 }
 
-/* torn top / bottom tape edge */
-.lab-box-tape::before,
-.lab-box-tape::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 1.5px;
-  background: repeating-linear-gradient(
-    90deg,
-    transparent 0,
-    transparent 3px,
-    rgba(150, 110, 30, 0.18) 3px,
-    rgba(150, 110, 30, 0.18) 5px
-  );
-}
-.lab-box-tape::before { top: 0; }
-.lab-box-tape::after  { bottom: 0; }
-
-/* ---- Open box variant (Visual Explorations) ---- */
-
-.lab-box--open {
-  width: 172px;
-  height: 118px;
-  /* No lid stripe — entirely body colour with interior depth */
-  background:
-    repeating-linear-gradient(
-      102deg,
-      transparent 0,
-      transparent 4px,
-      rgba(0, 0, 0, 0.022) 4px,
-      rgba(0, 0, 0, 0.022) 5px
-    ),
-    linear-gradient(180deg, #c47d3c 0%, #bd7535 100%);
-  /* Rim at top + inner shadow to suggest open box depth */
-  box-shadow:
-    3px 3px 0 0 #7a4215,
-    6px 10px 22px rgba(0, 0, 0, 0.42),
-    0 0 0 1px rgba(0, 0, 0, 0.1),
-    inset 0 12px 18px rgba(0, 0, 0, 0.28);
-  border-top: 3px solid #8a5018;
-  overflow: visible;
-}
-
-.lab-box--open .lab-box-tape--small {
-  top: 20px;
-  font-size: 13px;
-  min-height: 28px;
-}
-
-/* Photos peeking above the open box */
-.lab-box-photos {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  pointer-events: none;
-}
-
-.lab-photo {
-  position: absolute;
-  width: 48px;
-  height: 80px;
-  padding: 4px 4px 10px;        /* white border: thicker at bottom like a real print */
-  background: #fff;
-  box-shadow:
-    1px 2px 6px rgba(0, 0, 0, 0.38),
-    0 0 0 0.5px rgba(0, 0, 0, 0.08);
-}
-
-.lab-photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.lab-photo--1 { top: -54px; left: 10px;  transform: rotate(-8deg);  z-index: 1; }
-.lab-photo--2 { top: -60px; left: 60px;  transform: rotate(3.5deg); z-index: 3; }
-.lab-photo--3 { top: -50px; left: 108px; transform: rotate(-5deg);  z-index: 2; }
-
-/* ============================================================
-   Explorer modal (box contents)
-============================================================ */
-
-body.lab-modal-open {
-  overflow: hidden;
-}
-
-.lab-explorer {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.lab-explorer[hidden] { display: none; }
-
-.lab-explorer-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  cursor: pointer;
-}
-
-.lab-explorer-panel {
-  position: relative;
-  z-index: 1;
-  width: min(88vw, 420px);
-  background:
-    repeating-linear-gradient(
-      102deg,
-      transparent 0,
-      transparent 5px,
-      rgba(0, 0, 0, 0.018) 5px,
-      rgba(0, 0, 0, 0.018) 6px
-    ),
-    linear-gradient(160deg, #c07c3a 0%, #b57030 100%);
-  border-radius: var(--spacing-16);
-  padding: var(--spacing-32) var(--spacing-24) var(--spacing-24);
-  box-shadow:
-    0 0 0 1.5px rgba(0, 0, 0, 0.18),
-    0 24px 60px rgba(0, 0, 0, 0.5);
-}
-
-.lab-explorer-close {
-  position: absolute;
-  top: var(--spacing-12);
-  right: var(--spacing-12);
-  width: var(--spacing-32);
-  height: var(--spacing-32);
-  border-radius: 50%;
-  border: none;
-  background: rgba(0, 0, 0, 0.25);
-  color: rgba(255, 255, 255, 0.85);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.15s;
-}
-
-.lab-explorer-close:hover { background: rgba(0, 0, 0, 0.42); }
-
-.lab-explorer-eyebrow {
+body.lab-page .lab-eyebrow {
+  margin: 0 0 var(--spacing-08);
   font-size: var(--spacing-11);
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.5);
-  margin: 0 0 var(--spacing-04);
+  color: rgba(255, 255, 255, 0.55);
 }
 
-.lab-explorer-title {
-  font-family: 'Caveat', cursive;
-  font-size: var(--spacing-32);
+body.lab-page .lab-title {
+  margin: 0 0 var(--spacing-12);
+  font-size: clamp(var(--spacing-40), 8vw, var(--spacing-56));
   font-weight: 700;
+  line-height: 1.05;
   color: #fff;
-  margin: 0 0 var(--spacing-20);
-  line-height: 1;
 }
 
-/* ============================================================
-   Plastic sleeve (category wrapper) — crumpled irregular look
-============================================================ */
+body.lab-page .lab-subtitle {
+  margin: 0;
+  font-size: clamp(var(--spacing-14), 3.5vw, var(--spacing-16));
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.72);
+}
 
-.lab-sleeve {
+/* ----- Frosty project cards ----- */
+
+body.lab-page .lab-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: var(--spacing-16);
+  width: 100%;
+}
+
+body.lab-page .lab-card {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-10);
+  min-height: 148px;
+  padding: var(--spacing-24);
+  text-align: left;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: var(--spacing-16);
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 8px 32px rgba(0, 0, 0, 0.18);
   cursor: pointer;
-  /* Asymmetric corners — each side bows slightly */
-  border-radius: 9px 5px 8px 6px / 7px 9px 5px 8px;
-  border: 1.5px solid rgba(255, 255, 255, 0.38);
-  overflow: visible;        /* allow warped edges to bleed out */
-
-  /* Crease lines baked into the gradient stack */
-  background:
-    /* bright crease top-left ↘ */
-    linear-gradient(
-      158deg,
-      transparent 28%,
-      rgba(255, 255, 255, 0.22) 29.5%,
-      rgba(255, 255, 255, 0.06) 31.5%,
-      transparent 33%
-    ),
-    /* dark fold shadow upper-right ↙ */
-    linear-gradient(
-      72deg,
-      transparent 52%,
-      rgba(0, 0, 0, 0.09) 53.5%,
-      transparent 55.5%
-    ),
-    /* faint lower crease ↘ */
-    linear-gradient(
-      135deg,
-      transparent 62%,
-      rgba(255, 255, 255, 0.10) 63.5%,
-      transparent 65%
-    ),
-    /* base plastic tint */
-    linear-gradient(
-      145deg,
-      rgba(235, 245, 255, 0.26) 0%,
-      rgba(190, 215, 250, 0.10) 40%,
-      rgba(225, 238, 255, 0.20) 100%
-    );
-
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
-    2px 4px 14px rgba(0, 0, 0, 0.28);
-
-  /* SVG mesh-warp filter makes the whole thing read as crumpled */
-  filter: url(#plastic-crumple);
-
-  /* Slight off-axis skew adds to the irregular feeling */
-  transform: skew(-0.6deg, 0.3deg);
-  transform-origin: center center;
-
-  transition: box-shadow 0.18s ease, transform 0.18s ease;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.lab-sleeve:hover,
-.lab-sleeve:focus-visible {
-  transform: skew(-0.6deg, 0.3deg) translateY(-3px);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.18),
-    3px 8px 20px rgba(0, 0, 0, 0.38);
-  outline: none;
+body.lab-page .lab-card--action {
+  appearance: none;
+  font: inherit;
+  width: 100%;
 }
 
-/* Sealed top fold — uneven heat-seal look */
-.lab-sleeve-seal {
-  height: 22px;
-  background:
-    /* uneven seal bumps */
-    repeating-linear-gradient(
-      90deg,
-      transparent 0,
-      transparent 11px,
-      rgba(255, 255, 255, 0.18) 11px,
-      rgba(255, 255, 255, 0.18) 14px,
-      transparent 14px
-    ),
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.42) 0%,
-      rgba(200, 220, 255, 0.22) 100%
-    );
-  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
-  /* slight wavy clip at the seal edge */
-  clip-path: polygon(
-    0% 0%, 100% 0%,
-    100% 78%, 97% 84%, 94% 78%, 91% 85%, 88% 79%,
-    85% 85%, 82% 80%, 79% 86%, 76% 80%, 73% 85%,
-    70% 79%, 67% 84%, 64% 80%, 61% 85%, 58% 79%,
-    55% 85%, 52% 79%, 49% 84%, 46% 79%, 43% 84%,
-    40% 78%, 37% 85%, 34% 79%, 31% 85%, 28% 79%,
-    25% 84%, 22% 80%, 19% 85%, 16% 79%, 13% 85%,
-    10% 79%, 7% 84%, 4% 80%, 0% 84%
-  );
-}
-
-/* Plastic sheen + edge crinkle highlight */
-.lab-sleeve::before {
+body.lab-page .lab-card::before {
   content: '';
   position: absolute;
   inset: 0;
-  /* wide diagonal sheen */
-  background: linear-gradient(
-    112deg,
-    transparent 20%,
-    rgba(255, 255, 255, 0.13) 42%,
-    rgba(255, 255, 255, 0.05) 50%,
-    transparent 68%
-  );
-  pointer-events: none;
-  z-index: 4;
   border-radius: inherit;
-}
-
-/* Right-edge crinkle shadow */
-.lab-sleeve::after {
-  content: '';
-  position: absolute;
-  top: 10%;
-  right: -1px;
-  width: 6px;
-  height: 80%;
   background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(0, 0, 0, 0.12) 40%,
-    rgba(255, 255, 255, 0.08) 70%,
-    transparent 100%
+    135deg,
+    rgba(255, 255, 255, 0.22) 0%,
+    transparent 45%,
+    rgba(255, 255, 255, 0.06) 100%
   );
   pointer-events: none;
-  z-index: 4;
 }
 
-.lab-sleeve-photos {
-  display: flex;
-  gap: var(--spacing-08);
-  padding: var(--spacing-12) var(--spacing-12) var(--spacing-08);
-  justify-content: center;
+body.lab-page .lab-card:hover,
+body.lab-page .lab-card:focus-visible {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.42);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 14px 40px rgba(0, 0, 0, 0.24);
+  outline: none;
 }
 
-.lab-sleeve-photo {
-  width: 56px;
-  height: 96px;
-  object-fit: cover;
-  padding: 3px 3px 8px;
-  background: #fff;
-  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.32);
-  flex-shrink: 0;
-  transform: rotate(-1deg);
-}
-
-.lab-sleeve-photo:nth-child(2) { transform: rotate(1.5deg); margin-top: 4px; }
-.lab-sleeve-photo:nth-child(3) { transform: rotate(-2deg);  margin-top: -4px; }
-
-.lab-sleeve-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--spacing-08) var(--spacing-12);
-  background: rgba(255, 255, 255, 0.12);
-  border-top: 1px solid rgba(255, 255, 255, 0.18);
-}
-
-.lab-sleeve-label {
-  background: #fff;
-  color: #1a1204;
-  font-size: var(--spacing-11);
+body.lab-page .lab-card-title {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-size: clamp(var(--spacing-18), 4vw, var(--spacing-22));
   font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 2px 8px;
-  border-radius: 2px;
+  line-height: 1.2;
+  color: #fff;
 }
 
-.lab-sleeve-count {
-  font-size: var(--spacing-11);
-  color: rgba(255, 255, 255, 0.6);
-  letter-spacing: 0.04em;
+body.lab-page .lab-card-desc {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  flex: 1;
+  font-size: clamp(var(--spacing-13), 3.2vw, var(--spacing-14));
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+body.lab-page .lab-card-arrow {
+  position: relative;
+  z-index: 1;
+  align-self: flex-start;
+  margin-top: auto;
+  font-size: var(--spacing-18);
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.55);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+body.lab-page .lab-card:hover .lab-card-arrow,
+body.lab-page .lab-card:focus-visible .lab-card-arrow {
+  transform: translateX(4px);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 /* ============================================================
    Lightbox / Slideshow
 ============================================================ */
+
+body.lab-modal-open {
+  overflow: hidden;
+}
 
 .lab-lightbox {
   position: fixed;
@@ -560,8 +244,8 @@ body.lab-modal-open {
 .lab-lightbox-close {
   top: var(--spacing-16);
   right: var(--spacing-16);
-  width: var(--spacing-40);
-  height: var(--spacing-40);
+  width: var(--spacing-44);
+  height: var(--spacing-44);
 }
 
 .lab-lightbox-close:hover { background: rgba(255, 255, 255, 0.2); }
@@ -577,7 +261,6 @@ body.lab-modal-open {
 .lab-lightbox-nav--prev { left: var(--spacing-16); }
 .lab-lightbox-nav--next { right: var(--spacing-16); }
 
-/* The printed photo frame */
 .lab-lightbox-stage {
   position: relative;
   z-index: 1;
@@ -589,7 +272,7 @@ body.lab-modal-open {
 
 .lab-lightbox-print {
   background: #fff;
-  padding: 8px 8px 28px;    /* thick bottom = polaroid/print look */
+  padding: 8px 8px 28px;
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
   max-height: 72vh;
   display: flex;
@@ -600,10 +283,10 @@ body.lab-modal-open {
   max-height: calc(72vh - 36px);
   width: auto;
   max-width: min(90vw, 360px);
+  height: auto;
   object-fit: contain;
 }
 
-/* Footer: name + download */
 .lab-lightbox-footer {
   position: relative;
   z-index: 1;
@@ -636,6 +319,7 @@ body.lab-modal-open {
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-06);
+  min-height: var(--spacing-44);
   padding: var(--spacing-08) var(--spacing-14);
   background: rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.85);
@@ -655,7 +339,6 @@ body.lab-modal-open {
   color: #fff;
 }
 
-/* Dot indicators */
 .lab-lightbox-dots {
   position: relative;
   z-index: 1;
@@ -664,9 +347,9 @@ body.lab-modal-open {
 }
 
 .lab-lightbox-dot {
-  width: var(--spacing-08);
+  width: var(--spacing-44);
   height: var(--spacing-08);
-  border-radius: 50%;
+  border-radius: var(--spacing-04);
   border: none;
   background: rgba(255, 255, 255, 0.3);
   cursor: pointer;
@@ -676,7 +359,42 @@ body.lab-modal-open {
 
 .lab-lightbox-dot.is-active {
   background: #fff;
-  transform: scale(1.25);
+  transform: scaleY(1.4);
+}
+
+/* --- colour switcher dock --- */
+
+.lab-color-switcher {
+  position: fixed;
+  bottom: var(--spacing-24);
+  right: var(--spacing-24);
+  display: flex;
+  gap: var(--spacing-08);
+  z-index: 100;
+}
+
+.lab-swatch {
+  width: var(--spacing-44);
+  height: var(--spacing-44);
+  border-radius: 50%;
+  border: 2.5px solid rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+}
+
+.lab-swatch[data-color="green"]  { background: #0f7347; }
+.lab-swatch[data-color="blue"]   { background: #1e4880; }
+.lab-swatch[data-color="black"]  { background: #141414; }
+
+.lab-swatch[aria-pressed="true"] {
+  border-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35), 0 2px 10px rgba(0, 0, 0, 0.28);
+}
+
+.lab-swatch:hover {
+  opacity: 0.85;
 }
 
 /* ============================================================
@@ -684,43 +402,19 @@ body.lab-modal-open {
 ============================================================ */
 
 @media (max-width: 520px) {
-  .lab-box {
-    width: 118px;
-    height: 92px;
-    background:
-      repeating-linear-gradient(
-        102deg,
-        transparent 0,
-        transparent 4px,
-        rgba(0, 0, 0, 0.022) 4px,
-        rgba(0, 0, 0, 0.022) 5px
-      ),
-      linear-gradient(
-        180deg,
-        #9b5c22 0px,
-        #9b5c22 20px,
-        rgba(0, 0, 0, 0.18) 20px,
-        rgba(0, 0, 0, 0.18) 22px,
-        #c47d3c 22px,
-        #bd7535 100%
-      );
+  body.lab-page .lab-main {
+    padding: var(--spacing-32) var(--spacing-16) var(--spacing-64);
+    gap: var(--spacing-24);
   }
 
-  .lab-box--open {
-    width: 148px;
-    height: 100px;
+  body.lab-page .lab-cards {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-12);
   }
 
-  .lab-photo { width: 38px; height: 62px; }
-  .lab-photo--1 { top: -42px; left: 8px; }
-  .lab-photo--2 { top: -48px; left: 52px; }
-  .lab-photo--3 { top: -38px; left: 92px; }
-
-  .lab-box-tape {
-    top: 10px;
-    font-size: 14px;
-    min-height: 28px;
-    padding: 4px 12px;
+  body.lab-page .lab-card {
+    min-height: auto;
+    padding: var(--spacing-20);
   }
 
   .lab-lightbox-nav--prev { left: var(--spacing-08); }
@@ -740,51 +434,9 @@ body.lab-modal-open {
     gap: var(--spacing-10);
     width: 80vw;
   }
-}
 
-/* --- colour switcher dock --- */
-.lab-color-switcher {
-  position: fixed;
-  bottom: var(--spacing-24);
-  right: var(--spacing-24);
-  display: flex;
-  gap: var(--spacing-08);
-  z-index: 100;
-}
-
-.lab-swatch {
-  width: var(--spacing-32);
-  height: var(--spacing-32);
-  border-radius: 50%;
-  border: 2.5px solid rgba(255, 255, 255, 0.45);
-  cursor: pointer;
-  padding: 0;
-  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
-}
-
-.lab-swatch[data-color="green"]  { background: #0f7347; }
-.lab-swatch[data-color="blue"]   { background: #1e4880; }
-.lab-swatch[data-color="black"]  { background: #141414; }
-
-.lab-swatch[aria-pressed="true"] {
-  border-color: #ffffff;
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35), 0 2px 10px rgba(0, 0, 0, 0.28);
-}
-
-
-.lab-swatch:hover {
-  opacity: 0.85;
-}
-
-@media (max-width: 520px) {
   .lab-color-switcher {
-    flex-direction: row;
     bottom: var(--spacing-20);
     right: var(--spacing-20);
-  }
-  .lab-swatch {
-    width: var(--spacing-36);
-    height: var(--spacing-36);
   }
 }
