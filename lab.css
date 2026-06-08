@@ -13,6 +13,13 @@ body.lab-page {
   --lab-hi:      rgba(255, 255, 255, 0.075);
   --lab-shadow:  rgba(0, 0, 0, 0.11);
   --lab-noise-opacity: 0.038;
+  --folder-front: #c89b6d;
+  --folder-side: #b98756;
+  --folder-top: #d7b086;
+  --folder-shadow: rgba(0, 0, 0, 0.32);
+  --folder-tape: #b98756;
+  --folder-edge: #a87647;
+  --folder-label: #ead0b3;
   min-height: 100vh;
   margin: 0;
   transition: background-color 0.35s ease;
@@ -97,6 +104,49 @@ body.lab-page .lab-subtitle {
   font-size: clamp(var(--spacing-14), 3.5vw, var(--spacing-16));
   line-height: 1.5;
   color: rgba(255, 255, 255, 0.72);
+}
+
+/* ----- Project folder box (SVG oblique projection) ----- */
+
+body.lab-page .lab-project-folder-link {
+  align-self: center;
+  text-decoration: none;
+  display: block;
+  border-radius: var(--spacing-08);
+}
+
+body.lab-page .lab-project-folder-link:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 8px;
+}
+
+body.lab-page .lab-folder-svg {
+  display: block;
+  width: clamp(220px, 44vw, 338px);
+  height: auto;
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.36));
+  transition: transform 0.22s ease, filter 0.22s ease;
+}
+
+body.lab-page .lab-project-folder-link:hover .lab-folder-svg,
+body.lab-page .lab-project-folder-link:focus-visible .lab-folder-svg {
+  transform: translateY(-5px);
+  filter: drop-shadow(0 16px 28px rgba(0, 0, 0, 0.44));
+}
+
+/* SVG face fills — driven by CSS vars so colours are fully configurable */
+body.lab-page .lab-folder-front      { fill: var(--folder-front, #c89b6d); }
+body.lab-page .lab-folder-side       { fill: var(--folder-side,  #a97840); }
+body.lab-page .lab-folder-top        { fill: var(--folder-top,   #dab87e); }
+body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
+body.lab-page .lab-folder-label-bg   { fill: var(--folder-label, #ead0b3); }
+body.lab-page .lab-folder-label-text {
+  fill: #6f4a27;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
 }
 
 /* ----- Frosty project cards ----- */
@@ -415,6 +465,10 @@ body.lab-modal-open {
   body.lab-page .lab-card {
     min-height: auto;
     padding: var(--spacing-20);
+  }
+
+  body.lab-page .lab-folder-svg {
+    width: min(78vw, 260px);
   }
 
   .lab-lightbox-nav--prev { left: var(--spacing-08); }
