@@ -108,8 +108,29 @@ body.lab-page .lab-subtitle {
 
 /* ----- Project folder box (SVG oblique projection) ----- */
 
-body.lab-page .lab-project-folder-link {
+body.lab-page .lab-desktop-icon {
   align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+body.lab-page .lab-icon-label {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  max-width: 96px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
+body.lab-page .lab-project-folder-link {
   text-decoration: none;
   display: block;
   border-radius: var(--spacing-08);
