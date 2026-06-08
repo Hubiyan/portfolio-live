@@ -14,193 +14,355 @@
 
 <body class="ds-subpage lab-page" data-mat-color="green">
 
-    <main id="lab-main" class="lab-main" aria-label="Lab projects">
+    <!-- Shared SVG paint servers — box icon gradients/grain pattern -->
+    <svg style="display:none;position:absolute" aria-hidden="true" focusable="false">
+        <defs>
+            <linearGradient id="box-front-shade" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%"   stop-color="rgba(255,255,255,0.11)"/>
+                <stop offset="28%"  stop-color="rgba(255,255,255,0)"/>
+                <stop offset="100%" stop-color="rgba(100,58,20,0.10)"/>
+            </linearGradient>
+            <linearGradient id="box-top-shade" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%"   stop-color="rgba(255,255,255,0.22)"/>
+                <stop offset="100%" stop-color="rgba(255,255,255,0.03)"/>
+            </linearGradient>
+            <linearGradient id="box-side-shade" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%"   stop-color="rgba(0,0,0,0.03)"/>
+                <stop offset="100%" stop-color="rgba(0,0,0,0.18)"/>
+            </linearGradient>
+            <pattern id="box-grain" x="0" y="0" width="9" height="240"
+                     patternUnits="userSpaceOnUse">
+                <line x1="0.4" y1="0" x2="0.4" y2="240"
+                      stroke="rgba(90,52,18,0.055)" stroke-width="0.6"/>
+            </pattern>
+        </defs>
+    </svg>
 
-        <header class="lab-header">
-            <p class="lab-eyebrow">Hubiyan presents:</p>
-            <h1 class="lab-title">The lab</h1>
-            <p class="lab-subtitle">Experiments, tools, and things I ship when the main site is behaving.</p>
-        </header>
+    <!-- ── Desktop canvas ──────────────────────────────────── -->
+    <main id="lab-main" class="lab-main" aria-label="Lab desktop">
 
-        <!--
-          ╔══════════════════════════════════════════════════════════╗
-          ║  LAB DESKTOP ICON — reusable component                  ║
-          ╠══════════════════════════════════════════════════════════╣
-          ║  Shell (never changes):                                  ║
-          ║  <div class="lab-desktop-icon">                          ║
-          ║    <a class="lab-icon-link" href="..." aria-label="..."> ║
-          ║      <div class="lab-icon-figure">                       ║
-          ║        <!-- paste any inline SVG or <img> here -->       ║
-          ║      </div>                                              ║
-          ║    </a>                                                  ║
-          ║    <span class="lab-icon-label">Name</span>              ║
-          ║  </div>                                                  ║
-          ║                                                          ║
-          ║  Icon variants in lab/icons/:                            ║
-          ║    box.svg   cardboard box (this one)                    ║
-          ╚══════════════════════════════════════════════════════════╝
-        -->
-        <div class="lab-desktop-icon">
-            <a class="lab-icon-link" href="#lab-projects-grid" aria-label="Open project folder">
-                <div class="lab-icon-figure">
+        <!-- ── Icon: Prompts ─────────────────────────────── -->
+        <div class="lab-desktop-icon"
+             data-icon-id="prompts"
+             data-window="win-prompts"
+             style="left:8%;top:22%;
+                    --folder-front:#3a6ecf;
+                    --folder-side: #2450a8;
+                    --folder-top:  #5a8ee8;
+                    --folder-tape: #2d5cbd;"
+             tabindex="0" role="button"
+             aria-label="Prompts — open in window">
+            <div class="lab-icon-figure">
                 <svg class="lab-folder-svg" viewBox="0 0 270 240"
-                     xmlns="http://www.w3.org/2000/svg"
-                     aria-hidden="true" focusable="false">
-                    <defs>
-                        <linearGradient id="lf-front-shade" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%"   stop-color="rgba(255,255,255,0.11)"/>
-                            <stop offset="28%"  stop-color="rgba(255,255,255,0)"/>
-                            <stop offset="100%" stop-color="rgba(100,58,20,0.10)"/>
-                        </linearGradient>
-                        <linearGradient id="lf-top-shade" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%"   stop-color="rgba(255,255,255,0.22)"/>
-                            <stop offset="100%" stop-color="rgba(255,255,255,0.03)"/>
-                        </linearGradient>
-                        <linearGradient id="lf-side-shade" x1="0" y1="0" x2="1" y2="0">
-                            <stop offset="0%"   stop-color="rgba(0,0,0,0.03)"/>
-                            <stop offset="100%" stop-color="rgba(0,0,0,0.18)"/>
-                        </linearGradient>
-                        <pattern id="lf-grain" x="0" y="0" width="9" height="240"
-                                 patternUnits="userSpaceOnUse">
-                            <line x1="0.4" y1="0" x2="0.4" y2="240"
-                                  stroke="rgba(90,52,18,0.055)" stroke-width="0.6"/>
-                        </pattern>
-                        <clipPath id="lf-front-clip">
-                            <polygon points="0,40 200,40 200,240 0,240"/>
-                        </clipPath>
-                    </defs>
-
-                    <!-- ── Right side face ───────────────────── -->
-                    <polygon class="lab-folder-side"
-                             points="200,40 270,0 270,200 200,240"/>
-                    <polygon fill="url(#lf-side-shade)"
-                             points="200,40 270,0 270,200 200,240"/>
-
-                    <!-- ── Top face ──────────────────────────── -->
-                    <polygon class="lab-folder-top"
-                             points="70,0 270,0 200,40 0,40"/>
-                    <polygon fill="url(#lf-top-shade)"
-                             points="70,0 270,0 200,40 0,40"/>
-
-                    <!-- ── Front face (square: 200×200) ─────── -->
-                    <polygon class="lab-folder-front"
-                             points="0,40 200,40 200,240 0,240"/>
-                    <rect x="0" y="40" width="200" height="200"
-                          fill="url(#lf-grain)" clip-path="url(#lf-front-clip)"/>
-                    <polygon fill="url(#lf-front-shade)"
-                             points="0,40 200,40 200,240 0,240"/>
-
-                    <!-- ── Flap crease (~22% from top of front) -->
-                    <line x1="0"   y1="83" x2="200" y2="83"
-                          stroke="rgba(255,255,255,0.13)" stroke-width="0.7"/>
-                    <line x1="0"   y1="84" x2="200" y2="84"
-                          stroke="rgba(90,52,18,0.22)"  stroke-width="1"/>
-
-                    <!-- ── Tape on front (flanking crease) ───── -->
-                    <rect class="lab-folder-tape" x="24" y="49"
-                          width="46" height="20" rx="1.5" opacity="0.72"/>
-                    <rect fill="rgba(255,255,255,0.07)" x="24" y="49"
-                          width="46" height="20" rx="1.5" opacity="0.72"/>
-                    <rect class="lab-folder-tape" x="24" y="74"
-                          width="46" height="20" rx="1.5" opacity="0.67"/>
-                    <rect fill="rgba(255,255,255,0.07)" x="24" y="74"
-                          width="46" height="20" rx="1.5" opacity="0.67"/>
-
-                    <!-- ── Tape on top (along center seam) ───── -->
-                    <!-- seam: front-center (100,40) → back-center (170,0) -->
-                    <polygon class="lab-folder-tape"
-                             points="91,40 109,40 179,0 161,0" opacity="0.70"/>
-                    <polygon fill="rgba(255,255,255,0.07)"
-                             points="91,40 109,40 179,0 161,0" opacity="0.70"/>
-
-                    <!-- ── Edge highlights / shadows ──────────── -->
-                    <line x1="0"   y1="40" x2="200" y2="40"
-                          stroke="rgba(255,255,255,0.3)"  stroke-width="1"/>
-                    <line x1="0"   y1="40" x2="70"  y2="0"
-                          stroke="rgba(255,255,255,0.22)" stroke-width="0.8"/>
-                    <line x1="70"  y1="0"  x2="270" y2="0"
-                          stroke="rgba(255,255,255,0.16)" stroke-width="0.8"/>
-                    <line x1="200" y1="40" x2="200" y2="240"
-                          stroke="rgba(0,0,0,0.20)"      stroke-width="1.2"/>
-                    <line x1="0"   y1="240" x2="200" y2="240"
-                          stroke="rgba(0,0,0,0.10)"      stroke-width="0.8"/>
-                    <line x1="200" y1="240" x2="270" y2="200"
-                          stroke="rgba(0,0,0,0.14)"      stroke-width="0.8"/>
+                     xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                    <polygon class="lab-folder-side"       points="200,40 270,0 270,200 200,240"/>
+                    <polygon fill="url(#box-side-shade)"   points="200,40 270,0 270,200 200,240"/>
+                    <polygon class="lab-folder-top"        points="70,0 270,0 200,40 0,40"/>
+                    <polygon fill="url(#box-top-shade)"    points="70,0 270,0 200,40 0,40"/>
+                    <polygon class="lab-folder-front"      points="0,40 200,40 200,240 0,240"/>
+                    <polygon fill="url(#box-grain)"        points="0,40 200,40 200,240 0,240"/>
+                    <polygon fill="url(#box-front-shade)"  points="0,40 200,40 200,240 0,240"/>
+                    <line x1="0" y1="83" x2="200" y2="83" stroke="rgba(255,255,255,0.13)" stroke-width="0.7"/>
+                    <line x1="0" y1="84" x2="200" y2="84" stroke="rgba(90,52,18,0.22)"   stroke-width="1"/>
+                    <rect class="lab-folder-tape"          x="24" y="49" width="46" height="20" rx="1.5" opacity="0.72"/>
+                    <rect fill="rgba(255,255,255,0.07)"    x="24" y="49" width="46" height="20" rx="1.5" opacity="0.72"/>
+                    <rect class="lab-folder-tape"          x="24" y="74" width="46" height="20" rx="1.5" opacity="0.67"/>
+                    <rect fill="rgba(255,255,255,0.07)"    x="24" y="74" width="46" height="20" rx="1.5" opacity="0.67"/>
+                    <polygon class="lab-folder-tape"       points="91,40 109,40 179,0 161,0" opacity="0.70"/>
+                    <polygon fill="rgba(255,255,255,0.07)" points="91,40 109,40 179,0 161,0" opacity="0.70"/>
+                    <line x1="0"   y1="40"  x2="200" y2="40"  stroke="rgba(255,255,255,0.3)"  stroke-width="1"/>
+                    <line x1="0"   y1="40"  x2="70"  y2="0"   stroke="rgba(255,255,255,0.22)" stroke-width="0.8"/>
+                    <line x1="70"  y1="0"   x2="270" y2="0"   stroke="rgba(255,255,255,0.16)" stroke-width="0.8"/>
+                    <line x1="200" y1="40"  x2="200" y2="240" stroke="rgba(0,0,0,0.20)"       stroke-width="1.2"/>
+                    <line x1="0"   y1="240" x2="200" y2="240" stroke="rgba(0,0,0,0.10)"       stroke-width="0.8"/>
+                    <line x1="200" y1="240" x2="270" y2="200" stroke="rgba(0,0,0,0.14)"       stroke-width="0.8"/>
+                    <!-- Copy icon — two stacked pages with dog-ear -->
+                    <g opacity="0.68">
+                        <!-- back page -->
+                        <rect x="68" y="107" width="44" height="56" rx="5"
+                              fill="rgba(255,255,255,0.10)"
+                              stroke="rgba(255,255,255,0.9)" stroke-width="4"/>
+                        <!-- dog-ear fold on back page -->
+                        <path d="M102 107 L112 107 L112 118 Z"
+                              fill="rgba(255,255,255,0.25)"
+                              stroke="rgba(255,255,255,0.9)" stroke-width="2.5"
+                              stroke-linejoin="round"/>
+                        <!-- front page -->
+                        <rect x="84" y="123" width="44" height="56" rx="5"
+                              fill="rgba(255,255,255,0.18)"
+                              stroke="rgba(255,255,255,0.9)" stroke-width="4"/>
+                        <!-- lines on front page -->
+                        <line x1="93" y1="141" x2="119" y2="141"
+                              stroke="rgba(255,255,255,0.75)" stroke-width="3.5" stroke-linecap="round"/>
+                        <line x1="93" y1="153" x2="119" y2="153"
+                              stroke="rgba(255,255,255,0.75)" stroke-width="3.5" stroke-linecap="round"/>
+                        <line x1="93" y1="164" x2="113" y2="164"
+                              stroke="rgba(255,255,255,0.75)" stroke-width="3.5" stroke-linecap="round"/>
+                    </g>
                 </svg>
-                </div><!-- /.lab-icon-figure -->
-            </a>
-            <span class="lab-icon-label">Projects</span>
-        </div><!-- /.lab-desktop-icon -->
+            </div>
+            <span class="lab-icon-label">Prompts</span>
+        </div>
 
-        <div class="lab-cards" id="lab-projects-grid">
+        <!-- ── Icon: AI Bro Detector ─────────────────────── -->
+        <div class="lab-desktop-icon"
+             data-icon-id="ai-bro"
+             data-window="win-ai-bro"
+             style="left:52%;top:18%;
+                    --folder-front:#c94040;
+                    --folder-side: #9e2929;
+                    --folder-top:  #e06060;
+                    --folder-tape: #b03030;"
+             tabindex="0" role="button"
+             aria-label="AI Bro Detector — open in window">
+            <div class="lab-icon-figure">
+                <svg class="lab-folder-svg" viewBox="0 0 270 240"
+                     xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                    <polygon class="lab-folder-side"       points="200,40 270,0 270,200 200,240"/>
+                    <polygon fill="url(#box-side-shade)"   points="200,40 270,0 270,200 200,240"/>
+                    <polygon class="lab-folder-top"        points="70,0 270,0 200,40 0,40"/>
+                    <polygon fill="url(#box-top-shade)"    points="70,0 270,0 200,40 0,40"/>
+                    <polygon class="lab-folder-front"      points="0,40 200,40 200,240 0,240"/>
+                    <polygon fill="url(#box-grain)"        points="0,40 200,40 200,240 0,240"/>
+                    <polygon fill="url(#box-front-shade)"  points="0,40 200,40 200,240 0,240"/>
+                    <line x1="0" y1="83" x2="200" y2="83" stroke="rgba(255,255,255,0.13)" stroke-width="0.7"/>
+                    <line x1="0" y1="84" x2="200" y2="84" stroke="rgba(90,52,18,0.22)"   stroke-width="1"/>
+                    <rect class="lab-folder-tape"          x="24" y="49" width="46" height="20" rx="1.5" opacity="0.72"/>
+                    <rect fill="rgba(255,255,255,0.07)"    x="24" y="49" width="46" height="20" rx="1.5" opacity="0.72"/>
+                    <rect class="lab-folder-tape"          x="24" y="74" width="46" height="20" rx="1.5" opacity="0.67"/>
+                    <rect fill="rgba(255,255,255,0.07)"    x="24" y="74" width="46" height="20" rx="1.5" opacity="0.67"/>
+                    <polygon class="lab-folder-tape"       points="91,40 109,40 179,0 161,0" opacity="0.70"/>
+                    <polygon fill="rgba(255,255,255,0.07)" points="91,40 109,40 179,0 161,0" opacity="0.70"/>
+                    <line x1="0"   y1="40"  x2="200" y2="40"  stroke="rgba(255,255,255,0.3)"  stroke-width="1"/>
+                    <line x1="0"   y1="40"  x2="70"  y2="0"   stroke="rgba(255,255,255,0.22)" stroke-width="0.8"/>
+                    <line x1="70"  y1="0"   x2="270" y2="0"   stroke="rgba(255,255,255,0.16)" stroke-width="0.8"/>
+                    <line x1="200" y1="40"  x2="200" y2="240" stroke="rgba(0,0,0,0.20)"       stroke-width="1.2"/>
+                    <line x1="0"   y1="240" x2="200" y2="240" stroke="rgba(0,0,0,0.10)"       stroke-width="0.8"/>
+                    <line x1="200" y1="240" x2="270" y2="200" stroke="rgba(0,0,0,0.14)"       stroke-width="0.8"/>
+                    <!-- Robot "AI Bro" icon — smug face with sunglasses -->
+                    <g opacity="0.62">
+                        <!-- head -->
+                        <rect x="63" y="106" width="74" height="68" rx="7"
+                              fill="rgba(255,255,255,0.10)"
+                              stroke="rgba(255,255,255,0.92)" stroke-width="4"/>
+                        <!-- antenna -->
+                        <line x1="100" y1="106" x2="100" y2="92"
+                              stroke="rgba(255,255,255,0.92)" stroke-width="4" stroke-linecap="round"/>
+                        <circle cx="100" cy="87" r="6.5" fill="rgba(255,255,255,0.92)"/>
+                        <!-- sunglasses — connected lenses (max bro energy) -->
+                        <rect x="67" y="118" width="25" height="18" rx="4"
+                              fill="rgba(255,255,255,0.18)"
+                              stroke="rgba(255,255,255,0.92)" stroke-width="3.5"/>
+                        <line x1="92" y1="127" x2="108" y2="127"
+                              stroke="rgba(255,255,255,0.92)" stroke-width="3.5"/>
+                        <rect x="108" y="118" width="25" height="18" rx="4"
+                              fill="rgba(255,255,255,0.18)"
+                              stroke="rgba(255,255,255,0.92)" stroke-width="3.5"/>
+                        <!-- smug upward-curve mouth -->
+                        <path d="M82 153 Q100 162 118 153"
+                              fill="none" stroke="rgba(255,255,255,0.92)"
+                              stroke-width="4" stroke-linecap="round"/>
+                        <!-- ear sensors -->
+                        <rect x="55" y="122" width="8" height="22" rx="3.5"
+                              fill="rgba(255,255,255,0.85)"/>
+                        <rect x="137" y="122" width="8" height="22" rx="3.5"
+                              fill="rgba(255,255,255,0.85)"/>
+                    </g>
+                </svg>
+            </div>
+            <span class="lab-icon-label">AI Bro Detector</span>
+        </div>
 
-            <a class="lab-card" href="/lab/prompts/">
-                <h2 class="lab-card-title">Prompts</h2>
-                <p class="lab-card-desc">Copy-paste fuel for when your blank doc is silently judging you.</p>
-                <span class="lab-card-arrow" aria-hidden="true">→</span>
-            </a>
-
-            <a class="lab-card" href="/lab/ai-bro-detector/">
-                <h2 class="lab-card-title">AI Bro Detector</h2>
-                <p class="lab-card-desc">Sniffs out bro energy in LinkedIn posts before you cringe-reply.</p>
-                <span class="lab-card-arrow" aria-hidden="true">→</span>
-            </a>
-
-            <button type="button" class="lab-card lab-card--action" data-action="open-wallpapers"
-                    aria-label="Visual Explorations — open wallpapers">
-                <h2 class="lab-card-title">Visual Explorations</h2>
-                <p class="lab-card-desc">Wallpapers for people who stare at their lock screen a little too long.</p>
-                <span class="lab-card-arrow" aria-hidden="true">→</span>
-            </button>
-
+        <!-- ── Icon: Visual Explorations (macOS folder) ──── -->
+        <div class="lab-desktop-icon"
+             data-icon-id="visual-exp"
+             data-window="win-visual"
+             style="left:30%;top:52%"
+             tabindex="0" role="button"
+             aria-label="Visual Explorations — open folder">
+            <div class="lab-icon-figure">
+                <img src="/images/lab-icons/image%204739.png"
+                     alt="" aria-hidden="true"
+                     width="78" height="78"
+                     style="height:auto;object-fit:contain;
+                            filter:drop-shadow(0 4px 10px rgba(0,0,0,0.35))">
+            </div>
+            <span class="lab-icon-label">Visual Explorations</span>
         </div>
 
     </main>
 
-    <!-- Lightbox / Slideshow -->
-    <div class="lab-lightbox" id="labLightbox" role="dialog" aria-modal="true"
-         aria-label="Wallpaper slideshow" hidden>
-        <div class="lab-lightbox-backdrop" data-close="lightbox"></div>
-
-        <button class="lab-lightbox-close" aria-label="Close slideshow" data-close="lightbox">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-        </button>
-
-        <button class="lab-lightbox-nav lab-lightbox-nav--prev" id="lbPrev" aria-label="Previous wallpaper">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                <path d="M13 3l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </button>
-        <button class="lab-lightbox-nav lab-lightbox-nav--next" id="lbNext" aria-label="Next wallpaper">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                <path d="M7 3l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </button>
-
-        <div class="lab-lightbox-stage">
-            <div class="lab-lightbox-print">
-                <img class="lab-lightbox-img" id="lbImg" src="" alt="" width="360" height="640">
+    <!-- ╔══════════════════════════════════════════════════════════╗
+         ║  macOS BROWSER WINDOW — Prompts                         ║
+         ╚══════════════════════════════════════════════════════════╝ -->
+    <div class="mac-window" id="win-prompts"
+         data-src="/lab/prompts/"
+         hidden>
+        <div class="mac-window-titlebar">
+            <div class="mac-window-controls">
+                <button class="mac-btn mac-btn--close" aria-label="Close"></button>
+                <button class="mac-btn mac-btn--max"   aria-label="Maximise"></button>
+            </div>
+            <div class="mac-window-urlbar">
+                <button class="mac-nav-btn" data-nav="back" aria-label="Go back">
+                    <svg width="9" height="14" viewBox="0 0 9 14" fill="none" aria-hidden="true">
+                        <path d="M8 1L2 7l6 6" stroke="currentColor" stroke-width="1.8"
+                              stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <button class="mac-nav-btn" data-nav="fwd" aria-label="Go forward">
+                    <svg width="9" height="14" viewBox="0 0 9 14" fill="none" aria-hidden="true">
+                        <path d="M1 1l6 6-6 6" stroke="currentColor" stroke-width="1.8"
+                              stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <!--
+                  Reload icon: 280° clockwise arc + arrowhead.
+                  Arc: from (10.21,3.17) CW to (3.79,3.17), radius 5, centre (7,7).
+                  Arrowhead: two short lines from the arc end-point pointing CW.
+                -->
+                <button class="mac-nav-btn" data-nav="reload" aria-label="Reload">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                        <!-- 270° CW arc: 12-o'clock → 9-o'clock, gap in upper-left quadrant -->
+                        <path d="M7 2.5 A4.5 4.5 0 1 1 2.5 7"
+                              stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+                        <!-- arrowhead at (2.5,7): clockwise travel = downward → V opens upward -->
+                        <polyline points="1,5.5 2.5,7 4,5.5"
+                                  stroke="currentColor" stroke-width="1.6"
+                                  stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                </button>
+                <div class="mac-urlbar-pill">
+                    <svg class="mac-urlbar-lock" width="9" height="12" viewBox="0 0 9 12"
+                         fill="none" aria-hidden="true">
+                        <rect x="1" y="5.5" width="7" height="6" rx="1.2" fill="currentColor"/>
+                        <path d="M2.5 5.5V3.8a2 2 0 014 0v1.7"
+                              stroke="currentColor" stroke-width="1.2" fill="none"/>
+                    </svg>
+                    <span class="mac-urlbar-text" id="win-prompts-url">hubiyan.com/lab/prompts/</span>
+                </div>
             </div>
         </div>
-
-        <div class="lab-lightbox-footer">
-            <div class="lab-lightbox-info">
-                <span class="lab-lightbox-name" id="lbName"></span>
-                <span class="lab-lightbox-counter" id="lbCounter"></span>
-            </div>
-            <a class="lab-lightbox-download" id="lbDownload" href="" target="_blank" rel="noopener">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                    <path d="M7 1v8M4 6l3 3 3-3M2 11h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                Download full resolution
-            </a>
+        <div class="mac-window-body">
+            <iframe class="mac-window-iframe" id="win-prompts-iframe"
+                    title="Prompts" src=""></iframe>
         </div>
-
-        <div class="lab-lightbox-dots" id="lbDots" aria-hidden="true"></div>
     </div>
 
+    <!-- ╔══════════════════════════════════════════════════════════╗
+         ║  macOS BROWSER WINDOW — AI Bro Detector                 ║
+         ╚══════════════════════════════════════════════════════════╝ -->
+    <div class="mac-window" id="win-ai-bro"
+         data-src="/lab/ai-bro-detector/"
+         hidden>
+        <div class="mac-window-titlebar">
+            <div class="mac-window-controls">
+                <button class="mac-btn mac-btn--close" aria-label="Close"></button>
+                <button class="mac-btn mac-btn--max"   aria-label="Maximise"></button>
+            </div>
+            <div class="mac-window-urlbar">
+                <button class="mac-nav-btn" data-nav="back" aria-label="Go back">
+                    <svg width="9" height="14" viewBox="0 0 9 14" fill="none" aria-hidden="true">
+                        <path d="M8 1L2 7l6 6" stroke="currentColor" stroke-width="1.8"
+                              stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <button class="mac-nav-btn" data-nav="fwd" aria-label="Go forward">
+                    <svg width="9" height="14" viewBox="0 0 9 14" fill="none" aria-hidden="true">
+                        <path d="M1 1l6 6-6 6" stroke="currentColor" stroke-width="1.8"
+                              stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <button class="mac-nav-btn" data-nav="reload" aria-label="Reload">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                        <!-- 270° CW arc: 12-o'clock → 9-o'clock, gap in upper-left quadrant -->
+                        <path d="M7 2.5 A4.5 4.5 0 1 1 2.5 7"
+                              stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+                        <!-- arrowhead at (2.5,7): clockwise travel = downward → V opens upward -->
+                        <polyline points="1,5.5 2.5,7 4,5.5"
+                                  stroke="currentColor" stroke-width="1.6"
+                                  stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                </button>
+                <div class="mac-urlbar-pill">
+                    <svg class="mac-urlbar-lock" width="9" height="12" viewBox="0 0 9 12"
+                         fill="none" aria-hidden="true">
+                        <rect x="1" y="5.5" width="7" height="6" rx="1.2" fill="currentColor"/>
+                        <path d="M2.5 5.5V3.8a2 2 0 014 0v1.7"
+                              stroke="currentColor" stroke-width="1.2" fill="none"/>
+                    </svg>
+                    <span class="mac-urlbar-text" id="win-ai-bro-url">hubiyan.com/lab/ai-bro-detector/</span>
+                </div>
+            </div>
+        </div>
+        <div class="mac-window-body">
+            <iframe class="mac-window-iframe" id="win-ai-bro-iframe"
+                    title="AI Bro Detector" src=""></iframe>
+        </div>
+    </div>
+
+    <!-- ╔══════════════════════════════════════════════════════════╗
+         ║  macOS FINDER WINDOW — Visual Explorations              ║
+         ╚══════════════════════════════════════════════════════════╝ -->
+    <div class="mac-window mac-window--finder" id="win-visual" hidden>
+        <div class="mac-window-titlebar">
+            <div class="mac-window-controls">
+                <button class="mac-btn mac-btn--close" aria-label="Close"></button>
+                <button class="mac-btn mac-btn--max"   aria-label="Maximise"></button>
+            </div>
+            <span class="mac-window-title">Visual Explorations</span>
+            <div class="mac-titlebar-right"></div>
+        </div>
+        <div class="mac-window-body">
+            <div class="mac-finder-grid" id="finder-wallpapers" aria-label="Wallpapers"></div>
+        </div>
+    </div>
+
+    <!-- ╔══════════════════════════════════════════════════════════╗
+         ║  macOS PREVIEW WINDOW — Image viewer                    ║
+         ║  Opened whenever any image is tapped/clicked on Lab.    ║
+         ╚══════════════════════════════════════════════════════════╝ -->
+    <div class="mac-window mac-window--preview" id="win-preview" hidden>
+        <div class="mac-window-titlebar">
+            <div class="mac-window-controls">
+                <button class="mac-btn mac-btn--close" aria-label="Close"></button>
+                <button class="mac-btn mac-btn--max"   aria-label="Maximise"></button>
+            </div>
+            <span class="mac-window-title" id="preview-title">Image</span>
+            <div class="mac-titlebar-right">
+                <button class="mac-nav-btn" id="preview-prev" aria-label="Previous image">
+                    <svg width="9" height="14" viewBox="0 0 9 14" fill="none" aria-hidden="true">
+                        <path d="M8 1L2 7l6 6" stroke="currentColor" stroke-width="1.8"
+                              stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <button class="mac-nav-btn" id="preview-next" aria-label="Next image">
+                    <svg width="9" height="14" viewBox="0 0 9 14" fill="none" aria-hidden="true">
+                        <path d="M1 1l6 6-6 6" stroke="currentColor" stroke-width="1.8"
+                              stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="mac-window-body">
+            <img class="mac-preview-img" id="preview-img"
+                 src="" alt="" width="1" height="1">
+        </div>
+        <div class="mac-preview-toolbar">
+            <span class="mac-preview-counter" id="preview-counter"></span>
+            <a class="mac-preview-dl" id="preview-dl"
+               href="" target="_blank" rel="noopener" download="">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+                    <path d="M6.5 1v8M4 6l2.5 3 2.5-3M1.5 11.5h10"
+                          stroke="currentColor" stroke-width="1.4"
+                          stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Download full resolution</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- ── Colour switcher ───────────────────────────────────── -->
     <div class="lab-color-switcher" role="group" aria-label="Background colour">
         <button class="lab-swatch" data-color="green"  aria-label="Green mat"  aria-pressed="true"></button>
         <button class="lab-swatch" data-color="blue"   aria-label="Blue mat"   aria-pressed="false"></button>
@@ -208,10 +370,11 @@
     </div>
 
     <script>
+    /* ── Colour switcher ────────────────────────────────────── */
     (function () {
-        var body = document.body;
+        var body     = document.body;
         var swatches = document.querySelectorAll('.lab-swatch');
-        var saved = localStorage.getItem('lab-mat-color');
+        var saved    = localStorage.getItem('lab-mat-color');
         if (saved) {
             body.setAttribute('data-mat-color', saved);
             swatches.forEach(function (s) {
@@ -230,98 +393,362 @@
         });
     })();
 
+    /* ── Wallpaper data ─────────────────────────────────────── */
     var WALLPAPERS = [
         {
-            name: 'Andromeda Horizon',
-            thumb: '/images/wallpapers/thumbs/Andromeda-horizon.webp',
-            full: 'https://raw.githubusercontent.com/Hubiyan/portfolio-live/main/images/wallpapers/Andromeda-horizon.png',
+            name:     'Andromeda Horizon',
+            thumb:    '/images/wallpapers/thumbs/Andromeda-horizon.webp',
+            full:     'https://raw.githubusercontent.com/Hubiyan/portfolio-live/main/images/wallpapers/Andromeda-horizon.png',
             filename: 'Andromeda-horizon.png'
         },
         {
-            name: 'Andromeda Horizon No.1',
-            thumb: '/images/wallpapers/thumbs/Andromeda-horizon-1.webp',
-            full: 'https://raw.githubusercontent.com/Hubiyan/portfolio-live/main/images/wallpapers/Andromeda-horizon-1.png',
+            name:     'Andromeda Horizon No.1',
+            thumb:    '/images/wallpapers/thumbs/Andromeda-horizon-1.webp',
+            full:     'https://raw.githubusercontent.com/Hubiyan/portfolio-live/main/images/wallpapers/Andromeda-horizon-1.png',
             filename: 'Andromeda-horizon-1.png'
         },
         {
-            name: 'Andromeda Horizon No.2',
-            thumb: '/images/wallpapers/thumbs/Andromeda-horizon-2.webp',
-            full: 'https://raw.githubusercontent.com/Hubiyan/portfolio-live/main/images/wallpapers/Andromeda-horizon-2.png',
+            name:     'Andromeda Horizon No.2',
+            thumb:    '/images/wallpapers/thumbs/Andromeda-horizon-2.webp',
+            full:     'https://raw.githubusercontent.com/Hubiyan/portfolio-live/main/images/wallpapers/Andromeda-horizon-2.png',
             filename: 'Andromeda-horizon-2.png'
         }
     ];
 
-    var lightbox  = document.getElementById('labLightbox');
-    var lbImg     = document.getElementById('lbImg');
-    var lbName    = document.getElementById('lbName');
-    var lbCounter = document.getElementById('lbCounter');
-    var lbDl      = document.getElementById('lbDownload');
-    var lbDots    = document.getElementById('lbDots');
-    var lbPrev    = document.getElementById('lbPrev');
-    var lbNext    = document.getElementById('lbNext');
-    var lbCurrent = 0;
+    /* ── macOS Window system ────────────────────────────────── */
+    var macZCounter      = 60;
+    var finderPopulated  = false;
 
-    WALLPAPERS.forEach(function (_, i) {
-        var d = document.createElement('button');
-        d.className = 'lab-lightbox-dot';
-        d.setAttribute('aria-label', 'Go to wallpaper ' + (i + 1));
-        d.addEventListener('click', function () { goTo(i); });
-        lbDots.appendChild(d);
-    });
+    function bringToFront(win) {
+        macZCounter += 1;
+        win.style.zIndex = String(macZCounter);
+    }
 
-    function goTo(index) {
-        lbCurrent = (index + WALLPAPERS.length) % WALLPAPERS.length;
-        var wp = WALLPAPERS[lbCurrent];
-        lbImg.src = wp.thumb;
-        lbImg.alt = wp.name;
-        lbName.textContent = wp.name;
-        lbCounter.textContent = (lbCurrent + 1) + ' / ' + WALLPAPERS.length;
-        lbDl.href = wp.full;
-        lbDl.setAttribute('download', wp.filename);
-        lbDots.querySelectorAll('.lab-lightbox-dot').forEach(function (d, i) {
-            d.classList.toggle('is-active', i === lbCurrent);
-            d.setAttribute('aria-pressed', i === lbCurrent ? 'true' : 'false');
+    /**
+     * Open a .mac-window with the open animation.
+     * Iframes are lazy-loaded on first open.
+     * The Finder grid is populated on first open.
+     */
+    function openMacWin(id) {
+        var win = document.getElementById(id);
+        if (!win) return;
+
+        /* Reset animation state */
+        win.classList.remove('is-closing', 'is-minimizing');
+        win.hidden = false;
+        void win.offsetWidth; /* force reflow so animation restarts cleanly */
+        win.classList.add('is-opening');
+        win.addEventListener('animationend', function () {
+            win.classList.remove('is-opening');
+        }, { once: true });
+
+        bringToFront(win);
+
+        /* Lazy-load iframe */
+        var iframe = win.querySelector('.mac-window-iframe');
+        if (iframe && !iframe.getAttribute('src')) {
+            iframe.src = win.dataset.src;
+
+            /* Keep URL bar in sync as user navigates inside */
+            var urlText = win.querySelector('.mac-urlbar-text');
+            if (urlText) {
+                iframe.addEventListener('load', function () {
+                    try {
+                        var href = iframe.contentWindow.location.href;
+                        urlText.textContent = href.replace(/^https?:\/\//, '');
+                    } catch (_) {}
+                });
+            }
+        }
+
+        /* Populate Finder grid once */
+        if (id === 'win-visual' && !finderPopulated) {
+            populateFinderGrid();
+        }
+    }
+
+    /**
+     * Close with the close animation, then set hidden.
+     */
+    function closeMacWin(win) {
+        if (win.hidden) return;
+        win.classList.remove('is-opening');
+        win.classList.add('is-closing');
+        /* Timeout fallback in case animationend doesn't fire */
+        var t = setTimeout(function () { doHide(); }, 300);
+        win.addEventListener('animationend', function () {
+            clearTimeout(t);
+            doHide();
+        }, { once: true });
+        function doHide() {
+            win.classList.remove('is-closing');
+            win.hidden = true;
+        }
+    }
+
+    /**
+     * Minimise with a shrink-down animation.
+     */
+    function minimizeMacWin(win) {
+        if (win.hidden) return;
+        win.classList.remove('is-opening');
+        win.classList.add('is-minimizing');
+        var t = setTimeout(function () { doHide(); }, 300);
+        win.addEventListener('animationend', function () {
+            clearTimeout(t);
+            doHide();
+        }, { once: true });
+        function doHide() {
+            win.classList.remove('is-minimizing');
+            win.hidden = true;
+        }
+    }
+
+    /* Wire each window's controls + drag */
+    document.querySelectorAll('.mac-window').forEach(function (win) {
+        var resolved = false; /* has % transform been resolved to px? */
+        var sx, sy, sl, st;
+
+        /* ── Traffic lights ── */
+        var btnClose = win.querySelector('.mac-btn--close');
+        var btnMax   = win.querySelector('.mac-btn--max');
+
+        if (btnClose) btnClose.addEventListener('click', function (e) {
+            e.stopPropagation();
+            closeMacWin(win);
         });
-    }
+        if (btnMax) btnMax.addEventListener('click', function (e) {
+            e.stopPropagation();
+            if (!resolved) resolvePos();
+            win.classList.add('is-resizing');
+            win.classList.toggle('is-maximized');
+            win.addEventListener('transitionend', function () {
+                win.classList.remove('is-resizing');
+            }, { once: true });
+        });
 
-    function openLightbox(index) {
-        lightbox.hidden = false;
-        document.body.classList.add('lab-modal-open');
-        goTo(index);
-        lightbox.querySelector('.lab-lightbox-close').focus();
-    }
+        /* ── iframe nav (back / forward / reload) ── */
+        win.querySelectorAll('.mac-nav-btn[data-nav]').forEach(function (btn) {
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                var iframe = win.querySelector('.mac-window-iframe');
+                if (!iframe) return;
+                try {
+                    if (btn.dataset.nav === 'back')   iframe.contentWindow.history.back();
+                    if (btn.dataset.nav === 'fwd')    iframe.contentWindow.history.forward();
+                    if (btn.dataset.nav === 'reload') iframe.contentWindow.location.reload();
+                } catch (_) {}
+            });
+        });
 
-    function closeLightbox() {
-        lightbox.hidden = true;
-        document.body.classList.remove('lab-modal-open');
-    }
+        function resolvePos() {
+            var r = win.getBoundingClientRect();
+            win.style.left      = r.left + 'px';
+            win.style.top       = r.top  + 'px';
+            win.style.transform = 'none';
+            resolved = true;
+        }
 
-    document.querySelector('[data-action="open-wallpapers"]').addEventListener('click', function () {
-        openLightbox(0);
+        /*
+         * ── Window drag ───────────────────────────────────────────
+         *
+         * We do NOT use setPointerCapture because that re-routes pointerup
+         * to the capture element, breaking the browser's click synthesis on
+         * child buttons.  Instead we attach document-level move/up listeners
+         * so the drag keeps working even when the pointer leaves the window,
+         * and buttons receive their own pointerup → click as normal.
+         *
+         * If the pointer moves > 4 px we enter drag mode and install a
+         * one-shot capture-phase click-canceller so dragging over a button
+         * doesn't accidentally fire it.
+         */
+        win.addEventListener('pointerdown', function (e) {
+            /* Only drag from the chrome (titlebar area), not content */
+            if (e.target.closest('.mac-window-body, .mac-preview-toolbar')) return;
+            if (win.classList.contains('is-maximized')) return;
+
+            if (!resolved) resolvePos();
+
+            sx = e.clientX; sy = e.clientY;
+            sl = win.offsetLeft; st = win.offsetTop;
+            var moved = false;
+            bringToFront(win);
+
+            /* Don't eat the event for plain non-button clicks */
+            if (!e.target.closest('.mac-btn, .mac-nav-btn, .mac-urlbar-pill,\
+                                    .mac-titlebar-right')) {
+                e.preventDefault();
+            }
+
+            function onMove(ev) {
+                var dx = ev.clientX - sx, dy = ev.clientY - sy;
+                if (!moved && (Math.abs(dx) > 4 || Math.abs(dy) > 4)) moved = true;
+                if (moved) {
+                    win.style.left = (sl + dx) + 'px';
+                    win.style.top  = (st + dy) + 'px';
+                }
+            }
+            function onUp() {
+                document.removeEventListener('pointermove', onMove);
+                document.removeEventListener('pointerup',  onUp);
+                if (moved) {
+                    /* Swallow the click that would fire on a button we dragged from */
+                    win.addEventListener('click', function h(ev) {
+                        ev.stopPropagation();
+                        ev.preventDefault();
+                    }, { capture: true, once: true });
+                }
+            }
+            document.addEventListener('pointermove', onMove);
+            document.addEventListener('pointerup',  onUp);
+        });
     });
 
-    lbPrev.addEventListener('click', function () { goTo(lbCurrent - 1); });
-    lbNext.addEventListener('click', function () { goTo(lbCurrent + 1); });
+    /* ── Finder grid ────────────────────────────────────────── */
+    function populateFinderGrid() {
+        var grid = document.getElementById('finder-wallpapers');
+        WALLPAPERS.forEach(function (wp, i) {
+            var btn = document.createElement('button');
+            btn.className = 'mac-finder-thumb';
+            btn.setAttribute('aria-label', wp.name);
 
-    lightbox.addEventListener('click', function (e) {
-        if (e.target.dataset.close === 'lightbox') closeLightbox();
+            var img    = document.createElement('img');
+            img.src    = wp.thumb;
+            img.alt    = wp.name;
+            img.width  = 120;
+            img.height = 213;
+            img.loading = 'lazy';
+            img.style.height = 'auto';
+
+            var lbl = document.createElement('span');
+            lbl.textContent = wp.name;
+
+            btn.appendChild(img);
+            btn.appendChild(lbl);
+            btn.addEventListener('click', function () { openPreview(i); });
+            grid.appendChild(btn);
+        });
+        finderPopulated = true;
+    }
+
+    /* ── Image Preview (macOS Preview-style window) ─────────── */
+    var previewIdx = 0;
+
+    function openPreview(index) {
+        previewIdx = (index + WALLPAPERS.length) % WALLPAPERS.length;
+        var wp = WALLPAPERS[previewIdx];
+
+        document.getElementById('preview-img').src     = wp.thumb;
+        document.getElementById('preview-img').alt     = wp.name;
+        document.getElementById('preview-title').textContent   = wp.name;
+        document.getElementById('preview-counter').textContent =
+            (previewIdx + 1) + ' / ' + WALLPAPERS.length;
+
+        var dl = document.getElementById('preview-dl');
+        dl.href = wp.full;
+        dl.setAttribute('download', wp.filename);
+
+        /* Show / hide nav if only one image */
+        var showNav = WALLPAPERS.length > 1;
+        document.getElementById('preview-prev').style.display = showNav ? '' : 'none';
+        document.getElementById('preview-next').style.display = showNav ? '' : 'none';
+
+        openMacWin('win-preview');
+    }
+
+    document.getElementById('preview-prev').addEventListener('click', function (e) {
+        e.stopPropagation();
+        openPreview(previewIdx - 1);
+    });
+    document.getElementById('preview-next').addEventListener('click', function (e) {
+        e.stopPropagation();
+        openPreview(previewIdx + 1);
     });
 
-    lightbox.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape')     closeLightbox();
-        if (e.key === 'ArrowLeft')  goTo(lbCurrent - 1);
-        if (e.key === 'ArrowRight') goTo(lbCurrent + 1);
+    /* Keyboard nav inside the preview window */
+    document.getElementById('win-preview').addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowLeft')  openPreview(previewIdx - 1);
+        if (e.key === 'ArrowRight') openPreview(previewIdx + 1);
     });
 
+    /* Swipe for preview on touch */
     (function () {
-        var touchStartX = 0;
-        lightbox.addEventListener('touchstart', function (e) {
-            touchStartX = e.changedTouches[0].clientX;
+        var tx = 0;
+        var pw = document.getElementById('win-preview');
+        pw.addEventListener('touchstart', function (e) {
+            tx = e.changedTouches[0].clientX;
         }, { passive: true });
-        lightbox.addEventListener('touchend', function (e) {
-            var dx = e.changedTouches[0].clientX - touchStartX;
-            if (Math.abs(dx) > 50) goTo(lbCurrent + (dx < 0 ? 1 : -1));
+        pw.addEventListener('touchend', function (e) {
+            var dx = e.changedTouches[0].clientX - tx;
+            if (Math.abs(dx) > 50) openPreview(previewIdx + (dx < 0 ? 1 : -1));
         }, { passive: true });
+    })();
+
+    /* ── Desktop icon drag + click system ──────────────────── */
+    (function initDesktopIcons() {
+        var STORE = 'lab-icon-pos';
+
+        function loadPos() {
+            try { return JSON.parse(localStorage.getItem(STORE) || '{}'); } catch (e) { return {}; }
+        }
+        function savePos(id, x, y) {
+            var pos = loadPos();
+            pos[id] = { x: x, y: y };
+            localStorage.setItem(STORE, JSON.stringify(pos));
+        }
+
+        var saved = loadPos();
+
+        document.querySelectorAll('.lab-desktop-icon[data-icon-id]').forEach(function (icon) {
+            var id = icon.dataset.iconId;
+
+            if (saved[id]) {
+                icon.style.left = saved[id].x + 'px';
+                icon.style.top  = saved[id].y + 'px';
+            }
+
+            var dragging = false, moved = false, wasDragged = false;
+            var startX, startY, startL, startT;
+
+            icon.addEventListener('pointerdown', function (e) {
+                if (e.button !== 0) return;
+                dragging = true; moved = false;
+                startX = e.clientX; startY = e.clientY;
+                startL = icon.offsetLeft; startT = icon.offsetTop;
+                icon.setPointerCapture(e.pointerId);
+                icon.style.zIndex = '10';
+            });
+
+            icon.addEventListener('pointermove', function (e) {
+                if (!dragging) return;
+                var dx = e.clientX - startX, dy = e.clientY - startY;
+                if (Math.abs(dx) > 4 || Math.abs(dy) > 4) { moved = true; wasDragged = true; }
+                if (moved) {
+                    icon.style.left = (startL + dx) + 'px';
+                    icon.style.top  = (startT + dy) + 'px';
+                    e.preventDefault();
+                }
+            });
+
+            icon.addEventListener('pointerup', function () {
+                if (!dragging) return;
+                dragging = false; icon.style.zIndex = '';
+                if (moved) savePos(id, icon.offsetLeft, icon.offsetTop);
+            });
+
+            icon.addEventListener('click', function () {
+                if (wasDragged) { wasDragged = false; return; }
+                if (icon.dataset.window) openMacWin(icon.dataset.window);
+                else if (icon.dataset.href) window.location.href = icon.dataset.href;
+            });
+
+            icon.addEventListener('keydown', function (e) {
+                if (e.key !== 'Enter' && e.key !== ' ') return;
+                e.preventDefault();
+                if (icon.dataset.window) openMacWin(icon.dataset.window);
+                else if (icon.dataset.href) window.location.href = icon.dataset.href;
+            });
+        });
     })();
     </script>
 </body>

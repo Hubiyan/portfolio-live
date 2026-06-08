@@ -62,87 +62,52 @@ body.lab-page[data-mat-color="black"] {
   --lab-shadow: rgba(0, 0, 0, 0.4);
 }
 
+/* Full-viewport desktop canvas — icons are absolutely positioned inside */
 body.lab-page .lab-main {
+  position: relative;
   width: 100%;
-  max-width: 960px;
-  margin: 0 auto;
-  padding: clamp(var(--spacing-32), 8vw, var(--spacing-64)) var(--spacing-24)
-           clamp(var(--spacing-48), 10vw, var(--spacing-80));
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(var(--spacing-32), 6vw, var(--spacing-48));
-}
-
-/* ----- Header ----- */
-
-body.lab-page .lab-header {
-  text-align: center;
-  max-width: 36rem;
-  margin: 0 auto;
-}
-
-body.lab-page .lab-eyebrow {
-  margin: 0 0 var(--spacing-08);
-  font-size: var(--spacing-11);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.55);
-}
-
-body.lab-page .lab-title {
-  margin: 0 0 var(--spacing-12);
-  font-size: clamp(var(--spacing-40), 8vw, var(--spacing-56));
-  font-weight: 700;
-  line-height: 1.05;
-  color: #fff;
-}
-
-body.lab-page .lab-subtitle {
-  margin: 0;
-  font-size: clamp(var(--spacing-14), 3.5vw, var(--spacing-16));
-  line-height: 1.5;
-  color: rgba(255, 255, 255, 0.72);
+  overflow: hidden;
 }
 
 /* ============================================================
    Lab Desktop Icon — component system
    ============================================================
-   Shell:  .lab-desktop-icon > .lab-icon-link > .lab-icon-figure
+   Shell:  .lab-desktop-icon > .lab-icon-figure
    Label:  .lab-icon-label  (below the icon)
    Icons:  any inline SVG or <img> inside .lab-icon-figure
-           Icon source files live in lab/icons/
+           Icon sources live in lab/icons/
+   Drag:   JS in lab/index.html writes left/top in px
 ============================================================ */
 
 body.lab-page .lab-desktop-icon {
-  align-self: center;
+  position: absolute;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  z-index: 2;
 }
 
-/* Clickable shell */
-body.lab-page .lab-icon-link {
-  text-decoration: none;
-  display: block;
+body.lab-page .lab-desktop-icon:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 6px;
   border-radius: var(--spacing-04);
 }
 
-body.lab-page .lab-icon-link:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.8);
-  outline-offset: 6px;
-}
-
-/* Fixed-square icon container — any icon type fits here */
+/* Fixed-square icon container — all icon types align to this grid */
 body.lab-page .lab-icon-figure {
-  width: 75px;
-  height: 75px;
+  width: 78px;
+  height: 78px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: visible;
+  pointer-events: none;
 }
 
 body.lab-page .lab-icon-figure > svg,
@@ -152,7 +117,7 @@ body.lab-page .lab-icon-figure > img {
   display: block;
 }
 
-/* macOS-style name label */
+/* macOS-style name label — wraps to 2 lines max */
 body.lab-page .lab-icon-label {
   font-size: 11px;
   font-weight: 500;
@@ -160,14 +125,16 @@ body.lab-page .lab-icon-label {
   color: #fff;
   text-align: center;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
-  max-width: 96px;
-  white-space: nowrap;
+  max-width: 88px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
   pointer-events: none;
 }
 
-/* Box icon — .lab-icon-figure controls size; only shadow here */
+/* Box icon — shadow only; size comes from .lab-icon-figure */
 body.lab-page .lab-folder-svg {
   display: block;
   width: 100%;
@@ -175,283 +142,401 @@ body.lab-page .lab-folder-svg {
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.38));
 }
 
-/* SVG face fills — driven by CSS vars so colours are fully configurable */
+/* SVG face fills — driven by CSS vars, fully configurable */
 body.lab-page .lab-folder-front      { fill: var(--folder-front, #c89b6d); }
 body.lab-page .lab-folder-side       { fill: var(--folder-side,  #a97840); }
 body.lab-page .lab-folder-top        { fill: var(--folder-top,   #dab87e); }
 body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
-body.lab-page .lab-folder-label-bg   { fill: var(--folder-label, #ead0b3); }
-body.lab-page .lab-folder-label-text {
-  fill: #6f4a27;
-  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
-  font-size: 8.5px;
-  font-weight: 700;
-  letter-spacing: 0.9px;
-  text-transform: uppercase;
-}
-
-/* ----- Frosty project cards ----- */
-
-body.lab-page .lab-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
-  gap: var(--spacing-16);
-  width: 100%;
-}
-
-body.lab-page .lab-card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-10);
-  min-height: 148px;
-  padding: var(--spacing-24);
-  text-align: left;
-  text-decoration: none;
-  color: inherit;
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  border-radius: var(--spacing-16);
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(18px) saturate(160%);
-  -webkit-backdrop-filter: blur(18px) saturate(160%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.35),
-    0 8px 32px rgba(0, 0, 0, 0.18);
-  cursor: pointer;
-  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-body.lab-page .lab-card--action {
-  appearance: none;
-  font: inherit;
-  width: 100%;
-}
-
-body.lab-page .lab-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.22) 0%,
-    transparent 45%,
-    rgba(255, 255, 255, 0.06) 100%
-  );
-  pointer-events: none;
-}
-
-body.lab-page .lab-card:hover,
-body.lab-page .lab-card:focus-visible {
-  transform: translateY(-3px);
-  background: rgba(255, 255, 255, 0.18);
-  border-color: rgba(255, 255, 255, 0.42);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.45),
-    0 14px 40px rgba(0, 0, 0, 0.24);
-  outline: none;
-}
-
-body.lab-page .lab-card-title {
-  position: relative;
-  z-index: 1;
-  margin: 0;
-  font-size: clamp(var(--spacing-18), 4vw, var(--spacing-22));
-  font-weight: 700;
-  line-height: 1.2;
-  color: #fff;
-}
-
-body.lab-page .lab-card-desc {
-  position: relative;
-  z-index: 1;
-  margin: 0;
-  flex: 1;
-  font-size: clamp(var(--spacing-13), 3.2vw, var(--spacing-14));
-  line-height: 1.55;
-  color: rgba(255, 255, 255, 0.78);
-}
-
-body.lab-page .lab-card-arrow {
-  position: relative;
-  z-index: 1;
-  align-self: flex-start;
-  margin-top: auto;
-  font-size: var(--spacing-18);
-  line-height: 1;
-  color: rgba(255, 255, 255, 0.55);
-  transition: transform 0.2s ease, color 0.2s ease;
-}
-
-body.lab-page .lab-card:hover .lab-card-arrow,
-body.lab-page .lab-card:focus-visible .lab-card-arrow {
-  transform: translateX(4px);
-  color: rgba(255, 255, 255, 0.9);
-}
 
 /* ============================================================
-   Lightbox / Slideshow
+   macOS Window system
+   .mac-window
+     ├── .mac-window-titlebar
+     │     ├── .mac-window-controls   (.mac-btn × 3)
+     │     ├── .mac-window-urlbar     (browser variant)
+     │     ├── .mac-window-title      (finder / preview variant)
+     │     └── .mac-titlebar-right    (preview nav)
+     └── .mac-window-body
+           ├── .mac-window-iframe     (browser)
+           ├── .mac-finder-grid       (finder)
+           └── .mac-preview-canvas    (preview)
+           + .mac-preview-toolbar     (preview — bottom bar)
+
+   ── Animation config (edit these to change window feel) ──
+   --win-open-dur     open animation duration
+   --win-open-ease    open easing (spring-ish by default)
+   --win-close-dur    close / minimize duration
+   --win-close-ease   close easing
+   --win-size-dur     maximize / restore transition duration
+   --win-size-ease    maximize easing
 ============================================================ */
 
-body.lab-modal-open {
-  overflow: hidden;
+:root {
+  --win-open-dur:   220ms;
+  --win-open-ease:  cubic-bezier(0.16, 1, 0.3, 1);
+  --win-close-dur:  150ms;
+  --win-close-ease: cubic-bezier(0.4, 0, 1, 1);
+  --win-size-dur:   260ms;
+  --win-size-ease:  cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.lab-lightbox {
+@keyframes mac-win-open {
+  from { opacity: 0; scale: 0.94; }
+  to   { opacity: 1; scale: 1; }
+}
+@keyframes mac-win-close {
+  from { opacity: 1; scale: 1; }
+  to   { opacity: 0; scale: 0.94; }
+}
+@keyframes mac-win-minimize {
+  from { opacity: 1; scale: 1;   translate: 0 0; }
+  to   { opacity: 0; scale: 0.4; translate: 0 50px; }
+}
+
+.mac-window {
   position: fixed;
-  inset: 0;
-  z-index: 300;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-16);
-}
-
-.lab-lightbox[hidden] { display: none; }
-
-.lab-lightbox-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(8, 6, 4, 0.94);
-  cursor: pointer;
-}
-
-.lab-lightbox-close,
-.lab-lightbox-nav {
-  position: absolute;
-  z-index: 1;
-  border: none;
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.85);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: background 0.15s;
-}
-
-.lab-lightbox-close {
-  top: var(--spacing-16);
-  right: var(--spacing-16);
-  width: var(--spacing-44);
-  height: var(--spacing-44);
-}
-
-.lab-lightbox-close:hover { background: rgba(255, 255, 255, 0.2); }
-
-.lab-lightbox-nav {
+  left: 50%;
   top: 50%;
-  transform: translateY(-50%);
-  width: var(--spacing-44);
-  height: var(--spacing-44);
-}
-
-.lab-lightbox-nav:hover { background: rgba(255, 255, 255, 0.2); }
-.lab-lightbox-nav--prev { left: var(--spacing-16); }
-.lab-lightbox-nav--next { right: var(--spacing-16); }
-
-.lab-lightbox-stage {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  max-height: 72vh;
-}
-
-.lab-lightbox-print {
-  background: #fff;
-  padding: 8px 8px 28px;
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
-  max-height: 72vh;
-  display: flex;
-}
-
-.lab-lightbox-img {
-  display: block;
-  max-height: calc(72vh - 36px);
-  width: auto;
-  max-width: min(90vw, 360px);
-  height: auto;
-  object-fit: contain;
-}
-
-.lab-lightbox-footer {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: min(90vw, 400px);
-  gap: var(--spacing-16);
-}
-
-.lab-lightbox-info {
+  transform: translate(-50%, -50%);
+  width: min(900px, 88vw);
+  height: min(640px, 78vh);
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 0.5px rgba(0, 0, 0, 0.65),
+    0 2px 6px rgba(0, 0, 0, 0.28),
+    0 22px 70px rgba(0, 0, 0, 0.55);
+  z-index: 60;
+  will-change: scale, opacity;
 }
 
-.lab-lightbox-name {
-  font-size: var(--spacing-14);
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
+.mac-window[hidden] { display: none; }
+
+/* ── Animation states ───────────────────────────────────── */
+
+.mac-window.is-opening {
+  animation: mac-win-open var(--win-open-dur) var(--win-open-ease) both;
+}
+.mac-window.is-closing,
+.mac-window.is-minimizing {
+  pointer-events: none;
+}
+.mac-window.is-closing {
+  animation: mac-win-close var(--win-close-dur) var(--win-close-ease) both;
+}
+.mac-window.is-minimizing {
+  animation: mac-win-minimize var(--win-close-dur) var(--win-close-ease) both;
 }
 
-.lab-lightbox-counter {
-  font-size: var(--spacing-11);
-  color: rgba(255, 255, 255, 0.45);
-  letter-spacing: 0.06em;
+/* Smooth size transition while maximizing / restoring */
+.mac-window.is-resizing {
+  will-change: left, top, width, height, border-radius;
+  transition:
+    left          var(--win-size-dur) var(--win-size-ease),
+    top           var(--win-size-dur) var(--win-size-ease),
+    width         var(--win-size-dur) var(--win-size-ease),
+    height        var(--win-size-dur) var(--win-size-ease),
+    border-radius var(--win-size-dur) var(--win-size-ease);
 }
 
-.lab-lightbox-download {
-  display: inline-flex;
+.mac-window.is-maximized {
+  left: 0 !important;
+  top: 0 !important;
+  transform: none !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  border-radius: 0 !important;
+}
+
+/* ── Title bar — dark frosted glass ────────────────────── */
+
+.mac-window-titlebar {
+  flex-shrink: 0;
+  height: 44px;
+  min-height: 44px;
+  background: rgba(24, 24, 26, 0.78);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  display: flex;
   align-items: center;
-  gap: var(--spacing-06);
-  min-height: var(--spacing-44);
-  padding: var(--spacing-08) var(--spacing-14);
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: var(--spacing-08);
-  font-size: var(--spacing-12);
-  font-weight: 600;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background 0.15s, border-color 0.15s;
+  gap: 10px;
+  padding: 0 12px;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ── Traffic lights ─────────────────────────────────────── */
+
+.mac-window-controls {
+  display: flex;
+  gap: 8px;
   flex-shrink: 0;
 }
 
-.lab-lightbox-download:hover {
-  background: rgba(255, 255, 255, 0.18);
-  border-color: rgba(255, 255, 255, 0.4);
+.mac-btn {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+  transition: filter 0.12s;
+}
+
+.mac-btn--close { background: #ff5f57; }
+.mac-btn--max   { background: #28c840; }
+
+.mac-window-titlebar:hover .mac-btn--close::after {
+  content: '×';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  line-height: 1;
+  color: rgba(80, 0, 0, 0.75);
+}
+
+/* ── URL bar (browser windows) ──────────────────────────── */
+
+.mac-window-urlbar {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.mac-nav-btn {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s, color 0.12s;
+}
+
+.mac-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.mac-urlbar-pill {
+  flex: 1;
+  min-width: 0;
+  height: 26px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 9px;
+  cursor: default;
+}
+
+.mac-urlbar-lock {
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.38);
+}
+
+.mac-urlbar-text {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.68);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Finder title (non-browser windows) ─────────────────── */
+
+.mac-window-title {
+  flex: 1;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.82);
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 78px; /* balance traffic lights width */
+}
+
+/* ── Window body ────────────────────────────────────────── */
+
+.mac-window-body {
+  flex: 1;
+  overflow: hidden;
+  background: #ffffff;
+  position: relative;
+}
+
+.mac-window-iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* ── Finder variant ─────────────────────────────────────── */
+
+.mac-window--finder .mac-window-body {
+  background: rgba(22, 22, 24, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px;
+}
+
+.mac-finder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(68px, 1fr));
+  gap: 10px;
+}
+
+.mac-finder-thumb {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 6px;
+  transition: background 0.14s;
+}
+
+.mac-finder-thumb:hover  { background: rgba(255, 255, 255, 0.08); }
+.mac-finder-thumb:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 2px;
+}
+
+.mac-finder-thumb img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  max-width: 100%;
+}
+
+.mac-finder-thumb span {
+  font-size: 10px;
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.55);
+  text-align: center;
+  word-break: break-word;
+  max-width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Titlebar right slot (preview nav, etc.) ────────────── */
+
+.mac-titlebar-right {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-width: 68px; /* mirrors controls width for visual balance */
+  justify-content: flex-end;
+}
+
+/* ── Preview variant ────────────────────────────────────── */
+
+.mac-window--preview {
+  width: min(520px, 88vw);
+  height: min(820px, 88vh);
+}
+
+.mac-window--preview .mac-window-body {
+  background: rgb(20, 20, 22);
+  overflow: hidden;
+  position: relative; /* img uses absolute positioning inside */
+}
+
+/*
+ * Absolutely fill the body minus 20px inset on each side.
+ * This sidesteps the "max-height:100% on flex child" ambiguity
+ * that can prevent the image from rendering in some browsers.
+ */
+.mac-preview-img {
+  display: block;
+  position: absolute;
+  inset: 20px;
+  width: calc(100% - 40px);
+  height: calc(100% - 40px);
+  object-fit: contain;
+  border-radius: 3px;
+}
+
+/* Bottom toolbar — same frosted glass as titlebar */
+.mac-preview-toolbar {
+  flex-shrink: 0;
+  height: 48px;
+  min-height: 48px;
+  background: rgba(24, 24, 26, 0.78);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  gap: 12px;
+}
+
+.mac-preview-counter {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.42);
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.mac-preview-dl {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.72);
+  text-decoration: none;
+  padding: 6px 10px;
+  min-height: 32px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  background: rgba(255, 255, 255, 0.07);
+  white-space: nowrap;
+  transition: background 0.12s, color 0.12s;
+}
+
+.mac-preview-dl:hover {
+  background: rgba(255, 255, 255, 0.13);
   color: #fff;
 }
 
-.lab-lightbox-dots {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  gap: var(--spacing-08);
-}
 
-.lab-lightbox-dot {
-  width: var(--spacing-44);
-  height: var(--spacing-08);
-  border-radius: var(--spacing-04);
-  border: none;
-  background: rgba(255, 255, 255, 0.3);
-  cursor: pointer;
-  padding: 0;
-  transition: background 0.15s, transform 0.15s;
-}
-
-.lab-lightbox-dot.is-active {
-  background: #fff;
-  transform: scaleY(1.4);
-}
+/* Image viewer is now a .mac-window--preview (see above) */
 
 /* --- colour switcher dock --- */
 
@@ -460,19 +545,19 @@ body.lab-modal-open {
   bottom: var(--spacing-24);
   right: var(--spacing-24);
   display: flex;
-  gap: var(--spacing-08);
-  z-index: 100;
+  gap: 6px;
+  z-index: 200;
 }
 
 .lab-swatch {
-  width: var(--spacing-44);
-  height: var(--spacing-44);
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  border: 2.5px solid rgba(255, 255, 255, 0.45);
+  border: 2px solid rgba(255, 255, 255, 0.40);
   cursor: pointer;
   padding: 0;
-  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.22);
 }
 
 .lab-swatch[data-color="green"]  { background: #0f7347; }
@@ -481,7 +566,7 @@ body.lab-modal-open {
 
 .lab-swatch[aria-pressed="true"] {
   border-color: #ffffff;
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35), 0 2px 10px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.32), 0 1px 6px rgba(0, 0, 0, 0.28);
 }
 
 .lab-swatch:hover {
@@ -493,43 +578,37 @@ body.lab-modal-open {
 ============================================================ */
 
 @media (max-width: 520px) {
-  body.lab-page .lab-main {
-    padding: var(--spacing-32) var(--spacing-16) var(--spacing-64);
-    gap: var(--spacing-24);
-  }
-
-  body.lab-page .lab-cards {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-12);
-  }
-
-  body.lab-page .lab-card {
-    min-height: auto;
-    padding: var(--spacing-20);
-  }
-
   body.lab-page .lab-icon-figure {
-    width: 64px;
-    height: 64px;
+    width: 66px;
+    height: 66px;
   }
 
-  .lab-lightbox-nav--prev { left: var(--spacing-08); }
-  .lab-lightbox-nav--next { right: var(--spacing-08); }
-
-  .lab-lightbox-print {
-    padding: 6px 6px 22px;
+  body.lab-page .lab-icon-label {
+    font-size: 10px;
+    max-width: 72px;
   }
 
-  .lab-lightbox-img {
-    max-width: 75vw;
+  .mac-window {
+    width: 100vw !important;
+    height: 92vh !important;
+    top: auto !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    transform: none !important;
+    border-radius: 12px 12px 0 0 !important;
   }
 
-  .lab-lightbox-footer {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--spacing-10);
-    width: 80vw;
+  .mac-window-titlebar {
+    height: 48px;
+    min-height: 48px;
   }
+
+  .mac-window--preview {
+    width: 100vw !important;
+    height: 92vh !important;
+  }
+
+  .mac-preview-dl span { display: none; } /* icon only on mobile */
 
   .lab-color-switcher {
     bottom: var(--spacing-20);
