@@ -578,24 +578,43 @@ body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
 ============================================================ */
 
 @media (max-width: 520px) {
+  /* ── Icon canvas → centred flex grid on mobile ── */
+  body.lab-page .lab-main {
+    overflow-y: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 32px 24px;
+    padding: 56px 24px 100px;
+    min-height: 100dvh;
+  }
+
+  body.lab-page .lab-desktop-icon {
+    position: static;   /* override absolute */
+    touch-action: auto; /* allow scroll over icons */
+    flex: 0 0 auto;
+  }
+
   body.lab-page .lab-icon-figure {
-    width: 66px;
-    height: 66px;
+    width: 70px;
+    height: 70px;
   }
 
   body.lab-page .lab-icon-label {
-    font-size: 10px;
-    max-width: 72px;
+    font-size: 11px;
+    max-width: 80px;
   }
 
+  /* ── macOS windows → bottom sheet on mobile ── */
   .mac-window {
     width: 100vw !important;
-    height: 92vh !important;
+    height: 88dvh !important;
     top: auto !important;
     bottom: 0 !important;
     left: 0 !important;
     transform: none !important;
-    border-radius: 12px 12px 0 0 !important;
+    border-radius: 14px 14px 0 0 !important;
   }
 
   .mac-window-titlebar {
@@ -603,15 +622,28 @@ body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
     min-height: 48px;
   }
 
+  /* URL bar wraps on very small screens */
+  .mac-window-urlbar {
+    flex-wrap: wrap;
+    gap: 4px 6px;
+  }
+
+  .mac-urlbar-pill {
+    flex: 1 1 100%;
+    min-width: 0;
+    justify-content: center;
+  }
+
   .mac-window--preview {
     width: 100vw !important;
-    height: 92vh !important;
+    height: 88dvh !important;
   }
 
   .mac-preview-dl span { display: none; } /* icon only on mobile */
 
   .lab-color-switcher {
-    bottom: var(--spacing-20);
-    right: var(--spacing-20);
+    bottom: var(--spacing-16);
+    right: var(--spacing-16);
+    gap: 8px;
   }
 }

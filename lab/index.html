@@ -687,6 +687,7 @@
     /* ── Desktop icon drag + click system ──────────────────── */
     (function initDesktopIcons() {
         var STORE = 'lab-icon-pos';
+        var isMobile = window.matchMedia('(max-width: 520px)').matches;
 
         function loadPos() {
             try { return JSON.parse(localStorage.getItem(STORE) || '{}'); } catch (e) { return {}; }
@@ -697,14 +698,29 @@
             localStorage.setItem(STORE, JSON.stringify(pos));
         }
 
-        var saved = loadPos();
+        var saved = isMobile ? {} : loadPos();
 
         document.querySelectorAll('.lab-desktop-icon[data-icon-id]').forEach(function (icon) {
             var id = icon.dataset.iconId;
 
-            if (saved[id]) {
+            /* Restore saved desktop position (skip on mobile — CSS handles layout) */
+            if (!isMobile && saved[id]) {
                 icon.style.left = saved[id].x + 'px';
                 icon.style.top  = saved[id].y + 'px';
+            }
+
+            /* Drag is desktop-only */
+            if (isMobile) {
+                icon.addEventListener('click', function () {
+                    if (icon.dataset.window) openMacWin(icon.dataset.window);
+                    else if (icon.dataset.href) window.location.href = icon.dataset.href;
+                });
+                icon.addEventListener('keydown', function (e) {
+                    if (e.key !== 'Enter' && e.key !== ' ') return;
+                    e.preventDefault();
+                    if (icon.dataset.window) openMacWin(icon.dataset.window);
+                });
+                return;
             }
 
             var dragging = false, moved = false, wasDragged = false;
