@@ -22,16 +22,27 @@
             <p class="lab-subtitle">Experiments, tools, and things I ship when the main site is behaving.</p>
         </header>
 
+        <!--
+          ╔══════════════════════════════════════════════════════════╗
+          ║  LAB DESKTOP ICON — reusable component                  ║
+          ╠══════════════════════════════════════════════════════════╣
+          ║  Shell (never changes):                                  ║
+          ║  <div class="lab-desktop-icon">                          ║
+          ║    <a class="lab-icon-link" href="..." aria-label="..."> ║
+          ║      <div class="lab-icon-figure">                       ║
+          ║        <!-- paste any inline SVG or <img> here -->       ║
+          ║      </div>                                              ║
+          ║    </a>                                                  ║
+          ║    <span class="lab-icon-label">Name</span>              ║
+          ║  </div>                                                  ║
+          ║                                                          ║
+          ║  Icon variants in lab/icons/:                            ║
+          ║    box.svg   cardboard box (this one)                    ║
+          ╚══════════════════════════════════════════════════════════╝
+        -->
         <div class="lab-desktop-icon">
-            <a class="lab-project-folder-link" href="#lab-projects-grid" aria-label="Open project folder">
-                <!--
-                  Geometry (oblique projection, 30° receding angle):
-                    bw=200  bh=200 (square front)  dx=70 (depth×cos30)  dy=40 (depth×sin30)
-                  ViewBox: 270 × 240
-                  Top face  : (70,0)  (270,0) (200,40) (0,40)
-                  Front face: (0,40)  (200,40) (200,240) (0,240)
-                  Right side: (200,40)(270,0)  (270,200)(200,240)
-                -->
+            <a class="lab-icon-link" href="#lab-projects-grid" aria-label="Open project folder">
+                <div class="lab-icon-figure">
                 <svg class="lab-folder-svg" viewBox="0 0 270 240"
                      xmlns="http://www.w3.org/2000/svg"
                      aria-hidden="true" focusable="false">
@@ -116,9 +127,10 @@
                     <line x1="200" y1="240" x2="270" y2="200"
                           stroke="rgba(0,0,0,0.14)"      stroke-width="0.8"/>
                 </svg>
+                </div><!-- /.lab-icon-figure -->
             </a>
             <span class="lab-icon-label">Projects</span>
-        </div>
+        </div><!-- /.lab-desktop-icon -->
 
         <div class="lab-cards" id="lab-projects-grid">
 

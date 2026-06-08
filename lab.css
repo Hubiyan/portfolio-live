@@ -106,16 +106,53 @@ body.lab-page .lab-subtitle {
   color: rgba(255, 255, 255, 0.72);
 }
 
-/* ----- Project folder box (SVG oblique projection) ----- */
+/* ============================================================
+   Lab Desktop Icon — component system
+   ============================================================
+   Shell:  .lab-desktop-icon > .lab-icon-link > .lab-icon-figure
+   Label:  .lab-icon-label  (below the icon)
+   Icons:  any inline SVG or <img> inside .lab-icon-figure
+           Icon source files live in lab/icons/
+============================================================ */
 
 body.lab-page .lab-desktop-icon {
   align-self: center;
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
 }
 
+/* Clickable shell */
+body.lab-page .lab-icon-link {
+  text-decoration: none;
+  display: block;
+  border-radius: var(--spacing-04);
+}
+
+body.lab-page .lab-icon-link:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 6px;
+}
+
+/* Fixed-square icon container — any icon type fits here */
+body.lab-page .lab-icon-figure {
+  width: 75px;
+  height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+
+body.lab-page .lab-icon-figure > svg,
+body.lab-page .lab-icon-figure > img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* macOS-style name label */
 body.lab-page .lab-icon-label {
   font-size: 11px;
   font-weight: 500;
@@ -130,20 +167,10 @@ body.lab-page .lab-icon-label {
   pointer-events: none;
 }
 
-body.lab-page .lab-project-folder-link {
-  text-decoration: none;
-  display: block;
-  border-radius: var(--spacing-08);
-}
-
-body.lab-page .lab-project-folder-link:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.8);
-  outline-offset: 8px;
-}
-
+/* Box icon — .lab-icon-figure controls size; only shadow here */
 body.lab-page .lab-folder-svg {
   display: block;
-  width: 75px;
+  width: 100%;
   height: auto;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.38));
 }
@@ -481,8 +508,9 @@ body.lab-modal-open {
     padding: var(--spacing-20);
   }
 
-  body.lab-page .lab-folder-svg {
+  body.lab-page .lab-icon-figure {
     width: 64px;
+    height: 64px;
   }
 
   .lab-lightbox-nav--prev { left: var(--spacing-08); }
