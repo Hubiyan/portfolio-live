@@ -143,16 +143,9 @@ body.lab-page .lab-project-folder-link:focus-visible {
 
 body.lab-page .lab-folder-svg {
   display: block;
-  width: 88px;
+  width: 75px;
   height: auto;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.38));
-  transition: transform 0.18s ease, filter 0.18s ease;
-}
-
-body.lab-page .lab-project-folder-link:hover .lab-folder-svg,
-body.lab-page .lab-project-folder-link:focus-visible .lab-folder-svg {
-  transform: translateY(-3px);
-  filter: drop-shadow(0 7px 14px rgba(0, 0, 0, 0.46));
 }
 
 /* SVG face fills — driven by CSS vars so colours are fully configurable */
@@ -489,7 +482,7 @@ body.lab-modal-open {
   }
 
   body.lab-page .lab-folder-svg {
-    width: 72px;
+    width: 64px;
   }
 
   .lab-lightbox-nav--prev { left: var(--spacing-08); }
