@@ -26,9 +26,7 @@ const entries = fs.readdirSync(DIR)
     .map(f => {
         const ext  = path.extname(f).slice(1).toLowerCase();
         const base = path.basename(f, path.extname(f));
-        const name = base
-            .replace(/[-_]/g, ' ')
-            .replace(/\b\w/g, c => c.toUpperCase());
+        const name = base; /* Keep the actual filename as-is — no reformatting */
         return {
             file: f,
             name,

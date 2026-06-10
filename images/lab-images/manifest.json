@@ -1,13 +1,13 @@
 [
   {
     "file": "hubiyan.jpg",
-    "name": "Hubiyan",
+    "name": "hubiyan",
     "ext": "jpg",
     "type": "image"
   },
   {
     "file": "hubiyan.png",
-    "name": "Hubiyan",
+    "name": "hubiyan",
     "ext": "png",
     "type": "image"
   }
