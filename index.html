@@ -1742,10 +1742,14 @@
         var glass = document.getElementById('lgt-glass');
         var timer;
 
-        /* Feature-detect SVG backdrop-filter (Chrome only).
-           On Safari / Firefox apply the CSS frosted-glass fallback. */
+        /* SVG backdrop-filter url() only works in desktop Chrome/Chromium.
+           Detect by UA — CSS.supports lies on Safari for url() values. */
         var supportsSvgBdf = (function () {
-            try { return CSS.supports('backdrop-filter', 'url(#x)'); } catch (_) { return false; }
+            var ua = navigator.userAgent;
+            /* Exclude iOS (Chrome on iOS still uses WebKit, no SVG filter support) */
+            if (/iPhone|iPad|iPod/.test(ua)) return false;
+            /* Require Chrome or Chromium engine */
+            return /Chrome\//.test(ua) || /Chromium\//.test(ua);
         })();
         if (!supportsSvgBdf) { glass.classList.add('lgt-fallback'); }
 
