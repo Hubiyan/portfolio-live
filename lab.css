@@ -262,11 +262,12 @@ body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 0 12px;
+  gap: 6px;
+  padding: 0 10px;
   cursor: default;
   user-select: none;
   -webkit-user-select: none;
+  overflow: hidden; /* prevents pill from busting out */
 }
 
 /* ── Traffic lights ─────────────────────────────────────── */
@@ -334,7 +335,7 @@ body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
 }
 
 .mac-urlbar-pill {
-  flex: 1;
+  flex: 1 1 0;
   min-width: 0;
   height: 26px;
   background: rgba(255, 255, 255, 0.07);
@@ -345,6 +346,7 @@ body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
   gap: 5px;
   padding: 0 9px;
   cursor: default;
+  overflow: hidden;
 }
 
 .mac-urlbar-lock {
@@ -538,6 +540,36 @@ body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
 
 /* Image viewer is now a .mac-window--preview (see above) */
 
+/* --- Close-all-windows button --- */
+
+#close-all-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 500;
+  background: rgba(22, 22, 24, 0.82);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.80);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+#close-all-btn:hover {
+  background: rgba(50, 50, 54, 0.92);
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+#close-all-btn[hidden] { display: none; }
+
 /* --- colour switcher dock --- */
 
 .lab-color-switcher {
@@ -578,22 +610,11 @@ body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
 ============================================================ */
 
 @media (max-width: 520px) {
-  /* ── Icon canvas → centred flex grid on mobile ── */
+  /* ── Icon canvas — scrollable on mobile, icons remain draggable ── */
   body.lab-page .lab-main {
     overflow-y: auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 32px 24px;
-    padding: 56px 24px 100px;
+    overflow-x: hidden;
     min-height: 100dvh;
-  }
-
-  body.lab-page .lab-desktop-icon {
-    position: static;   /* override absolute */
-    touch-action: auto; /* allow scroll over icons */
-    flex: 0 0 auto;
   }
 
   body.lab-page .lab-icon-figure {
@@ -606,37 +627,39 @@ body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
     max-width: 80px;
   }
 
-  /* ── macOS windows → bottom sheet on mobile ── */
+  /* ── macOS windows — fixed inset on mobile ── */
   .mac-window {
-    width: 100vw !important;
-    height: 88dvh !important;
-    top: auto !important;
-    bottom: 0 !important;
-    left: 0 !important;
+    width: calc(100vw - 40px) !important;   /* 20px gap each side */
+    height: calc(100dvh - 120px) !important; /* 60px gap top + bottom */
+    top: 60px !important;
+    left: 20px !important;
+    bottom: auto !important;
     transform: none !important;
-    border-radius: 14px 14px 0 0 !important;
+    border-radius: 14px !important;
   }
+
+  /* Hide maximise — window already fills the allowed inset */
+  .mac-btn--max { display: none; }
 
   .mac-window-titlebar {
     height: 48px;
     min-height: 48px;
   }
 
-  /* URL bar wraps on very small screens */
+  /* URL bar stays in one row — pill truncates text */
   .mac-window-urlbar {
-    flex-wrap: wrap;
-    gap: 4px 6px;
+    flex-wrap: nowrap;
+    gap: 2px;
   }
 
   .mac-urlbar-pill {
-    flex: 1 1 100%;
+    flex: 1 1 0;
     min-width: 0;
-    justify-content: center;
   }
 
   .mac-window--preview {
-    width: 100vw !important;
-    height: 88dvh !important;
+    width: calc(100vw - 40px) !important;
+    height: calc(100dvh - 120px) !important;
   }
 
   .mac-preview-dl span { display: none; } /* icon only on mobile */

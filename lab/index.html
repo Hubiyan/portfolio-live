@@ -190,7 +190,28 @@
             <span class="lab-icon-label">Visual Explorations</span>
         </div>
 
+        <!-- ── Icon: Hubiyan photo ───────────────────────── -->
+        <div class="lab-desktop-icon"
+             data-icon-id="hubiyan-photo"
+             data-preview-src="/images/lab-images/hubiyan.jpg"
+             data-preview-name="Hubiyan"
+             style="left:52%;top:52%"
+             tabindex="0" role="button"
+             aria-label="Hubiyan — view photo">
+            <div class="lab-icon-figure">
+                <img src="/images/lab-images/hubiyan.jpg"
+                     alt="Hubiyan" aria-hidden="true"
+                     width="78" height="78"
+                     style="height:78px;width:78px;object-fit:cover;border-radius:10px;
+                            filter:drop-shadow(0 4px 12px rgba(0,0,0,0.45))">
+            </div>
+            <span class="lab-icon-label">Hubiyan</span>
+        </div>
+
     </main>
+
+    <!-- Close-all button — visible when ≥2 windows are open -->
+    <button id="close-all-btn" hidden aria-label="Close all windows">Close all windows</button>
 
     <!-- ╔══════════════════════════════════════════════════════════╗
          ║  macOS BROWSER WINDOW — Prompts                         ║
@@ -419,6 +440,19 @@
     var macZCounter      = 60;
     var finderPopulated  = false;
 
+    /* Show / hide the "Close all" button depending on open window count */
+    function syncCloseAll() {
+        var btn = document.getElementById('close-all-btn');
+        if (!btn) return;
+        var n = document.querySelectorAll('.mac-window:not([hidden])').length;
+        btn.hidden = n < 2;
+    }
+    document.getElementById('close-all-btn').addEventListener('click', function () {
+        document.querySelectorAll('.mac-window:not([hidden])').forEach(function (w) {
+            closeMacWin(w);
+        });
+    });
+
     function bringToFront(win) {
         macZCounter += 1;
         win.style.zIndex = String(macZCounter);
@@ -428,10 +462,36 @@
      * Open a .mac-window with the open animation.
      * Iframes are lazy-loaded on first open.
      * The Finder grid is populated on first open.
+     * On desktop, cascades lower-left off any open unmoved window.
      */
     function openMacWin(id) {
         var win = document.getElementById(id);
         if (!win) return;
+
+        /* ── Reset position + state so each open is fresh ── */
+        delete win.dataset.posResolved;
+        delete win.dataset.moved;
+        win.style.left      = '';
+        win.style.top       = '';
+        win.style.transform = '';
+
+        /* ── Cascade: offset lower-left off the first open unmoved window (desktop) ── */
+        var isMobile = window.matchMedia('(max-width: 520px)').matches;
+        if (!isMobile) {
+            var anchor = null;
+            document.querySelectorAll('.mac-window:not([hidden])').forEach(function (w) {
+                if (w !== win && !w.dataset.moved && !anchor) anchor = w;
+            });
+            if (anchor) {
+                var r = anchor.getBoundingClientRect();
+                var newLeft = Math.max(20, Math.min(r.left - 28, window.innerWidth  - 300));
+                var newTop  = Math.max(20, Math.min(r.top  + 28, window.innerHeight - 200));
+                win.style.left      = newLeft + 'px';
+                win.style.top       = newTop  + 'px';
+                win.style.transform = 'none';
+                win.dataset.posResolved = '1';
+            }
+        }
 
         /* Reset animation state */
         win.classList.remove('is-closing', 'is-minimizing');
@@ -443,6 +503,7 @@
         }, { once: true });
 
         bringToFront(win);
+        syncCloseAll();
 
         /* Lazy-load iframe */
         var iframe = win.querySelector('.mac-window-iframe');
@@ -474,7 +535,6 @@
         if (win.hidden) return;
         win.classList.remove('is-opening');
         win.classList.add('is-closing');
-        /* Timeout fallback in case animationend doesn't fire */
         var t = setTimeout(function () { doHide(); }, 300);
         win.addEventListener('animationend', function () {
             clearTimeout(t);
@@ -483,6 +543,7 @@
         function doHide() {
             win.classList.remove('is-closing');
             win.hidden = true;
+            syncCloseAll();
         }
     }
 
@@ -501,12 +562,13 @@
         function doHide() {
             win.classList.remove('is-minimizing');
             win.hidden = true;
+            syncCloseAll();
         }
     }
 
     /* Wire each window's controls + drag */
     document.querySelectorAll('.mac-window').forEach(function (win) {
-        var resolved = false; /* has % transform been resolved to px? */
+        /* resolved & moved are stored as data-attributes so openMacWin/closeMacWin can reset them */
         var sx, sy, sl, st;
 
         /* ── Traffic lights ── */
@@ -519,7 +581,7 @@
         });
         if (btnMax) btnMax.addEventListener('click', function (e) {
             e.stopPropagation();
-            if (!resolved) resolvePos();
+            if (!win.dataset.posResolved) resolvePos();
             win.classList.add('is-resizing');
             win.classList.toggle('is-maximized');
             win.addEventListener('transitionend', function () {
@@ -546,7 +608,7 @@
             win.style.left      = r.left + 'px';
             win.style.top       = r.top  + 'px';
             win.style.transform = 'none';
-            resolved = true;
+            win.dataset.posResolved = '1';
         }
 
         /*
@@ -567,7 +629,7 @@
             if (e.target.closest('.mac-window-body, .mac-preview-toolbar')) return;
             if (win.classList.contains('is-maximized')) return;
 
-            if (!resolved) resolvePos();
+            if (!win.dataset.posResolved) resolvePos();
 
             sx = e.clientX; sy = e.clientY;
             sl = win.offsetLeft; st = win.offsetTop;
@@ -592,6 +654,7 @@
                 document.removeEventListener('pointermove', onMove);
                 document.removeEventListener('pointerup',  onUp);
                 if (moved) {
+                    win.dataset.moved = '1'; /* prevent cascade off this window */
                     /* Swallow the click that would fire on a button we dragged from */
                     win.addEventListener('click', function h(ev) {
                         ev.stopPropagation();
@@ -633,8 +696,10 @@
 
     /* ── Image Preview (macOS Preview-style window) ─────────── */
     var previewIdx = 0;
+    var previewMode = 'gallery'; /* 'gallery' | 'single' */
 
     function openPreview(index) {
+        previewMode = 'gallery';
         previewIdx = (index + WALLPAPERS.length) % WALLPAPERS.length;
         var wp = WALLPAPERS[previewIdx];
 
@@ -647,11 +712,30 @@
         var dl = document.getElementById('preview-dl');
         dl.href = wp.full;
         dl.setAttribute('download', wp.filename);
+        dl.hidden = false;
 
-        /* Show / hide nav if only one image */
         var showNav = WALLPAPERS.length > 1;
         document.getElementById('preview-prev').style.display = showNav ? '' : 'none';
         document.getElementById('preview-next').style.display = showNav ? '' : 'none';
+
+        openMacWin('win-preview');
+    }
+
+    /**
+     * Open a single image (no download, no navigation).
+     * Used for desktop images that should be viewed but not downloaded.
+     */
+    function openSinglePreview(src, name) {
+        previewMode = 'single';
+
+        document.getElementById('preview-img').src = src;
+        document.getElementById('preview-img').alt = name || '';
+        document.getElementById('preview-title').textContent   = name || '';
+        document.getElementById('preview-counter').textContent = '';
+
+        document.getElementById('preview-dl').hidden           = true;
+        document.getElementById('preview-prev').style.display  = 'none';
+        document.getElementById('preview-next').style.display  = 'none';
 
         openMacWin('win-preview');
     }
@@ -687,7 +771,6 @@
     /* ── Desktop icon drag + click system ──────────────────── */
     (function initDesktopIcons() {
         var STORE = 'lab-icon-pos';
-        var isMobile = window.matchMedia('(max-width: 520px)').matches;
 
         function loadPos() {
             try { return JSON.parse(localStorage.getItem(STORE) || '{}'); } catch (e) { return {}; }
@@ -698,29 +781,18 @@
             localStorage.setItem(STORE, JSON.stringify(pos));
         }
 
-        var saved = isMobile ? {} : loadPos();
+        var saved = loadPos();
 
         document.querySelectorAll('.lab-desktop-icon[data-icon-id]').forEach(function (icon) {
             var id = icon.dataset.iconId;
 
-            /* Restore saved desktop position (skip on mobile — CSS handles layout) */
-            if (!isMobile && saved[id]) {
-                icon.style.left = saved[id].x + 'px';
-                icon.style.top  = saved[id].y + 'px';
-            }
-
-            /* Drag is desktop-only */
-            if (isMobile) {
-                icon.addEventListener('click', function () {
-                    if (icon.dataset.window) openMacWin(icon.dataset.window);
-                    else if (icon.dataset.href) window.location.href = icon.dataset.href;
-                });
-                icon.addEventListener('keydown', function (e) {
-                    if (e.key !== 'Enter' && e.key !== ' ') return;
-                    e.preventDefault();
-                    if (icon.dataset.window) openMacWin(icon.dataset.window);
-                });
-                return;
+            if (saved[id]) {
+                /* Only restore if the icon would be visible on the current screen */
+                var vw = window.innerWidth, vh = window.innerHeight;
+                if (saved[id].x < vw - 20 && saved[id].y < vh - 20) {
+                    icon.style.left = saved[id].x + 'px';
+                    icon.style.top  = saved[id].y + 'px';
+                }
             }
 
             var dragging = false, moved = false, wasDragged = false;
@@ -752,17 +824,25 @@
                 if (moved) savePos(id, icon.offsetLeft, icon.offsetTop);
             });
 
+            function activateIcon() {
+                if (icon.dataset.previewSrc) {
+                    openSinglePreview(icon.dataset.previewSrc, icon.dataset.previewName || '');
+                } else if (icon.dataset.window) {
+                    openMacWin(icon.dataset.window);
+                } else if (icon.dataset.href) {
+                    window.location.href = icon.dataset.href;
+                }
+            }
+
             icon.addEventListener('click', function () {
                 if (wasDragged) { wasDragged = false; return; }
-                if (icon.dataset.window) openMacWin(icon.dataset.window);
-                else if (icon.dataset.href) window.location.href = icon.dataset.href;
+                activateIcon();
             });
 
             icon.addEventListener('keydown', function (e) {
                 if (e.key !== 'Enter' && e.key !== ' ') return;
                 e.preventDefault();
-                if (icon.dataset.window) openMacWin(icon.dataset.window);
-                else if (icon.dataset.href) window.location.href = icon.dataset.href;
+                activateIcon();
             });
         });
     })();
