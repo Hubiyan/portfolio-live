@@ -1635,44 +1635,6 @@
 
         </footer>
     </main>
-
-    <!-- ── LIQUID-GLASS-TEST ────────────────────────────────────
-         To remove: delete from here to END LIQUID-GLASS-TEST.
-         ──────────────────────────────────────────────────── -->
-    <div id="lgt-glass"></div>
-
-    <script>
-    /* LIQUID-GLASS-TEST — CSS backdrop-filter, works on all browsers */
-    (function () {
-        var glass = document.getElementById('lgt-glass');
-        var size  = window.innerWidth < 521 ? 180 : 260;
-
-        /* Initial position — upper right */
-        glass.style.right = Math.round(window.innerWidth * 0.05) + 'px';
-        glass.style.top   = Math.round(window.innerHeight * 0.14) + 'px';
-
-        /* Drag */
-        var sx, sy;
-        glass.addEventListener('pointerdown', function (e) {
-            e.preventDefault();
-            var r = glass.getBoundingClientRect();
-            /* Switch from right/top to left/top so offsetLeft works */
-            glass.style.right = '';
-            glass.style.left  = r.left + 'px';
-            glass.style.top   = r.top  + 'px';
-            sx = e.clientX; sy = e.clientY;
-            glass.setPointerCapture(e.pointerId);
-        });
-        glass.addEventListener('pointermove', function (e) {
-            if (!e.buttons) return;
-            glass.style.left = (glass.offsetLeft + e.clientX - sx) + 'px';
-            glass.style.top  = (glass.offsetTop  + e.clientY - sy) + 'px';
-            sx = e.clientX; sy = e.clientY;
-            e.preventDefault();
-        });
-    })();
-    </script>
-    <!-- ── END LIQUID-GLASS-TEST ──────────────────────────── -->
 </body>
 
 </html>
