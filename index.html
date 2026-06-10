@@ -1742,6 +1742,13 @@
         var glass = document.getElementById('lgt-glass');
         var timer;
 
+        /* Feature-detect SVG backdrop-filter (Chrome only).
+           On Safari / Firefox apply the CSS frosted-glass fallback. */
+        var supportsSvgBdf = (function () {
+            try { return CSS.supports('backdrop-filter', 'url(#x)'); } catch (_) { return false; }
+        })();
+        if (!supportsSvgBdf) { glass.classList.add('lgt-fallback'); }
+
         function rebuild() {
             var w = glass.offsetWidth, h = glass.offsetHeight;
             if (w < 2 || h < 2) return;
@@ -1775,13 +1782,15 @@
         glass.style.right = '5vw';
         glass.style.top   = '12vh';
 
-        /* Build filter on load and resize */
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', function () { rebuild(); });
-        } else {
-            requestAnimationFrame(function () { requestAnimationFrame(rebuild); });
+        /* Build filter on load and resize — skip on browsers that can't use it */
+        if (supportsSvgBdf) {
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function () { rebuild(); });
+            } else {
+                requestAnimationFrame(function () { requestAnimationFrame(rebuild); });
+            }
+            window.addEventListener('resize', schedRebuild);
         }
-        window.addEventListener('resize', schedRebuild);
 
         /* Drag */
         (function () {
