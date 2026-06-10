@@ -569,26 +569,22 @@ body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
 /* ── "Open in new tab" floating button (browser windows) ─── */
 
 .mac-open-tab-btn {
-  position: absolute;
-  bottom: 14px;
-  right: 14px;
-  z-index: 10;
-  padding: 7px 14px;
-  border: 1px solid rgba(255, 255, 255, 0.13);
-  border-radius: 20px;
-  background: rgba(22, 22, 24, 0.80);
-  backdrop-filter: blur(16px) saturate(160%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
-  color: rgba(255, 255, 255, 0.82);
+  flex-shrink: 0;
+  padding: 5px 11px;
+  border: 1px solid rgba(80, 140, 255, 0.30);
+  border-radius: 8px;
+  background: rgba(30, 80, 200, 0.28);
+  color: rgba(160, 200, 255, 0.90);
   font-size: 12px;
   font-weight: 500;
   white-space: nowrap;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
 
 .mac-open-tab-btn:hover {
-  background: rgba(50, 50, 54, 0.92);
+  background: rgba(40, 100, 240, 0.45);
+  border-color: rgba(100, 160, 255, 0.50);
   color: #fff;
 }
 

@@ -304,7 +304,8 @@
                 '<div class="mac-urlbar-pill">' +
                     SVG_ICONS.lock +
                     '<span class="mac-urlbar-text" id="' + cfg.id + '-url">' + (cfg.urlLabel || '') + '</span>' +
-                '</div>';
+                '</div>' +
+                '<button class="mac-open-tab-btn" aria-label="Open current page in a new tab">Open in new tab</button>';
             bar.appendChild(urlbar);
         } else {
             var titleEl = document.createElement('span');
@@ -337,12 +338,6 @@
             iframe.title = cfg.title || '';
             /* src intentionally omitted — lazy-loaded on first open */
             body.appendChild(iframe);
-
-            var openTabBtn = document.createElement('button');
-            openTabBtn.className = 'mac-open-tab-btn';
-            openTabBtn.textContent = 'Open in new tab';
-            openTabBtn.setAttribute('aria-label', 'Open current page in a new tab');
-            body.appendChild(openTabBtn);
         } else if (cfg.type === 'finder') {
             var grid = document.createElement('div');
             grid.className = 'mac-finder-grid';
@@ -633,7 +628,7 @@
             var moved = false;
             bringToFront(win);
 
-            if (!e.target.closest('.mac-btn, .mac-nav-btn, .mac-urlbar-pill, .mac-titlebar-right')) {
+            if (!e.target.closest('.mac-btn, .mac-nav-btn, .mac-urlbar-pill, .mac-open-tab-btn, .mac-titlebar-right')) {
                 e.preventDefault();
             }
 
