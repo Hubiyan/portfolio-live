@@ -2092,23 +2092,55 @@ body.ds-subpage .main-title {
    To remove: delete this entire block and the matching
    sections in index.html tagged LIQUID-GLASS-TEST.
    ─────────────────────────────────────────────────────────── */
-
-/* Full-screen WebGL canvas — pointer-events off so page stays interactive */
-#lgt-canvas {
+#lgt-glass {
   position: fixed;
-  inset: 0;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
   z-index: 9000;
+  cursor: move;
+  touch-action: none;
+
+  /* Frosted glass — shows real page content, works on all browsers */
+  backdrop-filter: blur(22px) saturate(1.6) brightness(1.06);
+  -webkit-backdrop-filter: blur(22px) saturate(1.6) brightness(1.06);
+
+  /* Rim + outer shadow */
+  border: 1px solid rgba(255, 255, 255, 0.70);
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.14),
+    0  4px 16px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.90),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.04);
+}
+
+/* Inner highlight arc — top-left specular */
+#lgt-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(
+    140deg,
+    rgba(255, 255, 255, 0.38) 0%,
+    rgba(255, 255, 255, 0.10) 35%,
+    rgba(255, 255, 255, 0.00) 60%
+  );
   pointer-events: none;
 }
 
-/* Invisible hit-target that follows the glass and handles drag */
-#lgt-dragger {
-  position: fixed;
-  cursor: move;
-  z-index: 9001;
-  touch-action: none;
+/* Thin inner rim ring */
+#lgt-glass::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
   border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  pointer-events: none;
 }
 
+@media (max-width: 520px) {
+  #lgt-glass { width: 180px; height: 180px; }
+}
 /* ── END LIQUID-GLASS-TEST ─────────────────────────────────── */
 
