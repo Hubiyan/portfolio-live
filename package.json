@@ -7,6 +7,7 @@
   },
   "scripts": {
     "start": "vercel dev",
+    "lab:images": "node scripts/gen-lab-images.js",
     "test": "node --test api/bro-taxonomy.test.js",
     "test:bro-regression": "node scripts/bro-regression.mjs"
   },
