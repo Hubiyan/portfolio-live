@@ -91,10 +91,14 @@
                     data-bs-target="#exampleModal">
                     Get in touch
                 </button>
-                <button class="btn my-button btn-seco icon-btn" type="button" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal1" aria-label="Watch video reel">
-                    <img class="large-btn-icon" src="images/btn-icons/play.png" alt="Play">
-                </button>
+                <a class="my-button icon-btn btn-chrome" id="labChromeBtn" href="/lab/" aria-label="Visit the Lab">
+                    <svg class="flask-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+                        <!-- Erlenmeyer (triangular) flask: neck + conical body + liquid line -->
+                        <path d="M9 2h6M10 2v6L4.5 19a1.5 1.5 0 0 0 1.3 2.3h12.4A1.5 1.5 0 0 0 19.5 19L14 8V2"
+                              fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/>
+                        <path d="M7.5 15h9" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+                    </svg>
+                </a>
             </div>
 
         </div>
@@ -1635,6 +1639,19 @@
 
         </footer>
     </main>
+    <script>
+        /* Liquid chrome button — pointer-reactive sheen (skips reduced-motion) */
+        (function () {
+            var btn = document.getElementById('labChromeBtn');
+            if (!btn) return;
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            btn.addEventListener('pointermove', function (e) {
+                var r = btn.getBoundingClientRect();
+                btn.style.setProperty('--mx', ((e.clientX - r.left) / r.width) * 100 + '%');
+                btn.style.setProperty('--my', ((e.clientY - r.top) / r.height) * 100 + '%');
+            });
+        })();
+    </script>
 </body>
 
 </html>
