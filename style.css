@@ -421,69 +421,6 @@ p {
   background-color: var(--grey-900) !important;
   color: var(--bg-white);
 }
-/* Liquid chrome button — animated metallic gradient + pointer sheen */
-.btn-chrome {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-  --mx: 50%;
-  --my: 50%;
-  background-image: linear-gradient(
-    135deg,
-    #9a9a9a 0%,
-    #f4f4f4 14%,
-    #7c7c7c 30%,
-    #ffffff 46%,
-    #6e6e6e 60%,
-    #e6e6e6 76%,
-    #8a8a8a 90%,
-    #c4c4c4 100%
-  );
-  background-size: 300% 300%;
-  background-position: 0% 50%;
-  animation: chromeFlow 6s linear infinite;
-  box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.85),
-    inset 0 -2px 4px rgba(0, 0, 0, 0.35),
-    0 2px 6px rgba(0, 0, 0, 0.18);
-}
-.btn-chrome::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: radial-gradient(
-    circle at var(--mx) var(--my),
-    rgba(255, 255, 255, 0.75) 0%,
-    rgba(255, 255, 255, 0) 55%
-  );
-  opacity: 0;
-  transition: opacity 0.25s ease;
-  pointer-events: none;
-}
-.btn-chrome:hover::after,
-.btn-chrome:focus-visible::after {
-  opacity: 1;
-}
-.flask-icon {
-  color: #1a1a1a;
-  width: var(--spacing-20);
-  height: var(--spacing-20);
-  display: block;
-}
-@keyframes chromeFlow {
-  0% {
-    background-position: 0% 50%;
-  }
-  100% {
-    background-position: 300% 50%;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .btn-chrome {
-    animation: none;
-  }
-}
 .carousel-control-next:focus,
 .carousel-control-next:hover,
 .carousel-control-prev:focus,
