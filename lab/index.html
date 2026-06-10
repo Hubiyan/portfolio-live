@@ -337,6 +337,12 @@
             iframe.title = cfg.title || '';
             /* src intentionally omitted — lazy-loaded on first open */
             body.appendChild(iframe);
+
+            var openTabBtn = document.createElement('button');
+            openTabBtn.className = 'mac-open-tab-btn';
+            openTabBtn.textContent = 'Open in new tab';
+            openTabBtn.setAttribute('aria-label', 'Open current page in a new tab');
+            body.appendChild(openTabBtn);
         } else if (cfg.type === 'finder') {
             var grid = document.createElement('div');
             grid.className = 'mac-finder-grid';
@@ -599,6 +605,20 @@
                     }
                 });
             });
+
+            /* "Open in new tab" — uses live iframe location, falls back to history stack */
+            var openTabBtn = win.querySelector('.mac-open-tab-btn');
+            if (openTabBtn) {
+                openTabBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    var url;
+                    try { url = iframe.contentWindow.location.href; } catch (_) {}
+                    if (!url || url === 'about:blank') {
+                        url = iHistory[iPos] || win.dataset.src || '';
+                    }
+                    if (url) window.open(url, '_blank', 'noopener,noreferrer');
+                });
+            }
         }
 
         /* Drag (document-level listeners — see comment in previous version) */
