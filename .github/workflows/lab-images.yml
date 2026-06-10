@@ -1,0 +1,32 @@
+name: Update lab-images manifest
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'images/lab-images/**'
+      - '!images/lab-images/manifest.json'
+
+jobs:
+  manifest:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate manifest
+        run: node scripts/gen-lab-images.js
+
+      - name: Commit manifest if changed
+        run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add images/lab-images/manifest.json
+          git diff --staged --quiet && echo "No changes to manifest." && exit 0
+          git commit -m "chore: update lab-images manifest [skip ci]"
+          git push

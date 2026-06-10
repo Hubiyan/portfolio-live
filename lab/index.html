@@ -190,24 +190,6 @@
             <span class="lab-icon-label">Visual Explorations</span>
         </div>
 
-        <!-- ── Icon: Hubiyan photo ───────────────────────── -->
-        <div class="lab-desktop-icon"
-             data-icon-id="hubiyan-photo"
-             data-preview-src="/images/lab-images/hubiyan.jpg"
-             data-preview-name="Hubiyan"
-             style="left:52%;top:52%"
-             tabindex="0" role="button"
-             aria-label="Hubiyan — view photo">
-            <div class="lab-icon-figure">
-                <img src="/images/lab-images/hubiyan.jpg"
-                     alt="Hubiyan" aria-hidden="true"
-                     width="78" height="78"
-                     style="height:78px;width:78px;object-fit:cover;border-radius:10px;
-                            filter:drop-shadow(0 4px 12px rgba(0,0,0,0.45))">
-            </div>
-            <span class="lab-icon-label">Hubiyan</span>
-        </div>
-
     </main>
 
     <!-- Close-all button — visible when ≥2 windows are open -->
@@ -362,11 +344,19 @@
             grid.setAttribute('aria-label', 'Wallpapers');
             body.appendChild(grid);
         } else if (cfg.type === 'preview') {
-            var img = document.createElement('img');
-            img.className = 'mac-preview-img';
-            img.id = 'preview-img';
-            img.width = 1; img.height = 1;
-            body.appendChild(img);
+            var imgEl2 = document.createElement('img');
+            imgEl2.className = 'mac-preview-img';
+            imgEl2.width = 1; imgEl2.height = 1;
+            body.appendChild(imgEl2);
+
+            var vidEl2 = document.createElement('video');
+            vidEl2.className = 'mac-preview-img mac-preview-video';
+            vidEl2.autoplay = true;
+            vidEl2.loop     = true;
+            vidEl2.muted    = true;
+            vidEl2.setAttribute('playsinline', '');
+            vidEl2.hidden = true;
+            body.appendChild(vidEl2);
         }
 
         win.appendChild(body);
@@ -666,7 +656,8 @@
 
         var idx = ((startIdx % images.length) + images.length) % images.length;
 
-        var imgEl     = win.querySelector('.mac-preview-img');
+        var imgEl     = win.querySelector('img.mac-preview-img');
+        var videoEl   = win.querySelector('video.mac-preview-img');
         var titleEl   = win.querySelector('.mac-window-title');
         var counterEl = win.querySelector('.mac-preview-counter');
         var toolbar   = win.querySelector('.mac-preview-toolbar');
@@ -676,15 +667,26 @@
 
         function setImage(i, dir) {
             idx = ((i % images.length) + images.length) % images.length;
-            var im = images[idx];
+            var im     = images[idx];
+            var isVid  = /\.(webm|mp4)$/i.test(im.src || '');
 
-            /* Slide animation — new image enters from the direction of travel */
-            imgEl.classList.remove('img-slide-next', 'img-slide-prev');
-            void imgEl.offsetWidth; /* reflow so animation restarts */
-            if (dir !== 0) imgEl.classList.add(dir > 0 ? 'img-slide-next' : 'img-slide-prev');
+            if (isVid && videoEl) {
+                /* Video: swap to <video> element */
+                imgEl.hidden   = true;
+                videoEl.src    = im.src;
+                videoEl.hidden = false;
+                videoEl.load();
+            } else {
+                /* Image: hide video, slide-animate the <img> */
+                if (videoEl) { videoEl.hidden = true; videoEl.src = ''; }
+                imgEl.classList.remove('img-slide-next', 'img-slide-prev');
+                void imgEl.offsetWidth; /* reflow so animation restarts */
+                if (dir !== 0) imgEl.classList.add(dir > 0 ? 'img-slide-next' : 'img-slide-prev');
+                imgEl.src    = im.src;
+                imgEl.alt    = im.name;
+                imgEl.hidden = false;
+            }
 
-            imgEl.src = im.src;
-            imgEl.alt = im.name;
             if (titleEl)   titleEl.textContent   = im.name;
             if (counterEl) counterEl.textContent = images.length > 1
                 ? (idx + 1) + ' / ' + images.length : '';
@@ -741,7 +743,7 @@
     }
 
     /* ── Desktop icon drag + click system ──────────────────── */
-    (function initDesktopIcons() {
+    var LabIcons = (function () {
         var STORE = 'lab-icon-pos';
 
         function loadPos() {
@@ -753,13 +755,12 @@
             localStorage.setItem(STORE, JSON.stringify(pos));
         }
 
-        var saved = loadPos();
+        function setupIcon(icon) {
+            var id    = icon.dataset.iconId;
+            var saved = loadPos();
 
-        document.querySelectorAll('.lab-desktop-icon[data-icon-id]').forEach(function (icon) {
-            var id = icon.dataset.iconId;
-
+            /* Only restore saved position if it fits on the current screen */
             if (saved[id]) {
-                /* Only restore if the icon would be visible on the current screen */
                 var vw = window.innerWidth, vh = window.innerHeight;
                 if (saved[id].x < vw - 20 && saved[id].y < vh - 20) {
                     icon.style.left = saved[id].x + 'px';
@@ -798,7 +799,11 @@
 
             function activateIcon() {
                 if (icon.dataset.previewSrc) {
-                    openSinglePreview(icon.dataset.previewSrc, icon.dataset.previewName || '');
+                    if (icon.dataset.previewType === 'video') {
+                        openPreviewWindow([{ src: icon.dataset.previewSrc, name: icon.dataset.previewName || '' }], 0);
+                    } else {
+                        openSinglePreview(icon.dataset.previewSrc, icon.dataset.previewName || '');
+                    }
                 } else if (icon.dataset.window) {
                     openMacWin(icon.dataset.window);
                 } else if (icon.dataset.href) {
@@ -816,7 +821,76 @@
                 e.preventDefault();
                 activateIcon();
             });
-        });
+        }
+
+        /* Init all icons already in the DOM */
+        document.querySelectorAll('.lab-desktop-icon[data-icon-id]').forEach(setupIcon);
+
+        return { setup: setupIcon };
+    })();
+
+    /* ── Auto-populate desktop from images/lab-images/manifest.json ── */
+    (function loadLabImages() {
+        var COLS      = [9, 34, 59, 84];  /* % left — 4 columns            */
+        var ROW_START = 75;               /* % top of first auto-icon row   */
+        var ROW_STEP  = 18;               /* % between rows                 */
+        var desktop   = document.getElementById('lab-main');
+
+        fetch('/images/lab-images/manifest.json')
+            .then(function (r) { return r.json(); })
+            .then(function (entries) { entries.forEach(createIcon); })
+            .catch(function () { /* manifest not yet generated — silently skip */ });
+
+        function createIcon(entry, i) {
+            var isVid = entry.type === 'video';
+            var src   = '/images/lab-images/' + entry.file;
+            var id    = 'lab-img-' + entry.file.replace(/[^a-z0-9]/gi, '-').toLowerCase();
+
+            var icon = document.createElement('div');
+            icon.className = 'lab-desktop-icon';
+            icon.dataset.iconId      = id;
+            icon.dataset.previewSrc  = src;
+            icon.dataset.previewName = entry.name;
+            if (isVid) icon.dataset.previewType = 'video';
+            icon.tabIndex = 0;
+            icon.setAttribute('role', 'button');
+            icon.setAttribute('aria-label', entry.name);
+            /* Default grid position — LabIcons.setup() overrides with any saved position */
+            icon.style.left = COLS[i % COLS.length] + '%';
+            icon.style.top  = (ROW_START + Math.floor(i / COLS.length) * ROW_STEP) + '%';
+
+            /* Thumbnail */
+            var figure = document.createElement('div');
+            figure.className = 'lab-icon-figure';
+            var thumb;
+            if (isVid) {
+                thumb = document.createElement('video');
+                thumb.src      = src;
+                thumb.autoplay = true;
+                thumb.loop     = true;
+                thumb.muted    = true;
+                thumb.setAttribute('playsinline', '');
+            } else {
+                thumb = document.createElement('img');
+                thumb.src     = src;
+                thumb.alt     = entry.name;
+                thumb.loading = 'lazy';
+            }
+            thumb.width  = 78;
+            thumb.height = 78;
+            thumb.style.cssText = 'height:78px;width:78px;object-fit:cover;border-radius:10px;' +
+                                  'filter:drop-shadow(0 4px 12px rgba(0,0,0,0.45))';
+            figure.appendChild(thumb);
+            icon.appendChild(figure);
+
+            var label = document.createElement('span');
+            label.className   = 'lab-icon-label';
+            label.textContent = entry.name;
+            icon.appendChild(label);
+
+            LabIcons.setup(icon);
+            desktop.appendChild(icon);
+        }
     })();
     </script>
 </body>
