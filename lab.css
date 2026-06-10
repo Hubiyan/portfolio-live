@@ -91,6 +91,10 @@ body.lab-page .lab-desktop-icon {
   -webkit-user-select: none;
   touch-action: none;
   z-index: 2;
+  /* Force each icon into its own GPU compositor layer — prevents
+     iOS Safari paint artifacts (trails) when icons are dragged */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 body.lab-page .lab-desktop-icon:focus-visible {
