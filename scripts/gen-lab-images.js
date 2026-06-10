@@ -25,8 +25,7 @@ const entries = fs.readdirSync(DIR)
     .sort()
     .map(f => {
         const ext  = path.extname(f).slice(1).toLowerCase();
-        const base = path.basename(f, path.extname(f));
-        const name = base; /* Keep the actual filename as-is — no reformatting */
+        const name = f; /* Full filename including extension */
         return {
             file: f,
             name,
