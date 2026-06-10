@@ -348,7 +348,7 @@ body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
 .mac-urlbar-pill {
   flex: 1 1 0;
   min-width: 0;
-  height: 26px;
+  height: 28px;
   background: rgba(255, 255, 255, 0.07);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 5px;
@@ -570,22 +570,26 @@ body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
 
 .mac-open-tab-btn {
   flex-shrink: 0;
-  padding: 5px 11px;
-  border: 1px solid rgba(80, 140, 255, 0.30);
+  height: 28px;
+  margin-left: 8px;
+  padding: 0 12px;
+  border: 1px solid rgba(100, 160, 255, 0.50);
   border-radius: 8px;
-  background: rgba(30, 80, 200, 0.28);
-  color: rgba(160, 200, 255, 0.90);
+  background: rgba(40, 100, 240, 0.45);
+  color: #fff;
   font-size: 12px;
   font-weight: 500;
   white-space: nowrap;
   cursor: pointer;
+  display: flex;
+  align-items: center;
   transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
 
 .mac-open-tab-btn:hover {
-  background: rgba(40, 100, 240, 0.45);
-  border-color: rgba(100, 160, 255, 0.50);
-  color: #fff;
+  background: rgba(30, 80, 200, 0.28);
+  border-color: rgba(80, 140, 255, 0.30);
+  color: rgba(160, 200, 255, 0.90);
 }
 
 /* --- Close-all-windows button --- */
