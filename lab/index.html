@@ -552,19 +552,54 @@
             }, { once: true });
         });
 
-        /* iframe nav (back / forward / reload) */
-        win.querySelectorAll('.mac-nav-btn[data-nav]').forEach(function (btn) {
-            btn.addEventListener('click', function (e) {
-                e.stopPropagation();
-                var iframe = win.querySelector('.mac-window-iframe');
-                if (!iframe) return;
+        /* iframe nav — manual URL stack so back/fwd never bubble to the parent browser */
+        var iframe = win.querySelector('.mac-window-iframe');
+        if (iframe) {
+            var iHistory = [];   /* URLs visited inside this iframe  */
+            var iPos     = -1;   /* current position in that stack   */
+            var progNav  = false;/* true while we're driving the nav */
+
+            var backNavBtn = win.querySelector('[data-nav="back"]');
+            var fwdNavBtn  = win.querySelector('[data-nav="fwd"]');
+
+            function syncNavBtns() {
+                if (backNavBtn) backNavBtn.disabled = iPos <= 0;
+                if (fwdNavBtn)  fwdNavBtn.disabled  = iPos >= iHistory.length - 1;
+            }
+            syncNavBtns();
+
+            /* Record every URL the iframe lands on */
+            iframe.addEventListener('load', function () {
+                if (progNav) { progNav = false; syncNavBtns(); return; }
                 try {
-                    if (btn.dataset.nav === 'back')   iframe.contentWindow.history.back();
-                    if (btn.dataset.nav === 'fwd')    iframe.contentWindow.history.forward();
-                    if (btn.dataset.nav === 'reload') iframe.contentWindow.location.reload();
+                    var url = iframe.contentWindow.location.href;
+                    /* Trim any forward entries when the user navigated to a new page */
+                    iHistory = iHistory.slice(0, iPos + 1);
+                    iHistory.push(url);
+                    iPos = iHistory.length - 1;
                 } catch (_) {}
+                syncNavBtns();
             });
-        });
+
+            win.querySelectorAll('.mac-nav-btn[data-nav]').forEach(function (btn) {
+                btn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    if (btn.dataset.nav === 'back' && iPos > 0) {
+                        progNav = true;
+                        iPos--;
+                        iframe.src = iHistory[iPos];
+                    }
+                    if (btn.dataset.nav === 'fwd' && iPos < iHistory.length - 1) {
+                        progNav = true;
+                        iPos++;
+                        iframe.src = iHistory[iPos];
+                    }
+                    if (btn.dataset.nav === 'reload') {
+                        try { iframe.contentWindow.location.reload(); } catch (_) {}
+                    }
+                });
+            });
+        }
 
         /* Drag (document-level listeners — see comment in previous version) */
         win.addEventListener('pointerdown', function (e) {

@@ -339,6 +339,12 @@ body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
   color: rgba(255, 255, 255, 0.9);
 }
 
+.mac-nav-btn:disabled {
+  opacity: 0.25;
+  cursor: default;
+  pointer-events: none;
+}
+
 .mac-urlbar-pill {
   flex: 1 1 0;
   min-width: 0;
