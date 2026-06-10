@@ -373,13 +373,19 @@ body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
   text-overflow: ellipsis;
 }
 
-/* ── Finder title (non-browser windows) ─────────────────── */
+/* ── Finder / Preview title — three-column flex centering ── */
+
+/* Both side slots grow equally so the centre title is always exact-centre */
+.mac-window--finder .mac-window-controls,
+.mac-window--preview .mac-window-controls {
+  flex: 1;
+  justify-content: flex-start;
+}
 
 .mac-window-title {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  max-width: 55%;
+  flex: 0 1 auto;   /* shrinks before the side columns do */
+  min-width: 0;
+  text-align: center;
   font-size: 13px;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.82);
@@ -387,7 +393,6 @@ body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-right: 78px; /* balance traffic lights width */
 }
 
 /* ── Window body ────────────────────────────────────────── */
@@ -469,11 +474,10 @@ body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
 /* ── Titlebar right slot (preview nav, etc.) ────────────── */
 
 .mac-titlebar-right {
-  flex-shrink: 0;
+  flex: 1;   /* matches .mac-window-controls flex:1 on finder/preview windows */
   display: flex;
   align-items: center;
   gap: 2px;
-  min-width: 68px; /* mirrors controls width for visual balance */
   justify-content: flex-end;
 }
 
