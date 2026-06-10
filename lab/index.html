@@ -732,7 +732,7 @@
     function openPreview(index) {
         openPreviewWindow(
             WALLPAPERS.map(function (wp) {
-                return { src: wp.thumb, name: wp.name, dl: wp.full, filename: wp.filename };
+                return { src: wp.thumb, name: wp.filename, dl: wp.full, filename: wp.filename };
             }),
             index
         );
