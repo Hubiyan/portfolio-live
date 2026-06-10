@@ -1635,6 +1635,180 @@
 
         </footer>
     </main>
+
+    <!-- ── LIQUID-GLASS-TEST ──────────────────────────────────
+         To remove: delete from here to END LIQUID-GLASS-TEST.
+         ──────────────────────────────────────────────────── -->
+    <div id="lgt-glass"></div>
+
+    <!-- SVG filter engine -->
+    <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0"
+         style="position:absolute;overflow:hidden;pointer-events:none"
+         color-interpolation-filters="sRGB">
+        <defs id="lgt-defs"></defs>
+    </svg>
+
+    <script>
+    /* LIQUID-GLASS-TEST — self-contained, delete with the block above */
+    (function () {
+        var SURFACE_FNS = {
+            convex_squircle: function (x) { return Math.pow(1 - Math.pow(1 - x, 4), 0.25); }
+        };
+
+        function calcProfile(thick, bezel, heightFn, ior, N) {
+            N = N || 128;
+            var eta = 1 / ior;
+            var profile = new Float64Array(N);
+            for (var i = 0; i < N; i++) {
+                var x = i / N;
+                var y = heightFn(x);
+                var dx = x < 1 ? 0.0001 : -0.0001;
+                var y2 = heightFn(x + dx);
+                var deriv = (y2 - y) / dx;
+                var mag = Math.sqrt(deriv * deriv + 1);
+                var nx = -deriv / mag, ny = -1 / mag;
+                var dot = ny;
+                var k = 1 - eta * eta * (1 - dot * dot);
+                if (k < 0) { profile[i] = 0; continue; }
+                var sq = Math.sqrt(k);
+                var rx = -(eta * dot + sq) * nx;
+                var ry =  eta - (eta * dot + sq) * ny;
+                profile[i] = rx * ((y * bezel + thick) / ry);
+            }
+            return profile;
+        }
+
+        function makeDispMap(w, h, radius, bezel, profile, maxDisp) {
+            var c = document.createElement('canvas');
+            c.width = w; c.height = h;
+            var ctx = c.getContext('2d');
+            var img = ctx.createImageData(w, h);
+            var d = img.data;
+            for (var i = 0; i < d.length; i += 4) { d[i]=128; d[i+1]=128; d[i+2]=0; d[i+3]=255; }
+            var r=radius, rSq=r*r, r1Sq=(r+1)*(r+1);
+            var rBSq=Math.max(r-bezel,0)*Math.max(r-bezel,0);
+            var wB=w-r*2, hB=h-r*2, S=profile.length;
+            for (var y1=0;y1<h;y1++) for (var x1=0;x1<w;x1++) {
+                var xd = x1<r ? x1-r : x1>=w-r ? x1-r-wB : 0;
+                var yd = y1<r ? y1-r : y1>=h-r ? y1-r-hB : 0;
+                var dSq=xd*xd+yd*yd;
+                if (dSq>r1Sq||dSq<rBSq) continue;
+                var dist=Math.sqrt(dSq), fromSide=r-dist;
+                var op=dSq<rSq?1:1-(dist-Math.sqrt(rSq))/(Math.sqrt(r1Sq)-Math.sqrt(rSq));
+                if (op<=0||dist===0) continue;
+                var cos=xd/dist, sin=yd/dist;
+                var bi=Math.min(((fromSide/bezel)*S)|0,S-1);
+                var disp=profile[bi]||0;
+                var dX=(-cos*disp)/maxDisp, dY=(-sin*disp)/maxDisp;
+                var idx=(y1*w+x1)*4;
+                d[idx]  =(128+dX*127*op+0.5)|0;
+                d[idx+1]=(128+dY*127*op+0.5)|0;
+            }
+            ctx.putImageData(img,0,0);
+            return c.toDataURL();
+        }
+
+        function makeSpecMap(w, h, radius, bezel) {
+            var angle = Math.PI / 3;
+            var c = document.createElement('canvas');
+            c.width=w; c.height=h;
+            var ctx=c.getContext('2d');
+            var img=ctx.createImageData(w,h);
+            var d=img.data; d.fill(0);
+            var r=radius, rSq=r*r, r1Sq=(r+1)*(r+1);
+            var rBSq=Math.max(r-bezel,0)*Math.max(r-bezel,0);
+            var wB=w-r*2, hB=h-r*2;
+            var sv=[Math.cos(angle),Math.sin(angle)];
+            for (var y1=0;y1<h;y1++) for (var x1=0;x1<w;x1++) {
+                var xd=x1<r?x1-r:x1>=w-r?x1-r-wB:0;
+                var yd=y1<r?y1-r:y1>=h-r?y1-r-hB:0;
+                var dSq=xd*xd+yd*yd;
+                if (dSq>r1Sq||dSq<rBSq) continue;
+                var dist=Math.sqrt(dSq), fromSide=r-dist;
+                var op=dSq<rSq?1:1-(dist-Math.sqrt(rSq))/(Math.sqrt(r1Sq)-Math.sqrt(rSq));
+                if (op<=0||dist===0) continue;
+                var cos=xd/dist, sin=-yd/dist;
+                var dot=Math.abs(cos*sv[0]+sin*sv[1]);
+                var edge=Math.sqrt(Math.max(0,1-(1-fromSide)*(1-fromSide)));
+                var coeff=dot*edge;
+                var col=(255*coeff)|0, alpha=(col*coeff*op)|0;
+                var idx=(y1*w+x1)*4;
+                d[idx]=d[idx+1]=d[idx+2]=col; d[idx+3]=alpha;
+            }
+            ctx.putImageData(img,0,0);
+            return c.toDataURL();
+        }
+
+        var glass = document.getElementById('lgt-glass');
+        var timer;
+
+        function rebuild() {
+            var w = glass.offsetWidth, h = glass.offsetHeight;
+            if (w < 2 || h < 2) return;
+            var radius   = Math.round(Math.min(w, h) / 2); /* 50% = full circle */
+            var thick    = 80, bezelW = 50, ior = 2.6, scaleRatio = 1.0;
+            var blurAmt  = 0.4, specOp = 0.55, specSat = 4;
+            var bezel    = Math.min(bezelW, radius - 1, Math.min(w, h) / 2 - 1);
+            var profile  = calcProfile(thick, bezel, SURFACE_FNS.convex_squircle, ior, 128);
+            var maxDisp  = Math.max.apply(null, Array.from(profile).map(Math.abs)) || 1;
+            var dispUrl  = makeDispMap(w, h, radius, bezel, profile, maxDisp);
+            var specUrl  = makeSpecMap(w, h, radius, bezel * 2.5);
+            var scale    = maxDisp * scaleRatio;
+
+            document.getElementById('lgt-defs').innerHTML =
+                '<filter id="lgt-filter" x="0%" y="0%" width="100%" height="100%">' +
+                  '<feGaussianBlur in="SourceGraphic" stdDeviation="' + blurAmt + '" result="blr"/>' +
+                  '<feImage href="' + dispUrl + '" x="0" y="0" width="' + w + '" height="' + h + '" result="dmap"/>' +
+                  '<feDisplacementMap in="blr" in2="dmap" scale="' + scale + '" xChannelSelector="R" yChannelSelector="G" result="disp"/>' +
+                  '<feColorMatrix in="disp" type="saturate" values="' + specSat + '" result="dsat"/>' +
+                  '<feImage href="' + specUrl + '" x="0" y="0" width="' + w + '" height="' + h + '" result="spec"/>' +
+                  '<feComposite in="dsat" in2="spec" operator="in" result="smasked"/>' +
+                  '<feComponentTransfer in="spec" result="sfaded"><feFuncA type="linear" slope="' + specOp + '"/></feComponentTransfer>' +
+                  '<feBlend in="smasked" in2="disp" mode="normal" result="ws"/>' +
+                  '<feBlend in="sfaded" in2="ws" mode="normal"/>' +
+                '</filter>';
+        }
+
+        function schedRebuild() { clearTimeout(timer); timer = setTimeout(rebuild, 40); }
+
+        /* Initial position — upper-right quadrant */
+        glass.style.right = '5vw';
+        glass.style.top   = '12vh';
+
+        /* Build filter on load and resize */
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function () { rebuild(); });
+        } else {
+            requestAnimationFrame(function () { requestAnimationFrame(rebuild); });
+        }
+        window.addEventListener('resize', schedRebuild);
+
+        /* Drag */
+        (function () {
+            var sx, sy;
+            glass.addEventListener('pointerdown', function (e) {
+                e.preventDefault();
+                /* Resolve from right/top % to px so we can offset */
+                var r = glass.getBoundingClientRect();
+                glass.style.right  = '';
+                glass.style.top    = '';
+                glass.style.left   = r.left + 'px';
+                glass.style.top    = r.top  + 'px';
+                sx = e.clientX; sy = e.clientY;
+                document.addEventListener('pointermove', onMove);
+                document.addEventListener('pointerup', onUp, { once: true });
+            });
+            function onMove(e) {
+                e.preventDefault();
+                glass.style.left = (glass.offsetLeft + e.clientX - sx) + 'px';
+                glass.style.top  = (glass.offsetTop  + e.clientY - sy) + 'px';
+                sx = e.clientX; sy = e.clientY;
+            }
+            function onUp() { document.removeEventListener('pointermove', onMove); }
+        })();
+    })();
+    </script>
+    <!-- ── END LIQUID-GLASS-TEST ──────────────────────────── -->
 </body>
 
 </html>

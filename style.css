@@ -2088,3 +2088,51 @@ body.ds-subpage .main-title {
   }
 }
 
+/* ── LIQUID-GLASS-TEST ──────────────────────────────────────
+   To remove: delete this entire block and the matching
+   sections in index.html tagged LIQUID-GLASS-TEST.
+   ─────────────────────────────────────────────────────────── */
+#lgt-glass {
+  position: fixed;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  cursor: move;
+  isolation: isolate;
+  touch-action: none;
+  z-index: 9000;
+  /* outer drop shadow */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.22);
+}
+
+#lgt-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  /* inner highlight ring */
+  box-shadow: inset 0 0 20px -5px rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.05);
+  pointer-events: none;
+}
+
+#lgt-glass::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  backdrop-filter: url(#lgt-filter);
+  -webkit-backdrop-filter: url(#lgt-filter);
+  isolation: isolate;
+}
+
+@media (max-width: 520px) {
+  #lgt-glass {
+    width: 180px;
+    height: 180px;
+  }
+}
+/* ── END LIQUID-GLASS-TEST ─────────────────────────────────── */
+
