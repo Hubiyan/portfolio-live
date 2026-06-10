@@ -652,8 +652,8 @@ body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
   /* ── macOS windows — fixed inset on mobile ── */
   .mac-window {
     width: calc(100vw - 40px) !important;   /* 20px gap each side */
-    height: calc(100dvh - 120px) !important; /* 60px gap top + bottom */
-    top: 60px !important;
+    height: calc(100dvh - 60px) !important; /* 30px gap top + bottom */
+    top: 30px !important;
     left: 20px !important;
     bottom: auto !important;
     transform: none !important;
@@ -681,7 +681,7 @@ body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
 
   .mac-window--preview {
     width: calc(100vw - 40px) !important;
-    height: calc(100dvh - 120px) !important;
+    height: calc(100dvh - 60px) !important;
   }
 
   .mac-preview-dl span { display: none; } /* icon only on mobile */
