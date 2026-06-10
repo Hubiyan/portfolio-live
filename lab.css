@@ -493,6 +493,8 @@ body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
 }
 
 /* Bottom toolbar — same frosted glass as titlebar */
+.mac-preview-toolbar[hidden] { display: none; }
+
 .mac-preview-toolbar {
   flex-shrink: 0;
   height: 48px;

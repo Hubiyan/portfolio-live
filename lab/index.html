@@ -213,175 +213,7 @@
     <!-- Close-all button — visible when ≥2 windows are open -->
     <button id="close-all-btn" hidden aria-label="Close all windows">Close all windows</button>
 
-    <!-- ╔══════════════════════════════════════════════════════════╗
-         ║  macOS BROWSER WINDOW — Prompts                         ║
-         ╚══════════════════════════════════════════════════════════╝ -->
-    <div class="mac-window" id="win-prompts"
-         data-src="/lab/prompts/"
-         hidden>
-        <div class="mac-window-titlebar">
-            <div class="mac-window-controls">
-                <button class="mac-btn mac-btn--close" aria-label="Close"></button>
-                <button class="mac-btn mac-btn--max"   aria-label="Maximise"></button>
-            </div>
-            <div class="mac-window-urlbar">
-                <button class="mac-nav-btn" data-nav="back" aria-label="Go back">
-                    <svg width="9" height="14" viewBox="0 0 9 14" fill="none" aria-hidden="true">
-                        <path d="M8 1L2 7l6 6" stroke="currentColor" stroke-width="1.8"
-                              stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-                <button class="mac-nav-btn" data-nav="fwd" aria-label="Go forward">
-                    <svg width="9" height="14" viewBox="0 0 9 14" fill="none" aria-hidden="true">
-                        <path d="M1 1l6 6-6 6" stroke="currentColor" stroke-width="1.8"
-                              stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-                <!--
-                  Reload icon: 280° clockwise arc + arrowhead.
-                  Arc: from (10.21,3.17) CW to (3.79,3.17), radius 5, centre (7,7).
-                  Arrowhead: two short lines from the arc end-point pointing CW.
-                -->
-                <button class="mac-nav-btn" data-nav="reload" aria-label="Reload">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                        <!-- 270° CW arc: 12-o'clock → 9-o'clock, gap in upper-left quadrant -->
-                        <path d="M7 2.5 A4.5 4.5 0 1 1 2.5 7"
-                              stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/>
-                        <!-- arrowhead at (2.5,7): clockwise travel = downward → V opens upward -->
-                        <polyline points="1,5.5 2.5,7 4,5.5"
-                                  stroke="currentColor" stroke-width="1.6"
-                                  stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                    </svg>
-                </button>
-                <div class="mac-urlbar-pill">
-                    <svg class="mac-urlbar-lock" width="9" height="12" viewBox="0 0 9 12"
-                         fill="none" aria-hidden="true">
-                        <rect x="1" y="5.5" width="7" height="6" rx="1.2" fill="currentColor"/>
-                        <path d="M2.5 5.5V3.8a2 2 0 014 0v1.7"
-                              stroke="currentColor" stroke-width="1.2" fill="none"/>
-                    </svg>
-                    <span class="mac-urlbar-text" id="win-prompts-url">hubiyan.com/lab/prompts/</span>
-                </div>
-            </div>
-        </div>
-        <div class="mac-window-body">
-            <iframe class="mac-window-iframe" id="win-prompts-iframe"
-                    title="Prompts" src=""></iframe>
-        </div>
-    </div>
-
-    <!-- ╔══════════════════════════════════════════════════════════╗
-         ║  macOS BROWSER WINDOW — AI Bro Detector                 ║
-         ╚══════════════════════════════════════════════════════════╝ -->
-    <div class="mac-window" id="win-ai-bro"
-         data-src="/lab/ai-bro-detector/"
-         hidden>
-        <div class="mac-window-titlebar">
-            <div class="mac-window-controls">
-                <button class="mac-btn mac-btn--close" aria-label="Close"></button>
-                <button class="mac-btn mac-btn--max"   aria-label="Maximise"></button>
-            </div>
-            <div class="mac-window-urlbar">
-                <button class="mac-nav-btn" data-nav="back" aria-label="Go back">
-                    <svg width="9" height="14" viewBox="0 0 9 14" fill="none" aria-hidden="true">
-                        <path d="M8 1L2 7l6 6" stroke="currentColor" stroke-width="1.8"
-                              stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-                <button class="mac-nav-btn" data-nav="fwd" aria-label="Go forward">
-                    <svg width="9" height="14" viewBox="0 0 9 14" fill="none" aria-hidden="true">
-                        <path d="M1 1l6 6-6 6" stroke="currentColor" stroke-width="1.8"
-                              stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-                <button class="mac-nav-btn" data-nav="reload" aria-label="Reload">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                        <!-- 270° CW arc: 12-o'clock → 9-o'clock, gap in upper-left quadrant -->
-                        <path d="M7 2.5 A4.5 4.5 0 1 1 2.5 7"
-                              stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/>
-                        <!-- arrowhead at (2.5,7): clockwise travel = downward → V opens upward -->
-                        <polyline points="1,5.5 2.5,7 4,5.5"
-                                  stroke="currentColor" stroke-width="1.6"
-                                  stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                    </svg>
-                </button>
-                <div class="mac-urlbar-pill">
-                    <svg class="mac-urlbar-lock" width="9" height="12" viewBox="0 0 9 12"
-                         fill="none" aria-hidden="true">
-                        <rect x="1" y="5.5" width="7" height="6" rx="1.2" fill="currentColor"/>
-                        <path d="M2.5 5.5V3.8a2 2 0 014 0v1.7"
-                              stroke="currentColor" stroke-width="1.2" fill="none"/>
-                    </svg>
-                    <span class="mac-urlbar-text" id="win-ai-bro-url">hubiyan.com/lab/ai-bro-detector/</span>
-                </div>
-            </div>
-        </div>
-        <div class="mac-window-body">
-            <iframe class="mac-window-iframe" id="win-ai-bro-iframe"
-                    title="AI Bro Detector" src=""></iframe>
-        </div>
-    </div>
-
-    <!-- ╔══════════════════════════════════════════════════════════╗
-         ║  macOS FINDER WINDOW — Visual Explorations              ║
-         ╚══════════════════════════════════════════════════════════╝ -->
-    <div class="mac-window mac-window--finder" id="win-visual" hidden>
-        <div class="mac-window-titlebar">
-            <div class="mac-window-controls">
-                <button class="mac-btn mac-btn--close" aria-label="Close"></button>
-                <button class="mac-btn mac-btn--max"   aria-label="Maximise"></button>
-            </div>
-            <span class="mac-window-title">Visual Explorations</span>
-            <div class="mac-titlebar-right"></div>
-        </div>
-        <div class="mac-window-body">
-            <div class="mac-finder-grid" id="finder-wallpapers" aria-label="Wallpapers"></div>
-        </div>
-    </div>
-
-    <!-- ╔══════════════════════════════════════════════════════════╗
-         ║  macOS PREVIEW WINDOW — Image viewer                    ║
-         ║  Opened whenever any image is tapped/clicked on Lab.    ║
-         ╚══════════════════════════════════════════════════════════╝ -->
-    <div class="mac-window mac-window--preview" id="win-preview" hidden>
-        <div class="mac-window-titlebar">
-            <div class="mac-window-controls">
-                <button class="mac-btn mac-btn--close" aria-label="Close"></button>
-                <button class="mac-btn mac-btn--max"   aria-label="Maximise"></button>
-            </div>
-            <span class="mac-window-title" id="preview-title">Image</span>
-            <div class="mac-titlebar-right">
-                <button class="mac-nav-btn" id="preview-prev" aria-label="Previous image">
-                    <svg width="9" height="14" viewBox="0 0 9 14" fill="none" aria-hidden="true">
-                        <path d="M8 1L2 7l6 6" stroke="currentColor" stroke-width="1.8"
-                              stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-                <button class="mac-nav-btn" id="preview-next" aria-label="Next image">
-                    <svg width="9" height="14" viewBox="0 0 9 14" fill="none" aria-hidden="true">
-                        <path d="M1 1l6 6-6 6" stroke="currentColor" stroke-width="1.8"
-                              stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <div class="mac-window-body">
-            <img class="mac-preview-img" id="preview-img"
-                 src="" alt="" width="1" height="1">
-        </div>
-        <div class="mac-preview-toolbar">
-            <span class="mac-preview-counter" id="preview-counter"></span>
-            <a class="mac-preview-dl" id="preview-dl"
-               href="" target="_blank" rel="noopener" download="">
-                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
-                    <path d="M6.5 1v8M4 6l2.5 3 2.5-3M1.5 11.5h10"
-                          stroke="currentColor" stroke-width="1.4"
-                          stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span>Download full resolution</span>
-            </a>
-        </div>
-    </div>
+    <!-- macOS windows are generated by buildWindow() in the script below -->
 
     <!-- ── Colour switcher ───────────────────────────────────── -->
     <div class="lab-color-switcher" role="group" aria-label="Background colour">
@@ -435,6 +267,127 @@
             filename: 'Andromeda-horizon-2.png'
         }
     ];
+
+    /* ═══════════════════════════════════════════════════════════
+       macOS Window component builder
+       ═══════════════════════════════════════════════════════════
+       To add a new window, append one entry to WIN_CONFIGS below.
+       Types:  'browser'  → iframe + URL bar
+               'finder'   → grid body + centered title
+               'preview'  → image body + optional download toolbar
+    ═══════════════════════════════════════════════════════════ */
+
+    /* Shared SVG icon strings */
+    var SVG_ICONS = {
+        chevL:    '<svg width="9" height="14" viewBox="0 0 9 14" fill="none" aria-hidden="true"><path d="M8 1L2 7l6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+        chevR:    '<svg width="9" height="14" viewBox="0 0 9 14" fill="none" aria-hidden="true"><path d="M1 1l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+        reload:   '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 2.5 A4.5 4.5 0 1 1 2.5 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/><polyline points="1,5.5 2.5,7 4,5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>',
+        lock:     '<svg class="mac-urlbar-lock" width="9" height="12" viewBox="0 0 9 12" fill="none" aria-hidden="true"><rect x="1" y="5.5" width="7" height="6" rx="1.2" fill="currentColor"/><path d="M2.5 5.5V3.8a2 2 0 014 0v1.7" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>',
+        download: '<svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M6.5 1v8M4 6l2.5 3 2.5-3M1.5 11.5h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+    };
+
+    /* Window registry — add entries here to create new windows */
+    var WIN_CONFIGS = [
+        { id: 'win-prompts',  type: 'browser',  title: 'Prompts',             src: '/lab/prompts/',         urlLabel: 'hubiyan.com/lab/prompts/' },
+        { id: 'win-ai-bro',   type: 'browser',  title: 'AI Bro Detector',     src: '/lab/ai-bro-detector/', urlLabel: 'hubiyan.com/lab/ai-bro-detector/' },
+        { id: 'win-visual',   type: 'finder',   title: 'Visual Explorations' },
+        { id: 'win-preview',  type: 'preview',  title: 'Image' }
+    ];
+
+    function buildWindow(cfg) {
+        var win = document.createElement('div');
+        win.className = 'mac-window' + (cfg.type !== 'browser' ? ' mac-window--' + cfg.type : '');
+        win.id = cfg.id;
+        if (cfg.src) win.dataset.src = cfg.src;
+        win.hidden = true;
+
+        /* ── Titlebar ── */
+        var bar = document.createElement('div');
+        bar.className = 'mac-window-titlebar';
+
+        var ctrl = document.createElement('div');
+        ctrl.className = 'mac-window-controls';
+        ctrl.innerHTML =
+            '<button class="mac-btn mac-btn--close" aria-label="Close"></button>' +
+            '<button class="mac-btn mac-btn--max"   aria-label="Maximise"></button>';
+        bar.appendChild(ctrl);
+
+        if (cfg.type === 'browser') {
+            var urlbar = document.createElement('div');
+            urlbar.className = 'mac-window-urlbar';
+            urlbar.innerHTML =
+                '<button class="mac-nav-btn" data-nav="back"   aria-label="Go back">'    + SVG_ICONS.chevL  + '</button>' +
+                '<button class="mac-nav-btn" data-nav="fwd"    aria-label="Go forward">' + SVG_ICONS.chevR  + '</button>' +
+                '<button class="mac-nav-btn" data-nav="reload" aria-label="Reload">'     + SVG_ICONS.reload + '</button>' +
+                '<div class="mac-urlbar-pill">' +
+                    SVG_ICONS.lock +
+                    '<span class="mac-urlbar-text" id="' + cfg.id + '-url">' + (cfg.urlLabel || '') + '</span>' +
+                '</div>';
+            bar.appendChild(urlbar);
+        } else {
+            var titleEl = document.createElement('span');
+            titleEl.className = 'mac-window-title';
+            if (cfg.type === 'preview') titleEl.id = 'preview-title';
+            titleEl.textContent = cfg.title || '';
+            bar.appendChild(titleEl);
+
+            var right = document.createElement('div');
+            right.className = 'mac-titlebar-right';
+            if (cfg.type === 'preview') {
+                right.innerHTML =
+                    '<button class="mac-nav-btn" id="preview-prev" aria-label="Previous image">' + SVG_ICONS.chevL + '</button>' +
+                    '<span class="mac-preview-counter" id="preview-counter"></span>' +
+                    '<button class="mac-nav-btn" id="preview-next" aria-label="Next image">'    + SVG_ICONS.chevR + '</button>';
+            }
+            bar.appendChild(right);
+        }
+
+        win.appendChild(bar);
+
+        /* ── Body ── */
+        var body = document.createElement('div');
+        body.className = 'mac-window-body';
+
+        if (cfg.type === 'browser') {
+            var iframe = document.createElement('iframe');
+            iframe.className = 'mac-window-iframe';
+            iframe.id    = cfg.id + '-iframe';
+            iframe.title = cfg.title || '';
+            /* src intentionally omitted — lazy-loaded on first open */
+            body.appendChild(iframe);
+        } else if (cfg.type === 'finder') {
+            var grid = document.createElement('div');
+            grid.className = 'mac-finder-grid';
+            grid.id = 'finder-wallpapers';
+            grid.setAttribute('aria-label', 'Wallpapers');
+            body.appendChild(grid);
+        } else if (cfg.type === 'preview') {
+            var img = document.createElement('img');
+            img.className = 'mac-preview-img';
+            img.id = 'preview-img';
+            img.width = 1; img.height = 1;
+            body.appendChild(img);
+        }
+
+        win.appendChild(body);
+
+        /* ── Toolbar (preview only — hidden when no download available) ── */
+        if (cfg.type === 'preview') {
+            var toolbar = document.createElement('div');
+            toolbar.className = 'mac-preview-toolbar';
+            toolbar.id = 'preview-toolbar';
+            toolbar.innerHTML =
+                '<span class="mac-preview-counter" id="preview-counter-bar"></span>' +
+                '<a class="mac-preview-dl" id="preview-dl" href="" target="_blank" rel="noopener" download="" aria-label="Download">' +
+                    SVG_ICONS.download + '<span>Download full resolution</span>' +
+                '</a>';
+            win.appendChild(toolbar);
+        }
+
+        document.body.appendChild(win);
+    }
+
+    WIN_CONFIGS.forEach(buildWindow);
 
     /* ── macOS Window system ────────────────────────────────── */
     var macZCounter      = 60;
@@ -703,17 +656,18 @@
         previewIdx = (index + WALLPAPERS.length) % WALLPAPERS.length;
         var wp = WALLPAPERS[previewIdx];
 
-        document.getElementById('preview-img').src     = wp.thumb;
-        document.getElementById('preview-img').alt     = wp.name;
-        document.getElementById('preview-title').textContent   = wp.name;
-        document.getElementById('preview-counter').textContent =
+        document.getElementById('preview-img').src = wp.thumb;
+        document.getElementById('preview-img').alt = wp.name;
+        document.getElementById('preview-title').textContent = wp.name;
+        document.getElementById('preview-counter-bar').textContent =
             (previewIdx + 1) + ' / ' + WALLPAPERS.length;
 
         var dl = document.getElementById('preview-dl');
         dl.href = wp.full;
         dl.setAttribute('download', wp.filename);
-        dl.hidden = false;
 
+        /* Show toolbar + nav */
+        document.getElementById('preview-toolbar').hidden = false;
         var showNav = WALLPAPERS.length > 1;
         document.getElementById('preview-prev').style.display = showNav ? '' : 'none';
         document.getElementById('preview-next').style.display = showNav ? '' : 'none';
@@ -722,20 +676,19 @@
     }
 
     /**
-     * Open a single image (no download, no navigation).
-     * Used for desktop images that should be viewed but not downloaded.
+     * Open a single image — no download bar, no navigation.
      */
     function openSinglePreview(src, name) {
         previewMode = 'single';
 
         document.getElementById('preview-img').src = src;
         document.getElementById('preview-img').alt = name || '';
-        document.getElementById('preview-title').textContent   = name || '';
-        document.getElementById('preview-counter').textContent = '';
+        document.getElementById('preview-title').textContent = name || '';
 
-        document.getElementById('preview-dl').hidden           = true;
-        document.getElementById('preview-prev').style.display  = 'none';
-        document.getElementById('preview-next').style.display  = 'none';
+        /* Hide toolbar entirely — window body expands to fill */
+        document.getElementById('preview-toolbar').hidden = true;
+        document.getElementById('preview-prev').style.display = 'none';
+        document.getElementById('preview-next').style.display = 'none';
 
         openMacWin('win-preview');
     }
