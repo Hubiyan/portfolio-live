@@ -495,6 +495,13 @@ body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
 /* Bottom toolbar — same frosted glass as titlebar */
 .mac-preview-toolbar[hidden] { display: none; }
 
+/* Image slide transition when navigating prev / next */
+@keyframes img-enter-right { from { transform: translateX(36px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes img-enter-left  { from { transform: translateX(-36px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+.mac-preview-img.img-slide-next { animation: img-enter-right 0.22s ease both; }
+.mac-preview-img.img-slide-prev { animation: img-enter-left  0.22s ease both; }
+
 .mac-preview-toolbar {
   flex-shrink: 0;
   height: 48px;

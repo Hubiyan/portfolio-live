@@ -288,10 +288,10 @@
 
     /* Window registry — add entries here to create new windows */
     var WIN_CONFIGS = [
-        { id: 'win-prompts',  type: 'browser',  title: 'Prompts',             src: '/lab/prompts/',         urlLabel: 'hubiyan.com/lab/prompts/' },
-        { id: 'win-ai-bro',   type: 'browser',  title: 'AI Bro Detector',     src: '/lab/ai-bro-detector/', urlLabel: 'hubiyan.com/lab/ai-bro-detector/' },
-        { id: 'win-visual',   type: 'finder',   title: 'Visual Explorations' },
-        { id: 'win-preview',  type: 'preview',  title: 'Image' }
+        { id: 'win-prompts', type: 'browser', title: 'Prompts',             src: '/lab/prompts/',         urlLabel: 'hubiyan.com/lab/prompts/' },
+        { id: 'win-ai-bro',  type: 'browser', title: 'AI Bro Detector',     src: '/lab/ai-bro-detector/', urlLabel: 'hubiyan.com/lab/ai-bro-detector/' },
+        { id: 'win-visual',  type: 'finder',  title: 'Visual Explorations' }
+        /* Preview windows are created dynamically by openPreviewWindow() — no static entry needed */
     ];
 
     function buildWindow(cfg) {
@@ -384,10 +384,11 @@
             win.appendChild(toolbar);
         }
 
-        document.body.appendChild(win);
+        return win;
     }
 
-    WIN_CONFIGS.forEach(buildWindow);
+    /* Build and mount all static windows */
+    WIN_CONFIGS.forEach(function (cfg) { document.body.appendChild(buildWindow(cfg)); });
 
     /* ── macOS Window system ────────────────────────────────── */
     var macZCounter      = 60;
@@ -420,6 +421,13 @@
     function openMacWin(id) {
         var win = document.getElementById(id);
         if (!win) return;
+
+        /* Already visible — just bring to front, no re-animation */
+        if (!win.hidden) {
+            bringToFront(win);
+            syncCloseAll();
+            return;
+        }
 
         /* ── Reset position + state so each open is fresh ── */
         delete win.dataset.posResolved;
@@ -496,6 +504,8 @@
         function doHide() {
             win.classList.remove('is-closing');
             win.hidden = true;
+            /* Dynamic preview windows are removed from the DOM on close */
+            if (win.dataset.dynamic && win.parentNode) win.parentNode.removeChild(win);
             syncCloseAll();
         }
     }
@@ -519,12 +529,22 @@
         }
     }
 
-    /* Wire each window's controls + drag */
-    document.querySelectorAll('.mac-window').forEach(function (win) {
-        /* resolved & moved are stored as data-attributes so openMacWin/closeMacWin can reset them */
+    /**
+     * Wire drag + traffic-light controls for any .mac-window element.
+     * Called once per window (static or dynamically created).
+     */
+    function initWindow(win) {
         var sx, sy, sl, st;
 
-        /* ── Traffic lights ── */
+        function resolvePos() {
+            var r = win.getBoundingClientRect();
+            win.style.left      = r.left + 'px';
+            win.style.top       = r.top  + 'px';
+            win.style.transform = 'none';
+            win.dataset.posResolved = '1';
+        }
+
+        /* Traffic lights */
         var btnClose = win.querySelector('.mac-btn--close');
         var btnMax   = win.querySelector('.mac-btn--max');
 
@@ -542,7 +562,7 @@
             }, { once: true });
         });
 
-        /* ── iframe nav (back / forward / reload) ── */
+        /* iframe nav (back / forward / reload) */
         win.querySelectorAll('.mac-nav-btn[data-nav]').forEach(function (btn) {
             btn.addEventListener('click', function (e) {
                 e.stopPropagation();
@@ -556,29 +576,8 @@
             });
         });
 
-        function resolvePos() {
-            var r = win.getBoundingClientRect();
-            win.style.left      = r.left + 'px';
-            win.style.top       = r.top  + 'px';
-            win.style.transform = 'none';
-            win.dataset.posResolved = '1';
-        }
-
-        /*
-         * ── Window drag ───────────────────────────────────────────
-         *
-         * We do NOT use setPointerCapture because that re-routes pointerup
-         * to the capture element, breaking the browser's click synthesis on
-         * child buttons.  Instead we attach document-level move/up listeners
-         * so the drag keeps working even when the pointer leaves the window,
-         * and buttons receive their own pointerup → click as normal.
-         *
-         * If the pointer moves > 4 px we enter drag mode and install a
-         * one-shot capture-phase click-canceller so dragging over a button
-         * doesn't accidentally fire it.
-         */
+        /* Drag (document-level listeners — see comment in previous version) */
         win.addEventListener('pointerdown', function (e) {
-            /* Only drag from the chrome (titlebar area), not content */
             if (e.target.closest('.mac-window-body, .mac-preview-toolbar')) return;
             if (win.classList.contains('is-maximized')) return;
 
@@ -589,9 +588,7 @@
             var moved = false;
             bringToFront(win);
 
-            /* Don't eat the event for plain non-button clicks */
-            if (!e.target.closest('.mac-btn, .mac-nav-btn, .mac-urlbar-pill,\
-                                    .mac-titlebar-right')) {
+            if (!e.target.closest('.mac-btn, .mac-nav-btn, .mac-urlbar-pill, .mac-titlebar-right')) {
                 e.preventDefault();
             }
 
@@ -607,8 +604,7 @@
                 document.removeEventListener('pointermove', onMove);
                 document.removeEventListener('pointerup',  onUp);
                 if (moved) {
-                    win.dataset.moved = '1'; /* prevent cascade off this window */
-                    /* Swallow the click that would fire on a button we dragged from */
+                    win.dataset.moved = '1';
                     win.addEventListener('click', function h(ev) {
                         ev.stopPropagation();
                         ev.preventDefault();
@@ -618,7 +614,10 @@
             document.addEventListener('pointermove', onMove);
             document.addEventListener('pointerup',  onUp);
         });
-    });
+    }
+
+    /* Init all static windows */
+    document.querySelectorAll('.mac-window').forEach(initWindow);
 
     /* ── Finder grid ────────────────────────────────────────── */
     function populateFinderGrid() {
@@ -647,79 +646,99 @@
         finderPopulated = true;
     }
 
-    /* ── Image Preview (macOS Preview-style window) ─────────── */
-    var previewIdx = 0;
-    var previewMode = 'gallery'; /* 'gallery' | 'single' */
-
-    function openPreview(index) {
-        previewMode = 'gallery';
-        previewIdx = (index + WALLPAPERS.length) % WALLPAPERS.length;
-        var wp = WALLPAPERS[previewIdx];
-
-        document.getElementById('preview-img').src = wp.thumb;
-        document.getElementById('preview-img').alt = wp.name;
-        document.getElementById('preview-title').textContent = wp.name;
-        document.getElementById('preview-counter-bar').textContent =
-            (previewIdx + 1) + ' / ' + WALLPAPERS.length;
-
-        var dl = document.getElementById('preview-dl');
-        dl.href = wp.full;
-        dl.setAttribute('download', wp.filename);
-
-        /* Show toolbar + nav */
-        document.getElementById('preview-toolbar').hidden = false;
-        var showNav = WALLPAPERS.length > 1;
-        document.getElementById('preview-prev').style.display = showNav ? '' : 'none';
-        document.getElementById('preview-next').style.display = showNav ? '' : 'none';
-
-        openMacWin('win-preview');
-    }
+    /* ── Image Preview windows ───────────────────────────────── */
 
     /**
-     * Open a single image — no download bar, no navigation.
+     * Create and open an independent Preview window.
+     *
+     * @param {Array}  images    [{src, name, dl?, filename?}]
+     * @param {number} startIdx  image to show first
+     *
+     * Each call spawns its own window.  Multiple can be open at once.
+     * Dynamic windows are removed from the DOM when closed.
      */
-    function openSinglePreview(src, name) {
-        previewMode = 'single';
+    function openPreviewWindow(images, startIdx) {
+        var id  = 'win-preview-' + Date.now();
+        var win = buildWindow({ id: id, type: 'preview', title: '' });
+        win.dataset.dynamic = '1';
+        document.body.appendChild(win);
+        initWindow(win);
 
-        document.getElementById('preview-img').src = src;
-        document.getElementById('preview-img').alt = name || '';
-        document.getElementById('preview-title').textContent = name || '';
+        var idx = ((startIdx % images.length) + images.length) % images.length;
 
-        /* Hide toolbar entirely — window body expands to fill */
-        document.getElementById('preview-toolbar').hidden = true;
-        document.getElementById('preview-prev').style.display = 'none';
-        document.getElementById('preview-next').style.display = 'none';
+        var imgEl     = win.querySelector('.mac-preview-img');
+        var titleEl   = win.querySelector('.mac-window-title');
+        var counterEl = win.querySelector('.mac-preview-counter');
+        var toolbar   = win.querySelector('.mac-preview-toolbar');
+        var dlEl      = win.querySelector('.mac-preview-dl');
+        var prevBtn   = win.querySelector('[aria-label="Previous image"]');
+        var nextBtn   = win.querySelector('[aria-label="Next image"]');
 
-        openMacWin('win-preview');
+        function setImage(i, dir) {
+            idx = ((i % images.length) + images.length) % images.length;
+            var im = images[idx];
+
+            /* Slide animation — new image enters from the direction of travel */
+            imgEl.classList.remove('img-slide-next', 'img-slide-prev');
+            void imgEl.offsetWidth; /* reflow so animation restarts */
+            if (dir !== 0) imgEl.classList.add(dir > 0 ? 'img-slide-next' : 'img-slide-prev');
+
+            imgEl.src = im.src;
+            imgEl.alt = im.name;
+            if (titleEl)   titleEl.textContent   = im.name;
+            if (counterEl) counterEl.textContent = images.length > 1
+                ? (idx + 1) + ' / ' + images.length : '';
+
+            /* Toolbar: show only when a download target exists */
+            if (toolbar) {
+                var hasDl = !!(im.dl);
+                toolbar.hidden = !hasDl;
+                if (hasDl && dlEl) {
+                    dlEl.href = im.dl;
+                    dlEl.setAttribute('download', im.filename || '');
+                }
+            }
+
+            /* Show/hide nav */
+            var showNav = images.length > 1;
+            if (prevBtn) prevBtn.style.display = showNav ? '' : 'none';
+            if (nextBtn) nextBtn.style.display = showNav ? '' : 'none';
+        }
+
+        if (prevBtn) prevBtn.addEventListener('click', function (e) { e.stopPropagation(); setImage(idx - 1, -1); });
+        if (nextBtn) nextBtn.addEventListener('click', function (e) { e.stopPropagation(); setImage(idx + 1,  1); });
+
+        /* Keyboard nav */
+        win.addEventListener('keydown', function (e) {
+            if (e.key === 'ArrowLeft')  setImage(idx - 1, -1);
+            if (e.key === 'ArrowRight') setImage(idx + 1,  1);
+        });
+
+        /* Touch swipe */
+        var tx = 0;
+        win.addEventListener('touchstart', function (e) { tx = e.changedTouches[0].clientX; }, { passive: true });
+        win.addEventListener('touchend',   function (e) {
+            var dx = e.changedTouches[0].clientX - tx;
+            if (Math.abs(dx) > 50) setImage(idx + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
+        }, { passive: true });
+
+        setImage(startIdx, 0);
+        openMacWin(id);
     }
 
-    document.getElementById('preview-prev').addEventListener('click', function (e) {
-        e.stopPropagation();
-        openPreview(previewIdx - 1);
-    });
-    document.getElementById('preview-next').addEventListener('click', function (e) {
-        e.stopPropagation();
-        openPreview(previewIdx + 1);
-    });
+    /* Convenience wrappers used by icon click handlers */
+    function openPreview(index) {
+        openPreviewWindow(
+            WALLPAPERS.map(function (wp) {
+                return { src: wp.thumb, name: wp.name, dl: wp.full, filename: wp.filename };
+            }),
+            index
+        );
+    }
 
-    /* Keyboard nav inside the preview window */
-    document.getElementById('win-preview').addEventListener('keydown', function (e) {
-        if (e.key === 'ArrowLeft')  openPreview(previewIdx - 1);
-        if (e.key === 'ArrowRight') openPreview(previewIdx + 1);
-    });
-
-    /* Swipe for preview on touch */
-    (function () {
-        var tx = 0;
-        var pw = document.getElementById('win-preview');
-        pw.addEventListener('touchstart', function (e) {
-            tx = e.changedTouches[0].clientX;
-        }, { passive: true });
-        pw.addEventListener('touchend', function (e) {
-            var dx = e.changedTouches[0].clientX - tx;
-            if (Math.abs(dx) > 50) openPreview(previewIdx + (dx < 0 ? 1 : -1));
-        }, { passive: true });
-    })();
+    function openSinglePreview(src, name) {
+        openPreviewWindow([{ src: src, name: name }], 0);
+    }
 
     /* ── Desktop icon drag + click system ──────────────────── */
     (function initDesktopIcons() {
