@@ -814,11 +814,22 @@ async function runAnalysis() {
     };
 
     try {
-        const res = await fetch(COMMENT_API_URL, {
-            method:  'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify(body),
-        });
+        // One silent retry on transient network failures (cold start, brief blip)
+        let res;
+        try {
+            res = await fetch(COMMENT_API_URL, {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify(body),
+            });
+        } catch {
+            await new Promise((r) => setTimeout(r, 1200));
+            res = await fetch(COMMENT_API_URL, {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify(body),
+            });
+        }
 
         const text = await res.text();
         let json;
