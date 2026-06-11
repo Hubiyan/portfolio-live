@@ -1,0 +1,272 @@
+/* ===========================================================
+   Comment Bro — page-specific styles
+   Depends on: style.css (design-system base) + ai-bro.css (shared input box)
+   Only the result composer (tabs / copy block / honesty slider / toast)
+   is defined here. Everything above the fold reuses ai-bro.css.
+   =========================================================== */
+
+/* ---- Result shell ---- */
+body.comment-bro-lab .comment-bro-result {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-20);
+}
+body.comment-bro-lab .comment-bro-result--empty {
+  display: none;
+}
+
+body.comment-bro-lab .comment-bro-result-toolbar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+/* "Comment on another post" — reuses .ai-bro-try-another from ai-bro.css */
+
+/* ---- Post preview card ---- */
+body.comment-bro-lab .comment-bro-post-summary {
+  margin: 0;
+  color: var(--grey-300);
+  line-height: 1.6;
+}
+
+/* ---- Composer card ---- */
+body.comment-bro-lab .comment-bro-composer {
+  position: relative;
+}
+
+/* ---- Platform tabs ---- */
+body.comment-bro-lab .comment-bro-tabs {
+  display: inline-flex;
+  gap: var(--spacing-04);
+  padding: var(--spacing-04);
+  background: var(--grey-50);
+  border-radius: var(--spacing-12);
+  width: fit-content;
+  max-width: 100%;
+  overflow-x: auto;
+}
+body.comment-bro-lab .comment-bro-tab {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--grey-300);
+  font-family: inherit;
+  font-size: var(--spacing-14);
+  font-weight: 500;
+  padding: var(--spacing-08) var(--spacing-16);
+  border-radius: var(--spacing-08);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+}
+body.comment-bro-lab .comment-bro-tab:hover:not(.is-active) {
+  color: var(--grey-500);
+}
+body.comment-bro-lab .comment-bro-tab.is-active {
+  background: var(--bg-white);
+  color: var(--blue-400);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+body.comment-bro-lab .comment-bro-tab:focus-visible {
+  outline: 2px solid var(--blue-300);
+  outline-offset: 2px;
+}
+
+/* ---- Copyable comment block ---- */
+body.comment-bro-lab .comment-bro-output {
+  position: relative;
+  display: block;
+  width: 100%;
+  text-align: left;
+  appearance: none;
+  border: 1px solid var(--blue-100);
+  background: var(--blue-50);
+  border-radius: var(--spacing-16);
+  padding: var(--spacing-20) var(--spacing-24);
+  padding-bottom: var(--spacing-44);
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.18s ease, background 0.18s ease, transform 0.12s ease;
+}
+body.comment-bro-lab .comment-bro-output:hover {
+  border-color: var(--blue-200);
+}
+body.comment-bro-lab .comment-bro-output:active {
+  transform: scale(0.995);
+}
+body.comment-bro-lab .comment-bro-output:focus-visible {
+  outline: 2px solid var(--blue-300);
+  outline-offset: 2px;
+}
+body.comment-bro-lab .comment-bro-output-text {
+  display: block;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--grey-500);
+  font-size: var(--spacing-18);
+  line-height: 1.6;
+}
+
+body.comment-bro-lab .comment-bro-copy-hint {
+  position: absolute;
+  right: var(--spacing-16);
+  bottom: var(--spacing-12);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-06);
+  color: var(--blue-400);
+  font-size: var(--spacing-12);
+  font-weight: 500;
+  transition: opacity 0.18s ease;
+}
+body.comment-bro-lab .comment-bro-copy-icon {
+  display: block;
+}
+body.comment-bro-lab .comment-bro-output.is-copied {
+  border-color: #9ad9b3;
+  background: #ecf9f1;
+}
+body.comment-bro-lab .comment-bro-output.is-copied .comment-bro-copy-hint {
+  color: #17a74c;
+}
+body.comment-bro-lab .comment-bro-output.is-copied .comment-bro-copy-label::after {
+  content: ' — copied!';
+}
+
+/* ---- Honesty slider ---- */
+body.comment-bro-lab .comment-bro-slider-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-10);
+}
+body.comment-bro-lab .comment-bro-slider-head .button-cat {
+  margin: 0;
+}
+body.comment-bro-lab .comment-bro-honesty-label {
+  font-size: var(--spacing-14);
+  font-weight: 600;
+  color: var(--blue-400);
+}
+
+body.comment-bro-lab .comment-bro-slider {
+  --cb-fill: 0%;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--blue-400) 0%,
+    var(--blue-400) var(--cb-fill),
+    var(--grey-50) var(--cb-fill),
+    var(--grey-50) 100%
+  );
+  cursor: pointer;
+  margin: var(--spacing-04) 0;
+}
+body.comment-bro-lab .comment-bro-slider:focus-visible {
+  outline: 2px solid var(--blue-300);
+  outline-offset: 4px;
+}
+body.comment-bro-lab .comment-bro-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--bg-white);
+  border: 2px solid var(--blue-400);
+  box-shadow: 0 2px 6px rgba(65, 102, 222, 0.3);
+  cursor: pointer;
+  transition: transform 0.12s ease;
+}
+body.comment-bro-lab .comment-bro-slider::-webkit-slider-thumb:active {
+  transform: scale(1.12);
+}
+body.comment-bro-lab .comment-bro-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--bg-white);
+  border: 2px solid var(--blue-400);
+  box-shadow: 0 2px 6px rgba(65, 102, 222, 0.3);
+  cursor: pointer;
+}
+body.comment-bro-lab .comment-bro-slider::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--grey-50);
+}
+
+body.comment-bro-lab .comment-bro-slider-scale {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--spacing-12);
+  color: var(--grey-200);
+}
+body.comment-bro-lab .comment-bro-slider-note {
+  margin: 0;
+  color: var(--grey-300);
+  font-size: var(--spacing-14);
+  line-height: 1.5;
+}
+
+/* ---- Copy toast (design-system live toast, self-contained) ---- */
+body.comment-bro-lab .ds-live-toast {
+  position: fixed;
+  left: 50%;
+  z-index: 1001;
+  padding: var(--spacing-10) var(--spacing-16);
+  font-size: var(--spacing-16);
+  font-weight: 400;
+  color: var(--bg-white);
+  background: #17a74c;
+  border-radius: var(--spacing-10);
+  box-shadow: 0 4px 24px rgba(34, 197, 94, 0.25);
+  pointer-events: none;
+  width: max-content;
+  max-width: calc(100vw - var(--spacing-40));
+  box-sizing: border-box;
+  bottom: calc(var(--spacing-40) + env(safe-area-inset-bottom, 0px));
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-50%) translateY(6px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
+  text-align: left;
+}
+body.comment-bro-lab .ds-live-toast.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s;
+}
+
+@media screen and (max-width: 520px) {
+  body.comment-bro-lab .comment-bro-output {
+    padding: var(--spacing-16) var(--spacing-16);
+    padding-bottom: var(--spacing-40);
+  }
+  body.comment-bro-lab .comment-bro-output-text {
+    font-size: var(--spacing-16);
+  }
+  body.comment-bro-lab .comment-bro-tabs {
+    width: 100%;
+  }
+  body.comment-bro-lab .comment-bro-tab {
+    flex: 1 1 0;
+    text-align: center;
+  }
+  body.comment-bro-lab .ds-live-toast {
+    font-size: var(--spacing-14);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.comment-bro-lab .comment-bro-output,
+  body.comment-bro-lab .comment-bro-tab,
+  body.comment-bro-lab .comment-bro-slider::-webkit-slider-thumb {
+    transition: none;
+  }
+}

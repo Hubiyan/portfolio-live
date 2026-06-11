@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Comment Bro | Hubiyan — lab</title>
+    <meta name="description" content="Paste any post. Get the perfect cliché comment for LinkedIn, X, or Instagram — with an honesty slider from generic engagement-bait to a gentle roast." />
+    <meta property="og:site_name" content="Hubiyan" />
+    <meta property="og:title" content="Comment Bro | Hubiyan" />
+    <meta property="og:image" content="https://github.com/Hubiyan/portfolio-test/blob/main/linked-imgs-smaller/og-image.jpg?raw=true">
+    <meta property="og:description" content="Paste any post. Get the perfect cliché comment for LinkedIn, X, or Instagram." />
+
+    <!-- Hotjar Tracking Code for hubiyan.com -->
+    <script>
+        (function (h, o, t, j, a, r) {
+            h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments) };
+            h._hjSettings = { hjid: 5202657, hjsv: 6 };
+            a = o.getElementsByTagName('head')[0];
+            r = o.createElement('script');
+            r.async = 1;
+            r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+    </script>
+
+    <link rel="icon" type="image/x-icon" href="../../images/logos/main-logo.png">
+    <link rel="stylesheet" href="../../bootstrap.min.css">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../ai-bro.css">
+    <link rel="stylesheet" href="./comment-bro.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <script defer src="../../bootstrap.bundle.min.js"></script>
+    <script defer src="../../script.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js" crossorigin="anonymous"></script>
+    <script defer src="./comment-bro.js?v=1"></script>
+</head>
+
+<body class="ds-subpage ai-bro-lab comment-bro-lab">
+    <a href="#comment-bro-main" class="visually-hidden-focusable">Skip to Comment Bro</a>
+
+    <div id="confetti-trigger" style="display:none;"></div>
+    <div id="wave"></div>
+
+    <main id="comment-bro-main" class="container ds-subpage-main d-flex flex-column gap-40-box">
+
+        <div class="ai-bro-top-bar d-flex w-100 justify-content-start align-items-center">
+            <div class="hamburger-wrap">
+                <button class="hamburger-btn" type="button" aria-label="Open menu"
+                    aria-expanded="false" aria-controls="commentBroHamburgerMenu">
+                    <img class="hamburger-star-icon" src="../../images/btn-icons/star-blue.png" alt="" width="16"
+                        height="16" decoding="async" draggable="false">
+                </button>
+                <div class="hamburger-menu" id="commentBroHamburgerMenu" role="menu" aria-hidden="true">
+                    <a href="../../" class="ham-link" role="menuitem">Home</a>
+                    <a href="../prompts/" class="ham-link" role="menuitem">Prompts</a>
+                    <a href="../ai-bro-detector/" class="ham-link" role="menuitem">AI Bro Detector</a>
+                    <a href="./" class="ham-link" role="menuitem" aria-current="page">Comment Bro</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hero -->
+        <header class="ds-subpage-hero">
+            <h1 class="ds-subpage-hero-title">Comment Bro</h1>
+            <p class="ds-subpage-hero-subtitle">For when you have nothing to say but the algorithm demands a comment</p>
+        </header>
+
+        <!-- Input section -->
+        <section class="d-flex flex-column gap-16-box" id="aiBroInputSection" aria-label="Paste a post">
+
+            <div class="ai-bro-input-header d-flex justify-content-end align-items-center">
+                <p class="ai-bro-quota ai-bro-quota--header" id="aiBroQuota" aria-live="polite" hidden></p>
+                <button type="button" class="ai-bro-how-link" data-bs-toggle="modal"
+                    data-bs-target="#commentBroHowModal" aria-haspopup="dialog">
+                    How it works?
+                </button>
+            </div>
+
+            <div class="ai-bro-input-wrap" id="aiBroInputWrap">
+                <div class="ai-bro-input-box ai-bro-input-box--empty" id="aiBroInputBox" data-input-state="empty">
+                    <div class="ai-bro-media-strip" id="aiBroMediaStrip" hidden>
+                        <ul class="ai-bro-thumb-list" id="aiBroThumbList" aria-label="Pasted screenshots"></ul>
+                    </div>
+                    <label class="visually-hidden" for="aiBroTextInput">Post text to comment on</label>
+                    <textarea id="aiBroTextInput" class="ai-bro-textarea" spellcheck="true" rows="8"
+                        maxlength="20000"
+                        placeholder="Click to paste the post you want to comment on"
+                        autocomplete="off"></textarea>
+                    <button type="button" class="ai-bro-mobile-paste-btn" id="aiBroMobilePasteBtn"
+                        aria-label="Paste from clipboard">
+                        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <rect x="5.5" y="1" width="5" height="3" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M10.5 2.5H12a1.5 1.5 0 0 1 1.5 1.5v10A1.5 1.5 0 0 1 12 15.5H4A1.5 1.5 0 0 1 2.5 14V4A1.5 1.5 0 0 1 4 2.5H5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        Paste
+                    </button>
+                    <div class="ai-bro-toolbar d-flex gap-08-box align-items-center">
+                        <label class="my-button btn-social ai-bro-upload-btn" id="aiBroUploadBtn"
+                            for="aiBroImageUpload" role="button" tabindex="0" aria-label="Upload images">
+                            <svg class="ai-bro-upload-icon large-btn-icon" width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 15V5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M8 9l4-4 4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M5 19h14" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+                            </svg>
+                        </label>
+                        <div class="ai-bro-toolbar-actions d-flex gap-08-box align-items-center">
+                            <button type="button" class="my-button btn-primary ai-bro-analyze" id="aiBroAnalyze"
+                                disabled aria-disabled="true" aria-busy="false">
+                                Write my comment
+                                <span class="ai-bro-analyze-spinner" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- File input lives outside the overflow:hidden input-box so iOS Safari opens the picker -->
+            <input type="file" id="aiBroImageUpload" class="ai-bro-file-hidden"
+                accept="image/*" multiple tabindex="-1">
+
+            <!-- Inline validation hint -->
+            <p class="ai-bro-input-hint" id="aiBroInputHint" aria-live="polite" hidden></p>
+
+            <p class="ai-bro-disclaimer">One post at a time for the best comments. Text works better than screenshots.</p>
+
+            <!-- Status / error -->
+            <div class="ai-bro-status" id="aiBroStatus" role="status" aria-live="polite" style="display:none"></div>
+
+        </section>
+
+        <!-- Loading state -->
+        <section class="ai-bro-loading" id="aiBroLoading" aria-live="polite" style="display:none">
+            <div class="ai-bro-loader">
+                <div class="ai-bro-loader-ring" aria-hidden="true"></div>
+                <p class="ai-bro-loader-text" id="aiBroLoaderText">Workshopping your most engagement-baity comment</p>
+            </div>
+        </section>
+
+        <!-- Results -->
+        <section class="comment-bro-result comment-bro-result--empty" id="commentBroResult" aria-label="Generated comments" aria-live="polite">
+
+            <div class="comment-bro-result-toolbar" id="commentBroResultToolbar" hidden>
+                <button type="button" class="ai-bro-try-another" id="commentBroTryAnother">
+                    <span class="ai-bro-back-arrow" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12.5 4.5L6.5 10l6 5.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    Comment on another post
+                </button>
+            </div>
+
+            <!-- Post preview -->
+            <div class="card d-flex flex-column gap-12-box comment-bro-post-card" id="commentBroPostCard" style="display:none">
+                <div class="d-flex justify-content-between align-items-start gap-08-box">
+                    <p class="section-title">The post</p>
+                    <button type="button" class="ai-bro-how-link comment-bro-view-pasted" id="commentBroViewPasted"
+                        data-bs-toggle="modal" data-bs-target="#commentBroPasteModal" aria-haspopup="dialog">
+                        What you pasted
+                    </button>
+                </div>
+                <p class="section-description comment-bro-post-summary" id="commentBroPostSummary"></p>
+            </div>
+
+            <!-- Comment composer -->
+            <div class="card d-flex flex-column gap-20-box comment-bro-composer" id="commentBroComposer" style="display:none">
+
+                <!-- Platform tabs -->
+                <div class="comment-bro-tabs" role="tablist" aria-label="Choose a platform" id="commentBroTabs">
+                    <button type="button" class="comment-bro-tab is-active" role="tab" id="commentBroTab-linkedin"
+                        data-platform="linkedin" aria-selected="true" aria-controls="commentBroOutput">LinkedIn</button>
+                    <button type="button" class="comment-bro-tab" role="tab" id="commentBroTab-x"
+                        data-platform="x" aria-selected="false" aria-controls="commentBroOutput">X</button>
+                    <button type="button" class="comment-bro-tab" role="tab" id="commentBroTab-instagram"
+                        data-platform="instagram" aria-selected="false" aria-controls="commentBroOutput">Instagram</button>
+                </div>
+
+                <!-- Copyable comment block -->
+                <button type="button" class="comment-bro-output" id="commentBroOutput" role="tabpanel"
+                    aria-label="Comment — click to copy">
+                    <span class="comment-bro-output-text" id="commentBroOutputText"></span>
+                    <span class="comment-bro-copy-hint" id="commentBroCopyHint" aria-hidden="true">
+                        <svg class="comment-bro-copy-icon" width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <rect x="5.5" y="5.5" width="8" height="9" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
+                            <path d="M3.5 10.5H3A1.5 1.5 0 0 1 1.5 9V2.5A1.5 1.5 0 0 1 3 1h6.5A1.5 1.5 0 0 1 11 2.5V3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                        </svg>
+                        <span class="comment-bro-copy-label">Click to copy</span>
+                    </span>
+                </button>
+
+                <!-- Honesty slider -->
+                <div class="comment-bro-slider-wrap">
+                    <div class="comment-bro-slider-head d-flex justify-content-between align-items-center">
+                        <label class="button-cat" for="commentBroHonesty">Honesty</label>
+                        <span class="comment-bro-honesty-label" id="commentBroHonestyLabel" aria-live="polite">Pure cliché</span>
+                    </div>
+                    <input type="range" class="comment-bro-slider" id="commentBroHonesty"
+                        min="0" max="4" step="1" value="0"
+                        aria-label="Honesty level"
+                        aria-valuetext="Pure cliché">
+                    <div class="comment-bro-slider-scale" aria-hidden="true">
+                        <span>Pure cliché</span>
+                        <span>Mild roast</span>
+                    </div>
+                    <p class="comment-bro-slider-note section-description" id="commentBroHonestyNote">
+                        The most generic, painfully relatable engagement-bait comment. Zero opinions, maximum likes.
+                    </p>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Copy toast (shared design-system live toast) -->
+    <div id="commentBroToast" class="ds-live-toast" role="status" aria-live="polite"></div>
+
+    <!-- What you pasted (portfolio modal → bottom sheet on mobile) -->
+    <div class="modal fade" id="commentBroPasteModal" tabindex="-1" aria-labelledby="commentBroPasteModalTitle" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="d-flex w-100 justify-content-end">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <img class="close-img" src="../../images/btn-icons/cross.png" alt="">
+                </button>
+            </div>
+            <div class="modal-content d-flex flex-column gap-32-box ai-bro-paste-modal-content">
+                <div class="d-flex w-100 justify-content-between align-items-center ai-bro-paste-modal-header">
+                    <h2 class="section-title modal-title text-center w-100" id="commentBroPasteModalTitle">What you pasted</h2>
+                </div>
+                <div class="card d-flex flex-column gap-16-box res-0-520-gap-16 ai-bro-paste-modal-scroll">
+                    <div class="ai-bro-paste-preview-body" id="aiBroPastePreviewBody" aria-readonly="true"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- How it works (portfolio modal → bottom sheet on mobile) -->
+    <div class="modal fade" id="commentBroHowModal" tabindex="-1" aria-labelledby="commentBroHowModalTitle" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="d-flex w-100 justify-content-end">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <img class="close-img" src="../../images/btn-icons/cross.png" alt="">
+                </button>
+            </div>
+            <div class="modal-content d-flex flex-column gap-32-box ai-bro-how-modal-content">
+                <div class="d-flex w-100 justify-content-between align-items-center ai-bro-how-modal-header">
+                    <h2 class="section-title modal-title text-center w-100" id="commentBroHowModalTitle">How it works</h2>
+                </div>
+                <div class="card d-flex flex-column gap-32-box res-0-520-gap-16 ai-bro-how-modal-scroll">
+                    <div class="d-flex flex-column gap-12-box w-100">
+                        <p class="button-cat">What you&apos;re doing here</p>
+                        <p class="section-description ai-bro-how-text">
+                        Paste any post, caption, or thread — the kind of thing you feel socially obligated to comment on
+                        but have absolutely nothing to say about. Hit <strong>Write my comment</strong>. You get a
+                        ready-to-paste comment for <strong>LinkedIn</strong>, <strong>X</strong>, and <strong>Instagram</strong>,
+                        each leaning into that platform&apos;s very specific brand of cliché.
+                        </p>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="d-flex flex-column gap-12-box w-100">
+                        <p class="button-cat">The honesty slider</p>
+                        <p class="section-description ai-bro-how-text">
+                        One slider rules all three tabs. Slide <strong>left</strong> for the most generic,
+                        soul-less, engagement-bait comment imaginable — the &ldquo;This 👏 is 👏 gold&rdquo; energy.
+                        Slide <strong>right</strong> and it stays funny but starts gently roasting the post itself:
+                        the humble-brag, the obvious template, the thing nobody&apos;s polite enough to say. It updates
+                        in real time, no reloading.
+                        </p>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="d-flex flex-column gap-12-box w-100">
+                        <p class="button-cat">The bro tokens thing</p>
+                        <p class="section-description ai-bro-how-text">
+                        This runs on real API calls (they cost money). So each browser gets
+                        <strong>5 bro tokens per rolling 12 hours</strong> — five full comment sets. The counter at the
+                        top of the input field shows how many you have left. Moving the slider is free — that&apos;s
+                        all generated in one go.
+                        </p>
+                        <p class="section-description ai-bro-how-text">
+                        Hit zero? Wait until your oldest run falls outside the 12-hour window, or — radical idea —
+                        leave an actual comment yourself.
+                        </p>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="d-flex flex-column gap-12-box w-100">
+                        <p class="button-cat">Be cool about it</p>
+                        <p class="section-description ai-bro-how-text">
+                        Comments are meant to be funny, not mean. Even the highest honesty level roasts the
+                        <em>genre</em>, not the person. Read it before you post it — you&apos;re the one whose name
+                        is on it.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rate limit exhausted modal -->
+    <div class="modal fade" id="aiBroRateLimitModal" tabindex="-1" aria-labelledby="aiBroRateLimitModalTitle" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="d-flex w-100 justify-content-end">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <img class="close-img" src="../../images/btn-icons/cross.png" alt="">
+                </button>
+            </div>
+            <div class="modal-content d-flex flex-column gap-24-box ai-bro-rl-modal-content">
+                <div class="ai-bro-rl-gif-wrap">
+                    <div class="tenor-gif-embed" data-postid="13360981" data-share-method="host" data-aspect-ratio="1.333" data-width="100%"></div>
+                </div>
+                <div class="d-flex flex-column gap-12-box">
+                    <h2 class="section-title" id="aiBroRateLimitModalTitle">You have left enough cliché comments for now</h2>
+                    <p class="section-description">Give the comment section a rest. Bro tokens refresh every 12 hours.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://tenor.com/embed.js" async></script>
+</body>
+
+</html>
