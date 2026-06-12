@@ -157,7 +157,7 @@ async function callGroq(systemPrompt, userParts) {
             { role: 'user',   content },
         ],
         response_format: { type: 'json_object' },
-        temperature:     0.85,
+        temperature:     0.9,
         max_tokens:      2048,
     };
 
