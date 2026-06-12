@@ -173,11 +173,12 @@
             <span class="lab-icon-label">AI Bro Detector</span>
         </div>
 
-        <!-- ── Icon: Comment Bro ─────────────────────────── -->
+        <!-- ── Icon: Comment Bro (hidden until launch — remove display:none + aria-hidden to restore) ── -->
         <div class="lab-desktop-icon"
              data-icon-id="comment-bro"
              data-window="win-comment-bro"
-             style="left:72%;top:48%;
+             aria-hidden="true"
+             style="display:none;left:72%;top:48%;
                     --folder-front:#2f8f7d;
                     --folder-side: #1f6a5c;
                     --folder-top:  #3fb39c;
@@ -323,7 +324,9 @@
     var WIN_CONFIGS = [
         { id: 'win-prompts', type: 'browser', title: 'Prompts',             src: '/lab/prompts/',         urlLabel: 'hubiyan.com/lab/prompts/' },
         { id: 'win-ai-bro',  type: 'browser', title: 'AI Bro Detector',     src: '/lab/ai-bro-detector/', urlLabel: 'hubiyan.com/lab/ai-bro-detector/' },
+        /* Hidden until launch:
         { id: 'win-comment-bro', type: 'browser', title: 'Comment Bro',     src: '/lab/comment-bro/',    urlLabel: 'hubiyan.com/lab/comment-bro/' },
+        */
         { id: 'win-visual',  type: 'finder',  title: 'Visual Explorations' }
         /* Preview windows are created dynamically by openPreviewWindow() — no static entry needed */
     ];
