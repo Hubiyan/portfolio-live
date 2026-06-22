@@ -10,33 +10,12 @@
     <link rel="stylesheet" href="../bootstrap.min.css">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../lab.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@600;700;900&display=swap" rel="stylesheet">
 </head>
 
 <body class="ds-subpage lab-page" data-mat-color="green">
-
-    <!-- Shared SVG paint servers — box icon gradients/grain pattern -->
-    <svg style="display:none;position:absolute" aria-hidden="true" focusable="false">
-        <defs>
-            <linearGradient id="box-front-shade" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%"   stop-color="rgba(255,255,255,0.11)"/>
-                <stop offset="28%"  stop-color="rgba(255,255,255,0)"/>
-                <stop offset="100%" stop-color="rgba(100,58,20,0.10)"/>
-            </linearGradient>
-            <linearGradient id="box-top-shade" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%"   stop-color="rgba(255,255,255,0.22)"/>
-                <stop offset="100%" stop-color="rgba(255,255,255,0.03)"/>
-            </linearGradient>
-            <linearGradient id="box-side-shade" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%"   stop-color="rgba(0,0,0,0.03)"/>
-                <stop offset="100%" stop-color="rgba(0,0,0,0.18)"/>
-            </linearGradient>
-            <pattern id="box-grain" x="0" y="0" width="9" height="240"
-                     patternUnits="userSpaceOnUse">
-                <line x1="0.4" y1="0" x2="0.4" y2="240"
-                      stroke="rgba(90,52,18,0.055)" stroke-width="0.6"/>
-            </pattern>
-        </defs>
-    </svg>
 
     <!-- ── Desktop canvas ──────────────────────────────────── -->
     <main id="lab-main" class="lab-main" aria-label="Lab desktop">
@@ -53,52 +32,14 @@
              tabindex="0" role="button"
              aria-label="Prompts — open in window">
             <div class="lab-icon-figure">
-                <svg class="lab-folder-svg" viewBox="0 0 270 240"
+                <svg class="lab-box-svg" viewBox="0 0 270 240"
                      xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                    <polygon class="lab-folder-side"       points="200,40 270,0 270,200 200,240"/>
-                    <polygon fill="url(#box-side-shade)"   points="200,40 270,0 270,200 200,240"/>
-                    <polygon class="lab-folder-top"        points="70,0 270,0 200,40 0,40"/>
-                    <polygon fill="url(#box-top-shade)"    points="70,0 270,0 200,40 0,40"/>
-                    <polygon class="lab-folder-front"      points="0,40 200,40 200,240 0,240"/>
-                    <polygon fill="url(#box-grain)"        points="0,40 200,40 200,240 0,240"/>
-                    <polygon fill="url(#box-front-shade)"  points="0,40 200,40 200,240 0,240"/>
-                    <line x1="0" y1="83" x2="200" y2="83" stroke="rgba(255,255,255,0.13)" stroke-width="0.7"/>
-                    <line x1="0" y1="84" x2="200" y2="84" stroke="rgba(90,52,18,0.22)"   stroke-width="1"/>
-                    <rect class="lab-folder-tape"          x="24" y="49" width="46" height="20" rx="1.5" opacity="0.72"/>
-                    <rect fill="rgba(255,255,255,0.07)"    x="24" y="49" width="46" height="20" rx="1.5" opacity="0.72"/>
-                    <rect class="lab-folder-tape"          x="24" y="74" width="46" height="20" rx="1.5" opacity="0.67"/>
-                    <rect fill="rgba(255,255,255,0.07)"    x="24" y="74" width="46" height="20" rx="1.5" opacity="0.67"/>
-                    <polygon class="lab-folder-tape"       points="91,40 109,40 179,0 161,0" opacity="0.70"/>
-                    <polygon fill="rgba(255,255,255,0.07)" points="91,40 109,40 179,0 161,0" opacity="0.70"/>
-                    <line x1="0"   y1="40"  x2="200" y2="40"  stroke="rgba(255,255,255,0.3)"  stroke-width="1"/>
-                    <line x1="0"   y1="40"  x2="70"  y2="0"   stroke="rgba(255,255,255,0.22)" stroke-width="0.8"/>
-                    <line x1="70"  y1="0"   x2="270" y2="0"   stroke="rgba(255,255,255,0.16)" stroke-width="0.8"/>
-                    <line x1="200" y1="40"  x2="200" y2="240" stroke="rgba(0,0,0,0.20)"       stroke-width="1.2"/>
-                    <line x1="0"   y1="240" x2="200" y2="240" stroke="rgba(0,0,0,0.10)"       stroke-width="0.8"/>
-                    <line x1="200" y1="240" x2="270" y2="200" stroke="rgba(0,0,0,0.14)"       stroke-width="0.8"/>
-                    <!-- Copy icon — two stacked pages with dog-ear -->
-                    <g opacity="0.68">
-                        <!-- back page -->
-                        <rect x="68" y="107" width="44" height="56" rx="5"
-                              fill="rgba(255,255,255,0.10)"
-                              stroke="rgba(255,255,255,0.9)" stroke-width="4"/>
-                        <!-- dog-ear fold on back page -->
-                        <path d="M102 107 L112 107 L112 118 Z"
-                              fill="rgba(255,255,255,0.25)"
-                              stroke="rgba(255,255,255,0.9)" stroke-width="2.5"
-                              stroke-linejoin="round"/>
-                        <!-- front page -->
-                        <rect x="84" y="123" width="44" height="56" rx="5"
-                              fill="rgba(255,255,255,0.18)"
-                              stroke="rgba(255,255,255,0.9)" stroke-width="4"/>
-                        <!-- lines on front page -->
-                        <line x1="93" y1="141" x2="119" y2="141"
-                              stroke="rgba(255,255,255,0.75)" stroke-width="3.5" stroke-linecap="round"/>
-                        <line x1="93" y1="153" x2="119" y2="153"
-                              stroke="rgba(255,255,255,0.75)" stroke-width="3.5" stroke-linecap="round"/>
-                        <line x1="93" y1="164" x2="113" y2="164"
-                              stroke="rgba(255,255,255,0.75)" stroke-width="3.5" stroke-linecap="round"/>
-                    </g>
+                    <polygon class="lab-folder-side" points="200,40 270,0 270,200 200,240"/>
+                    <polygon class="lab-folder-top"  points="70,0 270,0 200,40 0,40"/>
+                    <polygon class="lab-folder-front" points="0,40 200,40 200,240 0,240"/>
+                    <line x1="0" y1="40" x2="200" y2="40" stroke="rgba(255,255,255,0.28)" stroke-width="1"/>
+                    <line x1="200" y1="40" x2="200" y2="240" stroke="rgba(0,0,0,0.18)" stroke-width="1.2"/>
+                    <text class="lab-box-emoji" x="100" y="148" text-anchor="middle" dominant-baseline="central">📝</text>
                 </svg>
             </div>
             <span class="lab-icon-label">Prompts</span>
@@ -116,58 +57,14 @@
              tabindex="0" role="button"
              aria-label="AI Bro Detector — open in window">
             <div class="lab-icon-figure">
-                <svg class="lab-folder-svg" viewBox="0 0 270 240"
+                <svg class="lab-box-svg" viewBox="0 0 270 240"
                      xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                    <polygon class="lab-folder-side"       points="200,40 270,0 270,200 200,240"/>
-                    <polygon fill="url(#box-side-shade)"   points="200,40 270,0 270,200 200,240"/>
-                    <polygon class="lab-folder-top"        points="70,0 270,0 200,40 0,40"/>
-                    <polygon fill="url(#box-top-shade)"    points="70,0 270,0 200,40 0,40"/>
-                    <polygon class="lab-folder-front"      points="0,40 200,40 200,240 0,240"/>
-                    <polygon fill="url(#box-grain)"        points="0,40 200,40 200,240 0,240"/>
-                    <polygon fill="url(#box-front-shade)"  points="0,40 200,40 200,240 0,240"/>
-                    <line x1="0" y1="83" x2="200" y2="83" stroke="rgba(255,255,255,0.13)" stroke-width="0.7"/>
-                    <line x1="0" y1="84" x2="200" y2="84" stroke="rgba(90,52,18,0.22)"   stroke-width="1"/>
-                    <rect class="lab-folder-tape"          x="24" y="49" width="46" height="20" rx="1.5" opacity="0.72"/>
-                    <rect fill="rgba(255,255,255,0.07)"    x="24" y="49" width="46" height="20" rx="1.5" opacity="0.72"/>
-                    <rect class="lab-folder-tape"          x="24" y="74" width="46" height="20" rx="1.5" opacity="0.67"/>
-                    <rect fill="rgba(255,255,255,0.07)"    x="24" y="74" width="46" height="20" rx="1.5" opacity="0.67"/>
-                    <polygon class="lab-folder-tape"       points="91,40 109,40 179,0 161,0" opacity="0.70"/>
-                    <polygon fill="rgba(255,255,255,0.07)" points="91,40 109,40 179,0 161,0" opacity="0.70"/>
-                    <line x1="0"   y1="40"  x2="200" y2="40"  stroke="rgba(255,255,255,0.3)"  stroke-width="1"/>
-                    <line x1="0"   y1="40"  x2="70"  y2="0"   stroke="rgba(255,255,255,0.22)" stroke-width="0.8"/>
-                    <line x1="70"  y1="0"   x2="270" y2="0"   stroke="rgba(255,255,255,0.16)" stroke-width="0.8"/>
-                    <line x1="200" y1="40"  x2="200" y2="240" stroke="rgba(0,0,0,0.20)"       stroke-width="1.2"/>
-                    <line x1="0"   y1="240" x2="200" y2="240" stroke="rgba(0,0,0,0.10)"       stroke-width="0.8"/>
-                    <line x1="200" y1="240" x2="270" y2="200" stroke="rgba(0,0,0,0.14)"       stroke-width="0.8"/>
-                    <!-- Robot "AI Bro" icon — smug face with sunglasses -->
-                    <g opacity="0.62">
-                        <!-- head -->
-                        <rect x="63" y="106" width="74" height="68" rx="7"
-                              fill="rgba(255,255,255,0.10)"
-                              stroke="rgba(255,255,255,0.92)" stroke-width="4"/>
-                        <!-- antenna -->
-                        <line x1="100" y1="106" x2="100" y2="92"
-                              stroke="rgba(255,255,255,0.92)" stroke-width="4" stroke-linecap="round"/>
-                        <circle cx="100" cy="87" r="6.5" fill="rgba(255,255,255,0.92)"/>
-                        <!-- sunglasses — connected lenses (max bro energy) -->
-                        <rect x="67" y="118" width="25" height="18" rx="4"
-                              fill="rgba(255,255,255,0.18)"
-                              stroke="rgba(255,255,255,0.92)" stroke-width="3.5"/>
-                        <line x1="92" y1="127" x2="108" y2="127"
-                              stroke="rgba(255,255,255,0.92)" stroke-width="3.5"/>
-                        <rect x="108" y="118" width="25" height="18" rx="4"
-                              fill="rgba(255,255,255,0.18)"
-                              stroke="rgba(255,255,255,0.92)" stroke-width="3.5"/>
-                        <!-- smug upward-curve mouth -->
-                        <path d="M82 153 Q100 162 118 153"
-                              fill="none" stroke="rgba(255,255,255,0.92)"
-                              stroke-width="4" stroke-linecap="round"/>
-                        <!-- ear sensors -->
-                        <rect x="55" y="122" width="8" height="22" rx="3.5"
-                              fill="rgba(255,255,255,0.85)"/>
-                        <rect x="137" y="122" width="8" height="22" rx="3.5"
-                              fill="rgba(255,255,255,0.85)"/>
-                    </g>
+                    <polygon class="lab-folder-side" points="200,40 270,0 270,200 200,240"/>
+                    <polygon class="lab-folder-top"  points="70,0 270,0 200,40 0,40"/>
+                    <polygon class="lab-folder-front" points="0,40 200,40 200,240 0,240"/>
+                    <line x1="0" y1="40" x2="200" y2="40" stroke="rgba(255,255,255,0.28)" stroke-width="1"/>
+                    <line x1="200" y1="40" x2="200" y2="240" stroke="rgba(0,0,0,0.18)" stroke-width="1.2"/>
+                    <text class="lab-box-emoji" x="100" y="148" text-anchor="middle" dominant-baseline="central">🤖</text>
                 </svg>
             </div>
             <span class="lab-icon-label">AI Bro Detector</span>
@@ -185,40 +82,14 @@
              tabindex="0" role="button"
              aria-label="Comment Bro — open in window">
             <div class="lab-icon-figure">
-                <svg class="lab-folder-svg" viewBox="0 0 270 240"
+                <svg class="lab-box-svg" viewBox="0 0 270 240"
                      xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                    <polygon class="lab-folder-side"       points="200,40 270,0 270,200 200,240"/>
-                    <polygon fill="url(#box-side-shade)"   points="200,40 270,0 270,200 200,240"/>
-                    <polygon class="lab-folder-top"        points="70,0 270,0 200,40 0,40"/>
-                    <polygon fill="url(#box-top-shade)"    points="70,0 270,0 200,40 0,40"/>
-                    <polygon class="lab-folder-front"      points="0,40 200,40 200,240 0,240"/>
-                    <polygon fill="url(#box-grain)"        points="0,40 200,40 200,240 0,240"/>
-                    <polygon fill="url(#box-front-shade)"  points="0,40 200,40 200,240 0,240"/>
-                    <line x1="0" y1="83" x2="200" y2="83" stroke="rgba(255,255,255,0.13)" stroke-width="0.7"/>
-                    <line x1="0" y1="84" x2="200" y2="84" stroke="rgba(90,52,18,0.22)"   stroke-width="1"/>
-                    <rect class="lab-folder-tape"          x="24" y="49" width="46" height="20" rx="1.5" opacity="0.72"/>
-                    <rect fill="rgba(255,255,255,0.07)"    x="24" y="49" width="46" height="20" rx="1.5" opacity="0.72"/>
-                    <rect class="lab-folder-tape"          x="24" y="74" width="46" height="20" rx="1.5" opacity="0.67"/>
-                    <rect fill="rgba(255,255,255,0.07)"    x="24" y="74" width="46" height="20" rx="1.5" opacity="0.67"/>
-                    <polygon class="lab-folder-tape"       points="91,40 109,40 179,0 161,0" opacity="0.70"/>
-                    <polygon fill="rgba(255,255,255,0.07)" points="91,40 109,40 179,0 161,0" opacity="0.70"/>
-                    <line x1="0"   y1="40"  x2="200" y2="40"  stroke="rgba(255,255,255,0.3)"  stroke-width="1"/>
-                    <line x1="0"   y1="40"  x2="70"  y2="0"   stroke="rgba(255,255,255,0.22)" stroke-width="0.8"/>
-                    <line x1="70"  y1="0"   x2="270" y2="0"   stroke="rgba(255,255,255,0.16)" stroke-width="0.8"/>
-                    <line x1="200" y1="40"  x2="200" y2="240" stroke="rgba(0,0,0,0.20)"       stroke-width="1.2"/>
-                    <line x1="0"   y1="240" x2="200" y2="240" stroke="rgba(0,0,0,0.10)"       stroke-width="0.8"/>
-                    <line x1="200" y1="240" x2="270" y2="200" stroke="rgba(0,0,0,0.14)"       stroke-width="0.8"/>
-                    <!-- Comment Bro glyph — speech bubbles -->
-                    <g opacity="0.66">
-                        <!-- back bubble -->
-                        <path d="M70 104 h70 a8 8 0 0 1 8 8 v30 a8 8 0 0 1 -8 8 h-40 l-16 14 v-14 h-14 a8 8 0 0 1 -8 -8 v-30 a8 8 0 0 1 8 -8 z"
-                              fill="rgba(255,255,255,0.10)"
-                              stroke="rgba(255,255,255,0.92)" stroke-width="4" stroke-linejoin="round"/>
-                        <!-- dots -->
-                        <circle cx="88"  cy="127" r="4.5" fill="rgba(255,255,255,0.92)"/>
-                        <circle cx="105" cy="127" r="4.5" fill="rgba(255,255,255,0.92)"/>
-                        <circle cx="122" cy="127" r="4.5" fill="rgba(255,255,255,0.92)"/>
-                    </g>
+                    <polygon class="lab-folder-side" points="200,40 270,0 270,200 200,240"/>
+                    <polygon class="lab-folder-top"  points="70,0 270,0 200,40 0,40"/>
+                    <polygon class="lab-folder-front" points="0,40 200,40 200,240 0,240"/>
+                    <line x1="0" y1="40" x2="200" y2="40" stroke="rgba(255,255,255,0.28)" stroke-width="1"/>
+                    <line x1="200" y1="40" x2="200" y2="240" stroke="rgba(0,0,0,0.18)" stroke-width="1.2"/>
+                    <text class="lab-box-emoji" x="100" y="148" text-anchor="middle" dominant-baseline="central">💬</text>
                 </svg>
             </div>
             <span class="lab-icon-label">Comment Bro</span>
@@ -239,6 +110,75 @@
                             filter:drop-shadow(0 4px 10px rgba(0,0,0,0.35))">
             </div>
             <span class="lab-icon-label">Visual Explorations</span>
+        </div>
+
+        <!-- ── AirPods (decorative — drag only) ─────────────── -->
+        <div class="lab-desktop-icon lab-desktop-icon--prop"
+             id="lab-airpods"
+             data-icon-id="airpods-wired"
+             data-pin-load="top-left"
+             style="left:24px;top:24px"
+             tabindex="0"
+             aria-label="AirPods">
+            <div class="lab-icon-figure">
+                <img src="/images/lab-images/airpods_wired.png"
+                     alt="" aria-hidden="true"
+                     width="220" height="220"
+                     style="height:auto;max-width:100%;object-fit:contain;
+                            filter:drop-shadow(0 4px 12px rgba(0,0,0,0.45))">
+            </div>
+        </div>
+
+        <!-- ── Learning video card ─────────────────────────── -->
+        <div class="lab-learning-card" id="lab-learning-card"
+             data-widget-id="learning-video" role="region"
+             aria-label="Currently learning video"
+             style="right:24px;top:24px">
+            <button type="button" class="lab-learning-card__min-btn" id="lab-learning-min-btn"
+                    aria-label="Minimise video card" aria-expanded="true">
+                <svg class="lab-learning-card__icon lab-learning-card__icon--min" viewBox="0 0 12 12"
+                     width="12" height="12" aria-hidden="true" focusable="false">
+                    <rect x="1.5" y="9" width="9" height="1.6" rx="0.4" fill="currentColor"/>
+                </svg>
+                <svg class="lab-learning-card__icon lab-learning-card__icon--max" viewBox="0 0 12 12"
+                     width="12" height="12" aria-hidden="true" focusable="false">
+                    <rect x="1.4" y="1.4" width="9.2" height="9.2" rx="1" fill="none"
+                          stroke="currentColor" stroke-width="1.6"/>
+                </svg>
+            </button>
+            <div class="lab-learning-card__chip">
+                <div class="lab-learning-card__marquee">
+                    <div class="lab-learning-card__marquee-track">
+                        <span class="lab-learning-card__marquee-text">Currently learning...</span>
+                        <span class="lab-learning-card__marquee-text" aria-hidden="true">Currently learning...</span>
+                    </div>
+                </div>
+            </div>
+            <div class="lab-learning-card__body">
+              <div class="lab-learning-card__body-inner">
+                <div class="lab-learning-card__player" id="lab-learning-player">
+                    <button type="button" class="lab-learning-card__thumb-btn" id="lab-learning-thumb-btn"
+                            aria-label="Play video">
+                        <img class="lab-learning-card__thumb" id="lab-learning-thumb" alt="" width="246" height="138"
+                             loading="lazy">
+                        <span class="lab-learning-card__play" aria-hidden="true">
+                            <svg viewBox="0 0 68 48" width="68" height="48" focusable="false">
+                                <path d="M66.52 7.74a7.5 7.5 0 0 0-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55A7.5 7.5 0 0 0 1.48 7.74C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26a7.5 7.5 0 0 0 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55a7.5 7.5 0 0 0 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#FF0000"/>
+                                <path d="M45 24 27 14v20z" fill="#fff"/>
+                            </svg>
+                        </span>
+                    </button>
+                    <iframe id="lab-learning-iframe" title="YouTube video player" hidden
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                </div>
+                <div class="lab-learning-card__info">
+                    <p class="lab-learning-card__title" id="lab-learning-title"></p>
+                    <p class="lab-learning-card__meta" id="lab-learning-meta"></p>
+                </div>
+              </div>
+            </div>
         </div>
 
     </main>
@@ -860,9 +800,12 @@
         function setupIcon(icon) {
             var id    = icon.dataset.iconId;
             var saved = loadPos();
+            var pinLoad = icon.dataset.pinLoad;
 
-            /* Only restore saved position if it fits on the current screen */
-            if (saved[id]) {
+            /* Pinned props always start top-left on load — skip saved position */
+            if (pinLoad === 'top-left') {
+                pinAirpodsTopLeft(icon);
+            } else if (saved[id]) {
                 var vw = window.innerWidth, vh = window.innerHeight;
                 if (saved[id].x < vw - 20 && saved[id].y < vh - 20) {
                     icon.style.left = saved[id].x + 'px';
@@ -896,7 +839,9 @@
             icon.addEventListener('pointerup', function () {
                 if (!dragging) return;
                 dragging = false; icon.style.zIndex = '';
-                if (moved) savePos(id, icon.offsetLeft, icon.offsetTop);
+                if (moved && icon.dataset.pinLoad !== 'top-left') {
+                    savePos(id, icon.offsetLeft, icon.offsetTop);
+                }
             });
 
             function activateIcon() {
@@ -940,8 +885,8 @@
 
         fetch('/images/lab-images/manifest.json')
             .then(function (r) { return r.json(); })
-            .then(function (entries) { entries.forEach(createIcon); })
-            .catch(function () { /* manifest not yet generated — silently skip */ });
+            .then(function (entries) { entries.forEach(createIcon); layoutMobileItems(); })
+            .catch(function () { layoutMobileItems(); /* manifest missing — still lay out */ });
 
         function createIcon(entry, i) {
             var isVid = entry.type === 'video';
@@ -994,6 +939,278 @@
             desktop.appendChild(icon);
         }
     })();
+
+    /* ── Learning video card config ─────────────────────────── */
+    var LEARNING_VIDEO = {
+        youtubeId:   'PmAI76OGE_E',
+        embedParams: 'controls=0',
+        title:       'CS50x 2026 - Lecture 5 - Data Structures',
+        views:       '1.3m views',
+        published:   '5 months ago'
+    };
+
+    function youtubeUrlToId(url) {
+        if (!url) return '';
+        var match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|watch\?v=|shorts\/))([A-Za-z0-9_-]{11})/);
+        return match ? match[1] : '';
+    }
+
+    function buildLearningEmbedSrc(cfg, autoplay) {
+        var id = cfg.youtubeId || youtubeUrlToId(cfg.youtubeUrl);
+        if (!id) return '';
+        var params = cfg.embedParams || 'controls=0';
+        if (autoplay) params += '&autoplay=1';
+        return 'https://www.youtube.com/embed/' + id + '?' + params;
+    }
+
+    function buildYoutubeThumbSrc(id) {
+        return 'https://img.youtube.com/vi/' + id + '/hqdefault.jpg';
+    }
+
+    (function initLearningCard() {
+        var cfg      = LEARNING_VIDEO;
+        var id       = cfg.youtubeId || youtubeUrlToId(cfg.youtubeUrl);
+        var player   = document.getElementById('lab-learning-player');
+        var thumbBtn = document.getElementById('lab-learning-thumb-btn');
+        var thumb    = document.getElementById('lab-learning-thumb');
+        var iframe   = document.getElementById('lab-learning-iframe');
+        var titleEl  = document.getElementById('lab-learning-title');
+        var metaEl   = document.getElementById('lab-learning-meta');
+
+        if (thumb && id) {
+            thumb.src = buildYoutubeThumbSrc(id);
+            thumb.alt = '';
+        }
+        if (titleEl) titleEl.textContent = cfg.title || '';
+        if (metaEl) {
+            metaEl.innerHTML =
+                '<span>' + (cfg.views || '') + '</span>' +
+                '<span aria-hidden="true">·</span>' +
+                '<span>' + (cfg.published || '') + '</span>';
+        }
+
+        if (thumbBtn && iframe && player && id) {
+            thumbBtn.addEventListener('click', function () {
+                var card = document.getElementById('lab-learning-card');
+                if (card && card.dataset.dragged === '1') return;
+                iframe.src = buildLearningEmbedSrc(cfg, true);
+                iframe.hidden = false;
+                thumbBtn.hidden = true;
+                player.classList.add('is-playing');
+            });
+        }
+    })();
+
+    /* ── Desktop widget drag system ─────────────────────────── */
+    var LabWidgets = (function () {
+        var STORE = 'lab-widget-pos';
+
+        function loadPos() {
+            try { return JSON.parse(localStorage.getItem(STORE) || '{}'); } catch (e) { return {}; }
+        }
+
+        function savePos(id, x, y) {
+            var pos = loadPos();
+            pos[id] = { x: x, y: y };
+            localStorage.setItem(STORE, JSON.stringify(pos));
+        }
+
+        function clampToViewport(widget) {
+            var vw   = window.innerWidth;
+            var vh   = window.innerHeight;
+            var rect = widget.getBoundingClientRect();
+            var left = widget.offsetLeft;
+            var top  = widget.offsetTop;
+            var pad  = 8;
+            var maxL = Math.max(pad, vw - rect.width - pad);
+            var maxT = Math.max(pad, vh - rect.height - pad);
+
+            if (left > maxL) left = maxL;
+            if (top  > maxT) top  = maxT;
+            if (left < pad)  left = pad;
+            if (top  < pad)  top  = pad;
+
+            widget.style.left = left + 'px';
+            widget.style.top  = top  + 'px';
+        }
+
+        function setupWidget(widget) {
+            var id     = widget.dataset.widgetId;
+            var minBtn = widget.querySelector('.lab-learning-card__min-btn');
+
+            function toggleMinimized() {
+                var min = widget.classList.toggle('is-minimized');
+                if (minBtn) {
+                    minBtn.setAttribute('aria-expanded', String(!min));
+                    minBtn.setAttribute('aria-label',
+                        min ? 'Maximise video card' : 'Minimise video card');
+                }
+                clampToViewport(widget);
+                /* re-clamp once the size transition finishes */
+                setTimeout(function () { clampToViewport(widget); }, 380);
+            }
+
+            var saved = loadPos();
+            if (saved[id]) {
+                var vw = window.innerWidth;
+                var vh = window.innerHeight;
+                if (saved[id].x < vw - 20 && saved[id].y < vh - 20) {
+                    widget.style.left = saved[id].x + 'px';
+                    widget.style.top  = saved[id].y + 'px';
+                }
+            }
+
+            requestAnimationFrame(function () { clampToViewport(widget); });
+
+            var dragging = false;
+            var moved    = false;
+            var startX, startY, startL, startT;
+
+            function onMove(e) {
+                if (!dragging) return;
+                var dx = e.clientX - startX;
+                var dy = e.clientY - startY;
+                if (Math.abs(dx) > 4 || Math.abs(dy) > 4) moved = true;
+                if (moved) {
+                    widget.style.left = (startL + dx) + 'px';
+                    widget.style.top  = (startT + dy) + 'px';
+                    e.preventDefault();
+                }
+            }
+
+            function onUp() {
+                window.removeEventListener('pointermove', onMove);
+                window.removeEventListener('pointerup', onUp);
+                if (!dragging) return;
+                dragging = false;
+                widget.style.zIndex = '';
+                widget.classList.remove('is-grabbing');
+                /* flag read by child click handlers to suppress taps after a drag */
+                widget.dataset.dragged = moved ? '1' : '';
+                if (moved) {
+                    clampToViewport(widget);
+                    savePos(id, widget.offsetLeft, widget.offsetTop);
+                }
+            }
+
+            /* Drag from anywhere on the card */
+            widget.addEventListener('pointerdown', function (e) {
+                if (e.button !== 0) return;
+                dragging = true;
+                moved    = false;
+                widget.dataset.dragged = '';
+                startX   = e.clientX;
+                startY   = e.clientY;
+                startL   = widget.offsetLeft;
+                startT   = widget.offsetTop;
+                widget.style.zIndex = '10';
+                widget.classList.add('is-grabbing');
+                window.addEventListener('pointermove', onMove);
+                window.addEventListener('pointerup', onUp);
+            });
+
+            /* Tap on the button toggles min/max (ignored right after a drag) */
+            if (minBtn) {
+                minBtn.addEventListener('click', function () {
+                    if (widget.dataset.dragged === '1') return;
+                    toggleMinimized();
+                });
+            }
+
+            window.addEventListener('resize', function () { clampToViewport(widget); });
+        }
+
+        document.querySelectorAll('[data-widget-id]').forEach(setupWidget);
+
+        return { setup: setupWidget };
+    })();
+
+    /* ── Mobile load layout — stack items vertically, no overlap ───
+       On phones the desktop's percentage positions overlap, so on load
+       we pin the learning card top-right and lay every icon out in a
+       single non-overlapping vertical run the user can scroll through.
+       Positions are memoised per id so repeat calls don't reshuffle.   */
+    var mobilePos = {};
+
+    function pinAirpodsTopLeft(el) {
+        var airpods = el || document.getElementById('lab-airpods');
+        if (!airpods) return;
+        var pad = window.matchMedia('(max-width: 520px)').matches ? 16 : 24;
+        airpods.style.left = pad + 'px';
+        airpods.style.top  = pad + 'px';
+        return airpods;
+    }
+
+    function layoutMobileItems() {
+        if (!window.matchMedia('(max-width: 520px)').matches) {
+            pinAirpodsTopLeft();
+            return;
+        }
+        var main = document.getElementById('lab-main');
+        if (!main) return;
+
+        var vw  = window.innerWidth;
+        var pad = 16;
+        var y   = pad;
+
+        var airpods = pinAirpodsTopLeft();
+        if (airpods) {
+            y = Math.max(y, airpods.offsetTop + airpods.offsetHeight + 24);
+        }
+
+        var card = document.getElementById('lab-learning-card');
+        if (card) {
+            var cardW = card.offsetWidth;
+            card.style.left = Math.max(pad, vw - cardW - pad) + 'px';
+            card.style.top  = pad + 'px';
+            y = Math.max(y, card.offsetTop + card.offsetHeight + 24);
+        }
+
+        var icons = Array.prototype.slice.call(
+            document.querySelectorAll('.lab-desktop-icon')
+        );
+        icons.forEach(function (icon, i) {
+            if (icon.dataset.pinLoad === 'top-left') return;
+            var key     = icon.dataset.iconId || ('static-' + i);
+            var w       = icon.offsetWidth;
+            var h       = icon.offsetHeight;
+            var maxLeft = Math.max(pad, vw - w - pad);
+            if (!mobilePos[key]) {
+                mobilePos[key] = {
+                    leftRatio: Math.random(),
+                    gap:       16 + Math.random() * 26
+                };
+            }
+            var p = mobilePos[key];
+            icon.style.left = (pad + p.leftRatio * (maxLeft - pad)) + 'px';
+            icon.style.top  = y + 'px';
+            y += h + p.gap;
+        });
+
+        main.style.minHeight = Math.max(window.innerHeight, y + 40) + 'px';
+    }
+
+    /* On mobile the card starts minimised. Suppress the open/close
+       animation for this initial state change, then enable it.        */
+    (function initLearningCardState() {
+        if (!window.matchMedia('(max-width: 520px)').matches) return;
+        var card = document.getElementById('lab-learning-card');
+        var btn  = document.getElementById('lab-learning-min-btn');
+        document.documentElement.classList.add('lab-no-anim');
+        if (card) card.classList.add('is-minimized');
+        if (btn) {
+            btn.setAttribute('aria-expanded', 'false');
+            btn.setAttribute('aria-label', 'Maximise video card');
+        }
+        requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+                document.documentElement.classList.remove('lab-no-anim');
+            });
+        });
+    })();
+
+    layoutMobileItems();
+    window.addEventListener('load', layoutMobileItems);
     </script>
 </body>
 

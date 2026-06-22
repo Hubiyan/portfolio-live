@@ -6,6 +6,12 @@
     "type": "image"
   },
   {
+    "file": "airpods_wired.png",
+    "name": "airpods_wired.png",
+    "ext": "png",
+    "type": "image"
+  },
+  {
     "file": "hubiyan.jpg",
     "name": "hubiyan.jpg",
     "ext": "jpg",

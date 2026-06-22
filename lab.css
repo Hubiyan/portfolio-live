@@ -138,19 +138,315 @@ body.lab-page .lab-icon-label {
   pointer-events: none;
 }
 
+/* Decorative props (e.g. AirPods) — larger than standard 78px icons */
+body.lab-page .lab-desktop-icon--prop .lab-icon-figure {
+  width: clamp(160px, 24vw, 220px);
+  height: clamp(160px, 24vw, 220px);
+}
+
 /* Box icon — shadow only; size comes from .lab-icon-figure */
-body.lab-page .lab-folder-svg {
+body.lab-page .lab-box-svg {
   display: block;
   width: 100%;
   height: auto;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.38));
 }
 
+body.lab-page .lab-box-emoji {
+  font-size: 96px;
+  pointer-events: none;
+}
+
 /* SVG face fills — driven by CSS vars, fully configurable */
 body.lab-page .lab-folder-front      { fill: var(--folder-front, #c89b6d); }
 body.lab-page .lab-folder-side       { fill: var(--folder-side,  #a97840); }
 body.lab-page .lab-folder-top        { fill: var(--folder-top,   #dab87e); }
-body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
+
+/* ============================================================
+   Learning video card widget
+============================================================ */
+
+body.lab-page .lab-learning-card {
+  position: absolute;
+  z-index: 3;
+  gap: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: min(258px, calc(100vw - 32px));
+  max-width: min(258px, calc(100vw - 32px));
+  padding: 8px 4px 8px 8px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.717);
+  -webkit-backdrop-filter: blur(4px) saturate(1.6);
+  backdrop-filter: blur(18px) saturate(1.6);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: -12px 12px 32px rgba(0, 0, 0, 0.16);
+  font-family: 'Urbanist', system-ui, sans-serif;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  /* Whole card is the drag surface */
+  cursor: grab;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: width 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+              max-width 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+              padding 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body.lab-page .lab-learning-card.is-grabbing,
+body.lab-page .lab-learning-card.is-grabbing * {
+  cursor: grabbing;
+}
+
+/* "Currently learning" chip */
+body.lab-page .lab-learning-card__chip {
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  padding: 0.25rem;
+  background-color: #ffeb3b;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* Minimise / maximise button — top-right corner, no chrome, blue icons */
+body.lab-page .lab-learning-card__min-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #5200ff;
+  cursor: pointer;
+}
+
+body.lab-page .lab-learning-card__min-btn:hover {
+  background: rgba(82, 0, 255, 0.1);
+}
+
+body.lab-page .lab-learning-card__min-btn:focus-visible {
+  outline: 2px solid #5200ff;
+  outline-offset: 2px;
+}
+
+body.lab-page .lab-learning-card__icon {
+  display: block;
+}
+
+/* Maximised → show the "minimise" glyph; minimised → show the "restore" glyph */
+body.lab-page .lab-learning-card__icon--max {
+  display: none;
+}
+
+body.lab-page .lab-learning-card.is-minimized .lab-learning-card__icon--min {
+  display: none;
+}
+
+body.lab-page .lab-learning-card.is-minimized .lab-learning-card__icon--max {
+  display: block;
+}
+
+/* Collapsible body (player + info) — animates on minimise/maximise.
+   grid-template-rows 1fr→0fr animates to the natural content height. */
+body.lab-page .lab-learning-card__body {
+  display: grid;
+  grid-template-rows: 1fr;
+  width: 100%;
+  opacity: 1;
+  transition: grid-template-rows 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.24s ease;
+}
+
+body.lab-page .lab-learning-card__body-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Minimised keeps the same width as maximised — only the body collapses */
+body.lab-page .lab-learning-card.is-minimized {
+  gap: 0;
+}
+
+body.lab-page .lab-learning-card.is-minimized .lab-learning-card__body {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+
+/* Suppress the open/close animation during initial page layout */
+.lab-no-anim body.lab-page .lab-learning-card,
+.lab-no-anim body.lab-page .lab-learning-card__body {
+  transition: none !important;
+}
+
+body.lab-page .lab-learning-card__marquee {
+  position: relative;
+  width: 120px;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+body.lab-page .lab-learning-card__marquee-track {
+  position: relative;
+  display: flex;
+  width: fit-content;
+  animation: lab-learning-marquee 14s linear infinite;
+}
+
+body.lab-page .lab-learning-card__marquee-text {
+  flex-shrink: 0;
+  padding-right: 1.5rem;
+  font-family: 'Urbanist', system-ui, sans-serif;
+  font-size: clamp(13px, 3.2vw, 14px);
+  font-weight: 900;
+  line-height: 1.29;
+  color: #5200ff;
+  -webkit-text-stroke: 1px #ffffff;
+  paint-order: stroke fill;
+  white-space: nowrap;
+}
+
+body.lab-page .lab-learning-card__marquee-text[aria-hidden="true"] {
+  position: absolute;
+  left: 100%;
+  top: 0;
+}
+
+@keyframes lab-learning-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100% - 1.5rem));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.lab-page .lab-learning-card__marquee-track {
+    animation: none;
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  body.lab-page .lab-learning-card__marquee-text[aria-hidden="true"] {
+    display: none;
+  }
+
+  body.lab-page .lab-learning-card,
+  body.lab-page .lab-learning-card__body {
+    transition: none;
+  }
+}
+
+body.lab-page .lab-learning-card__player {
+  position: relative;
+  display: flex;
+  width: 100%;
+  aspect-ratio: 246 / 138;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #3e3e3e;
+  flex-shrink: 0;
+}
+
+body.lab-page .lab-learning-card__thumb-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #3e3e3e;
+  cursor: pointer;
+}
+
+body.lab-page .lab-learning-card__thumb-btn:focus-visible {
+  outline: 2px solid rgba(255, 0, 0, 0.85);
+  outline-offset: 2px;
+}
+
+body.lab-page .lab-learning-card__thumb {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+body.lab-page .lab-learning-card__play {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(44px, 18vw, 68px);
+  height: auto;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.35));
+  pointer-events: none;
+}
+
+body.lab-page .lab-learning-card__play svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+body.lab-page .lab-learning-card__player iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+body.lab-page .lab-learning-card__player.is-playing iframe {
+  position: absolute;
+  inset: 0;
+}
+
+body.lab-page .lab-learning-card__info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+  gap: 4px;
+}
+
+body.lab-page .lab-learning-card__title {
+  margin: 0;
+  font-size: clamp(11px, 2.8vw, 12px);
+  font-weight: 700;
+  line-height: 1.33;
+  color: #000;
+}
+
+body.lab-page .lab-learning-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: clamp(9px, 2.4vw, 10px);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(black-500);
+}
 
 /* ============================================================
    macOS Window system
@@ -208,6 +504,8 @@ body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
   flex-direction: column;
   border-radius: 10px;
   overflow: hidden;
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
   box-shadow:
     0 0 0 0.5px rgba(0, 0, 0, 0.65),
     0 2px 6px rgba(0, 0, 0, 0.28),
@@ -262,8 +560,6 @@ body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
   height: 44px;
   min-height: 44px;
   background: rgba(24, 24, 26, 0.78);
-  backdrop-filter: blur(28px) saturate(180%);
-  -webkit-backdrop-filter: blur(28px) saturate(180%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   display: flex;
   align-items: center;
@@ -415,8 +711,8 @@ body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
 
 .mac-window--finder .mac-window-body {
   background: rgba(22, 22, 24, 0.92);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   overflow-y: auto;
   overflow-x: hidden;
   padding: 20px;
@@ -489,7 +785,9 @@ body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
 }
 
 .mac-window--preview .mac-window-body {
-  background: rgb(20, 20, 22);
+  background: rgba(20, 20, 22, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   overflow: hidden;
   position: relative; /* img uses absolute positioning inside */
 }
@@ -524,8 +822,8 @@ body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
   height: 48px;
   min-height: 48px;
   background: rgba(24, 24, 26, 0.78);
-  backdrop-filter: blur(28px) saturate(180%);
-  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
   border-top: 1px solid rgba(255, 255, 255, 0.07);
   display: flex;
   align-items: center;
@@ -720,5 +1018,32 @@ body.lab-page .lab-folder-tape       { fill: var(--folder-tape,  #b5874e); }
     bottom: var(--spacing-16);
     right: var(--spacing-16);
     gap: 8px;
+  }
+
+  /* ── Learning video card — proportionally smaller on mobile ── */
+  body.lab-page .lab-learning-card {
+    width: min(190px, calc(100vw - 32px));
+    max-width: min(190px, calc(100vw - 32px));
+  }
+
+  body.lab-page .lab-learning-card__marquee-text {
+    font-size: 11px;
+  }
+
+  body.lab-page .lab-learning-card__title {
+    font-size: 10px;
+  }
+
+  body.lab-page .lab-learning-card__meta {
+    font-size: 8px;
+  }
+
+  body.lab-page .lab-box-emoji {
+    font-size: 80px;
+  }
+
+  body.lab-page .lab-desktop-icon--prop .lab-icon-figure {
+    width: clamp(130px, 38vw, 170px);
+    height: clamp(130px, 38vw, 170px);
   }
 }
