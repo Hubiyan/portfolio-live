@@ -1046,4 +1046,201 @@ body.lab-page .lab-learning-card__meta {
     width: clamp(130px, 38vw, 170px);
     height: clamp(130px, 38vw, 170px);
   }
+
+  /* ── Top lamp effect — mobile ── */
+  body.lab-page .lab-lamp {
+    --lab-lamp-w: clamp(220px, 72vw, 340px);
+    --lab-lamp-h: clamp(170px, 56vw, 270px);
+  }
+
+  body.lab-page .lab-lamp__glow--big,
+  body.lab-page .lab-lamp__glow--small {
+    filter: blur(clamp(24px, 8vw, 36px));
+  }
+
+  body.lab-page .lab-power-btn {
+    --pb-size: 40px;
+  }
+}
+
+/* ============================================================
+   Top lamp effect (Aceternty-inspired)
+   ============================================================ */
+
+body.lab-page .lab-lamp {
+  --lab-lamp-w: 100vw;
+  --lab-lamp-80w: 80vw;
+  --lab-lamp-h: clamp(220px, 42vw, 400px);
+  --lab-lamp-line: #ffd900;
+  --lab-lamp-glow: #fae58a;
+  --lab-lamp-glow-bright: #ffe600;
+  /* --- tweakable knobs --- */
+  --lab-lamp-blend: plus-lighter;      /* how the light mixes with the mat: screen | plus-lighter | overlay | soft-light | normal */
+  --lab-lamp-vspread: 90%;       /* vertical spread of the big glow (its height) */
+  --lab-lamp-vspread-small: 70%; /* vertical spread of the inner/bright glow */
+  --lab-lamp-lift: -40px;        /* push the glow up (more negative) or down (toward 0) */
+  position: absolute;
+  top: -25%;
+  left: 50%;
+  z-index: 1;
+  width: 100vw;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* Light color follows the mat theme: yellow on green/black, white on blue */
+body.lab-page[data-mat-color="green"] .lab-lamp,
+body.lab-page[data-mat-color="black"] .lab-lamp {
+  --lab-lamp-line: #ffd24a;
+  --lab-lamp-glow: #ffb800;
+  --lab-lamp-glow-bright: #ffeeba;
+}
+
+body.lab-page[data-mat-color="blue"] .lab-lamp {
+  --lab-lamp-line: #ffffff;
+  --lab-lamp-glow: #dCe8ff;
+  --lab-lamp-glow-bright: #ffffff;
+}
+
+body.lab-page .lab-lamp__stage {
+  position: relative;
+  width: var(--lab-lamp-w);
+  height: var(--lab-lamp-h);
+  display: flex;
+  justify-content: center;
+}
+
+body.lab-page .lab-lamp__line {
+  position: absolute;
+  top: 0;
+  height: 3px;
+  width: 90%;
+  background: var(--lab-lamp-line);
+  box-shadow: 0 0 8px 1px var(--lab-lamp-line);
+  animation: lab-lamp-line-grow 1s ease-out forwards;
+}
+
+/* Off state — toggled by the top-left power switch */
+body.lab-page .lab-lamp__line,
+body.lab-page .lab-lamp__glow {
+  transition: opacity 0.35s ease;
+}
+
+body.lab-page .lab-lamp.is-off .lab-lamp__line,
+body.lab-page .lab-lamp.is-off .lab-lamp__glow {
+  opacity: 0 !important;
+}
+
+body.lab-page .lab-lamp__glow {
+  width: 120%;
+  height: var(--lab-lamp-vspread);
+  background: var(--lab-lamp-glow);
+  border-radius: 100px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, var(--lab-lamp-lift));
+  filter: blur(500px);
+  opacity: 0.55;
+  mix-blend-mode: var(--lab-lamp-blend);
+}
+
+body.lab-page .lab-lamp__glow--small {
+  background: var(--lab-lamp-glow-bright);
+  height: var(--lab-lamp-vspread-small);
+  width: 85%;
+  filter: blur(134px);
+  opacity: 0.7;
+  mix-blend-mode: var(--lab-lamp-blend);
+  animation: lab-lamp-glow-grow 1s ease-out forwards;
+}
+
+@keyframes lab-lamp-line-grow {
+  0% { width: 30%; }
+  100% { width: 90%; }
+}
+
+@keyframes lab-lamp-glow-grow {
+  0% { width: 30%; opacity: 0; }
+  100% { width: 85%; opacity: 0.7; }
+}
+
+/* ============================================================
+   Lamp power switch — red push button (top-left)
+   ============================================================ */
+
+body.lab-page .lab-power-btn {
+  --pb-size: 46px;
+  position: absolute;
+  z-index: 5;
+  width: var(--pb-size);
+  height: var(--pb-size);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  background-image: linear-gradient(45deg, #ffffff 0%, #1b2845 74%);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+body.lab-page .lab-power-btn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.85);
+  outline-offset: 4px;
+}
+
+body.lab-page .lab-power-btn__core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 85%;
+  height: 85%;
+  border-radius: 50%;
+  background-image: linear-gradient(90deg, #ff2b2b, #b00000);
+  filter:
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.8))
+    drop-shadow(0 -2px 2px #ffadad)
+    drop-shadow(0 0 4px #655555);
+  transition: filter 0.25s ease, background-image 0.25s ease;
+  display: grid;
+  place-items: center;
+}
+
+body.lab-page .lab-power-btn__inner {
+  width: 92%;
+  height: 92%;
+  border-radius: 50%;
+  background-image: linear-gradient(45deg, #ff2b2b, #b00000);
+  transition: width 0.25s ease, height 0.25s ease,
+              background-image 0.25s ease, box-shadow 0.25s ease;
+}
+
+body.lab-page .lab-power-btn:hover .lab-power-btn__core {
+  filter: drop-shadow(0 0 6px #ff2b2b);
+}
+
+body.lab-page .lab-power-btn:hover .lab-power-btn__inner {
+  width: 96%;
+  height: 96%;
+}
+
+/* ON state — light is on: darker red, pressed-in, warm active glow */
+body.lab-page .lab-power-btn.is-on .lab-power-btn__core {
+  background-image: linear-gradient(90deg, #7a0000, #240000);
+  filter: drop-shadow(0 0 7px rgba(255, 184, 0, 0.85));
+}
+
+body.lab-page .lab-power-btn.is-on .lab-power-btn__inner {
+  width: 86%;
+  height: 86%;
+  background-image: linear-gradient(45deg, #7a0000, #240000);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.65);
+}
+
+body.lab-page .lab-power-btn.is-on:hover .lab-power-btn__inner {
+  width: 90%;
+  height: 90%;
 }

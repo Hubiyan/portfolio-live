@@ -1,0 +1,439 @@
+/* Casio F-91W — scoped to lab page (adapted from Manz.dev) */
+
+@font-face {
+  font-family: "DSEG7 Classic";
+  src:
+    url(https://manzdev.github.io/twitch-casio/dseg7-bold.woff2) format("woff2"),
+    url(https://manzdev.github.io/twitch-casio/dseg7-bold.woff) format("woff");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DSEG14 Classic";
+  src:
+    url(https://manzdev.github.io/twitch-casio/dseg14-bold.woff2) format("woff2"),
+    url(https://manzdev.github.io/twitch-casio/dseg14-bold.woff) format("woff");
+  font-display: swap;
+}
+
+body.lab-page .lab-casio {
+  --casio-scale: 0.36;
+  --casio-native-w: 352px;
+  --casio-native-h: 570px;
+  --model-color: #333;
+  --band-color: #3475b1;
+  --white-color: #d3d2d4;
+  --yellow-color: #cca25d;
+  --lcd-background-color: #dededc;
+  --lcd-color: #181921;
+  --red-color: #7d3925;
+  --led-color: #f09020;
+  --lcd-font: "DSEG7 Classic", monospace;
+  --shine-gradient: linear-gradient(40deg, #fff0 15%, #fff2 30%, #fff6 50%, #fff2 70%, #fff0 85%);
+  --casio-border-radius: 11% / 25%;
+  --casio-shape: polygon(0 20%, 10% 0, 90% 0, 100% 20%, 100% 80%, 90% 100%, 10% 100%, 0 80%);
+  --button-notch-shape: polygon(100% 0, 100% 100%, 0 90%, 0 10%);
+
+  position: absolute;
+  z-index: 3;
+  width: calc(var(--casio-native-w) * var(--casio-scale));
+  height: calc(var(--casio-native-h) * var(--casio-scale));
+  overflow: visible;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body.lab-page .lab-casio.is-grabbing,
+body.lab-page .lab-casio.is-grabbing * {
+  cursor: grabbing;
+}
+
+body.lab-page .lab-casio__stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--casio-native-w);
+  height: var(--casio-native-h);
+  transform: translate(-50%, -50%) scale(var(--casio-scale)) rotate(20deg);
+  transform-origin: center center;
+}
+
+body.lab-page .lab-casio .casio-f91w {
+  --width: 320px;
+  --height: 270px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: Michroma, sans-serif;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+body.lab-page .lab-casio .casio-f91w .text-white { color: var(--white-color); }
+body.lab-page .lab-casio .casio-f91w .text-yellow { color: var(--yellow-color); }
+body.lab-page .lab-casio .casio-f91w .text-red { color: var(--red-color); }
+
+body.lab-page .lab-casio .casio-f91w .font-cursive {
+  font-family: sans-serif;
+  font-style: italic;
+  font-weight: bolder;
+  font-size: 15px;
+  letter-spacing: 1px;
+  transform: scale(1, 0.8);
+}
+
+body.lab-page .lab-casio .casio-f91w .font-small {
+  font-size: 6px;
+  letter-spacing: 1px;
+}
+
+body.lab-page .lab-casio .casio-f91w .font-medium {
+  font-size: 11px;
+}
+
+body.lab-page .lab-casio .casio-f91w span.arrow {
+  display: inline-block;
+  color: var(--red-color);
+  transform: scale(2, 0.75) translateX(var(--x));
+}
+
+body.lab-page .lab-casio .casio-f91w span.arrow.left { --x: -1px; }
+body.lab-page .lab-casio .casio-f91w span.arrow.right { --x: 1px; }
+body.lab-page .lab-casio .casio-f91w .mini {
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* Bracelets */
+body.lab-page .lab-casio .casio-f91w .bracelet {
+  width: 73%;
+  height: 150px;
+  background: #333;
+  clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
+}
+
+body.lab-page .lab-casio .casio-f91w .bracelet.top {
+  transform: scaleY(-1);
+  background: #555;
+}
+
+body.lab-page .lab-casio .casio-f91w .bracelet .band.first {
+  height: 45px;
+  box-shadow: 0 3px 8px 3px #111;
+}
+
+body.lab-page .lab-casio .casio-f91w .bracelet .band.second {
+  height: 10px;
+  background: linear-gradient(#111, transparent, #444);
+  transform: translateY(45px);
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+body.lab-page .lab-casio .casio-f91w .bracelet .band.second::after {
+  content: "";
+  display: block;
+  background: linear-gradient(#111 10%, #222 23%, #333 50%, #444 75%, #555 95%);
+  width: 50%;
+  height: 20px;
+  position: absolute;
+  transform: translateY(-5px);
+  border-radius: 25px;
+}
+
+body.lab-page .lab-casio .casio-f91w .bracelet.top .band.first {
+  box-shadow: 0 3px 3px 3px #666;
+  background: #444;
+}
+
+body.lab-page .lab-casio .casio-f91w .bracelet.top .band.second {
+  background: linear-gradient(#444 0 30%, #111 75% 100%);
+}
+
+body.lab-page .lab-casio .casio-f91w .bracelet.top .band.second::after {
+  background-color: #444;
+  transform: scaleY(0.8) translateY(-6px);
+  background-image: linear-gradient(#444 0 30%, #333 60%, #111 75% 100%);
+}
+
+/* Core + buttons */
+body.lab-page .lab-casio .casio-f91w .core-watch-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(var(--width) * 1.1);
+}
+
+body.lab-page .lab-casio .casio-f91w .buttons-container {
+  position: relative;
+  z-index: 10;
+}
+
+body.lab-page .lab-casio .casio-f91w .button-notch {
+  width: 8px;
+  height: 60px;
+  background: #262626;
+  clip-path: var(--button-notch-shape);
+}
+
+body.lab-page .lab-casio .casio-f91w .button-notch + .button {
+  width: 18px;
+  height: 20px;
+  border: 1px solid #989f7c;
+  border-radius: 2px;
+  position: absolute;
+  z-index: -1;
+  background: linear-gradient(to bottom, #fbfbfa 30%, #4f4a42 60%, #aea084);
+  pointer-events: all;
+  cursor: pointer;
+}
+
+body.lab-page .lab-casio .casio-f91w .button-notch.right + .button {
+  transform: translate(0, -40px);
+}
+
+body.lab-page .lab-casio .casio-f91w .button-notch.left + .button {
+  transform: translate(-12px, -40px);
+}
+
+body.lab-page .lab-casio .casio-f91w .button-notch.left {
+  transform: translateX(1px);
+}
+
+body.lab-page .lab-casio .casio-f91w .button-notch.right {
+  transform: translateX(-1px) scaleX(-1);
+}
+
+body.lab-page .lab-casio .casio-f91w .space {
+  height: 15px;
+}
+
+body.lab-page .lab-casio .casio-f91w .core-watch {
+  width: var(--width);
+  height: var(--height);
+  background-color: var(--model-color);
+  clip-path: var(--casio-shape);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow:
+    0 -2px 0 0 #555 inset,
+    0 -3px 0 1px #222 inset,
+    0 2px 0 0 #222 inset,
+    0 3px 0 1px #555 inset;
+}
+
+body.lab-page .lab-casio .casio-f91w .crystal-screen {
+  width: calc(var(--width) * 0.85);
+  height: calc(var(--height) * 0.85);
+  background: #111;
+  border-radius: var(--casio-border-radius);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 0 2px 2px #444,
+    0 0 0 5px #222,
+    0 0 7px 7px #111;
+}
+
+body.lab-page .lab-casio .casio-f91w .crystal-screen::after {
+  content: "";
+  display: block;
+  background: var(--shine-gradient);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  pointer-events: none;
+}
+
+body.lab-page .lab-casio .casio-f91w .color-border {
+  width: calc(var(--width) * 0.8);
+  height: calc(var(--height) * 0.8);
+  border-radius: var(--casio-border-radius);
+  box-shadow:
+    0 0 0 4px var(--band-color) inset,
+    0 0 0 8px #000 inset,
+    0 0 0 10px #eee inset;
+}
+
+body.lab-page .lab-casio .casio-f91w .lcd-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+body.lab-page .lab-casio .casio-f91w .lcd-screen .top {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: calc(var(--width) * 0.7);
+  border-bottom: 2px solid var(--band-color);
+  padding-bottom: 4px;
+}
+
+body.lab-page .lab-casio .casio-f91w .lcd-screen .center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(var(--width) * 0.65);
+}
+
+body.lab-page .lab-casio .casio-f91w .inner-top {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 4px;
+  width: 90%;
+}
+
+body.lab-page .lab-casio .casio-f91w .inner-center {
+  font-family: var(--lcd-font);
+  font-size: 34px;
+  line-height: 1;
+  width: calc(var(--width) * 0.6);
+  height: 78px;
+  background: var(--lcd-background-color);
+  color: var(--lcd-color);
+  border-radius: 10px;
+  box-shadow:
+    0 0 0 4px #000,
+    0 0 0 5px var(--white-color);
+  margin: 10px 0;
+  padding: 6px 8px 4px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr) minmax(0, 0.9fr);
+  grid-template-rows: 18px minmax(0, 1fr);
+  column-gap: 6px;
+  row-gap: 2px;
+  align-items: end;
+  transition: background-image 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+
+body.lab-page .lab-casio .casio-f91w .inner-center.is-lit {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, transparent 14%),
+    var(--led-color);
+}
+
+body.lab-page .lab-casio .casio-f91w .lcd-top,
+body.lab-page .lab-casio .casio-f91w .lcd-bottom {
+  display: contents;
+}
+
+body.lab-page .lab-casio .casio-f91w .timemode {
+  grid-column: 1;
+  grid-row: 1;
+  font-family: sans-serif;
+  font-size: 9px;
+  line-height: 1;
+  align-self: end;
+  transform: translateX(6px);
+}
+
+body.lab-page .lab-casio .casio-f91w .weekday {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  font-family: "DSEG14 Classic", monospace;
+  font-size: 14px;
+}
+
+body.lab-page .lab-casio .casio-f91w .day {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: start;
+  font-family: var(--lcd-font);
+  font-size: 14px;
+  transform: none;
+}
+
+body.lab-page .lab-casio .casio-f91w .lcd-bottom .time {
+  grid-column: 1 / 3;
+  grid-row: 2;
+  display: flex;
+  align-items: baseline;
+  justify-self: start;
+  font-size: 36px;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+body.lab-page .lab-casio .casio-f91w .lcd-bottom .time .sep {
+  margin: 0 1px;
+}
+
+body.lab-page .lab-casio .casio-f91w .lcd-bottom .seconds {
+  grid-column: 3;
+  grid-row: 2;
+  justify-self: end;
+  align-self: end;
+  font-size: 16px;
+  padding-bottom: 2px;
+}
+
+body.lab-page .lab-casio .casio-f91w .inner-bottom {
+  display: flex;
+  justify-content: space-evenly;
+  width: calc(var(--width) * 0.8);
+}
+
+body.lab-page .lab-casio .casio-f91w .lcd-screen .bottom {
+  display: flex;
+  justify-content: space-around;
+  width: calc(var(--width) * 0.7);
+}
+
+body.lab-page .lab-casio .casio-f91w .water,
+body.lab-page .lab-casio .casio-f91w .resist {
+  align-self: flex-end;
+}
+
+body.lab-page .lab-casio .casio-f91w .water::before,
+body.lab-page .lab-casio .casio-f91w .resist::before {
+  content: "";
+  display: block;
+  border-top: 2px solid var(--band-color);
+  width: 130%;
+  transform: translate(-8px, 0);
+}
+
+body.lab-page .lab-casio .casio-f91w .resist::before {
+  transform: translate(-10px, 0);
+}
+
+body.lab-page .lab-casio .casio-f91w .wr-box {
+  letter-spacing: -3px;
+  border: 2px solid var(--band-color);
+  padding: 0 16px 0 10px;
+  border-radius: 5px 5px 20px 20px / 5px 5px 30px 30px;
+  transform: translate(0, 8px);
+}
+
+body.lab-page .lab-casio .casio-f91w .wr-box > span {
+  display: inline-block;
+  transform: translate(0, -2px);
+}
+
+body.lab-page .lab-casio .casio-f91w .wr-box .r {
+  font-style: italic;
+}
+
+@media (max-width: 520px) {
+  body.lab-page .lab-casio {
+    --casio-scale: 0.28;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.lab-page .lab-casio .casio-f91w .inner-center {
+    transition: none;
+  }
+}

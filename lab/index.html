@@ -13,6 +13,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Michroma&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../lab-casio.css">
 </head>
 
 <body class="ds-subpage lab-page" data-mat-color="green">
@@ -20,11 +22,29 @@
     <!-- ── Desktop canvas ──────────────────────────────────── -->
     <main id="lab-main" class="lab-main" aria-label="Lab desktop">
 
+        <!-- ── Top lamp effect ─────────────────────────────── -->
+        <div class="lab-lamp is-off" aria-hidden="true">
+            <div class="lab-lamp__stage">
+                <div class="lab-lamp__glow lab-lamp__glow--big"></div>
+                <div class="lab-lamp__glow lab-lamp__glow--small"></div>
+                <div class="lab-lamp__line"></div>
+            </div>
+        </div>
+
+        <!-- ── Lamp power switch (top-left) ─────────────────── -->
+        <button type="button" class="lab-power-btn" id="lab-power-btn"
+                aria-label="Toggle lamp light" aria-pressed="false"
+                style="left:24px;top:24px">
+            <span class="lab-power-btn__core">
+                <span class="lab-power-btn__inner"></span>
+            </span>
+        </button>
+
         <!-- ── Icon: Prompts ─────────────────────────────── -->
         <div class="lab-desktop-icon"
              data-icon-id="prompts"
              data-window="win-prompts"
-             style="left:8%;top:22%;
+             style="left:15%;top:51%;
                     --folder-front:#3a6ecf;
                     --folder-side: #2450a8;
                     --folder-top:  #5a8ee8;
@@ -49,7 +69,7 @@
         <div class="lab-desktop-icon"
              data-icon-id="ai-bro"
              data-window="win-ai-bro"
-             style="left:52%;top:18%;
+             style="left:37%;top:8%;
                     --folder-front:#c94040;
                     --folder-side: #9e2929;
                     --folder-top:  #e06060;
@@ -74,7 +94,7 @@
         <div class="lab-desktop-icon"
              data-icon-id="comment-bro"
              data-window="win-comment-bro"
-             style="left:72%;top:48%;
+             style="left:25%;top:66%;
                     --folder-front:#c9a020;
                     --folder-side: #9a7a10;
                     --folder-top:  #e8c040;
@@ -99,7 +119,7 @@
         <div class="lab-desktop-icon"
              data-icon-id="visual-exp"
              data-window="win-visual"
-             style="left:30%;top:52%"
+             style="left:69%;top:29%"
              tabindex="0" role="button"
              aria-label="Visual Explorations — open folder">
             <div class="lab-icon-figure">
@@ -116,8 +136,7 @@
         <div class="lab-desktop-icon lab-desktop-icon--prop"
              id="lab-airpods"
              data-icon-id="airpods-wired"
-             data-pin-load="top-left"
-             style="left:24px;top:24px"
+             style="left:16%;top:15%"
              tabindex="0"
              aria-label="AirPods">
             <div class="lab-icon-figure">
@@ -133,7 +152,7 @@
         <div class="lab-learning-card" id="lab-learning-card"
              data-widget-id="learning-video" role="region"
              aria-label="Currently learning video"
-             style="right:24px;top:24px">
+             style="left:35%;top:31%">
             <button type="button" class="lab-learning-card__min-btn" id="lab-learning-min-btn"
                     aria-label="Minimise video card" aria-expanded="true">
                 <svg class="lab-learning-card__icon lab-learning-card__icon--min" viewBox="0 0 12 12"
@@ -178,6 +197,82 @@
                     <p class="lab-learning-card__meta" id="lab-learning-meta"></p>
                 </div>
               </div>
+            </div>
+        </div>
+
+        <!-- ── Casio F-91W watch ────────────────────────────── -->
+        <div class="lab-casio" id="lab-casio"
+             data-widget-id="casio-watch" role="img"
+             aria-label="Casio F-91W watch"
+             style="left:55%;top:56%">
+            <div class="lab-casio__stage">
+                <div class="casio-f91w">
+                    <div class="top bracelet">
+                        <div class="first band"></div>
+                        <div class="second band"></div>
+                    </div>
+                    <div class="core-watch-container">
+                        <div class="buttons-container">
+                            <div class="left top button-notch"></div>
+                            <div class="button" id="lab-casio-light-btn" aria-label="Light"></div>
+                            <div class="space"></div>
+                            <div class="left bottom button-notch"></div>
+                            <div class="button" id="lab-casio-mode-btn" aria-label="Mode"></div>
+                        </div>
+                        <div class="core-watch">
+                            <div class="crystal-screen">
+                                <div class="color-border">
+                                    <div class="lcd-screen">
+                                        <div class="top">
+                                            <div class="brand text-white">CASIO</div>
+                                            <div class="model text-yellow font-cursive">F-91W</div>
+                                        </div>
+                                        <div class="center">
+                                            <div class="inner-top">
+                                                <div class="action text-white font-small"><span class="left arrow">◀</span> LIGHT</div>
+                                                <div class="chronograph text-yellow font-small">ALARM CHRONOGRAPH</div>
+                                            </div>
+                                            <div class="inner-center" id="lab-casio-lcd">
+                                                <div class="lcd-top">
+                                                    <span class="timemode">24H</span>
+                                                    <span class="weekday mini">--</span>
+                                                    <span class="day mini">--</span>
+                                                </div>
+                                                <div class="lcd-bottom">
+                                                    <span class="time">
+                                                        <span class="hours">--</span>
+                                                        <span class="sep">:</span>
+                                                        <span class="minutes">--</span>
+                                                    </span>
+                                                    <span class="seconds mini">--</span>
+                                                </div>
+                                            </div>
+                                            <div class="inner-bottom">
+                                                <div class="mode text-white font-small"><span class="left arrow">◀</span> MODE</div>
+                                                <div class="alarm text-white font-small">ALARM ON-OFF/24HR <span class="right arrow">▶</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="bottom">
+                                            <div class="water text-white font-medium">WATER</div>
+                                            <div class="wr-box text-red"><span>W<span class="r">R</span></span></div>
+                                            <div class="resist text-white font-medium">RESIST</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="buttons-container">
+                            <div class="right top button-notch"></div>
+                            <div class="space"></div>
+                            <div class="right bottom button-notch"></div>
+                            <div class="button" aria-hidden="true"></div>
+                        </div>
+                    </div>
+                    <div class="bottom bracelet">
+                        <div class="first band"></div>
+                        <div class="second band"></div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -902,9 +997,21 @@
             icon.tabIndex = 0;
             icon.setAttribute('role', 'button');
             icon.setAttribute('aria-label', entry.name);
-            /* Default grid position — LabIcons.setup() overrides with any saved position */
-            icon.style.left = COLS[i % COLS.length] + '%';
-            icon.style.top  = (ROW_START + Math.floor(i / COLS.length) * ROW_STEP) + '%';
+            /* Curated default positions per file — LabIcons.setup() overrides with any saved position */
+            var DEFAULT_POS = {
+                'App icon03.jpg':         { left: 59, top: 17 },
+                'hubiyan.jpg':            { left: 68, top: 60 },
+                'shawarma-and-karak.jpg': { left: 40, top: 65 },
+                'airpods_wired.png':      { left: 46, top: 84 }
+            };
+            var dp = DEFAULT_POS[entry.file];
+            if (dp) {
+                icon.style.left = dp.left + '%';
+                icon.style.top  = dp.top + '%';
+            } else {
+                icon.style.left = COLS[i % COLS.length] + '%';
+                icon.style.top  = (ROW_START + Math.floor(i / COLS.length) * ROW_STEP) + '%';
+            }
 
             /* Thumbnail */
             var figure = document.createElement('div');
@@ -1001,6 +1108,73 @@
         }
     })();
 
+    /* ── Casio F-91W watch ──────────────────────────────────── */
+    (function initCasioWatch() {
+        var root = document.getElementById('lab-casio');
+        if (!root) return;
+
+        var lcd = document.getElementById('lab-casio-lcd');
+        var lightBtn = document.getElementById('lab-casio-light-btn');
+        var modeBtn = document.getElementById('lab-casio-mode-btn');
+        var dayEl = root.querySelector('.day');
+        var weekdayEl = root.querySelector('.weekday');
+        var hoursEl = root.querySelector('.hours');
+        var minutesEl = root.querySelector('.minutes');
+        var secondsEl = root.querySelector('.seconds');
+        var WEEKDAY = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'];
+
+        function updateClock() {
+            var date = new Date();
+            if (dayEl) dayEl.textContent = date.getDate();
+            if (weekdayEl) weekdayEl.textContent = WEEKDAY[date.getDay()];
+            if (hoursEl) hoursEl.textContent = String(date.getHours()).padStart(2, '0');
+            if (minutesEl) minutesEl.textContent = String(date.getMinutes()).padStart(2, '0');
+            if (secondsEl) secondsEl.textContent = String(date.getSeconds()).padStart(2, '0');
+        }
+
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        if (lightBtn && lcd) {
+            function lightOn() { lcd.classList.add('is-lit'); }
+            function lightOff() { lcd.classList.remove('is-lit'); }
+            lightBtn.addEventListener('mousedown', lightOn);
+            lightBtn.addEventListener('mouseup', lightOff);
+            lightBtn.addEventListener('mouseleave', lightOff);
+            lightBtn.addEventListener('touchstart', function (e) {
+                e.preventDefault();
+                lightOn();
+            }, { passive: false });
+            lightBtn.addEventListener('touchend', lightOff);
+            lightBtn.addEventListener('touchcancel', lightOff);
+        }
+
+        if (modeBtn) {
+            modeBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.open('https://codepen.io/manz/pen/KKWmWLb', '_blank', 'noopener,noreferrer');
+            });
+        }
+    })();
+
+    /* ── Lamp power switch ──────────────────────────────────── */
+    (function initLampSwitch() {
+        var btn  = document.getElementById('lab-power-btn');
+        var lamp = document.querySelector('.lab-lamp');
+        if (!btn || !lamp) return;
+
+        function setOn(on) {
+            lamp.classList.toggle('is-off', !on);
+            btn.classList.toggle('is-on', on);
+            btn.setAttribute('aria-pressed', String(on));
+        }
+
+        btn.addEventListener('click', function () {
+            setOn(!btn.classList.contains('is-on'));
+        });
+    })();
+
     /* ── Desktop widget drag system ─────────────────────────── */
     var LabWidgets = (function () {
         var STORE = 'lab-widget-pos';
@@ -1093,9 +1267,10 @@
                 }
             }
 
-            /* Drag from anywhere on the card */
+            /* Drag from anywhere on the widget — except Casio buttons */
             widget.addEventListener('pointerdown', function (e) {
                 if (e.button !== 0) return;
+                if (e.target.closest('.casio-f91w .button')) return;
                 dragging = true;
                 moved    = false;
                 widget.dataset.dragged = '';
@@ -1132,18 +1307,30 @@
        Positions are memoised per id so repeat calls don't reshuffle.   */
     var mobilePos = {};
 
+    function pinPowerTopLeft() {
+        var power = document.getElementById('lab-power-btn');
+        if (!power) return;
+        var pad = window.matchMedia('(max-width: 520px)').matches ? 16 : 24;
+        power.style.left = pad + 'px';
+        power.style.top  = pad + 'px';
+        return power;
+    }
+
     function pinAirpodsTopLeft(el) {
         var airpods = el || document.getElementById('lab-airpods');
         if (!airpods) return;
-        var pad = window.matchMedia('(max-width: 520px)').matches ? 16 : 24;
-        airpods.style.left = pad + 'px';
+        var mobile = window.matchMedia('(max-width: 520px)').matches;
+        var pad = mobile ? 16 : 24;
+        var power = document.getElementById('lab-power-btn');
+        var offset = power ? power.offsetWidth + (mobile ? 12 : 20) : 0;
+        airpods.style.left = (pad + offset) + 'px';
         airpods.style.top  = pad + 'px';
         return airpods;
     }
 
     function layoutMobileItems() {
         if (!window.matchMedia('(max-width: 520px)').matches) {
-            pinAirpodsTopLeft();
+            pinPowerTopLeft();
             return;
         }
         var main = document.getElementById('lab-main');
@@ -1153,9 +1340,22 @@
         var pad = 16;
         var y   = pad;
 
-        var airpods = pinAirpodsTopLeft();
-        if (airpods) {
-            y = Math.max(y, airpods.offsetTop + airpods.offsetHeight + 24);
+        var power = pinPowerTopLeft();
+        if (power) {
+            y = Math.max(y, power.offsetTop + power.offsetHeight + 24);
+        }
+
+        var casio = document.getElementById('lab-casio');
+        if (casio) {
+            var casioW = casio.offsetWidth;
+            var casioMaxL = Math.max(pad, vw - casioW - pad);
+            if (!mobilePos['casio-watch']) {
+                mobilePos['casio-watch'] = { leftRatio: 0.15, gap: 20 };
+            }
+            var cp = mobilePos['casio-watch'];
+            casio.style.left = (pad + cp.leftRatio * (casioMaxL - pad)) + 'px';
+            casio.style.top  = y + 'px';
+            y = Math.max(y, casio.offsetTop + casio.offsetHeight + cp.gap);
         }
 
         var card = document.getElementById('lab-learning-card');
@@ -1169,16 +1369,18 @@
         var icons = Array.prototype.slice.call(
             document.querySelectorAll('.lab-desktop-icon')
         );
+        /* Deterministic zig-zag scatter — keeps a desktop-like feel while
+           guaranteeing no overlap in a single vertical run on phones. */
+        var LEFT_RATIOS = [0.5, 0.08, 0.82, 0.32, 0.66, 0.16, 0.9];
         icons.forEach(function (icon, i) {
-            if (icon.dataset.pinLoad === 'top-left') return;
             var key     = icon.dataset.iconId || ('static-' + i);
             var w       = icon.offsetWidth;
             var h       = icon.offsetHeight;
             var maxLeft = Math.max(pad, vw - w - pad);
             if (!mobilePos[key]) {
                 mobilePos[key] = {
-                    leftRatio: Math.random(),
-                    gap:       16 + Math.random() * 26
+                    leftRatio: LEFT_RATIOS[i % LEFT_RATIOS.length],
+                    gap:       22
                 };
             }
             var p = mobilePos[key];
@@ -1190,24 +1392,7 @@
         main.style.minHeight = Math.max(window.innerHeight, y + 40) + 'px';
     }
 
-    /* On mobile the card starts minimised. Suppress the open/close
-       animation for this initial state change, then enable it.        */
-    (function initLearningCardState() {
-        if (!window.matchMedia('(max-width: 520px)').matches) return;
-        var card = document.getElementById('lab-learning-card');
-        var btn  = document.getElementById('lab-learning-min-btn');
-        document.documentElement.classList.add('lab-no-anim');
-        if (card) card.classList.add('is-minimized');
-        if (btn) {
-            btn.setAttribute('aria-expanded', 'false');
-            btn.setAttribute('aria-label', 'Maximise video card');
-        }
-        requestAnimationFrame(function () {
-            requestAnimationFrame(function () {
-                document.documentElement.classList.remove('lab-no-anim');
-            });
-        });
-    })();
+    /* The learning card starts expanded on all breakpoints. */
 
     layoutMobileItems();
     window.addEventListener('load', layoutMobileItems);
