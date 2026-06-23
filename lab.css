@@ -1069,15 +1069,14 @@ body.lab-page .lab-learning-card__meta {
 
 body.lab-page .lab-lamp {
   --lab-lamp-w: 100vw;
-  --lab-lamp-80w: 80vw;
   --lab-lamp-h: clamp(220px, 42vw, 400px);
   --lab-lamp-line: #ffd900;
   --lab-lamp-glow: #fae58a;
-  --lab-lamp-glow-bright: #ffe600;
+  --lab-lamp-glow-bright: #ff0000;
   /* --- tweakable knobs --- */
   --lab-lamp-blend: plus-lighter;      /* how the light mixes with the mat: screen | plus-lighter | overlay | soft-light | normal */
   --lab-lamp-vspread: 90%;       /* vertical spread of the big glow (its height) */
-  --lab-lamp-vspread-small: 70%; /* vertical spread of the inner/bright glow */
+  --lab-lamp-vspread-small: 68%; /* vertical spread of the inner/bright glow */
   --lab-lamp-lift: -40px;        /* push the glow up (more negative) or down (toward 0) */
   position: absolute;
   top: -25%;
@@ -1093,9 +1092,9 @@ body.lab-page .lab-lamp {
 /* Light color follows the mat theme: yellow on green/black, white on blue */
 body.lab-page[data-mat-color="green"] .lab-lamp,
 body.lab-page[data-mat-color="black"] .lab-lamp {
-  --lab-lamp-line: #ffd24a;
-  --lab-lamp-glow: #ffb800;
-  --lab-lamp-glow-bright: #ffeeba;
+  --lab-lamp-line: #ffffff;
+  --lab-lamp-glow: #ffbb00;
+  --lab-lamp-glow-bright: #ffffff;
 }
 
 body.lab-page[data-mat-color="blue"] .lab-lamp {
@@ -1142,19 +1141,21 @@ body.lab-page .lab-lamp__glow {
   top: 0;
   left: 50%;
   transform: translate(-50%, var(--lab-lamp-lift));
-  filter: blur(500px);
-  opacity: 0.55;
+  filter: blur(120px);
+  opacity: .8;
   mix-blend-mode: var(--lab-lamp-blend);
+  z-index: 3;
 }
 
 body.lab-page .lab-lamp__glow--small {
   background: var(--lab-lamp-glow-bright);
   height: var(--lab-lamp-vspread-small);
-  width: 85%;
-  filter: blur(134px);
-  opacity: 0.7;
+  width: 100vw;
+  filter: blur(20px);
+  opacity: 1;
   mix-blend-mode: var(--lab-lamp-blend);
   animation: lab-lamp-glow-grow 1s ease-out forwards;
+  z-index: 2;
 }
 
 @keyframes lab-lamp-line-grow {
@@ -1243,4 +1244,11 @@ body.lab-page .lab-power-btn.is-on .lab-power-btn__inner {
 body.lab-page .lab-power-btn.is-on:hover .lab-power-btn__inner {
   width: 90%;
   height: 90%;
+}
+
+/* ── Terminal window — centered title, iframe body ── */
+#win-terminal .mac-window-body {
+  padding: 0;
+  overflow: hidden;
+  background: #1c1c1e;
 }

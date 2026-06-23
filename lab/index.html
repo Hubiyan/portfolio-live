@@ -115,6 +115,31 @@
             <span class="lab-icon-label">Comment Bro</span>
         </div>
 
+        <!-- ── Icon: Terminal ───────────────────────────────── -->
+        <div class="lab-desktop-icon"
+             data-icon-id="terminal"
+             data-window="win-terminal"
+             style="left:48%;top:66%;
+                    --folder-front:#252528;
+                    --folder-side: #131315;
+                    --folder-top:  #38383c;
+                    --folder-tape: #131315;"
+             tabindex="0" role="button"
+             aria-label="Terminal — ask Farish anything">
+            <div class="lab-icon-figure">
+                <svg class="lab-box-svg" viewBox="0 0 270 240"
+                     xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                    <polygon class="lab-folder-side" points="200,40 270,0 270,200 200,240"/>
+                    <polygon class="lab-folder-top"  points="70,0 270,0 200,40 0,40"/>
+                    <polygon class="lab-folder-front" points="0,40 200,40 200,240 0,240"/>
+                    <line x1="0" y1="40" x2="200" y2="40" stroke="rgba(255,255,255,0.14)" stroke-width="1"/>
+                    <line x1="200" y1="40" x2="200" y2="240" stroke="rgba(0,0,0,0.22)" stroke-width="1.2"/>
+                    <text class="lab-box-emoji" x="100" y="148" text-anchor="middle" dominant-baseline="central">⌨️</text>
+                </svg>
+            </div>
+            <span class="lab-icon-label">Terminal</span>
+        </div>
+
         <!-- ── Icon: Visual Explorations (macOS folder) ──── -->
         <div class="lab-desktop-icon"
              data-icon-id="visual-exp"
@@ -359,7 +384,8 @@
         { id: 'win-prompts', type: 'browser', title: 'Prompts',             src: '/lab/prompts/',         urlLabel: 'hubiyan.com/lab/prompts/' },
         { id: 'win-ai-bro',  type: 'browser', title: 'AI Bro Detector',     src: '/lab/ai-bro-detector/', urlLabel: 'hubiyan.com/lab/ai-bro-detector/' },
         { id: 'win-comment-bro', type: 'browser', title: 'Comment Bro', src: '/lab/comment-bro/', urlLabel: 'hubiyan.com/lab/comment-bro/' },
-        { id: 'win-visual',  type: 'finder',  title: 'Visual Explorations' }
+        { id: 'win-visual',  type: 'finder',  title: 'Visual Explorations' },
+        { id: 'win-terminal', type: 'finder', title: 'Lab terminal', src: '/lab/terminal/' }
         /* Preview windows are created dynamically by openPreviewWindow() — no static entry needed */
     ];
 
@@ -467,6 +493,20 @@
 
     /* Build and mount all static windows */
     WIN_CONFIGS.forEach(function (cfg) { document.body.appendChild(buildWindow(cfg)); });
+
+    /* ── Terminal: swap finder-grid body → lazy iframe ── */
+    (function () {
+        var tw = document.getElementById('win-terminal');
+        if (!tw) return;
+        var body = tw.querySelector('.mac-window-body');
+        if (!body) return;
+        body.innerHTML = '';
+        var iframe = document.createElement('iframe');
+        iframe.className = 'mac-window-iframe';
+        iframe.id = 'win-terminal-iframe';
+        iframe.title = 'Lab terminal';
+        body.appendChild(iframe);
+    })();
 
     /* ── macOS Window system ────────────────────────────────── */
     var macZCounter      = 60;

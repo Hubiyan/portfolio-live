@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Terminal — Hubiyan</title>
+    <link rel="stylesheet" href="terminal.css">
+</head>
+<body>
+    <div id="terminal-root">
+        <div id="terminal-output"></div>
+        <!-- Hidden keyboard capture — always focused so typing goes inline -->
+        <input id="terminal-capture" aria-hidden="true" tabindex="-1"
+               autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    </div>
+    <script src="terminal.js"></script>
+</body>
+</html>
