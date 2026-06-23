@@ -7,10 +7,16 @@
     var MAX_TOKENS = 7;
 
     function getApiUrl() {
-        /* Same-origin always — avoids CORS regardless of whether
-           the user is on hubiyan.com or portfolio-live-rose.vercel.app */
-        if (typeof window === 'undefined') return '/api/ask';
-        return window.location.origin + '/api/ask';
+        /* The static site (hubiyan.com) is on GitHub Pages, which has no
+           /api routes — the serverless API lives on Vercel. Use same-origin
+           only for local dev; otherwise hit the Vercel deployment directly.
+           CORS for hubiyan.com is whitelisted in api/cors.js. */
+        if (typeof window === 'undefined') return 'https://portfolio-live-rose.vercel.app/api/ask';
+        var h = window.location.hostname;
+        if (h === 'localhost' || h === '127.0.0.1' || /^192\.168\./.test(h) || h.endsWith('.trycloudflare.com')) {
+            return window.location.origin + '/api/ask';
+        }
+        return 'https://portfolio-live-rose.vercel.app/api/ask';
     }
 
     var API_URL = getApiUrl();
