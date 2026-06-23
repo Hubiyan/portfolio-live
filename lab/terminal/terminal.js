@@ -7,12 +7,10 @@
     var MAX_TOKENS = 7;
 
     function getApiUrl() {
-        if (typeof window === 'undefined') return 'https://portfolio-live-rose.vercel.app/api/ask';
-        var h = window.location.hostname;
-        if (h === 'localhost' || h === '127.0.0.1' || /^192\.168\./.test(h) || h.endsWith('.trycloudflare.com')) {
-            return window.location.origin + '/api/ask';
-        }
-        return 'https://portfolio-live-rose.vercel.app/api/ask';
+        /* Same-origin always — avoids CORS regardless of whether
+           the user is on hubiyan.com or portfolio-live-rose.vercel.app */
+        if (typeof window === 'undefined') return '/api/ask';
+        return window.location.origin + '/api/ask';
     }
 
     var API_URL = getApiUrl();

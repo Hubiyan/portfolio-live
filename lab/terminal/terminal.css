@@ -16,7 +16,7 @@
 
 html, body {
   height: 100%;
-  background: var(--t-bg);
+  background: transparent;
   color: var(--t-text);
   font-family: var(--t-font);
   font-size: var(--t-size);
@@ -28,7 +28,7 @@ html, body {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background: var(--t-bg);
+  background: transparent;
   overflow: hidden;
   cursor: text;
 }
