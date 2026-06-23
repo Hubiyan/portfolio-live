@@ -136,9 +136,13 @@
             headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify({ question: q }),
         })
-        .then(function (res) {
-            return res.json().then(function (data) {
-                return { status: res.status, data: data };
+        .then(function (fetchRes) {
+            return fetchRes.text().then(function (text) {
+                try {
+                    return { status: fetchRes.status, data: JSON.parse(text) };
+                } catch (_) {
+                    return { status: fetchRes.status, data: { error: 'Server error (' + fetchRes.status + ').' } };
+                }
             });
         })
         .then(function (r) {
