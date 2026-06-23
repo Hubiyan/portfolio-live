@@ -13,13 +13,6 @@ body.lab-page {
   --lab-hi:      rgba(255, 255, 255, 0.075);
   --lab-shadow:  rgba(0, 0, 0, 0.11);
   --lab-noise-opacity: 0.038;
-  --folder-front: #c89b6d;
-  --folder-side: #b98756;
-  --folder-top: #d7b086;
-  --folder-shadow: rgba(0, 0, 0, 0.32);
-  --folder-tape: #b98756;
-  --folder-edge: #a87647;
-  --folder-label: #ead0b3;
   min-height: 100vh;
   margin: 0;
   transition: background-color 0.35s ease;
@@ -143,24 +136,6 @@ body.lab-page .lab-desktop-icon--prop .lab-icon-figure {
   width: clamp(160px, 24vw, 220px);
   height: clamp(160px, 24vw, 220px);
 }
-
-/* Box icon — shadow only; size comes from .lab-icon-figure */
-body.lab-page .lab-box-svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.38));
-}
-
-body.lab-page .lab-box-emoji {
-  font-size: 96px;
-  pointer-events: none;
-}
-
-/* SVG face fills — driven by CSS vars, fully configurable */
-body.lab-page .lab-folder-front      { fill: var(--folder-front, #c89b6d); }
-body.lab-page .lab-folder-side       { fill: var(--folder-side,  #a97840); }
-body.lab-page .lab-folder-top        { fill: var(--folder-top,   #dab87e); }
 
 /* ============================================================
    Learning video card widget
@@ -1038,10 +1013,6 @@ body.lab-page .lab-learning-card__meta {
     font-size: 8px;
   }
 
-  body.lab-page .lab-box-emoji {
-    font-size: 80px;
-  }
-
   body.lab-page .lab-desktop-icon--prop .lab-icon-figure {
     width: clamp(130px, 38vw, 170px);
     height: clamp(130px, 38vw, 170px);
@@ -1251,3 +1222,137 @@ body.lab-page .lab-power-btn.is-on:hover .lab-power-btn__inner {
   padding: 0;
   overflow: hidden;
 }
+
+/* ============================================================
+   Sleep commits — GitHub-style contribution graph widget
+   Grid technique: https://bitsofco.de/github-contribution-graph-css-grid/
+============================================================ */
+
+body.lab-page .lab-commits {
+  --square-size: clamp(3px, 1vw, 4.5px);
+  --square-gap: 1px;
+  --week-width: calc(var(--square-size) + var(--square-gap));
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: fit-content;
+  max-width: calc(100vw - 32px);
+  font-family: 'Urbanist', system-ui, sans-serif;
+  color: #fff;
+  cursor: grab;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+body.lab-page .lab-commits.is-grabbing,
+body.lab-page .lab-commits.is-grabbing * {
+  cursor: grabbing;
+}
+
+body.lab-page .lab-commits__heading {
+  margin: 0;
+  font-size: clamp(0.8rem, 1.6vw, .6rem);
+  font-weight: 100;
+  letter-spacing: -0.01em;
+  color: #fff;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
+}
+
+/* Whole-year graph: every track is fr-based so it always fits its
+   container — no horizontal scroll at any width. */
+body.lab-page .lab-commits .graph {
+  display: inline-grid;
+  grid-template-areas:
+    "empty months"
+    "days squares";
+  grid-template-columns: auto auto;
+  gap: 4px 5px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 8px;
+  margin: 0;
+  border-radius: 8px;
+  background: rgba(22, 22, 24, 0.92);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  backdrop-filter: blur(10px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.55);
+  color: rgba(255, 255, 255, 0.85);
+  overflow: hidden;
+}
+
+body.lab-page .lab-commits ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Month labels spread proportionally to each month's week count */
+body.lab-page .lab-commits .months {
+  grid-area: months;
+  display: grid;
+  grid-template-columns:
+    calc(var(--week-width) * 4)  /* Jan */
+    calc(var(--week-width) * 4)  /* Feb */
+    calc(var(--week-width) * 4)  /* Mar */
+    calc(var(--week-width) * 5)  /* Apr */
+    calc(var(--week-width) * 4)  /* May */
+    calc(var(--week-width) * 4)  /* Jun */
+    calc(var(--week-width) * 5)  /* Jul */
+    calc(var(--week-width) * 4)  /* Aug */
+    calc(var(--week-width) * 4)  /* Sep */
+    calc(var(--week-width) * 5)  /* Oct */
+    calc(var(--week-width) * 4)  /* Nov */
+    calc(var(--week-width) * 5); /* Dec */
+  font-size: clamp(6px, 1vw, 8px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+body.lab-page .lab-commits .months li {
+  min-width: 0;
+  white-space: nowrap;
+}
+
+body.lab-page .lab-commits .days {
+  grid-area: days;
+  display: grid;
+  grid-template-rows: repeat(7, var(--square-size));
+  gap: var(--square-gap);
+  font-size: clamp(6px, 1vw, 8px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+body.lab-page .lab-commits .days li {
+  display: flex;
+  align-items: center;
+  line-height: 1;
+}
+
+body.lab-page .lab-commits .days li:nth-child(odd) {
+  visibility: hidden;
+}
+
+body.lab-page .lab-commits .squares {
+  grid-area: squares;
+  display: grid;
+  grid-template-rows: repeat(7, var(--square-size));
+  grid-auto-flow: column;
+  grid-auto-columns: var(--square-size);
+  gap: var(--square-gap);
+}
+
+body.lab-page .lab-commits .squares li {
+  border-radius: 1px;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+body.lab-page .lab-commits .squares li[data-level="1"] { background-color: #3b1f6b; }
+body.lab-page .lab-commits .squares li[data-level="2"] { background-color: #7c3aed; }
+body.lab-page .lab-commits .squares li[data-level="3"] { background-color: #a779f0; }

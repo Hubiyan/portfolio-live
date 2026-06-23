@@ -15,10 +15,15 @@ const OUT      = path.join(DIR, 'manifest.json');
 const IMG_EXTS = new Set(['jpg', 'jpeg', 'png', 'gif', 'webp']);
 const VID_EXTS = new Set(['webm']);
 
+/* Files used elsewhere on the page (e.g. as decorative props) that should
+   NOT also appear as auto-generated desktop preview icons. */
+const EXCLUDE = new Set(['airpods_wired.png']);
+
 const entries = fs.readdirSync(DIR)
     .filter(f => {
         /* Skip dotfiles, the manifest itself, and filenames with backslashes */
         if (f.startsWith('.') || f === 'manifest.json' || f.includes('\\')) return false;
+        if (EXCLUDE.has(f)) return false;
         const ext = path.extname(f).slice(1).toLowerCase();
         return IMG_EXTS.has(ext) || VID_EXTS.has(ext);
     })
