@@ -1022,6 +1022,12 @@ body.lab-page .lab-learning-card__meta {
   body.lab-page .lab-lamp {
     --lab-lamp-w: clamp(220px, 72vw, 340px);
     --lab-lamp-h: clamp(170px, 56vw, 270px);
+    /* fixed so the lamp doesn't drift off-screen when the
+       scrollable .lab-main is taller than the viewport */
+    position: fixed;
+    top: -12%;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   body.lab-page .lab-lamp__glow--big,
