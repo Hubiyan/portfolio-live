@@ -44,7 +44,7 @@
         <div class="lab-desktop-icon"
              data-icon-id="prompts"
              data-window="win-prompts"
-             style="left:15%;top:51%"
+             style="left:10%;top:74%"
              tabindex="0" role="button"
              aria-label="Prompts — open in window">
             <div class="lab-icon-figure">
@@ -61,7 +61,7 @@
         <div class="lab-desktop-icon"
              data-icon-id="ai-bro"
              data-window="win-ai-bro"
-             style="left:37%;top:8%"
+             style="left:24%;top:8%"
              tabindex="0" role="button"
              aria-label="AI Bro Detector — open in window">
             <div class="lab-icon-figure">
@@ -78,7 +78,7 @@
         <div class="lab-desktop-icon"
              data-icon-id="comment-bro"
              data-window="win-comment-bro"
-             style="left:25%;top:66%"
+             style="left:25%;top:68%"
              tabindex="0" role="button"
              aria-label="Comment Bro — open in window">
             <div class="lab-icon-figure">
@@ -95,7 +95,7 @@
         <div class="lab-desktop-icon"
              data-icon-id="terminal"
              data-window="win-terminal"
-             style="left:48%;top:66%"
+             style="left:40%;top:75%"
              tabindex="0" role="button"
              aria-label="Terminal — ask Farish anything">
             <div class="lab-icon-figure">
@@ -108,13 +108,13 @@
             <span class="lab-icon-label">Terminal</span>
         </div>
 
-        <!-- ── Icon: Visual Explorations (macOS folder) ──── -->
+        <!-- ── Icon: Visual playground (macOS folder) ──── -->
         <div class="lab-desktop-icon"
              data-icon-id="visual-exp"
              data-window="win-visual"
-             style="left:69%;top:29%"
+             style="left:33%;top:16%"
              tabindex="0" role="button"
-             aria-label="Visual Explorations — open folder">
+             aria-label="Visual playground — open folder">
             <div class="lab-icon-figure">
                 <img src="/images/lab-icons/image%204739.png"
                      alt="" aria-hidden="true"
@@ -122,14 +122,31 @@
                      style="height:auto;object-fit:contain;
                             filter:drop-shadow(0 4px 10px rgba(0,0,0,0.35))">
             </div>
-            <span class="lab-icon-label">Visual Explorations</span>
+            <span class="lab-icon-label">Visual playground</span>
+        </div>
+
+        <!-- ── Icon: Code credits (macOS folder) ──────────── -->
+        <div class="lab-desktop-icon"
+             data-icon-id="code-credits"
+             data-window="win-credits"
+             style="left:61%;top:13%"
+             tabindex="0" role="button"
+             aria-label="Code credits — open folder">
+            <div class="lab-icon-figure">
+                <img src="/images/lab-icons/blue-folder.png"
+                     alt="" aria-hidden="true"
+                     width="78" height="78"
+                     style="height:auto;object-fit:contain;
+                            filter:drop-shadow(0 4px 10px rgba(0,0,0,0.35))">
+            </div>
+            <span class="lab-icon-label">Code credits</span>
         </div>
 
         <!-- ── AirPods (decorative — drag only) ─────────────── -->
         <div class="lab-desktop-icon lab-desktop-icon--prop"
              id="lab-airpods"
              data-icon-id="airpods-wired"
-             style="left:16%;top:15%"
+             style="left:2%;top:13%"
              tabindex="0"
              aria-label="AirPods">
             <div class="lab-icon-figure">
@@ -145,7 +162,7 @@
         <div class="lab-learning-card" id="lab-learning-card"
              data-widget-id="learning-video" role="region"
              aria-label="Currently learning video"
-             style="left:35%;top:31%">
+             style="left:39%;top:34%">
             <button type="button" class="lab-learning-card__min-btn" id="lab-learning-min-btn"
                     aria-label="Minimise video card" aria-expanded="true">
                 <svg class="lab-learning-card__icon lab-learning-card__icon--min" viewBox="0 0 12 12"
@@ -197,7 +214,7 @@
         <div class="lab-casio" id="lab-casio"
              data-widget-id="casio-watch" role="img"
              aria-label="Casio F-91W watch"
-             style="left:55%;top:56%">
+             style="left:84%;top:33%">
             <div class="lab-casio__stage">
                 <div class="casio-f91w">
                     <div class="top bracelet">
@@ -273,8 +290,8 @@
         <div class="lab-commits" id="lab-commits"
              data-widget-id="sleep-commits" role="region"
              aria-label="Sleep commits in 2026"
-             style="left:6%;top:40%">
-            <h3 class="lab-commits__heading">Sleep commits in 2026</h3>
+             style="left:4%;top:54%">
+            <span class="lab-icon-label">Sleep commits in 2026</span>
             <div class="graph">
                 <ul class="months">
                     <li>Jan</li>
@@ -365,6 +382,16 @@
         }
     ];
 
+    /* ── Visual explorations media (mixed images / gif / video) ──
+       Names are the exact file names. src is encoded for spaces/* */
+    var VISUAL_PLAY_DIR = '/images/lab-images/visual-play/';
+    var VISUAL_PLAY = [
+        { file: 'Stakeholder review.jpg', type: 'image' },
+        { file: 'design advocacy.jpg',    type: 'image' },
+        { file: 'make cool sh*t.gif',     type: 'image' },
+        { file: 'Career plan.webm',       type: 'video' }
+    ];
+
     /* ═══════════════════════════════════════════════════════════
        macOS Window component builder
        ═══════════════════════════════════════════════════════════
@@ -388,8 +415,11 @@
         { id: 'win-prompts', type: 'browser', title: 'Prompts',             src: '/lab/prompts/',         urlLabel: 'hubiyan.com/lab/prompts/' },
         { id: 'win-ai-bro',  type: 'browser', title: 'AI Bro Detector',     src: '/lab/ai-bro-detector/', urlLabel: 'hubiyan.com/lab/ai-bro-detector/' },
         { id: 'win-comment-bro', type: 'browser', title: 'Comment Bro', src: '/lab/comment-bro/', urlLabel: 'hubiyan.com/lab/comment-bro/' },
-        { id: 'win-visual',  type: 'finder',  title: 'Visual Explorations' },
-        { id: 'win-terminal', type: 'finder', title: 'Lab terminal', src: '/lab/terminal/' }
+        { id: 'win-visual',  type: 'finder',  title: 'Visual playground' },
+        { id: 'win-free-wallpapers',   type: 'finder', title: 'Free wallpapers' },
+        { id: 'win-visual-playgrounds', type: 'finder', title: 'Visual explorations' },
+        { id: 'win-terminal', type: 'finder', title: 'Lab terminal', src: '/lab/terminal/' },
+        { id: 'win-credits', type: 'finder', title: 'Code credits' }
         /* Preview windows are created dynamically by openPreviewWindow() — no static entry needed */
     ];
 
@@ -458,8 +488,8 @@
         } else if (cfg.type === 'finder') {
             var grid = document.createElement('div');
             grid.className = 'mac-finder-grid';
-            grid.id = 'finder-wallpapers';
-            grid.setAttribute('aria-label', 'Wallpapers');
+            grid.id = cfg.id + '-grid';   /* unique per window — no duplicate ids */
+            grid.setAttribute('aria-label', cfg.title || '');
             body.appendChild(grid);
         } else if (cfg.type === 'preview') {
             var imgEl2 = document.createElement('img');
@@ -512,9 +542,109 @@
         body.appendChild(iframe);
     })();
 
+    /* ── Code credits: swap finder-grid body → Finder list view ── */
+    (function () {
+        var CREDITS = [
+            { name: 'The lamp',             url: 'https://github.com/Hank-D-Tank/aceternity-lamp-effect' },
+            { name: 'Lamp button',          url: 'https://codepen.io/John2606/pen/bGJvMYW' },
+            { name: 'Casio watch',          url: 'https://codepen.io/manz/details/KKWmWLb' },
+            { name: 'Sleep commits widget', url: 'https://codepen.io/ire/pen/Legmwo/' }
+        ];
+
+        var cw = document.getElementById('win-credits');
+        if (!cw) return;
+        var body = cw.querySelector('.mac-window-body');
+        if (!body) return;
+        body.innerHTML = '';
+
+        var list = document.createElement('div');
+        list.className = 'mac-finder-list';
+        list.setAttribute('role', 'list');
+        list.setAttribute('aria-label', 'Code credits');
+
+        var head = document.createElement('div');
+        head.className = 'mac-finder-list__head';
+        head.innerHTML =
+            '<span class="mac-finder-list__col mac-finder-list__col--name">Name</span>' +
+            '<span class="mac-finder-list__col mac-finder-list__col--url">Source</span>';
+        list.appendChild(head);
+
+        var linkSvg =
+            '<svg class="mac-finder-list__icon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">' +
+            '<path fill="currentColor" d="M6.9 9.1a2.6 2.6 0 0 0 3.9.3l2-2a2.6 2.6 0 0 0-3.7-3.7l-1.1 1.1a.7.7 0 1 0 1 1l1.1-1.1a1.2 1.2 0 0 1 1.7 1.7l-2 2a1.2 1.2 0 0 1-1.8-.1.7.7 0 0 0-1.1.8Z"/>' +
+            '<path fill="currentColor" d="M9.1 6.9a2.6 2.6 0 0 0-3.9-.3l-2 2a2.6 2.6 0 0 0 3.7 3.7l1.1-1.1a.7.7 0 1 0-1-1l-1.1 1.1a1.2 1.2 0 0 1-1.7-1.7l2-2a1.2 1.2 0 0 1 1.8.1.7.7 0 0 0 1.1-.8Z"/>' +
+            '</svg>';
+
+        CREDITS.forEach(function (c) {
+            var row = document.createElement('a');
+            row.className = 'mac-finder-list__row';
+            row.href   = c.url;
+            row.target = '_blank';
+            row.rel    = 'noopener noreferrer';
+            row.setAttribute('role', 'listitem');
+
+            var prettyUrl = c.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+            row.innerHTML =
+                '<span class="mac-finder-list__col mac-finder-list__col--name">' +
+                    linkSvg +
+                    '<span class="mac-finder-list__name">' + c.name + '</span>' +
+                '</span>' +
+                '<span class="mac-finder-list__col mac-finder-list__col--url">' + prettyUrl + '</span>';
+            list.appendChild(row);
+        });
+
+        body.appendChild(list);
+    })();
+
+    /* ── Visual Explorations: finder-grid body → folder list view ──
+       Two sub-folders shown as list rows; each opens its own window. */
+    (function () {
+        var FOLDERS = [
+            { name: 'Free wallpapers',     target: 'win-free-wallpapers' },
+            { name: 'Visual explorations', target: 'win-visual-playgrounds' }
+        ];
+
+        var vw = document.getElementById('win-visual');
+        if (!vw) return;
+        var body = vw.querySelector('.mac-window-body');
+        if (!body) return;
+        body.innerHTML = '';
+
+        var list = document.createElement('div');
+        list.className = 'mac-finder-list';
+        list.setAttribute('role', 'list');
+        list.setAttribute('aria-label', 'Visual playground');
+
+        var head = document.createElement('div');
+        head.className = 'mac-finder-list__head';
+        head.innerHTML =
+            '<span class="mac-finder-list__col mac-finder-list__col--name">Name</span>' +
+            '<span class="mac-finder-list__col mac-finder-list__col--kind">Kind</span>';
+        list.appendChild(head);
+
+        FOLDERS.forEach(function (f) {
+            var row = document.createElement('button');
+            row.type = 'button';
+            row.className = 'mac-finder-list__row mac-finder-list__row--folder';
+            row.setAttribute('role', 'listitem');
+            row.dataset.window = f.target;
+            row.innerHTML =
+                '<span class="mac-finder-list__col mac-finder-list__col--name">' +
+                    '<img class="mac-finder-list__folder-icon" src="/images/lab-icons/blue-folder-real.png" alt="" aria-hidden="true">' +
+                    '<span class="mac-finder-list__name">' + f.name + '</span>' +
+                '</span>' +
+                '<span class="mac-finder-list__col mac-finder-list__col--kind">Folder</span>';
+            row.addEventListener('click', function () { openMacWin(f.target); });
+            list.appendChild(row);
+        });
+
+        body.appendChild(list);
+    })();
+
     /* ── macOS Window system ────────────────────────────────── */
-    var macZCounter      = 60;
-    var finderPopulated  = false;
+    var macZCounter         = 60;
+    var finderPopulated     = false;
+    var visualPlayPopulated = false;
 
     /* Show / hide the "Close all" button depending on open window count */
     function syncCloseAll() {
@@ -558,21 +688,46 @@
         win.style.top       = '';
         win.style.transform = '';
 
-        /* ── Cascade: offset lower-left off the first open unmoved window (desktop) ── */
+        /* ── Open position (desktop) ──
+           Image/preview windows: first one opens dead-centre (CSS default);
+           each subsequent one cascades down-RIGHT off the topmost open
+           preview. Other window types keep the original down-left cascade. */
         var isMobile = window.matchMedia('(max-width: 520px)').matches;
         if (!isMobile) {
-            var anchor = null;
-            document.querySelectorAll('.mac-window:not([hidden])').forEach(function (w) {
-                if (w !== win && !w.dataset.moved && !anchor) anchor = w;
-            });
-            if (anchor) {
-                var r = anchor.getBoundingClientRect();
-                var newLeft = Math.max(20, Math.min(r.left - 28, window.innerWidth  - 300));
-                var newTop  = Math.max(20, Math.min(r.top  + 28, window.innerHeight - 200));
-                win.style.left      = newLeft + 'px';
-                win.style.top       = newTop  + 'px';
-                win.style.transform = 'none';
-                win.dataset.posResolved = '1';
+            if (win.classList.contains('mac-window--preview')) {
+                var previews = Array.prototype.slice.call(
+                    document.querySelectorAll('.mac-window--preview:not([hidden])')
+                ).filter(function (w) { return w !== win; });
+                if (previews.length) {
+                    /* anchor off the topmost (most recently opened) preview */
+                    var topPrev = previews.reduce(function (a, b) {
+                        var za = parseInt(a.style.zIndex || '0', 10);
+                        var zb = parseInt(b.style.zIndex || '0', 10);
+                        return zb >= za ? b : a;
+                    });
+                    var pr = topPrev.getBoundingClientRect();
+                    var pl = Math.max(20, Math.min(pr.left + 28, window.innerWidth  - pr.width  - 20));
+                    var pt = Math.max(20, Math.min(pr.top  + 28, window.innerHeight - pr.height - 20));
+                    win.style.left      = pl + 'px';
+                    win.style.top       = pt + 'px';
+                    win.style.transform = 'none';
+                    win.dataset.posResolved = '1';
+                }
+                /* else: leave centred (CSS left:50%/top:50%/translate(-50%,-50%)) */
+            } else {
+                var anchor = null;
+                document.querySelectorAll('.mac-window:not([hidden])').forEach(function (w) {
+                    if (w !== win && !w.dataset.moved && !anchor) anchor = w;
+                });
+                if (anchor) {
+                    var r = anchor.getBoundingClientRect();
+                    var newLeft = Math.max(20, Math.min(r.left - 28, window.innerWidth  - 300));
+                    var newTop  = Math.max(20, Math.min(r.top  + 28, window.innerHeight - 200));
+                    win.style.left      = newLeft + 'px';
+                    win.style.top       = newTop  + 'px';
+                    win.style.transform = 'none';
+                    win.dataset.posResolved = '1';
+                }
             }
         }
 
@@ -605,9 +760,14 @@
             }
         }
 
-        /* Populate Finder grid once */
-        if (id === 'win-visual' && !finderPopulated) {
+        /* Populate the Free wallpapers grid once */
+        if (id === 'win-free-wallpapers' && !finderPopulated) {
             populateFinderGrid();
+        }
+
+        /* Populate the Visual explorations media grid once */
+        if (id === 'win-visual-playgrounds' && !visualPlayPopulated) {
+            populateVisualPlay();
         }
     }
 
@@ -792,7 +952,8 @@
 
     /* ── Finder grid ────────────────────────────────────────── */
     function populateFinderGrid() {
-        var grid = document.getElementById('finder-wallpapers');
+        var grid = document.getElementById('win-free-wallpapers-grid');
+        if (!grid) return;
         WALLPAPERS.forEach(function (wp, i) {
             var btn = document.createElement('button');
             btn.className = 'mac-finder-thumb';
@@ -815,6 +976,57 @@
             grid.appendChild(btn);
         });
         finderPopulated = true;
+    }
+
+    /* ── Visual explorations grid (mixed media thumbnails) ──── */
+    function populateVisualPlay() {
+        var grid = document.getElementById('win-visual-playgrounds-grid');
+        if (!grid) return;
+        grid.classList.add('mac-finder-grid--media');
+
+        var items = VISUAL_PLAY.map(function (a) {
+            return {
+                src:  VISUAL_PLAY_DIR + encodeURIComponent(a.file),
+                name: a.file,
+                type: a.type
+            };
+        });
+
+        items.forEach(function (it, i) {
+            var btn = document.createElement('button');
+            btn.className = 'mac-finder-thumb mac-finder-thumb--media';
+            btn.setAttribute('aria-label', it.name);
+
+            var media;
+            if (it.type === 'video') {
+                media = document.createElement('video');
+                media.src      = it.src;
+                media.muted    = true;
+                media.loop     = true;
+                media.autoplay = true;
+                media.setAttribute('playsinline', '');
+                media.setAttribute('preload', 'metadata');
+            } else {
+                media = document.createElement('img');
+                media.src     = it.src;
+                media.alt     = it.name;
+                media.loading = 'lazy';
+            }
+
+            var lbl = document.createElement('span');
+            lbl.textContent = it.name;
+
+            btn.appendChild(media);
+            btn.appendChild(lbl);
+            btn.addEventListener('click', function () {
+                openPreviewWindow(
+                    items.map(function (m) { return { src: m.src, name: m.name }; }),
+                    i
+                );
+            });
+            grid.appendChild(btn);
+        });
+        visualPlayPopulated = true;
     }
 
     /* ── Image Preview windows ───────────────────────────────── */
@@ -1024,8 +1236,8 @@
 
         fetch('/images/lab-images/manifest.json')
             .then(function (r) { return r.json(); })
-            .then(function (entries) { entries.forEach(createIcon); layoutMobileItems(); })
-            .catch(function () { layoutMobileItems(); /* manifest missing — still lay out */ });
+            .then(function (entries) { entries.forEach(createIcon); relayoutDesktop(); })
+            .catch(function () { relayoutDesktop(); /* manifest missing — still lay out */ });
 
         function createIcon(entry, i) {
             var isVid = entry.type === 'video';
@@ -1043,9 +1255,9 @@
             icon.setAttribute('aria-label', entry.name);
             /* Curated default positions per file — LabIcons.setup() overrides with any saved position */
             var DEFAULT_POS = {
-                'App icon03.jpg':         { left: 59, top: 17 },
-                'hubiyan.jpg':            { left: 68, top: 60 },
-                'shawarma-and-karak.jpg': { left: 40, top: 65 }
+                'App icon03.jpg':         { left: 49, top: 7 },
+                'hubiyan.jpg':            { left: 72, top: 6 },
+                'shawarma-and-karak.jpg': { left: 55, top: 70 }
             };
             var dp = DEFAULT_POS[entry.file];
             if (dp) {
@@ -1457,10 +1669,102 @@
         main.style.minHeight = Math.max(window.innerHeight, y + 40) + 'px';
     }
 
+    /* ── Desktop overlap safety net ─────────────────────────────
+       The curated %-positions are tuned to not overlap at typical
+       desktop widths. On in-between widths (where fixed-size items
+       crowd together) this pass nudges any *overlapping* items apart
+       on load/resize so nothing is ever stacked. Items that don't
+       collide are left untouched, keeping their responsive
+       %-positions. Mobile (<=520px) is handled by layoutMobileItems. */
+    function resolveDesktopOverlaps() {
+        if (window.matchMedia('(max-width: 520px)').matches) return;
+        var main = document.getElementById('lab-main');
+        if (!main) return;
+
+        var pad  = 10;
+        var maxX = main.clientWidth;
+        var maxY = Math.max(window.innerHeight, main.clientHeight);
+
+        var nodes = Array.prototype.slice.call(
+            document.querySelectorAll('.lab-desktop-icon, [data-widget-id]')
+        );
+        if (!nodes.length) return;
+
+        var boxes = nodes.map(function (el) {
+            return {
+                el: el, fixed: false,
+                x: el.offsetLeft, y: el.offsetTop,
+                w: el.offsetWidth, h: el.offsetHeight,
+                x0: el.offsetLeft, y0: el.offsetTop
+            };
+        });
+
+        /* Power button is a fixed obstacle pinned top-left */
+        var power = document.getElementById('lab-power-btn');
+        if (power) {
+            boxes.push({ el: power, fixed: true,
+                         x: power.offsetLeft, y: power.offsetTop,
+                         w: power.offsetWidth, h: power.offsetHeight });
+        }
+
+        function clamp(b) {
+            b.x = Math.max(pad, Math.min(b.x, maxX - b.w - pad));
+            b.y = Math.max(pad, Math.min(b.y, maxY - b.h - pad));
+        }
+
+        for (var iter = 0; iter < 80; iter++) {
+            var any = false;
+            for (var i = 0; i < boxes.length; i++) {
+                for (var j = i + 1; j < boxes.length; j++) {
+                    var a = boxes[i], b = boxes[j];
+                    if (a.fixed && b.fixed) continue;
+                    var ox = Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x);
+                    var oy = Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y);
+                    if (ox <= 0 || oy <= 0) continue;
+                    any = true;
+                    if (ox < oy) {
+                        var aLeft = (a.x + a.w / 2) <= (b.x + b.w / 2);
+                        var dx = ox / 2 + 0.5;
+                        if (a.fixed)      { b.x += aLeft ?  (ox + 1) : -(ox + 1); }
+                        else if (b.fixed) { a.x += aLeft ? -(ox + 1) :  (ox + 1); }
+                        else { a.x += aLeft ? -dx : dx; b.x += aLeft ? dx : -dx; }
+                    } else {
+                        var aUp = (a.y + a.h / 2) <= (b.y + b.h / 2);
+                        var dy = oy / 2 + 0.5;
+                        if (a.fixed)      { b.y += aUp ?  (oy + 1) : -(oy + 1); }
+                        else if (b.fixed) { a.y += aUp ? -(oy + 1) :  (oy + 1); }
+                        else { a.y += aUp ? -dy : dy; b.y += aUp ? dy : -dy; }
+                    }
+                    if (!a.fixed) clamp(a);
+                    if (!b.fixed) clamp(b);
+                }
+            }
+            if (!any) break;
+        }
+
+        /* Write back only the items that actually moved — preserves the
+           curated %-positions (and their scaling) for everything else. */
+        boxes.forEach(function (b) {
+            if (b.fixed) return;
+            if (Math.abs(b.x - b.x0) > 1 || Math.abs(b.y - b.y0) > 1) {
+                b.el.style.left = Math.round(b.x) + 'px';
+                b.el.style.top  = Math.round(b.y) + 'px';
+            }
+        });
+    }
+
     /* The learning card starts expanded on all breakpoints. */
 
-    layoutMobileItems();
-    window.addEventListener('load', layoutMobileItems);
+    function relayoutDesktop() { layoutMobileItems(); resolveDesktopOverlaps(); }
+
+    relayoutDesktop();
+    window.addEventListener('load', relayoutDesktop);
+
+    var _relayoutTimer = null;
+    window.addEventListener('resize', function () {
+        clearTimeout(_relayoutTimer);
+        _relayoutTimer = setTimeout(relayoutDesktop, 150);
+    });
     </script>
 </body>
 

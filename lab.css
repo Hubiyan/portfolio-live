@@ -742,6 +742,184 @@ body.lab-page .lab-learning-card__meta {
   overflow: hidden;
 }
 
+/* ── Finder list view (Code credits, Visual Explorations) ── */
+
+#win-credits,
+#win-visual {
+  width: min(640px, 88vw);
+  height: min(420px, 70vh);
+}
+
+#win-credits .mac-window-body,
+#win-visual .mac-window-body {
+  padding: 0;
+  overflow-y: auto;
+}
+
+.mac-finder-list {
+  display: flex;
+  flex-direction: column;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+}
+
+/* Column header row */
+.mac-finder-list__head {
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 7px 16px;
+  background: rgba(28, 28, 30, 0.96);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+/* Each row is a clickable link (<a>) or folder (<button>) */
+.mac-finder-list__row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+  padding: 9px 16px;
+  text-align: left;
+  text-decoration: none;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.mac-finder-list__row--folder { cursor: pointer; }
+
+.mac-finder-list__row:nth-child(even) {
+  background: rgba(255, 255, 255, 0.022);
+}
+
+.mac-finder-list__row:hover {
+  background: rgba(10, 110, 230, 0.32);
+}
+
+.mac-finder-list__row:focus-visible {
+  outline: 2px solid rgba(90, 160, 255, 0.8);
+  outline-offset: -2px;
+}
+
+/* Columns */
+.mac-finder-list__col {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.mac-finder-list__col--name {
+  flex: 0 0 44%;
+  gap: 8px;
+  padding-right: 12px;
+}
+
+.mac-finder-list__col--url {
+  flex: 1 1 56%;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mac-finder-list__row:hover .mac-finder-list__col--url {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.mac-finder-list__icon {
+  flex-shrink: 0;
+  color: #5aa0ff;
+}
+
+.mac-finder-list__row:hover .mac-finder-list__icon {
+  color: #ffffff;
+}
+
+.mac-finder-list__name {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.92);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Folder rows (Visual Explorations) */
+.mac-finder-list__folder-icon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+}
+
+.mac-finder-list__col--kind {
+  flex: 1 1 56%;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.mac-finder-list__row:hover .mac-finder-list__col--kind {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* Empty-state (placeholder folders) */
+.mac-finder-grid--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+}
+
+.mac-finder-empty {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* ── Mixed-media thumbnail grid (Visual explorations) ───── */
+.mac-finder-grid--media {
+  grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+  gap: 16px;
+}
+
+.mac-finder-thumb--media img,
+.mac-finder-thumb--media video {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(0, 0, 0, 0.25);
+  max-width: 100%;
+}
+
+.mac-finder-thumb--media span {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+@media (max-width: 520px) {
+  .mac-finder-list__col--name { flex-basis: 50%; }
+  .mac-finder-list__col--url,
+  .mac-finder-list__col--kind { font-size: 11px; }
+}
+
 /* ── Titlebar right slot (preview nav, etc.) ────────────── */
 
 .mac-titlebar-right {
@@ -1018,21 +1196,12 @@ body.lab-page .lab-learning-card__meta {
     height: clamp(130px, 38vw, 170px);
   }
 
-  /* ── Top lamp effect — mobile ── */
-  body.lab-page .lab-lamp {
-    --lab-lamp-w: clamp(220px, 72vw, 340px);
-    --lab-lamp-h: clamp(170px, 56vw, 270px);
-    /* fixed so the lamp doesn't drift off-screen when the
-       scrollable .lab-main is taller than the viewport */
-    position: fixed;
-    top: -12%;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  body.lab-page .lab-lamp__glow--big,
-  body.lab-page .lab-lamp__glow--small {
-    filter: blur(clamp(24px, 8vw, 36px));
+  /* ── Top lamp effect — mobile ──
+     Positioning is handled by the base rule (position:fixed + vh),
+     which works identically on every width. Here we only tighten
+     the big-glow blur so the light reads brighter on small screens. */
+  body.lab-page .lab-lamp__glow--big {
+    filter: blur(clamp(48px, 14vw, 90px));
   }
 
   body.lab-page .lab-power-btn {
@@ -1054,9 +1223,20 @@ body.lab-page .lab-lamp {
   --lab-lamp-blend: plus-lighter;      /* how the light mixes with the mat: screen | plus-lighter | overlay | soft-light | normal */
   --lab-lamp-vspread: 90%;       /* vertical spread of the big glow (its height) */
   --lab-lamp-vspread-small: 68%; /* vertical spread of the inner/bright glow */
-  --lab-lamp-lift: -40px;        /* push the glow up (more negative) or down (toward 0) */
-  position: absolute;
-  top: -25%;
+  --lab-lamp-lift: 0px;          /* push the glow up (more negative) or down (toward 0) */
+  /* How far the lamp is pulled up off the top edge. Expressed as a
+     fraction of --lab-lamp-h (which is width-based), NOT vh, so the
+     pull-up and the glow size always scale together. This is the fix
+     for the old `top:-25vh` bug: a vh offset paired with a vw-based
+     glow meant that on a narrow-but-tall screen the offset stayed
+     large while the glow shrank — pushing the whole glow above the
+     viewport where it became invisible. */
+  --lab-lamp-pull: 0.6;
+  /* Pinned to the viewport top on every device width. position:fixed
+     keeps it anchored regardless of how tall the scrollable .lab-main
+     grows; the offset below is width-based so it never drifts off. */
+  position: fixed;
+  top: calc(var(--lab-lamp-h) * var(--lab-lamp-pull) * -1);
   left: 50%;
   z-index: 1;
   width: 100vw;
@@ -1110,7 +1290,7 @@ body.lab-page .lab-lamp.is-off .lab-lamp__glow {
 }
 
 body.lab-page .lab-lamp__glow {
-  width: 120%;
+  width: 120vw;   /* viewport-relative → adapts to device width */
   height: var(--lab-lamp-vspread);
   background: var(--lab-lamp-glow);
   border-radius: 100px;
@@ -1253,18 +1433,19 @@ body.lab-page .lab-commits {
   user-select: none;
 }
 
+/* Label inside commits widget — single line, unconstrained width */
+body.lab-page .lab-commits .lab-icon-label {
+  max-width: none;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  display: block;
+  white-space: nowrap;
+  text-align: left;
+}
+
 body.lab-page .lab-commits.is-grabbing,
 body.lab-page .lab-commits.is-grabbing * {
   cursor: grabbing;
-}
-
-body.lab-page .lab-commits__heading {
-  margin: 0;
-  font-size: clamp(0.8rem, 1.6vw, .6rem);
-  font-weight: 100;
-  letter-spacing: -0.01em;
-  color: #fff;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
 }
 
 /* Whole-year graph: every track is fr-based so it always fits its
