@@ -1228,63 +1228,45 @@ body.lab-page .lab-learning-card__meta {
     height: clamp(130px, 38vw, 170px);
   }
 
-  /* ── Top lamp effect — mobile ──
-     Positioning is handled by the base rule (position:fixed + vh),
-     which works identically on every width. Here we only tighten
-     the big-glow blur so the light reads brighter on small screens. */
-  body.lab-page .lab-lamp__glow--big {
-    filter: blur(clamp(48px, 14vw, 90px));
-  }
-
-  /* Keep lamp/glow more visible on phones (lower into viewport). */
-  body.lab-page .lab-lamp {
-    --lab-lamp-pull: 0.42;
-    --lab-lamp-h: clamp(220px, 56vw, 360px);
-  }
-
   body.lab-page .lab-power-btn {
     --pb-size: 40px;
   }
 }
 
 /* ============================================================
-   Top lamp effect (Aceternty-inspired)
+   Top lamp — fixed-height stage, width = viewport only
    ============================================================ */
 
 body.lab-page .lab-lamp {
-  --lab-lamp-w: 100vw;
-  --lab-lamp-h: clamp(220px, 42vw, 400px);
+  /* ── Lamp controls (all in px — width is the only viewport-relative part) ──
+     --lab-lamp-lift     UP/DOWN for the glow (main knob)
+                         more negative = glow sits higher (e.g. -60px)
+                         more positive = glow sits lower  (e.g.  20px)
+     --lab-lamp-glow-h   height of the outer wash
+     --lab-lamp-glow-sm  height of the inner bright core
+     --lab-lamp-blur     how far the outer glow bleeds (visual spread)
+     --lab-lamp-h        stage box height (usually leave as-is) */
+  --lab-lamp-h: 300px;
+  --lab-lamp-glow-h: 190px;
+  --lab-lamp-glow-sm: 130px;
+  --lab-lamp-lift: -100px;
+  --lab-lamp-blur: 72px;
+  --lab-lamp-blur-sm: 22px;
+  /* colors */
   --lab-lamp-line: #ffd900;
   --lab-lamp-glow: #fae58a;
   --lab-lamp-glow-bright: #ff0000;
-  /* --- tweakable knobs --- */
-  --lab-lamp-blend: plus-lighter;      /* how the light mixes with the mat: screen | plus-lighter | overlay | soft-light | normal */
-  --lab-lamp-vspread: 90%;       /* vertical spread of the big glow (its height) */
-  --lab-lamp-vspread-small: 68%; /* vertical spread of the inner/bright glow */
-  --lab-lamp-lift: 0px;          /* push the glow up (more negative) or down (toward 0) */
-  /* How far the lamp is pulled up off the top edge. Expressed as a
-     fraction of --lab-lamp-h (which is width-based), NOT vh, so the
-     pull-up and the glow size always scale together. This is the fix
-     for the old `top:-25vh` bug: a vh offset paired with a vw-based
-     glow meant that on a narrow-but-tall screen the offset stayed
-     large while the glow shrank — pushing the whole glow above the
-     viewport where it became invisible. */
-  --lab-lamp-pull: 0.6;
-  /* Pinned to the viewport top on every device width. position:fixed
-     keeps it anchored regardless of how tall the scrollable .lab-main
-     grows; the offset below is width-based so it never drifts off. */
+
   position: fixed;
-  top: calc(var(--lab-lamp-h) * var(--lab-lamp-pull) * -1);
-  left: 50%;
-  z-index: 1;
+  top: 0;
+  left: 0;
   width: 100vw;
-  transform: translateX(-50%);
-  display: flex;
-  justify-content: center;
+  height: var(--lab-lamp-h);
+  z-index: 1;
   pointer-events: none;
+  overflow: visible;
 }
 
-/* Light color follows the mat theme: yellow on green/black, white on blue */
 body.lab-page[data-mat-color="green"] .lab-lamp,
 body.lab-page[data-mat-color="black"] .lab-lamp {
   --lab-lamp-line: #ffffff;
@@ -1294,29 +1276,52 @@ body.lab-page[data-mat-color="black"] .lab-lamp {
 
 body.lab-page[data-mat-color="blue"] .lab-lamp {
   --lab-lamp-line: #ffffff;
-  --lab-lamp-glow: #dCe8ff;
+  --lab-lamp-glow: #dce8ff;
   --lab-lamp-glow-bright: #ffffff;
 }
 
 body.lab-page .lab-lamp__stage {
   position: relative;
-  width: var(--lab-lamp-w);
-  height: var(--lab-lamp-h);
-  display: flex;
-  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
 body.lab-page .lab-lamp__line {
   position: absolute;
   top: 0;
+  left: 0;
+  width: 100%;
   height: 3px;
-  width: 90%;
   background: var(--lab-lamp-line);
   box-shadow: 0 0 8px 1px var(--lab-lamp-line);
+  transform-origin: center;
   animation: lab-lamp-line-grow 1s ease-out forwards;
 }
 
-/* Off state — toggled by the top-left power switch */
+body.lab-page .lab-lamp__glow {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 100vw;
+  height: var(--lab-lamp-glow-h);
+  background: var(--lab-lamp-glow);
+  transform: translate(-50%, var(--lab-lamp-lift));
+  filter: blur(var(--lab-lamp-blur));
+  opacity: 0.8;
+  mix-blend-mode: plus-lighter;
+  z-index: 3;
+}
+
+body.lab-page .lab-lamp__glow--small {
+  height: var(--lab-lamp-glow-sm);
+  background: var(--lab-lamp-glow-bright);
+  filter: blur(var(--lab-lamp-blur-sm));
+  opacity: 1;
+  z-index: 2;
+  transform-origin: center top;
+  animation: lab-lamp-glow-grow 1s ease-out forwards;
+}
+
 body.lab-page .lab-lamp__line,
 body.lab-page .lab-lamp__glow {
   transition: opacity 0.35s ease;
@@ -1327,40 +1332,96 @@ body.lab-page .lab-lamp.is-off .lab-lamp__glow {
   opacity: 0 !important;
 }
 
-body.lab-page .lab-lamp__glow {
-  width: 120vw;   /* viewport-relative → adapts to device width */
-  height: var(--lab-lamp-vspread);
-  background: var(--lab-lamp-glow);
-  border-radius: 100px;
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, var(--lab-lamp-lift));
-  filter: blur(120px);
-  opacity: .8;
-  mix-blend-mode: var(--lab-lamp-blend);
-  z-index: 3;
-}
-
-body.lab-page .lab-lamp__glow--small {
-  background: var(--lab-lamp-glow-bright);
-  height: var(--lab-lamp-vspread-small);
-  width: 100vw;
-  filter: blur(20px);
-  opacity: 1;
-  mix-blend-mode: var(--lab-lamp-blend);
-  animation: lab-lamp-glow-grow 1s ease-out forwards;
-  z-index: 2;
-}
-
 @keyframes lab-lamp-line-grow {
-  0% { width: 30%; }
-  100% { width: 90%; }
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
 }
 
 @keyframes lab-lamp-glow-grow {
-  0% { width: 30%; opacity: 0; }
-  100% { width: 85%; opacity: 0.7; }
+  from { transform: translate(-50%, var(--lab-lamp-lift)) scaleX(0.3); opacity: 0; }
+  to   { transform: translate(-50%, var(--lab-lamp-lift)) scaleX(1);   opacity: 0.7; }
+}
+
+/* ============================================================
+   Lab intro — staggered drop (synced to lamp 1s ease-out)
+   ============================================================ */
+
+@keyframes lab-drop-in {
+  from {
+    opacity: 0;
+    filter: blur(var(--lab-drop-blur, 10px));
+    transform: translateY(var(--lab-drop-y, -10px));
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes lab-drop-in-icon {
+  from {
+    opacity: 0;
+    filter: blur(var(--lab-drop-blur, 10px));
+    transform: translateY(var(--lab-drop-y, -10px)) translateZ(0);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0) translateZ(0);
+  }
+}
+
+/* Hidden until intro starts (covers static + manifest icons) */
+body.lab-page:not(.lab-intro-done) #lab-power-btn,
+body.lab-page:not(.lab-intro-done) #lab-main .lab-desktop-icon,
+body.lab-page:not(.lab-intro-done) #lab-main [data-widget-id],
+body.lab-page:not(.lab-intro-done) .lab-color-switcher {
+  opacity: 0;
+  filter: blur(var(--lab-drop-blur, 10px));
+  transform: translateY(var(--lab-drop-y, -10px));
+  pointer-events: none;
+}
+
+body.lab-page:not(.lab-intro-done) #lab-main .lab-desktop-icon {
+  transform: translateY(var(--lab-drop-y, -10px)) translateZ(0);
+}
+
+body.lab-page.lab-intro-done .lab-intro-target {
+  animation: lab-drop-in var(--lab-drop-dur, 0.38s) ease-out both;
+  animation-delay: var(--lab-drop-delay, 0ms);
+  pointer-events: auto;
+}
+
+body.lab-page.lab-intro-done .lab-intro-target.lab-desktop-icon {
+  animation-name: lab-drop-in-icon;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.lab-page:not(.lab-intro-done) #lab-power-btn,
+  body.lab-page:not(.lab-intro-done) #lab-main .lab-desktop-icon,
+  body.lab-page:not(.lab-intro-done) #lab-main [data-widget-id],
+  body.lab-page:not(.lab-intro-done) .lab-color-switcher {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  body.lab-page.lab-intro-done .lab-intro-target {
+    animation: none;
+  }
+}
+
+@media (max-width: 520px) {
+  body.lab-page .lab-lamp {
+    --lab-lamp-h: 260px;
+    --lab-lamp-glow-h: 165px;
+    --lab-lamp-glow-sm: 112px;
+    --lab-lamp-lift: -90px;
+    --lab-lamp-blur: 58px;
+    --lab-lamp-blur-sm: 18px;
+  }
 }
 
 /* ============================================================

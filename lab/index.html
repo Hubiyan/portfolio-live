@@ -1255,13 +1255,6 @@
     /* ── Desktop icon drag + click system ──────────────────── */
     var LabIcons = (function () {
         function setupIcon(icon) {
-            var pinLoad = icon.dataset.pinLoad;
-
-            /* Pinned props always start top-left on load */
-            if (pinLoad === 'top-left') {
-                pinAirpodsTopLeft(icon);
-            }
-
             var dragging = false, moved = false, wasDragged = false;
             var startX, startY, startL, startT;
 
@@ -1331,8 +1324,21 @@
 
         fetch('/images/lab-images/manifest.json')
             .then(function (r) { return r.json(); })
-            .then(function (entries) { entries.forEach(createIcon); relayoutDesktop(); })
-            .catch(function () { relayoutDesktop(); /* manifest missing — still lay out */ });
+            .then(function (entries) {
+                entries.forEach(createIcon);
+                if (window.matchMedia('(max-width: 520px)').matches) {
+                    _mobileLayoutDone = false;
+                    layoutMobileItems(true);
+                } else {
+                    resolveDesktopOverlaps();
+                }
+                scheduleLabDropIn();
+            })
+            .catch(function () {
+                if (window.matchMedia('(max-width: 520px)').matches) updateMobileCanvasHeight();
+                else resolveDesktopOverlaps();
+                scheduleLabDropIn();
+            });
 
         function createIcon(entry, i) {
             var isVid = entry.type === 'video';
@@ -1555,17 +1561,26 @@
 
         function clampToViewport(widget) {
             var vw   = window.innerWidth;
-            var vh   = window.innerHeight;
             var rect = widget.getBoundingClientRect();
             var left = widget.offsetLeft;
             var top  = widget.offsetTop;
             var pad  = 8;
             var maxL = Math.max(pad, vw - rect.width - pad);
-            var maxT = Math.max(pad, vh - rect.height - pad);
 
             if (left > maxL) left = maxL;
-            if (top  > maxT) top  = maxT;
             if (left < pad)  left = pad;
+
+            /* Mobile canvas scrolls — only clamp horizontal edges + min top. */
+            if (window.matchMedia('(max-width: 520px)').matches) {
+                if (top < pad) top = pad;
+                widget.style.left = left + 'px';
+                widget.style.top  = top  + 'px';
+                return;
+            }
+
+            var vh   = window.innerHeight;
+            var maxT = Math.max(pad, vh - rect.height - pad);
+            if (top  > maxT) top  = maxT;
             if (top  < pad)  top  = pad;
 
             widget.style.left = left + 'px';
@@ -1644,7 +1659,10 @@
                 });
             }
 
-            window.addEventListener('resize', function () { clampToViewport(widget); });
+            window.addEventListener('resize', function () {
+                if (window.matchMedia('(max-width: 520px)').matches) return;
+                clampToViewport(widget);
+            });
         }
 
         document.querySelectorAll('[data-widget-id]').forEach(setupWidget);
@@ -1653,6 +1671,7 @@
     })();
 
     /* ── Mobile load layout — curated arrangement ───────────── */
+    var _mobileLayoutDone = false;
 
     function pinPowerTopLeft() {
         var power = document.getElementById('lab-power-btn');
@@ -1663,50 +1682,48 @@
         return power;
     }
 
-    function pinAirpodsTopLeft(el) {
-        var airpods = el || document.getElementById('lab-airpods');
-        if (!airpods) return;
-        var mobile = window.matchMedia('(max-width: 520px)').matches;
-        var pad = mobile ? 16 : 24;
-        var power = document.getElementById('lab-power-btn');
-        var offset = power ? power.offsetWidth + (mobile ? 12 : 20) : 0;
-        airpods.style.left = (pad + offset) + 'px';
-        airpods.style.top  = pad + 'px';
-        return airpods;
+    function updateMobileCanvasHeight() {
+        if (!window.matchMedia('(max-width: 520px)').matches) return;
+        var main = document.getElementById('lab-main');
+        if (!main) return;
+        var maxBottom = 0;
+        Array.prototype.slice.call(
+            main.querySelectorAll('.lab-desktop-icon, [data-widget-id], .lab-power-btn')
+        ).forEach(function (el) {
+            maxBottom = Math.max(maxBottom, el.offsetTop + el.offsetHeight);
+        });
+        main.style.minHeight = Math.round(maxBottom + 40) + 'px';
     }
 
-    function layoutMobileItems() {
+    function layoutMobileItems(force) {
         pinPowerTopLeft();
         var main = document.getElementById('lab-main');
         if (!main) return;
         if (!window.matchMedia('(max-width: 520px)').matches) return;
+        if (_mobileLayoutDone && !force) return;
 
-        /* Curated mobile arrangement. Items stay position:absolute so the
-           drag system can still move them; this only sets the load layout:
-             • Learning card  → top-right
-             • Casio watch     → directly below the card (right column)
-             • 4 app icons     → vertical stack on the left
-             • Sleep commits   → below both columns
-             • Headphones      → below that
-             • everything else → 2-column flow below */
+        /* Curated mobile arrangement — runs once per page load/reload only.
+           Dragged positions are kept until the user refreshes. */
         var vw  = window.innerWidth;
         var pad = 16;
         var GAP = 22;
 
-        var power     = document.getElementById('lab-power-btn');
-        var topStart  = (power ? power.offsetTop + power.offsetHeight : pad) + 24;
+        var power    = document.getElementById('lab-power-btn');
+        var topStart = (power ? power.offsetTop + power.offsetHeight : pad) + 24;
 
-        function get(sel)        { return main.querySelector(sel); }
-        function clampX(x, w)    { return Math.max(pad, Math.min(x, vw - w - pad)); }
+        function get(sel)     { return main.querySelector(sel); }
+        function clampX(x, w) { return Math.max(pad, Math.min(x, vw - w - pad)); }
 
-        /* Deterministic "spontaneous" jitter — same offsets every reload,
-           so the layout looks hand-placed but stays stable on resize. */
+        /* Deterministic jitter — stable between reloads, looks hand-scattered. */
         var seed = 0;
-        function rnd()           { var x = Math.sin(++seed * 99.137) * 10000; return x - Math.floor(x); }
-        function jit(amt)        { return (rnd() * 2 - 1) * amt; }
-        function place(el, x, y) {
-            el.style.left = Math.round(clampX(x + jit(7), el.offsetWidth)) + 'px';
-            el.style.top  = Math.round(Math.max(8, y + jit(6))) + 'px';
+        function rnd()    { var x = Math.sin(++seed * 99.137) * 10000; return x - Math.floor(x); }
+        function jit(amt) { return (rnd() * 2 - 1) * amt; }
+        function place(el, x, y, jitter) {
+            if (!el) return;
+            var jx = jitter ? jit(7) : 0;
+            var jy = jitter ? jit(6) : 0;
+            el.style.left = Math.round(clampX(x + jx, el.offsetWidth)) + 'px';
+            el.style.top  = Math.round(Math.max(8, y + jy)) + 'px';
         }
 
         var learning = get('#lab-learning-card');
@@ -1714,64 +1731,88 @@
         var commits  = get('#lab-commits');
         var airpods  = get('#lab-airpods');
 
-        var leftIcons = ['prompts', 'terminal', 'comment-bro', 'ai-bro']
-            .map(function (id) { return get('[data-icon-id="' + id + '"]'); })
-            .filter(Boolean);
-
-        /* Right column: learning card, then casio below it */
-        var rightBottom = topStart;
+        /* 1. Learning card — top-right */
+        var cardLeft = pad;
+        var cardBottom = topStart;
         if (learning) {
             var lw = learning.offsetWidth;
-            place(learning, clampX(vw - lw - pad, lw), rightBottom);
-            rightBottom += learning.offsetHeight + GAP;
-        }
-        if (casio) {
-            var cw = casio.offsetWidth;
-            place(casio, clampX(vw - cw - pad, cw), rightBottom);
-            rightBottom += casio.offsetHeight + GAP;
+            cardLeft = clampX(vw - lw - pad, lw);
+            place(learning, cardLeft, topStart, false);
+            cardBottom = learning.offsetTop + learning.offsetHeight;
         }
 
-        /* Left column: 4 icons stacked vertically */
+        /* 2. Four app icons — left of the card, staggered (not a straight column) */
+        var leftIconSpecs = [
+            { id: 'prompts',      xShift: 0,  yShift: 0   },
+            { id: 'terminal',     xShift: 22, yShift: 74  },
+            { id: 'comment-bro',  xShift: 6,  yShift: 152 },
+            { id: 'ai-bro',       xShift: 34, yShift: 228 }
+        ];
         var leftBottom = topStart;
-        leftIcons.forEach(function (el) {
-            place(el, pad, leftBottom);
-            leftBottom += el.offsetHeight + GAP;
+        leftIconSpecs.forEach(function (spec) {
+            var el = get('[data-icon-id="' + spec.id + '"]');
+            if (!el) return;
+            place(el, pad + spec.xShift, topStart + spec.yShift, true);
+            leftBottom = Math.max(leftBottom, el.offsetTop + el.offsetHeight);
         });
 
-        /* Sleep commits below both columns (centered) */
-        var y = Math.max(rightBottom, leftBottom) + 4;
+        /* 3. Watch — below the card, right side */
+        var rowY = cardBottom + GAP;
+        if (casio) {
+            var cw = casio.offsetWidth;
+            place(casio, clampX(vw - cw - pad, cw), rowY, false);
+        }
+
+        /* 4. Headphones — beside the watch, below the card */
+        if (airpods) {
+            var aw = airpods.offsetWidth;
+            var watchLeft = casio ? casio.offsetLeft : clampX(vw - aw - pad, aw);
+            var airpodsX = clampX(watchLeft - aw - 10, aw);
+            var airpodsY = casio ? casio.offsetTop + 6 : rowY;
+            place(airpods, airpodsX, airpodsY, true);
+        }
+
+        /* 5. Sleep commits — below watch + headphones block */
+        var y = rowY;
+        if (casio)   y = Math.max(y, casio.offsetTop + casio.offsetHeight);
+        if (airpods) y = Math.max(y, airpods.offsetTop + airpods.offsetHeight);
+        y = Math.max(y, leftBottom) + GAP;
         if (commits) {
             var mw = commits.offsetWidth;
-            place(commits, clampX((vw - mw) / 2, mw), y);
-            y += commits.offsetHeight + GAP;
+            place(commits, clampX((vw - mw) / 2, mw), y, false);
+            y = commits.offsetTop + commits.offsetHeight + GAP;
         }
 
-        /* Headphones below the commits graph */
-        if (airpods) {
-            place(airpods, pad, y);
-            y += airpods.offsetHeight + GAP;
-        }
+        /* 6. Everything else — scrambled two-column flow below */
+        var placedIds = ['prompts', 'terminal', 'comment-bro', 'ai-bro'];
+        var placed = [learning, casio, commits, airpods];
+        leftIconSpecs.forEach(function (spec) {
+            var el = get('[data-icon-id="' + spec.id + '"]');
+            if (el) placed.push(el);
+        });
 
-        /* Everything else → simple 2-column flow */
-        var placed = [learning, casio, commits, airpods].concat(leftIcons);
         var rest = Array.prototype.slice.call(
             main.querySelectorAll('.lab-desktop-icon, [data-widget-id]')
         ).filter(function (el) {
-            return el !== power && placed.indexOf(el) === -1;
+            if (el === power) return false;
+            if (placed.indexOf(el) !== -1) return false;
+            if (placedIds.indexOf(el.dataset.iconId) !== -1) return false;
+            return true;
         });
 
-        var col = 0, rowY = y, rowMaxH = 0;
+        var col = 0, rowY2 = y, rowMaxH = 0;
         rest.forEach(function (el) {
             var w = el.offsetWidth;
-            var x = col === 0 ? pad : vw / 2 + 4;
-            place(el, clampX(x, w), rowY);
+            var baseX = col === 0 ? pad : Math.round(vw * 0.52);
+            place(el, clampX(baseX, w), rowY2, true);
             rowMaxH = Math.max(rowMaxH, el.offsetHeight);
             col++;
-            if (col === 2) { col = 0; rowY += rowMaxH + GAP; rowMaxH = 0; }
+            if (col === 2) { col = 0; rowY2 += rowMaxH + GAP; rowMaxH = 0; }
         });
-        if (col === 1) rowY += rowMaxH + GAP;
+        if (col === 1) rowY2 += rowMaxH + GAP;
 
-        main.style.minHeight = Math.round(rowY + 40) + 'px';
+        main.style.minHeight = Math.round(rowY2 + 40) + 'px';
+        _mobileLayoutDone = true;
     }
 
     /* ── Desktop overlap safety net ─────────────────────────────
@@ -1812,27 +1853,123 @@
 
     /* The learning card starts expanded on all breakpoints. */
 
-    function relayoutDesktop() { layoutMobileItems(); resolveDesktopOverlaps(); }
+    function relayoutDesktop() {
+        if (window.matchMedia('(max-width: 520px)').matches) {
+            layoutMobileItems(false);
+            updateMobileCanvasHeight();
+            return;
+        }
+        pinPowerTopLeft();
+        resolveDesktopOverlaps();
+    }
 
-    relayoutDesktop();
-    window.addEventListener('load', relayoutDesktop);
+    layoutMobileItems(true);
+    resolveDesktopOverlaps();
+    window.addEventListener('load', function () {
+        if (window.matchMedia('(max-width: 520px)').matches) {
+            if (!_mobileLayoutDone) layoutMobileItems(true);
+            else updateMobileCanvasHeight();
+        } else {
+            resolveDesktopOverlaps();
+        }
+    });
 
-    /* Re-settle the measured mobile stack once thumbnails report their
-       real height (manifest images load asynchronously). */
+    /* Re-measure mobile canvas once manifest thumbnails finish loading. */
     (function reflowOnImageLoad() {
         var main = document.getElementById('lab-main');
         if (!main) return;
         Array.prototype.slice.call(main.querySelectorAll('img')).forEach(function (img) {
             if (img.complete) return;
-            img.addEventListener('load', function () { relayoutDesktop(); }, { once: true });
+            img.addEventListener('load', function () {
+                if (!_mobileLayoutDone) layoutMobileItems(true);
+                else updateMobileCanvasHeight();
+            }, { once: true });
         });
     })();
 
+    /* ── Lab intro drop-in (staggered, synced to lamp 1s animation) ── */
+    var _labDropDone = false;
+    var LAMP_INTRO_MS = 1000;
+    var LAB_DROP_DUR_S = 0.38;
+
+    function collectLabIntroTargets() {
+        var nodes = [];
+        function add(sel) {
+            document.querySelectorAll(sel).forEach(function (el) {
+                if (nodes.indexOf(el) === -1) nodes.push(el);
+            });
+        }
+        add('#lab-power-btn');
+        add('#lab-main .lab-desktop-icon');
+        add('#lab-main [data-widget-id]');
+        add('.lab-color-switcher');
+        return nodes;
+    }
+
+    function scheduleLabDropIn() {
+        if (_labDropDone) return;
+        requestAnimationFrame(function () {
+            requestAnimationFrame(initLabDropIn);
+        });
+    }
+
+    function initLabDropIn() {
+        if (_labDropDone) return;
+
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.body.classList.add('lab-intro-done');
+            _labDropDone = true;
+            return;
+        }
+
+        var nodes = collectLabIntroTargets();
+        if (!nodes.length) {
+            document.body.classList.add('lab-intro-done');
+            _labDropDone = true;
+            return;
+        }
+
+        var dropMs = LAB_DROP_DUR_S * 1000;
+        var stagger = nodes.length > 1
+            ? (LAMP_INTRO_MS - dropMs) / (nodes.length - 1)
+            : 0;
+
+        nodes.forEach(function (el, i) {
+            el.classList.add('lab-intro-target');
+            el.style.setProperty('--lab-drop-delay', Math.round(i * stagger) + 'ms');
+            el.style.setProperty('--lab-drop-dur', LAB_DROP_DUR_S + 's');
+        });
+
+        requestAnimationFrame(function () {
+            document.body.classList.add('lab-intro-done');
+        });
+
+        _labDropDone = true;
+    }
+
     var _relayoutTimer = null;
+    var _lastLayoutWidth = window.innerWidth;
     window.addEventListener('resize', function () {
         clearTimeout(_relayoutTimer);
-        _relayoutTimer = setTimeout(relayoutDesktop, 150);
-        syncTerminalScrollLock();
+        _relayoutTimer = setTimeout(function () {
+            if (window.matchMedia('(max-width: 520px)').matches) {
+                pinPowerTopLeft();
+                /* Only re-run the curated layout on a real width change
+                   (orientation / breakpoint), not address-bar scroll jitter. */
+                if (Math.abs(window.innerWidth - _lastLayoutWidth) > 40) {
+                    _mobileLayoutDone = false;
+                    layoutMobileItems(true);
+                    _lastLayoutWidth = window.innerWidth;
+                } else {
+                    updateMobileCanvasHeight();
+                }
+            } else {
+                _lastLayoutWidth = window.innerWidth;
+                pinPowerTopLeft();
+                resolveDesktopOverlaps();
+            }
+            syncTerminalScrollLock();
+        }, 150);
     });
     </script>
 </body>
