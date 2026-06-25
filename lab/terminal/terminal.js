@@ -37,6 +37,9 @@
             .replace(/>/g, '&gt;');
     }
 
+    /* appendLine takes trusted/static markup. For ANY dynamic or server-derived
+       string use appendText(), which always escapes — prevents a future
+       unescaped value from becoming stored XSS in this origin. */
     function appendLine(cls, html) {
         var el = document.createElement('div');
         el.className = 'terminal-line ' + cls;
@@ -44,6 +47,10 @@
         output.appendChild(el);
         scrollBottom();
         return el;
+    }
+
+    function appendText(cls, text) {
+        return appendLine(cls, esc(text));
     }
 
     function scrollBottom() {
@@ -155,38 +162,45 @@
             if (typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
 
             if (r.status === 429) {
-                appendLine('line--error', esc(r.data.error || 'Out of tokens.'));
+                appendText('line--error', r.data.error || 'Out of tokens.');
                 tokensLeft = 0;
                 inFlight = false;
                 return; /* No new prompt */
             }
 
-            if (r.status !== 200) {
-                appendLine('line--error', esc(r.data.error || 'Something broke. How fitting.'));
+            if (r.status === 503) {
+                appendText('line--error', r.data.error || 'Terminal is catching its breath. Try again shortly.');
                 inFlight = false;
                 showPrompt();
                 return;
             }
 
-            appendLine('line--response', esc(r.data.answer));
+            if (r.status !== 200) {
+                appendText('line--error', r.data.error || 'Something broke. How fitting.');
+                inFlight = false;
+                showPrompt();
+                return;
+            }
+
+            appendText('line--response', r.data.answer);
 
             tokensLeft = typeof r.data.tokens_left === 'number' ? r.data.tokens_left : Math.max(0, tokensLeft - 1);
             var tokenMsg = tokensLeft > 0
                 ? '[' + tokensLeft + ' token' + (tokensLeft === 1 ? '' : 's') + ' remaining]'
                 : '[0 tokens remaining — come back in ~12h]';
-            appendLine('line--tokens', tokenMsg);
+            appendText('line--tokens', tokenMsg);
 
             inFlight = false;
 
             if (tokensLeft <= 0) {
-                appendLine('line--error', "You’ve used all " + MAX_TOKENS + " questions. Maybe read the portfolio next time.");
+                appendText('line--error', 'You\u2019ve used all ' + MAX_TOKENS + ' questions. Maybe read the portfolio next time.');
             } else {
                 showPrompt();
             }
         })
         .catch(function () {
             if (typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
-            appendLine('line--error', 'Network error. Even the internet is dodging you.');
+            appendText('line--error', 'Network error. Even the internet is dodging you.');
             inFlight = false;
             showPrompt();
         });
@@ -205,6 +219,7 @@
 
     /* ── Boot ── */
     appendLine('line--system', 'Last login: probably instead of reading the portfolio.');
+    appendLine('line--system', 'Note: questions are processed by a third-party AI — don\'t paste anything sensitive.');
     showPrompt();
 
 })();

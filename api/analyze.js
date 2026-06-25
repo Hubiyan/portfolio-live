@@ -22,7 +22,7 @@
  */
 
 const { sendJson, corsHeaders } = require('./cors');
-const { getClientIp, checkAndRecord, rateLimitPayload } = require('./rate-limit');
+const { getClientIp, checkAndRecord, rateLimitPayload, reserveGlobalBudget, refundGlobalBudget } = require('./rate-limit');
 const { buildSystemPrompt, normalizeAnalysis } = require('./bro-taxonomy');
 
 const GROQ_API_URL  = 'https://api.groq.com/openai/v1/chat/completions';
@@ -31,6 +31,7 @@ const DEFAULT_MODEL = 'meta-llama/llama-4-scout-17b-16e-instruct';
 const MAX_TEXT_CHARS  = 20000;
 const MAX_FETCH_BYTES = 512 * 1024;            // 512 KB per URL
 const FETCH_TIMEOUT   = 9000;                  // 9 s
+const GROQ_TIMEOUT_MS = 30000;                 // upstream LLM call ceiling
 
 function parseReqBody(req) {
     let raw = req.body;
@@ -171,14 +172,25 @@ async function callGroq(systemPrompt, userParts) {
     };
 
     for (let attempt = 0; attempt < 3; attempt++) {
-        const res = await fetch(GROQ_API_URL, {
-            method:  'POST',
-            headers: {
-                'Content-Type':  'application/json',
-                Authorization:   `Bearer ${apiKey}`,
-            },
-            body: JSON.stringify(baseBody),
-        });
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), GROQ_TIMEOUT_MS);
+        let res;
+        try {
+            res = await fetch(GROQ_API_URL, {
+                method:  'POST',
+                headers: {
+                    'Content-Type':  'application/json',
+                    Authorization:   `Bearer ${apiKey}`,
+                },
+                body: JSON.stringify(baseBody),
+                signal: controller.signal,
+            });
+        } catch (e) {
+            if (e.name === 'AbortError') throw new Error('Groq timeout');
+            throw e;
+        } finally {
+            clearTimeout(timer);
+        }
 
         if (res.status === 429 && attempt < 2) {
             let waitMs = 2500 * (attempt + 1);
@@ -248,12 +260,26 @@ module.exports = async function handler(req, res) {
 
         const ip = getClientIp(req);
         const rlCheck = await checkAndRecord(ip, { record: false, req });
+        if (rlCheck.unavailable) {
+            return sendJson(req, res, 503, { error: 'Service is temporarily unavailable. Try again shortly.' });
+        }
         if (!rlCheck.allowed) {
             res.setHeader('Retry-After', String(rlCheck.retryAfterSeconds));
             return sendJson(req, res, 429, {
                 error:      'Rate limit reached. You can run 5 analyses every 12 hours.',
                 rate_limit: rateLimitPayload(rlCheck),
             });
+        }
+
+        /* Shared global daily budget (protects the Groq key across all lab
+           tools). Fails closed on KV error. */
+        const gRes = await reserveGlobalBudget();
+        if (gRes.unavailable) {
+            return sendJson(req, res, 503, { error: 'Service is temporarily unavailable. Try again shortly.' });
+        }
+        if (!gRes.allowed) {
+            res.setHeader('Retry-After', '3600');
+            return sendJson(req, res, 429, { error: 'The lab is overloaded right now. Try again later.' });
         }
 
         let urlContext = '';
@@ -267,6 +293,7 @@ module.exports = async function handler(req, res) {
 
         const textParts = [rawText, urlContext].filter(Boolean).join('\n\n---\n\n').trim();
         if (!textParts) {
+            await refundGlobalBudget();
             return sendJson(req, res, 400, { error: 'No text to analyse. Paste content or wait for OCR from a screenshot.' });
         }
 
@@ -280,6 +307,7 @@ module.exports = async function handler(req, res) {
             result = await callGroq(getSystemPrompt(), userParts);
         } catch (err) {
             console.error('[analyze] model error:', err.message);
+            await refundGlobalBudget();
             return sendJson(req, res, 502, { error: 'The analysis model returned an error. Try again.' });
         }
 

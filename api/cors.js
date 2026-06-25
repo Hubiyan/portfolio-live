@@ -1,5 +1,10 @@
 /**
  * Shared CORS helpers for AI Bro Detector API routes.
+ *
+ * NOTE: CORS is NOT an access-control gate. It only constrains browsers from
+ * OTHER origins; curl/scripts/bots ignore it entirely and (when they send no
+ * Origin) get `*`. Abuse protection comes from the rate limits and the shared
+ * global daily budget in rate-limit.js — not from this file.
  */
 
 function hostMatchesPortfolio(hostname) {

@@ -29,13 +29,64 @@ function getKv() {
     return kv;
 }
 
-function getClientIp(req) {
-    const xff = req.headers && req.headers['x-forwarded-for'];
-    if (typeof xff === 'string' && xff.trim()) {
-        return xff.split(',')[0].trim();
+/* ---- Shared global daily budget (protects the single GROQ_API_KEY across
+   /api/ask, /api/analyze and /api/comment) ----
+   Atomic counter (INCR) keyed per UTC day. Reserve-then-refund: callers
+   reserve before hitting Groq and refund if the upstream call fails.
+   Fails CLOSED — if KV is configured but errors, we report `unavailable`
+   so the caller can return 503 instead of silently allowing unlimited spend. */
+const GLOBAL_DAILY_MAX = Number(process.env.GROQ_GLOBAL_DAILY_MAX || 500);
+const GLOBAL_TTL_SEC   = 26 * 60 * 60; // > 24h buffer
+
+function globalBudgetKey() {
+    const day = new Date().toISOString().slice(0, 10).replace(/-/g, ''); // YYYYMMDD (UTC)
+    return `groq:global:${day}`;
+}
+
+async function reserveGlobalBudget() {
+    /* No KV configured (local/dev) → don't gate globally. */
+    if (!hasKv()) return { allowed: true, unavailable: false, remaining: GLOBAL_DAILY_MAX };
+
+    const kv  = getKv();
+    const key = globalBudgetKey();
+    let count;
+    try {
+        count = await kv.incr(key);
+        if (count === 1) {
+            try { await kv.expire(key, GLOBAL_TTL_SEC); } catch (e) { console.error('[rate-limit] global expire:', e.message); }
+        }
+    } catch (e) {
+        console.error('[rate-limit] global incr failed:', e.message);
+        return { allowed: false, unavailable: true, remaining: 0 };
     }
-    const realIp = req.headers && req.headers['x-real-ip'];
+
+    if (count > GLOBAL_DAILY_MAX) {
+        try { await kv.decr(key); } catch (e) { console.error('[rate-limit] global decr:', e.message); }
+        return { allowed: false, unavailable: false, remaining: 0 };
+    }
+    return { allowed: true, unavailable: false, remaining: Math.max(0, GLOBAL_DAILY_MAX - count) };
+}
+
+async function refundGlobalBudget() {
+    if (!hasKv()) return;
+    try { await getKv().decr(globalBudgetKey()); } catch (e) { console.error('[rate-limit] global refund:', e.message); }
+}
+
+function getClientIp(req) {
+    const h = (req && req.headers) || {};
+    /* Prefer the headers Vercel sets from the TCP connection — these cannot be
+       overwritten by a proxy/client. `x-vercel-forwarded-for` survives even when
+       a proxy on top rewrites `x-forwarded-for`; `x-real-ip` is the canonical
+       client IP used by @vercel/functions. Raw XFF is the last resort. */
+    const vff = h['x-vercel-forwarded-for'];
+    if (typeof vff === 'string' && vff.trim()) return vff.split(',')[0].trim();
+
+    const realIp = h['x-real-ip'];
     if (typeof realIp === 'string' && realIp.trim()) return realIp.trim();
+
+    const xff = h['x-forwarded-for'];
+    if (typeof xff === 'string' && xff.trim()) return xff.split(',')[0].trim();
+
     return 'unknown';
 }
 
@@ -50,9 +101,22 @@ function isWhitelisted(ip) {
 function whitelistResult() {
     return {
         allowed:           true,
+        unavailable:       false,
         unlimited:         true,
         limit:             MAX_REQUESTS,
         remaining:         MAX_REQUESTS,
+        resetAt:           null,
+        retryAfterSeconds: 0,
+    };
+}
+
+function unavailableResult() {
+    return {
+        allowed:           false,
+        unavailable:       true,
+        unlimited:         false,
+        limit:             MAX_REQUESTS,
+        remaining:         0,
         resetAt:           null,
         retryAfterSeconds: 0,
     };
@@ -98,26 +162,17 @@ function devSave(key, timestamps) {
 
 async function loadTimestamps(key) {
     if (hasKv()) {
-        try {
-            const kv = getKv();
-            const v = await kv.get(key);
-            return Array.isArray(v) ? v : [];
-        } catch (err) {
-            console.error('[rate-limit] KV get failed:', err.message);
-            return [];
-        }
+        const kv = getKv();
+        const v = await kv.get(key);
+        return Array.isArray(v) ? v : [];
     }
     return devLoad(key);
 }
 
 async function saveTimestamps(key, timestamps) {
     if (hasKv()) {
-        try {
-            const kv = getKv();
-            await kv.set(key, timestamps, { ex: KV_TTL_SEC });
-        } catch (err) {
-            console.error('[rate-limit] KV set failed:', err.message);
-        }
+        const kv = getKv();
+        await kv.set(key, timestamps, { ex: KV_TTL_SEC });
         return;
     }
     devSave(key, timestamps);
@@ -134,6 +189,7 @@ function buildResult(recent, { record, now }) {
     if (!record && recent.length >= MAX_REQUESTS) {
         return {
             allowed:           false,
+            unavailable:       false,
             unlimited:         false,
             limit,
             remaining:         0,
@@ -144,6 +200,7 @@ function buildResult(recent, { record, now }) {
 
     return {
         allowed:           true,
+        unavailable:       false,
         unlimited:         false,
         limit,
         remaining,
@@ -162,8 +219,11 @@ function isRateLimitDisabled() {
     return v === '1' || v === 'true' || String(v || '').toLowerCase() === 'yes';
 }
 
-/** Local `vercel dev` / LAN testing — Host is localhost or private IP. */
+/** Local `vercel dev` / LAN testing — Host is localhost or private IP.
+ *  Disabled in production: a Host header is attacker-controllable behind some
+ *  proxies, so it must never grant a rate-limit bypass on the live site. */
 function isLocalDevRequest(req) {
+    if (process.env.VERCEL_ENV === 'production') return false;
     if (!req || !req.headers) return false;
     const host = String(req.headers.host || '').split(',')[0].trim().toLowerCase();
     if (!host) return false;
@@ -180,14 +240,25 @@ async function checkAndRecord(ip, { record, req } = {}) {
 
     const key = ipKey(ip);
     const now = Date.now();
-    let recent = prune(await loadTimestamps(key), now);
+    let recent;
+    try {
+        recent = prune(await loadTimestamps(key), now);
+    } catch (err) {
+        console.error('[rate-limit] KV get failed:', err.message);
+        return unavailableResult();
+    }
 
     if (!record) {
         return buildResult(recent, { record: false, now });
     }
 
     recent.push(now);
-    await saveTimestamps(key, recent);
+    try {
+        await saveTimestamps(key, recent);
+    } catch (err) {
+        console.error('[rate-limit] KV set failed:', err.message);
+        return unavailableResult();
+    }
     recent = prune(recent, now);
     return buildResult(recent, { record: true, now });
 }
@@ -204,7 +275,10 @@ function rateLimitPayload(rl) {
 module.exports = {
     WINDOW_MS,
     MAX_REQUESTS,
+    GLOBAL_DAILY_MAX,
     getClientIp,
     checkAndRecord,
     rateLimitPayload,
+    reserveGlobalBudget,
+    refundGlobalBudget,
 };
