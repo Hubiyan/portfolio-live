@@ -10,7 +10,8 @@
     <div id="terminal-root">
         <div id="terminal-output"></div>
         <!-- Hidden keyboard capture — always focused so typing goes inline -->
-        <input id="terminal-capture" aria-hidden="true" tabindex="-1"
+        <input id="terminal-capture" type="text" inputmode="text"
+               enterkeyhint="send" aria-hidden="true"
                autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
     </div>
     <script src="terminal.js"></script>

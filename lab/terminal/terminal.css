@@ -33,11 +33,13 @@ html, body {
   cursor: text;
 }
 
-/* ── Hidden keyboard capture ── */
+/* ── Hidden keyboard capture ──
+   Kept inside the viewport (not at -9999px) so iOS/Android reliably open
+   the on-screen keyboard when .focus() is called, with no scroll jump. */
 #terminal-capture {
   position: fixed;
-  left: -9999px;
-  top: -9999px;
+  bottom: 0;
+  left: 0;
   width: 1px;
   height: 1px;
   opacity: 0;
@@ -46,12 +48,16 @@ html, body {
   color: transparent;
   caret-color: transparent;
   pointer-events: none;
+  font-size: 16px; /* prevents iOS auto-zoom on focus */
 }
 
 /* ── Output area ── */
 #terminal-output {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
   padding: 20px 24px 20px;
   display: flex;
   flex-direction: column;

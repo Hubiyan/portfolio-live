@@ -14,7 +14,10 @@ body.lab-page {
   --lab-shadow:  rgba(0, 0, 0, 0.11);
   --lab-noise-opacity: 0.038;
   min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
   margin: 0;
+  overflow: hidden;
   transition: background-color 0.35s ease;
   background-color: var(--lab-base);
   background-image:
@@ -58,7 +61,8 @@ body.lab-page[data-mat-color="black"] {
 /* Full-viewport desktop canvas — icons are absolutely positioned inside */
 body.lab-page .lab-main {
   position: relative;
-  width: 100%;
+  width: 100vw;
+  height: 100vh;
   min-height: 100vh;
   overflow: hidden;
 }
@@ -1113,8 +1117,36 @@ body.lab-page .lab-learning-card__meta {
 ============================================================ */
 
 @media (max-width: 520px) {
-  /* ── Icon canvas — scrollable on mobile, icons remain draggable ── */
+  body.lab-page {
+    width: 100%;
+    height: auto;
+    min-height: 100dvh;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  /* When the terminal is open, lock page scroll so only the terminal's
+     own output scrolls (prevents glitchy double-scroll on mobile).
+     NB: no touch-action:none here — it would propagate and block the
+     terminal iframe's own touch scrolling. */
+  body.lab-page.lab-terminal-open {
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  /* ── Terminal window — half-height on mobile, pinned to the top so the
+     on-screen keyboard never covers it ── */
+  #win-terminal.mac-window {
+    height: 50dvh !important;
+    top: 42px !important;
+    bottom: auto !important;
+  }
+
+  /* ── Icon canvas — scrollable on mobile; items stay absolutely
+     positioned (curated by layoutMobileItems) so they remain draggable ── */
   body.lab-page .lab-main {
+    width: 100%;
+    height: auto;
     overflow-y: auto;
     overflow-x: hidden;
     min-height: 100dvh;
@@ -1202,6 +1234,12 @@ body.lab-page .lab-learning-card__meta {
      the big-glow blur so the light reads brighter on small screens. */
   body.lab-page .lab-lamp__glow--big {
     filter: blur(clamp(48px, 14vw, 90px));
+  }
+
+  /* Keep lamp/glow more visible on phones (lower into viewport). */
+  body.lab-page .lab-lamp {
+    --lab-lamp-pull: 0.42;
+    --lab-lamp-h: clamp(220px, 56vw, 360px);
   }
 
   body.lab-page .lab-power-btn {

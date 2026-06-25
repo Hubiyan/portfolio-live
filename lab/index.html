@@ -23,7 +23,7 @@
     <main id="lab-main" class="lab-main" aria-label="Lab desktop">
 
         <!-- ── Top lamp effect ─────────────────────────────── -->
-        <div class="lab-lamp is-off" aria-hidden="true">
+        <div class="lab-lamp" aria-hidden="true">
             <div class="lab-lamp__stage">
                 <div class="lab-lamp__glow lab-lamp__glow--big"></div>
                 <div class="lab-lamp__glow lab-lamp__glow--small"></div>
@@ -32,8 +32,8 @@
         </div>
 
         <!-- ── Lamp power switch (top-left) ─────────────────── -->
-        <button type="button" class="lab-power-btn" id="lab-power-btn"
-                aria-label="Toggle lamp light" aria-pressed="false"
+        <button type="button" class="lab-power-btn is-on" id="lab-power-btn"
+                aria-label="Toggle lamp light" aria-pressed="true"
                 style="left:24px;top:24px">
             <span class="lab-power-btn__core">
                 <span class="lab-power-btn__inner"></span>
@@ -44,7 +44,7 @@
         <div class="lab-desktop-icon"
              data-icon-id="prompts"
              data-window="win-prompts"
-             style="left:10%;top:74%"
+             style="left:74%;top:40%"
              tabindex="0" role="button"
              aria-label="Prompts — open in window">
             <div class="lab-icon-figure">
@@ -61,7 +61,7 @@
         <div class="lab-desktop-icon"
              data-icon-id="ai-bro"
              data-window="win-ai-bro"
-             style="left:24%;top:8%"
+             style="left:74%;top:67%"
              tabindex="0" role="button"
              aria-label="AI Bro Detector — open in window">
             <div class="lab-icon-figure">
@@ -78,7 +78,7 @@
         <div class="lab-desktop-icon"
              data-icon-id="comment-bro"
              data-window="win-comment-bro"
-             style="left:25%;top:68%"
+             style="left:84%;top:52%"
              tabindex="0" role="button"
              aria-label="Comment Bro — open in window">
             <div class="lab-icon-figure">
@@ -95,7 +95,7 @@
         <div class="lab-desktop-icon"
              data-icon-id="terminal"
              data-window="win-terminal"
-             style="left:40%;top:75%"
+             style="left:47%;top:80%"
              tabindex="0" role="button"
              aria-label="Terminal — ask Farish anything">
             <div class="lab-icon-figure">
@@ -112,7 +112,7 @@
         <div class="lab-desktop-icon"
              data-icon-id="visual-exp"
              data-window="win-visual"
-             style="left:33%;top:16%"
+             style="left:31%;top:52%"
              tabindex="0" role="button"
              aria-label="Visual playground — open folder">
             <div class="lab-icon-figure">
@@ -129,7 +129,7 @@
         <div class="lab-desktop-icon"
              data-icon-id="code-credits"
              data-window="win-credits"
-             style="left:61%;top:13%"
+             style="left:47%;top:12%"
              tabindex="0" role="button"
              aria-label="Code credits — open folder">
             <div class="lab-icon-figure">
@@ -142,11 +142,28 @@
             <span class="lab-icon-label">Code credits</span>
         </div>
 
+        <!-- ── Icon: Trash (macOS folder) ─────────────────── -->
+        <div class="lab-desktop-icon"
+             data-icon-id="trash"
+             data-window="win-trash"
+             style="left:58%;top:79%"
+             tabindex="0" role="button"
+             aria-label="Trash — open folder">
+            <div class="lab-icon-figure">
+                <img src="/images/lab-icons/trash.png"
+                     alt="" aria-hidden="true"
+                     width="78" height="78"
+                     style="height:auto;object-fit:contain;
+                            filter:drop-shadow(0 4px 10px rgba(0,0,0,0.35))">
+            </div>
+            <span class="lab-icon-label">Trash</span>
+        </div>
+
         <!-- ── AirPods (decorative — drag only) ─────────────── -->
         <div class="lab-desktop-icon lab-desktop-icon--prop"
              id="lab-airpods"
              data-icon-id="airpods-wired"
-             style="left:2%;top:13%"
+             style="left:16%;top:14%"
              tabindex="0"
              aria-label="AirPods">
             <div class="lab-icon-figure">
@@ -162,7 +179,7 @@
         <div class="lab-learning-card" id="lab-learning-card"
              data-widget-id="learning-video" role="region"
              aria-label="Currently learning video"
-             style="left:39%;top:34%">
+             style="left:42%;top:33%">
             <button type="button" class="lab-learning-card__min-btn" id="lab-learning-min-btn"
                     aria-label="Minimise video card" aria-expanded="true">
                 <svg class="lab-learning-card__icon lab-learning-card__icon--min" viewBox="0 0 12 12"
@@ -214,7 +231,7 @@
         <div class="lab-casio" id="lab-casio"
              data-widget-id="casio-watch" role="img"
              aria-label="Casio F-91W watch"
-             style="left:84%;top:33%">
+             style="left:4%;top:55%">
             <div class="lab-casio__stage">
                 <div class="casio-f91w">
                     <div class="top bracelet">
@@ -290,7 +307,7 @@
         <div class="lab-commits" id="lab-commits"
              data-widget-id="sleep-commits" role="region"
              aria-label="Sleep commits in 2026"
-             style="left:4%;top:54%">
+             style="left:2%;top:76%">
             <span class="lab-icon-label">Sleep commits in 2026</span>
             <div class="graph">
                 <ul class="months">
@@ -392,6 +409,13 @@
         { file: 'Career plan.webm',       type: 'video' }
     ];
 
+    /* ── Trash media (images) ───────────────────────────────── */
+    var TRASH_DIR = '/images/lab-images/trash-images/';
+    var TRASH_ITEMS = [
+        { file: 'daily affirmation.jpeg', type: 'image' },
+        { file: 'design advice.jpeg',     type: 'image' }
+    ];
+
     /* ═══════════════════════════════════════════════════════════
        macOS Window component builder
        ═══════════════════════════════════════════════════════════
@@ -418,6 +442,7 @@
         { id: 'win-visual',  type: 'finder',  title: 'Visual playground' },
         { id: 'win-free-wallpapers',   type: 'finder', title: 'Free wallpapers' },
         { id: 'win-visual-playgrounds', type: 'finder', title: 'Visual explorations' },
+        { id: 'win-trash', type: 'finder', title: 'Trash' },
         { id: 'win-terminal', type: 'finder', title: 'Lab terminal', src: '/lab/terminal/' },
         { id: 'win-credits', type: 'finder', title: 'Code credits' }
         /* Preview windows are created dynamically by openPreviewWindow() — no static entry needed */
@@ -539,6 +564,9 @@
         iframe.className = 'mac-window-iframe';
         iframe.id = 'win-terminal-iframe';
         iframe.title = 'Lab terminal';
+        /* Preload so the capture input exists synchronously when the icon is
+           tapped — required for mobile to open the keyboard within the gesture. */
+        if (tw.dataset.src) iframe.src = tw.dataset.src;
         body.appendChild(iframe);
     })();
 
@@ -645,6 +673,7 @@
     var macZCounter         = 60;
     var finderPopulated     = false;
     var visualPlayPopulated = false;
+    var trashPopulated      = false;
 
     /* Show / hide the "Close all" button depending on open window count */
     function syncCloseAll() {
@@ -664,6 +693,38 @@
         win.style.zIndex = String(macZCounter);
     }
 
+    function isMobileView() {
+        return window.matchMedia('(max-width: 520px)').matches;
+    }
+
+    /* Lock/unlock page scroll while the terminal is open on mobile, so only
+       the terminal's own output scrolls (no glitchy double-scroll). */
+    function syncTerminalScrollLock() {
+        var tw = document.getElementById('win-terminal');
+        var open = tw && !tw.hidden && isMobileView();
+        document.body.classList.toggle('lab-terminal-open', !!open);
+    }
+
+    /* Focus the terminal's hidden capture input (inside its iframe) so the
+       mobile keyboard opens. Must run within the tap gesture to work on iOS. */
+    function focusTerminalInput() {
+        var iframe = document.getElementById('win-terminal-iframe');
+        if (!iframe) return;
+        try {
+            var doc = iframe.contentWindow && iframe.contentWindow.document;
+            var cap = doc && doc.getElementById('terminal-capture');
+            if (cap) cap.focus({ preventScroll: true });
+        } catch (_) {}
+    }
+
+    function blurTerminalInput() {
+        var iframe = document.getElementById('win-terminal-iframe');
+        try {
+            var cap = iframe && iframe.contentWindow.document.getElementById('terminal-capture');
+            if (cap) cap.blur();
+        } catch (_) {}
+    }
+
     /**
      * Open a .mac-window with the open animation.
      * Iframes are lazy-loaded on first open.
@@ -678,6 +739,7 @@
         if (!win.hidden) {
             bringToFront(win);
             syncCloseAll();
+            if (id === 'win-terminal' && isMobileView()) focusTerminalInput();
             return;
         }
 
@@ -769,6 +831,19 @@
         if (id === 'win-visual-playgrounds' && !visualPlayPopulated) {
             populateVisualPlay();
         }
+
+        /* Populate Trash media grid once */
+        if (id === 'win-trash' && !trashPopulated) {
+            populateTrash();
+        }
+
+        /* Terminal: lock page scroll + open the keyboard on mobile.
+           focus() runs synchronously within the icon-tap gesture (the iframe
+           is preloaded), which is what lets iOS raise the keyboard. */
+        if (id === 'win-terminal') {
+            syncTerminalScrollLock();
+            if (isMobileView()) focusTerminalInput();
+        }
     }
 
     /**
@@ -788,6 +863,7 @@
             win.hidden = true;
             /* Dynamic preview windows are removed from the DOM on close */
             if (win.dataset.dynamic && win.parentNode) win.parentNode.removeChild(win);
+            if (win.id === 'win-terminal') { blurTerminalInput(); syncTerminalScrollLock(); }
             syncCloseAll();
         }
     }
@@ -807,6 +883,7 @@
         function doHide() {
             win.classList.remove('is-minimizing');
             win.hidden = true;
+            if (win.id === 'win-terminal') { blurTerminalInput(); syncTerminalScrollLock(); }
             syncCloseAll();
         }
     }
@@ -1029,6 +1106,46 @@
         visualPlayPopulated = true;
     }
 
+    /* ── Trash grid (images) ───────────────────────────────── */
+    function populateTrash() {
+        var grid = document.getElementById('win-trash-grid');
+        if (!grid) return;
+        grid.classList.add('mac-finder-grid--media');
+
+        var items = TRASH_ITEMS.map(function (a) {
+            return {
+                src:  TRASH_DIR + encodeURIComponent(a.file),
+                name: a.file,
+                type: a.type
+            };
+        });
+
+        items.forEach(function (it, i) {
+            var btn = document.createElement('button');
+            btn.className = 'mac-finder-thumb mac-finder-thumb--media';
+            btn.setAttribute('aria-label', it.name);
+
+            var img = document.createElement('img');
+            img.src     = it.src;
+            img.alt     = it.name;
+            img.loading = 'lazy';
+
+            var lbl = document.createElement('span');
+            lbl.textContent = it.name;
+
+            btn.appendChild(img);
+            btn.appendChild(lbl);
+            btn.addEventListener('click', function () {
+                openPreviewWindow(
+                    items.map(function (m) { return { src: m.src, name: m.name }; }),
+                    i
+                );
+            });
+            grid.appendChild(btn);
+        });
+        trashPopulated = true;
+    }
+
     /* ── Image Preview windows ───────────────────────────────── */
 
     /**
@@ -1137,31 +1254,12 @@
 
     /* ── Desktop icon drag + click system ──────────────────── */
     var LabIcons = (function () {
-        var STORE = 'lab-icon-pos';
-
-        function loadPos() {
-            try { return JSON.parse(localStorage.getItem(STORE) || '{}'); } catch (e) { return {}; }
-        }
-        function savePos(id, x, y) {
-            var pos = loadPos();
-            pos[id] = { x: x, y: y };
-            localStorage.setItem(STORE, JSON.stringify(pos));
-        }
-
         function setupIcon(icon) {
-            var id    = icon.dataset.iconId;
-            var saved = loadPos();
             var pinLoad = icon.dataset.pinLoad;
 
-            /* Pinned props always start top-left on load — skip saved position */
+            /* Pinned props always start top-left on load */
             if (pinLoad === 'top-left') {
                 pinAirpodsTopLeft(icon);
-            } else if (saved[id]) {
-                var vw = window.innerWidth, vh = window.innerHeight;
-                if (saved[id].x < vw - 20 && saved[id].y < vh - 20) {
-                    icon.style.left = saved[id].x + 'px';
-                    icon.style.top  = saved[id].y + 'px';
-                }
             }
 
             var dragging = false, moved = false, wasDragged = false;
@@ -1190,9 +1288,6 @@
             icon.addEventListener('pointerup', function () {
                 if (!dragging) return;
                 dragging = false; icon.style.zIndex = '';
-                if (moved && icon.dataset.pinLoad !== 'top-left') {
-                    savePos(id, icon.offsetLeft, icon.offsetTop);
-                }
             });
 
             function activateIcon() {
@@ -1255,9 +1350,9 @@
             icon.setAttribute('aria-label', entry.name);
             /* Curated default positions per file — LabIcons.setup() overrides with any saved position */
             var DEFAULT_POS = {
-                'App icon03.jpg':         { left: 49, top: 7 },
-                'hubiyan.jpg':            { left: 72, top: 6 },
-                'shawarma-and-karak.jpg': { left: 55, top: 70 }
+                'App icon03.jpg':         { left: 14, top: 40 },
+                'hubiyan.jpg':            { left: 73, top: 92 },
+                'shawarma-and-karak.jpg': { left: 57, top: 18 }
             };
             var dp = DEFAULT_POS[entry.file];
             if (dp) {
@@ -1428,6 +1523,9 @@
         btn.addEventListener('click', function () {
             setOn(!btn.classList.contains('is-on'));
         });
+
+        /* Default ON so first load shows the lamp animation/light. */
+        setOn(true);
     })();
 
     /* ── Sleep commits contribution graph ───────────────────── */
@@ -1454,17 +1552,6 @@
 
     /* ── Desktop widget drag system ─────────────────────────── */
     var LabWidgets = (function () {
-        var STORE = 'lab-widget-pos';
-
-        function loadPos() {
-            try { return JSON.parse(localStorage.getItem(STORE) || '{}'); } catch (e) { return {}; }
-        }
-
-        function savePos(id, x, y) {
-            var pos = loadPos();
-            pos[id] = { x: x, y: y };
-            localStorage.setItem(STORE, JSON.stringify(pos));
-        }
 
         function clampToViewport(widget) {
             var vw   = window.innerWidth;
@@ -1486,7 +1573,6 @@
         }
 
         function setupWidget(widget) {
-            var id     = widget.dataset.widgetId;
             var minBtn = widget.querySelector('.lab-learning-card__min-btn');
 
             function toggleMinimized() {
@@ -1499,16 +1585,6 @@
                 clampToViewport(widget);
                 /* re-clamp once the size transition finishes */
                 setTimeout(function () { clampToViewport(widget); }, 380);
-            }
-
-            var saved = loadPos();
-            if (saved[id]) {
-                var vw = window.innerWidth;
-                var vh = window.innerHeight;
-                if (saved[id].x < vw - 20 && saved[id].y < vh - 20) {
-                    widget.style.left = saved[id].x + 'px';
-                    widget.style.top  = saved[id].y + 'px';
-                }
             }
 
             requestAnimationFrame(function () { clampToViewport(widget); });
@@ -1540,7 +1616,6 @@
                 widget.dataset.dragged = moved ? '1' : '';
                 if (moved) {
                     clampToViewport(widget);
-                    savePos(id, widget.offsetLeft, widget.offsetTop);
                 }
             }
 
@@ -1577,12 +1652,7 @@
         return { setup: setupWidget };
     })();
 
-    /* ── Mobile load layout — stack items vertically, no overlap ───
-       On phones the desktop's percentage positions overlap, so on load
-       we pin the learning card top-right and lay every icon out in a
-       single non-overlapping vertical run the user can scroll through.
-       Positions are memoised per id so repeat calls don't reshuffle.   */
-    var mobilePos = {};
+    /* ── Mobile load layout — curated arrangement ───────────── */
 
     function pinPowerTopLeft() {
         var power = document.getElementById('lab-power-btn');
@@ -1606,67 +1676,102 @@
     }
 
     function layoutMobileItems() {
-        if (!window.matchMedia('(max-width: 520px)').matches) {
-            pinPowerTopLeft();
-            return;
-        }
+        pinPowerTopLeft();
         var main = document.getElementById('lab-main');
         if (!main) return;
+        if (!window.matchMedia('(max-width: 520px)').matches) return;
 
+        /* Curated mobile arrangement. Items stay position:absolute so the
+           drag system can still move them; this only sets the load layout:
+             • Learning card  → top-right
+             • Casio watch     → directly below the card (right column)
+             • 4 app icons     → vertical stack on the left
+             • Sleep commits   → below both columns
+             • Headphones      → below that
+             • everything else → 2-column flow below */
         var vw  = window.innerWidth;
         var pad = 16;
-        var y   = pad;
+        var GAP = 22;
 
-        var power = pinPowerTopLeft();
-        if (power) {
-            y = Math.max(y, power.offsetTop + power.offsetHeight + 24);
+        var power     = document.getElementById('lab-power-btn');
+        var topStart  = (power ? power.offsetTop + power.offsetHeight : pad) + 24;
+
+        function get(sel)        { return main.querySelector(sel); }
+        function clampX(x, w)    { return Math.max(pad, Math.min(x, vw - w - pad)); }
+
+        /* Deterministic "spontaneous" jitter — same offsets every reload,
+           so the layout looks hand-placed but stays stable on resize. */
+        var seed = 0;
+        function rnd()           { var x = Math.sin(++seed * 99.137) * 10000; return x - Math.floor(x); }
+        function jit(amt)        { return (rnd() * 2 - 1) * amt; }
+        function place(el, x, y) {
+            el.style.left = Math.round(clampX(x + jit(7), el.offsetWidth)) + 'px';
+            el.style.top  = Math.round(Math.max(8, y + jit(6))) + 'px';
         }
 
-        var casio = document.getElementById('lab-casio');
+        var learning = get('#lab-learning-card');
+        var casio    = get('#lab-casio');
+        var commits  = get('#lab-commits');
+        var airpods  = get('#lab-airpods');
+
+        var leftIcons = ['prompts', 'terminal', 'comment-bro', 'ai-bro']
+            .map(function (id) { return get('[data-icon-id="' + id + '"]'); })
+            .filter(Boolean);
+
+        /* Right column: learning card, then casio below it */
+        var rightBottom = topStart;
+        if (learning) {
+            var lw = learning.offsetWidth;
+            place(learning, clampX(vw - lw - pad, lw), rightBottom);
+            rightBottom += learning.offsetHeight + GAP;
+        }
         if (casio) {
-            var casioW = casio.offsetWidth;
-            var casioMaxL = Math.max(pad, vw - casioW - pad);
-            if (!mobilePos['casio-watch']) {
-                mobilePos['casio-watch'] = { leftRatio: 0.15, gap: 20 };
-            }
-            var cp = mobilePos['casio-watch'];
-            casio.style.left = (pad + cp.leftRatio * (casioMaxL - pad)) + 'px';
-            casio.style.top  = y + 'px';
-            y = Math.max(y, casio.offsetTop + casio.offsetHeight + cp.gap);
+            var cw = casio.offsetWidth;
+            place(casio, clampX(vw - cw - pad, cw), rightBottom);
+            rightBottom += casio.offsetHeight + GAP;
         }
 
-        var card = document.getElementById('lab-learning-card');
-        if (card) {
-            var cardW = card.offsetWidth;
-            card.style.left = Math.max(pad, vw - cardW - pad) + 'px';
-            card.style.top  = pad + 'px';
-            y = Math.max(y, card.offsetTop + card.offsetHeight + 24);
-        }
-
-        var icons = Array.prototype.slice.call(
-            document.querySelectorAll('.lab-desktop-icon')
-        );
-        /* Deterministic zig-zag scatter — keeps a desktop-like feel while
-           guaranteeing no overlap in a single vertical run on phones. */
-        var LEFT_RATIOS = [0.5, 0.08, 0.82, 0.32, 0.66, 0.16, 0.9];
-        icons.forEach(function (icon, i) {
-            var key     = icon.dataset.iconId || ('static-' + i);
-            var w       = icon.offsetWidth;
-            var h       = icon.offsetHeight;
-            var maxLeft = Math.max(pad, vw - w - pad);
-            if (!mobilePos[key]) {
-                mobilePos[key] = {
-                    leftRatio: LEFT_RATIOS[i % LEFT_RATIOS.length],
-                    gap:       22
-                };
-            }
-            var p = mobilePos[key];
-            icon.style.left = (pad + p.leftRatio * (maxLeft - pad)) + 'px';
-            icon.style.top  = y + 'px';
-            y += h + p.gap;
+        /* Left column: 4 icons stacked vertically */
+        var leftBottom = topStart;
+        leftIcons.forEach(function (el) {
+            place(el, pad, leftBottom);
+            leftBottom += el.offsetHeight + GAP;
         });
 
-        main.style.minHeight = Math.max(window.innerHeight, y + 40) + 'px';
+        /* Sleep commits below both columns (centered) */
+        var y = Math.max(rightBottom, leftBottom) + 4;
+        if (commits) {
+            var mw = commits.offsetWidth;
+            place(commits, clampX((vw - mw) / 2, mw), y);
+            y += commits.offsetHeight + GAP;
+        }
+
+        /* Headphones below the commits graph */
+        if (airpods) {
+            place(airpods, pad, y);
+            y += airpods.offsetHeight + GAP;
+        }
+
+        /* Everything else → simple 2-column flow */
+        var placed = [learning, casio, commits, airpods].concat(leftIcons);
+        var rest = Array.prototype.slice.call(
+            main.querySelectorAll('.lab-desktop-icon, [data-widget-id]')
+        ).filter(function (el) {
+            return el !== power && placed.indexOf(el) === -1;
+        });
+
+        var col = 0, rowY = y, rowMaxH = 0;
+        rest.forEach(function (el) {
+            var w = el.offsetWidth;
+            var x = col === 0 ? pad : vw / 2 + 4;
+            place(el, clampX(x, w), rowY);
+            rowMaxH = Math.max(rowMaxH, el.offsetHeight);
+            col++;
+            if (col === 2) { col = 0; rowY += rowMaxH + GAP; rowMaxH = 0; }
+        });
+        if (col === 1) rowY += rowMaxH + GAP;
+
+        main.style.minHeight = Math.round(rowY + 40) + 'px';
     }
 
     /* ── Desktop overlap safety net ─────────────────────────────
@@ -1681,74 +1786,26 @@
         var main = document.getElementById('lab-main');
         if (!main) return;
 
-        var pad  = 10;
-        var maxX = main.clientWidth;
-        var maxY = Math.max(window.innerHeight, main.clientHeight);
+        /* Desktop canvas is fixed to viewport; keep all default items inside it. */
+        main.style.minHeight = window.innerHeight + 'px';
+        var pad  = 8;
+        var maxX = window.innerWidth;
+        var maxY = window.innerHeight;
 
-        var nodes = Array.prototype.slice.call(
+        Array.prototype.slice.call(
             document.querySelectorAll('.lab-desktop-icon, [data-widget-id]')
-        );
-        if (!nodes.length) return;
+        ).forEach(function (el) {
+            var x = el.offsetLeft;
+            var y = el.offsetTop;
+            var w = el.offsetWidth;
+            var h = el.offsetHeight;
 
-        var boxes = nodes.map(function (el) {
-            return {
-                el: el, fixed: false,
-                x: el.offsetLeft, y: el.offsetTop,
-                w: el.offsetWidth, h: el.offsetHeight,
-                x0: el.offsetLeft, y0: el.offsetTop
-            };
-        });
+            var nx = Math.max(pad, Math.min(x, maxX - w - pad));
+            var ny = Math.max(pad, Math.min(y, maxY - h - pad));
 
-        /* Power button is a fixed obstacle pinned top-left */
-        var power = document.getElementById('lab-power-btn');
-        if (power) {
-            boxes.push({ el: power, fixed: true,
-                         x: power.offsetLeft, y: power.offsetTop,
-                         w: power.offsetWidth, h: power.offsetHeight });
-        }
-
-        function clamp(b) {
-            b.x = Math.max(pad, Math.min(b.x, maxX - b.w - pad));
-            b.y = Math.max(pad, Math.min(b.y, maxY - b.h - pad));
-        }
-
-        for (var iter = 0; iter < 80; iter++) {
-            var any = false;
-            for (var i = 0; i < boxes.length; i++) {
-                for (var j = i + 1; j < boxes.length; j++) {
-                    var a = boxes[i], b = boxes[j];
-                    if (a.fixed && b.fixed) continue;
-                    var ox = Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x);
-                    var oy = Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y);
-                    if (ox <= 0 || oy <= 0) continue;
-                    any = true;
-                    if (ox < oy) {
-                        var aLeft = (a.x + a.w / 2) <= (b.x + b.w / 2);
-                        var dx = ox / 2 + 0.5;
-                        if (a.fixed)      { b.x += aLeft ?  (ox + 1) : -(ox + 1); }
-                        else if (b.fixed) { a.x += aLeft ? -(ox + 1) :  (ox + 1); }
-                        else { a.x += aLeft ? -dx : dx; b.x += aLeft ? dx : -dx; }
-                    } else {
-                        var aUp = (a.y + a.h / 2) <= (b.y + b.h / 2);
-                        var dy = oy / 2 + 0.5;
-                        if (a.fixed)      { b.y += aUp ?  (oy + 1) : -(oy + 1); }
-                        else if (b.fixed) { a.y += aUp ? -(oy + 1) :  (oy + 1); }
-                        else { a.y += aUp ? -dy : dy; b.y += aUp ? dy : -dy; }
-                    }
-                    if (!a.fixed) clamp(a);
-                    if (!b.fixed) clamp(b);
-                }
-            }
-            if (!any) break;
-        }
-
-        /* Write back only the items that actually moved — preserves the
-           curated %-positions (and their scaling) for everything else. */
-        boxes.forEach(function (b) {
-            if (b.fixed) return;
-            if (Math.abs(b.x - b.x0) > 1 || Math.abs(b.y - b.y0) > 1) {
-                b.el.style.left = Math.round(b.x) + 'px';
-                b.el.style.top  = Math.round(b.y) + 'px';
+            if (Math.abs(nx - x) > 0.5 || Math.abs(ny - y) > 0.5) {
+                el.style.left = Math.round(nx) + 'px';
+                el.style.top  = Math.round(ny) + 'px';
             }
         });
     }
@@ -1760,10 +1817,22 @@
     relayoutDesktop();
     window.addEventListener('load', relayoutDesktop);
 
+    /* Re-settle the measured mobile stack once thumbnails report their
+       real height (manifest images load asynchronously). */
+    (function reflowOnImageLoad() {
+        var main = document.getElementById('lab-main');
+        if (!main) return;
+        Array.prototype.slice.call(main.querySelectorAll('img')).forEach(function (img) {
+            if (img.complete) return;
+            img.addEventListener('load', function () { relayoutDesktop(); }, { once: true });
+        });
+    })();
+
     var _relayoutTimer = null;
     window.addEventListener('resize', function () {
         clearTimeout(_relayoutTimer);
         _relayoutTimer = setTimeout(relayoutDesktop, 150);
+        syncTerminalScrollLock();
     });
     </script>
 </body>
