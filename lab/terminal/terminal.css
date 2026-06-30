@@ -5,8 +5,9 @@
 :root {
   --t-bg:     #1c1c1e;
   --t-prompt: #00cc66;
-  --t-text:   rgba(255, 255, 255, 0.82);
-  --t-meta:   rgba(255, 255, 255, 0.36);
+  --t-text:    rgba(255, 255, 255, 0.82);
+  --t-meta:    rgba(255, 255, 255, 0.36);
+  --t-visitor: rgba(255, 255, 255, 0.56);   /* visitor prompt — between meta and text */
   --t-error:  #ff6b6b;
   --t-border: rgba(255, 255, 255, 0.07);
   --t-font:   "SF Mono", Menlo, Monaco, Consolas, "Courier New", monospace;
@@ -90,7 +91,7 @@ html, body {
 }
 
 .line--prompt .line-glyph {
-  color: var(--t-prompt);
+  color: var(--t-visitor);
   flex-shrink: 0;
   margin-right: 6px;
   user-select: none;
@@ -109,7 +110,7 @@ html, body {
 }
 
 .line--active-prompt .line-glyph {
-  color: var(--t-prompt);
+  color: var(--t-visitor);
   flex-shrink: 0;
   margin-right: 6px;
   user-select: none;
@@ -121,16 +122,14 @@ html, body {
 
 .line--response {
   color: var(--t-text);
-  padding-left: 20px;
   margin-top: 6px;
-  position: relative;
 }
 
-.line--response::before {
-  content: '>';
-  position: absolute;
-  left: 0;
-  color: var(--t-meta);
+/* Green "ChatBotMaxxing" label that prefixes every answer */
+.line-bot-glyph {
+  color: var(--t-prompt);
+  margin-right: 6px;
+  user-select: none;
 }
 
 .line--error {

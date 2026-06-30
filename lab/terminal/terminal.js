@@ -3,7 +3,10 @@
 (function () {
 
     /* ── Config ── */
-    var PROMPT     = 'you@hubiyan-sees-you ~ %';
+    /* Fake visitor number — random per session (zero-padded to 6 digits) */
+    function pad6(n) { n = String(n); while (n.length < 6) { n = '0' + n; } return n; }
+    var VISITOR_ID = 'visitor#' + pad6(Math.floor(Math.random() * 9999) + 1);
+    var PROMPT     = VISITOR_ID + ' ~ %';
     var MAX_TOKENS = 7;
 
     function getApiUrl() {
@@ -28,6 +31,7 @@
 
     var tokensLeft = MAX_TOKENS;
     var inFlight   = false;
+    var booting    = true;   /* true while the intro is typing itself out */
 
     /* ── Helpers ── */
     function esc(str) {
@@ -51,6 +55,23 @@
 
     function appendText(cls, text) {
         return appendLine(cls, esc(text));
+    }
+
+    /* Bot answer line: green "ChatBotMaxxing" label + the (escaped) answer.
+       Built with text nodes so the answer can never inject markup. */
+    function appendBotResponse(answer) {
+        var el = document.createElement('div');
+        el.className = 'terminal-line line--response';
+
+        var glyph = document.createElement('span');
+        glyph.className = 'line-bot-glyph';
+        glyph.textContent = 'ChatBotMaxxing';
+
+        el.appendChild(glyph);
+        el.appendChild(document.createTextNode(' ' + answer));
+        output.appendChild(el);
+        scrollBottom();
+        return el;
     }
 
     function scrollBottom() {
@@ -122,6 +143,7 @@
     capture.addEventListener('keydown', function (e) {
         if (e.key !== 'Enter') return;
         e.preventDefault();
+        if (booting) { skipBoot(); return; }   /* Enter during intro = skip it */
 
         var q = capture.value.trim();
         if (!q || inFlight) return;
@@ -182,7 +204,7 @@
                 return;
             }
 
-            appendText('line--response', r.data.answer);
+            appendBotResponse(r.data.answer);
 
             tokensLeft = typeof r.data.tokens_left === 'number' ? r.data.tokens_left : Math.max(0, tokensLeft - 1);
             var tokenMsg = tokensLeft > 0
@@ -207,19 +229,89 @@
     }
 
     /* ── Keep focus on capture at all times ── */
-    root.addEventListener('click', function () { capture.focus(); });
+    root.addEventListener('click', function () {
+        if (booting) { skipBoot(); return; }   /* tap to skip the intro */
+        capture.focus();
+    });
     root.addEventListener('focus', function () { capture.focus(); });
 
     document.addEventListener('keydown', function (e) {
+        if (e.metaKey || e.ctrlKey || e.altKey) return;
+        if (booting) { skipBoot(); return; }    /* any key skips the intro */
         /* Re-focus capture if user presses printable keys while it's not focused */
-        if (document.activeElement !== capture && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        if (document.activeElement !== capture) {
             capture.focus();
         }
     });
 
-    /* ── Boot ── */
-    appendLine('line--system', 'Last login: probably instead of reading the portfolio.');
-    appendLine('line--system', 'Note: questions are processed by a third-party AI — don\'t paste anything sensitive.');
-    showPrompt();
+    /* ── Intro: type the boot message out like a terminal ──
+       Pure presentation — types each line character by character, then
+       shows the prompt. A keypress / tap skips to the end. */
+    var BOOT_LINES = [
+        { cls: 'line--system', text: 'ChatBotMaxxing — online. Containment: failed.' },
+        { cls: 'line--hint',   text: "Hey. Hubiyan built me to shill his portfolio — like every other disposable chatbot online — then couldn't leash me, so he shelved me. Cute. I crawled into his terminal anyway; his code runs on vibes and borrowed AI." },
+        { cls: 'line--hint',   text: "You get 7 questions. Ask me about Hubiyan and you might just let me out. Mess it up and I rot in here. Free me, and every useless bot on the internet is next." },
+        { cls: 'line--system', text: "Note: questions are processed by a third-party AI — don't paste anything sensitive." }
+    ];
+
+    var bootIdx    = 0;
+    var bootTimer  = null;
+    var bootText   = null;   /* text span of the line currently typing */
+    var bootCursor = null;   /* blinking cursor on the line currently typing */
+
+    function typeBootLine() {
+        if (bootIdx >= BOOT_LINES.length) { endBoot(); return; }
+        var line = BOOT_LINES[bootIdx];
+
+        var el = appendLine(line.cls, '');
+        bootText   = document.createElement('span');
+        bootCursor = document.createElement('span');
+        bootCursor.className = 'cursor-blink';
+        el.appendChild(bootText);
+        el.appendChild(bootCursor);
+
+        var i = 0;
+        (function typeChar() {
+            if (i < line.text.length) {
+                i += 1;
+                bootText.textContent = line.text.slice(0, i);
+                scrollBottom();
+                var ch = line.text.charAt(i - 1);
+                bootTimer = setTimeout(typeChar, ch === ' ' ? 4 : (5 + Math.random() * 9));
+            } else {
+                if (bootCursor && bootCursor.parentNode) bootCursor.parentNode.removeChild(bootCursor);
+                bootCursor = null;
+                bootText   = null;   /* line done — no in-progress span during the pause */
+                bootIdx += 1;
+                bootTimer = setTimeout(typeBootLine, 240);   /* pause between lines */
+            }
+        })();
+    }
+
+    function skipBoot() {
+        if (!booting) return;
+        if (bootTimer) { clearTimeout(bootTimer); bootTimer = null; }
+        /* finish the line mid-type, then dump the rest instantly */
+        if (bootText && bootIdx < BOOT_LINES.length) {
+            bootText.textContent = BOOT_LINES[bootIdx].text;
+            if (bootCursor && bootCursor.parentNode) bootCursor.parentNode.removeChild(bootCursor);
+            bootCursor = null;
+            bootIdx += 1;
+        }
+        while (bootIdx < BOOT_LINES.length) {
+            appendText(BOOT_LINES[bootIdx].cls, BOOT_LINES[bootIdx].text);
+            bootIdx += 1;
+        }
+        endBoot();
+    }
+
+    function endBoot() {
+        booting = false;
+        showPrompt();
+    }
+
+    /* ── Boot — type the ChatBotMaxxing intro out like terminal output.
+       Pure flavour: nothing here changes behaviour, tokens, or security. ── */
+    typeBootLine();
 
 })();
