@@ -1057,12 +1057,11 @@
             var btn = document.createElement('button');
             btn.className = 'mac-finder-thumb' + (item.landscape ? ' mac-finder-thumb--landscape' : '');
             btn.setAttribute('aria-label', item.name);
+            btn.title = item.name;   /* full filename on hover (label ellipsizes) */
 
             var img    = document.createElement('img');
             img.src    = item.thumb;
             img.alt    = item.name;
-            img.width  = item.landscape ? 136 : 43;
-            img.height = 76;
             img.loading = 'lazy';
 
             var lbl = document.createElement('span');

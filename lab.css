@@ -740,39 +740,35 @@ body.lab-page .lab-learning-card__meta {
 /* ── Free wallpapers — single row, shared thumb height ─────── */
 
 #win-free-wallpapers {
-  width: min(720px, 92vw);
-  height: min(220px, 42vh);
+  width: min(620px, 92vw);
+  height: min(340px, 72vh);
 }
 
 #win-free-wallpapers .mac-finder-grid {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;                 /* wrap into rows — never clip/overflow */
   align-items: flex-start;
-  gap: clamp(6px, 1.2vw, 12px);
+  align-content: flex-start;
+  gap: 16px 14px;
 }
 
+/* Uniform tiles so long filenames can't stretch a cell wider than its
+   thumbnail (the bug). Each wallpaper is shown in full via contain. */
 #win-free-wallpapers .mac-finder-thumb {
   flex: 0 0 auto;
-  width: auto;
-  max-width: none;
+  width: 128px;
+  max-width: 128px;
   padding: 4px;
 }
 
 #win-free-wallpapers .mac-finder-thumb img {
-  --wp-thumb-h: 76px;
-  width: auto;
-  max-width: none;
-  height: var(--wp-thumb-h);
-  object-fit: cover;
-  object-position: center bottom;
-}
-
-#win-free-wallpapers .mac-finder-thumb:not(.mac-finder-thumb--landscape) img {
-  aspect-ratio: 9 / 16;
-}
-
-#win-free-wallpapers .mac-finder-thumb--landscape img {
-  aspect-ratio: 16 / 9;
+  width: 100%;
+  max-width: 100%;
+  height: 78px;
+  aspect-ratio: auto;
+  object-fit: contain;            /* show the whole wallpaper, any orientation */
+  object-position: center;
+  background: rgba(0, 0, 0, 0.32);
 }
 
 #win-free-wallpapers .mac-finder-thumb span {
@@ -1230,13 +1226,16 @@ body.lab-page .lab-learning-card__meta {
   }
 
   #win-free-wallpapers .mac-finder-grid {
-    flex-wrap: wrap;
     justify-content: center;
-    row-gap: 12px;
+  }
+
+  #win-free-wallpapers .mac-finder-thumb {
+    width: 104px;
+    max-width: 104px;
   }
 
   #win-free-wallpapers .mac-finder-thumb img {
-    --wp-thumb-h: 64px;
+    height: 64px;
   }
 
   /* Hide maximise — window already fills the allowed inset */
