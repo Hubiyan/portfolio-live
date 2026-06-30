@@ -381,17 +381,11 @@
     var WALLPAPER_DIR = '/images/wallpapers/';
     var WALLPAPER_ITEMS = [
         {
-            name:       'Andromeda Horizon.jpg',
-            thumb:      '/images/wallpapers/thumbs/Andromeda-horizon-desktop.webp',
-            src:        WALLPAPER_DIR + encodeURIComponent('Andromeda Horizon.jpg'),
-            filename:   'Andromeda Horizon.jpg',
+            name:       'Andromeda Emerald.jpg',
+            thumb:      '/images/wallpapers/thumbs/Andromeda-emerald-desktop.webp',
+            src:        WALLPAPER_DIR + encodeURIComponent('Andromeda Emerald.jpg'),
+            filename:   'Andromeda Emerald.jpg',
             landscape:  true
-        },
-        {
-            name:       'Andromeda-horizon-mobile.png',
-            thumb:      '/images/wallpapers/thumbs/Andromeda-horizon.webp',
-            src:        WALLPAPER_DIR + 'Andromeda-horizon-mobile.png',
-            filename:   'Andromeda-horizon-mobile.png'
         },
         {
             name:       'Andromeda Flare.jpg',
@@ -401,16 +395,10 @@
             landscape:  true
         },
         {
-            name:       'Andromeda-flare-mobile.png',
-            thumb:      '/images/wallpapers/thumbs/Andromeda-flare.webp',
-            src:        WALLPAPER_DIR + 'Andromeda-flare-mobile.png',
-            filename:   'Andromeda-flare-mobile.png'
-        },
-        {
-            name:       'Andromeda Emerald.jpg',
-            thumb:      '/images/wallpapers/thumbs/Andromeda-emerald-desktop.webp',
-            src:        WALLPAPER_DIR + encodeURIComponent('Andromeda Emerald.jpg'),
-            filename:   'Andromeda Emerald.jpg',
+            name:       'Andromeda Horizon.jpg',
+            thumb:      '/images/wallpapers/thumbs/Andromeda-horizon-desktop.webp',
+            src:        WALLPAPER_DIR + encodeURIComponent('Andromeda Horizon.jpg'),
+            filename:   'Andromeda Horizon.jpg',
             landscape:  true
         },
         {
@@ -418,6 +406,18 @@
             thumb:      '/images/wallpapers/thumbs/Andromeda-emerald.webp',
             src:        WALLPAPER_DIR + 'Andromeda-emerald-mobile.png',
             filename:   'Andromeda-emerald-mobile.png'
+        },
+        {
+            name:       'Andromeda-flare-mobile.png',
+            thumb:      '/images/wallpapers/thumbs/Andromeda-flare.webp',
+            src:        WALLPAPER_DIR + 'Andromeda-flare-mobile.png',
+            filename:   'Andromeda-flare-mobile.png'
+        },
+        {
+            name:       'Andromeda-horizon-mobile.png',
+            thumb:      '/images/wallpapers/thumbs/Andromeda-horizon.webp',
+            src:        WALLPAPER_DIR + 'Andromeda-horizon-mobile.png',
+            filename:   'Andromeda-horizon-mobile.png'
         }
     ];
 
@@ -1061,10 +1061,9 @@
             var img    = document.createElement('img');
             img.src    = item.thumb;
             img.alt    = item.name;
-            img.width  = item.landscape ? 120 : 120;
-            img.height = item.landscape ? 68 : 213;
+            img.width  = item.landscape ? 136 : 43;
+            img.height = 76;
             img.loading = 'lazy';
-            img.style.height = 'auto';
 
             var lbl = document.createElement('span');
             lbl.textContent = item.name;

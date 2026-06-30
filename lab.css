@@ -737,6 +737,55 @@ body.lab-page .lab-learning-card__meta {
   object-fit: cover;
 }
 
+/* ── Free wallpapers — single row, shared thumb height ─────── */
+
+#win-free-wallpapers {
+  width: min(720px, 92vw);
+  height: min(220px, 42vh);
+}
+
+#win-free-wallpapers .mac-finder-grid {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  gap: clamp(6px, 1.2vw, 12px);
+}
+
+#win-free-wallpapers .mac-finder-thumb {
+  flex: 0 0 auto;
+  width: auto;
+  max-width: none;
+  padding: 4px;
+}
+
+#win-free-wallpapers .mac-finder-thumb img {
+  --wp-thumb-h: 76px;
+  width: auto;
+  max-width: none;
+  height: var(--wp-thumb-h);
+  object-fit: cover;
+  object-position: center bottom;
+}
+
+#win-free-wallpapers .mac-finder-thumb:not(.mac-finder-thumb--landscape) img {
+  aspect-ratio: 9 / 16;
+}
+
+#win-free-wallpapers .mac-finder-thumb--landscape img {
+  aspect-ratio: 16 / 9;
+}
+
+#win-free-wallpapers .mac-finder-thumb span {
+  display: block;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  -webkit-box-orient: unset;
+}
+
 .mac-finder-thumb span {
   font-size: 10px;
   line-height: 1.2;
@@ -1178,6 +1227,16 @@ body.lab-page .lab-learning-card__meta {
     bottom: auto !important;
     transform: none !important;
     border-radius: 14px !important;
+  }
+
+  #win-free-wallpapers .mac-finder-grid {
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 12px;
+  }
+
+  #win-free-wallpapers .mac-finder-thumb img {
+    --wp-thumb-h: 64px;
   }
 
   /* Hide maximise — window already fills the allowed inset */
