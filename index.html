@@ -45,6 +45,10 @@
       *,*::before,*::after{box-sizing:border-box}
       html{-webkit-text-size-adjust:100%}
       body{margin:0;font-family:'Outfit',system-ui,sans-serif;background:#fff;color:#1a1a1a}
+      /* Solid status-bar backdrop for iOS Safari (viewport-fit=cover lets
+         content scroll under the status bar — this keeps that strip opaque
+         in the site background colour instead of translucent/gradient). */
+      body::before{content:"";position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);background:#f7f7f7;z-index:2147483647;pointer-events:none}
       img,video{max-width:100%;display:block}
       .d-flex{display:flex!important}
       .flex-column{flex-direction:column!important}
