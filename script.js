@@ -136,58 +136,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// ===== Live Clock (Hours & Minutes only) =====
-(() => {
-  const comps = document.querySelectorAll('.time-comp');
-
-  function renderOne(comp) {
-    const tz = comp.dataset.timezone || 'Asia/Dubai';
-    const city = comp.dataset.city || 'Abu Dhabi';
-
-    const cityEl = comp.querySelector('.city');
-    if (cityEl && cityEl.textContent !== city) cityEl.textContent = city;
-
-    const hmEl = comp.querySelector('.hm');
-    const apEl = comp.querySelector('.ampm');
-    if (!hmEl || !apEl) return;
-
-    const parts = new Intl.DateTimeFormat('en-US', {
-      timeZone: tz,
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true
-    }).formatToParts(new Date());
-
-    let hour = parts.find(p => p.type === 'hour')?.value ?? '00';
-    const minute = parts.find(p => p.type === 'minute')?.value ?? '00';
-    const ampm = (parts.find(p => p.type === 'dayPeriod')?.value ?? 'AM').toUpperCase();
-
-    // Drop leading zero on hour
-    hour = String(parseInt(hour, 10));
-
-    hmEl.textContent = `${hour}:${minute}`;
-    apEl.textContent = ampm;
-  }
-
-  function renderAll() { comps.forEach(renderOne); }
-
-  let tick = null;
-  function start() { renderAll(); tick = setInterval(renderAll, 60 * 1000); } // update every minute
-  function stop() { clearInterval(tick); tick = null; }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', start, { once: true });
-  } else {
-    start();
-  }
-
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) stop(); else start();
-  });
-})();
-
-
-
 // -------------- CONFETTI (lazy-load on scroll to bottom) --------------
 (function () {
   var fired = false;

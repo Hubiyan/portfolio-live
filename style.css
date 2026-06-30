@@ -150,7 +150,7 @@ body {
   overflow-x: hidden;
 }
 .nav-floater {
-  border-radius: var(--spacing-22);
+  border-radius: var(--spacing-100);
   opacity: 1;
   background: var(--bg-white);
   box-shadow:
@@ -466,6 +466,47 @@ p {
 }
 .icon-btn {
   padding: var(--spacing-14);
+  overflow: hidden;
+}
+.btn-lab {
+  background-color: var(--bg-white);
+  color: var(--grey-900);
+  --lab-btn-icon-size: var(--spacing-50);
+  padding-top: var(--spacing-02) !important;
+  padding-bottom: var(--spacing-02) !important;
+  padding-left: var(--spacing-08);
+  padding-right: var(--spacing-24);
+  border-radius: var(--spacing-100);
+  background-color: var(--grey-50);
+  gap: var(--spacing-04);
+  flex: 0 0 auto;
+  width: fit-content;
+  min-width: fit-content;
+  max-width: none;
+  white-space: nowrap;
+}
+.btn-lab:hover {
+  background-color: var(--grey-100);
+}
+.btn-lab:active {
+  background-color: var(--grey-200) !important;
+}
+
+/* Bottom nav: Lab stays fit-content; Get in touch fills remaining space */
+.nav-floater .button-wrapper > .btn-primary {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.lab-btn-icon {
+  width: var(--lab-btn-icon-size, var(--spacing-36));
+  height: var(--lab-btn-icon-size, var(--spacing-36));
+  min-width: var(--lab-btn-icon-size, var(--spacing-36));
+  min-height: var(--lab-btn-icon-size, var(--spacing-36));
+  display: block;
+  object-fit: contain;
+  pointer-events: none;
+  mix-blend-mode: darken;
 }
 .large-btn-icon {
   width: var(--spacing-20);
@@ -1047,52 +1088,6 @@ p {
   border-radius: var(--spacing-24);
   overflow: hidden;
 }
-.time-comp {
-  display: inline-flex;
-  align-items: flex-end;
-  gap: 16px;
-}
-.time-comp .place {
-  display: inline-flex;
-  align-items: flex-end;
-  gap: 4px;
-}
-.time-comp .pin {
-  font-size: 16px;
-  line-height: 1.2;
-  color: #000;
-  font-weight: 400;
-}
-.time-comp .city {
-  font-size: 16px;
-  line-height: 1.2;
-  color: #000;
-  font-weight: 300;
-}
-.time-comp .clock {
-  display: inline-flex;
-  align-items: flex-end;
-  gap: 3px;
-}
-.time-comp .hm {
-  font-size: 16px;
-  line-height: 1.2;
-  color: #000;
-  font-weight: 300;
-}
-.time-comp {
-  font-size: 12px;
-  line-height: 1.28;
-  color: #7c7c7c;
-  font-weight: 500;
-}
-.time-comp .ampm {
-  margin-left: 4px;
-  font-size: 16px;
-  line-height: 1.2;
-  color: #000;
-  font-weight: 300;
-}
 .animated-action {
   width: 100%;
   height: var(--spacing-352);
@@ -1387,6 +1382,9 @@ p {
   .res-0-520-w-100 {
     width: 100% !important;
   }
+  .nav-floater .button-wrapper > .btn-primary.res-0-520-w-100 {
+    width: auto !important;
+  }
   .btn-help-text {
     font-size: var(--spacing-10);
     font-weight: 500;
@@ -1448,11 +1446,20 @@ p {
     padding: var(--spacing-18) var(--spacing-28) !important;
   }
   .icon-btn {
-    padding: var(--spacing-16);
+    padding-top: var(--spacing-02) !important;
+    padding-bottom: var(--spacing-02) !important;
+    padding-left: var(--spacing-08) !important;
+    padding-right: var(--spacing-16);
     flex-shrink: 0;
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
     will-change: transform;
+    overflow: hidden;
+  }
+  .btn-lab {
+    flex: 0 0 auto;
+    width: fit-content;
+    min-width: fit-content;
   }
   .btn-smaller {
     padding: var(--spacing-10) var(--spacing-24) !important;
@@ -1677,17 +1684,6 @@ p {
   .main-character {
     position: absolute;
     bottom: 0;
-  }
-  .city,
-  .pin,
-  .hm,
-  .ampm {
-    font-size: var(--spacing-12) !important;
-  }
-  .time-comp {
-    display: inline-flex;
-    align-items: flex-end;
-    gap: var(--spacing-10);
   }
 }
 .w-90 {

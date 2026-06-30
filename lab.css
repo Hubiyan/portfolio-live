@@ -1267,11 +1267,16 @@ body.lab-page .lab-lamp {
   overflow: visible;
 }
 
-body.lab-page[data-mat-color="green"] .lab-lamp,
-body.lab-page[data-mat-color="black"] .lab-lamp {
+body.lab-page[data-mat-color="green"] .lab-lamp {
   --lab-lamp-line: #ffffff;
   --lab-lamp-glow: #ffbb00;
   --lab-lamp-glow-bright: #ffffff;
+}
+
+body.lab-page[data-mat-color="black"] .lab-lamp {
+  --lab-lamp-line: #b8dcff;
+  --lab-lamp-glow: #7ec8ff;
+  --lab-lamp-glow-bright: #d4ecff;
 }
 
 body.lab-page[data-mat-color="blue"] .lab-lamp {

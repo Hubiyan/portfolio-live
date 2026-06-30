@@ -83,18 +83,20 @@
     <nav class="my-nav d-flex w-100 justify-content-center align-items-end">
         <div class="nav-blur-stack" id="navBlurStack" aria-hidden="true"></div>
         <div class="nav-floater d-flex align-items-center justify-content-center gap-32-box">
-            <a href="https://hubiyan.com/"><img class="nav-logo-img" src="images/logos/main-logo.png"
-                    alt="Hubiyan logo, go to homepage" class="home">
-            </a>
             <div class="button-wrapper d-flex gap-04-box align-items-center res-0-520-w-100">
                 <button type="button" class="my-button btn-primary res-0-520-w-100" data-bs-toggle="modal"
                     data-bs-target="#exampleModal">
                     Get in touch
                 </button>
-                <button class="btn my-button btn-seco icon-btn" type="button" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal1" aria-label="Watch video reel">
-                    <img class="large-btn-icon" src="images/btn-icons/play.png" alt="Play">
-                </button>
+                <a href="/lab/" class="btn my-button btn-lab icon-btn" aria-label="Open Lab"
+                   target="_blank" rel="noopener noreferrer">
+                   
+                    <video class="lab-btn-icon" width="36" height="36"
+                           autoplay loop muted playsinline preload="auto" aria-hidden="true">
+                        <source src="images/btn-icons/lab-icon.webm" type="video/webm">
+                    </video>
+                    Lab
+                </a>
             </div>
 
         </div>
@@ -414,29 +416,11 @@
                                     height="16" decoding="async" draggable="false">
                             </button>
                             <div class="hamburger-menu" id="hamburgerMenu" role="menu" aria-hidden="true">
-                                <a href="lab/prompts/" class="ham-link" role="menuitem">Prompts</a>
-                                <a href="lab/ai-bro-detector/" class="ham-link" role="menuitem">AI Bro Detector</a>
+                                <a href="/lab/" class="ham-link" role="menuitem">Lab</a>
                                 <a href="#case-studies" class="ham-link" role="menuitem" id="hamCaseLink">Case studies</a>
                             </div>
                         </div>
 
-                    </div>
-                    <!-- Time component -->
-                    <div class="time-comp" id="uae-time-comp" role="timer" aria-live="polite">
-
-
-                        <div class="time-comp" id="time-abu-dhabi" data-timezone="Asia/Dubai" data-city="Abu Dhabi"
-                            role="timer" aria-live="polite">
-                            <span class="clock">
-                                <span class="pin" aria-hidden="true">📍</span>
-                                <span class="hm">--:--</span>
-                                <span class="ampm">AM</span>
-                            </span>
-                            <span class="place">
-
-                                <span class="city">Abu Dhabi</span>
-                            </span>
-                        </div>
                     </div>
 
                 </div>
@@ -1635,6 +1619,17 @@
 
         </footer>
     </main>
+    <script>
+    (function () {
+        var labIcon = document.querySelector('.lab-btn-icon');
+        if (!labIcon) return;
+        function playLabIcon() {
+            labIcon.play().catch(function () {});
+        }
+        if (labIcon.readyState >= 2) playLabIcon();
+        else labIcon.addEventListener('loadeddata', playLabIcon, { once: true });
+    })();
+    </script>
 </body>
 
 </html>
