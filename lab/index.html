@@ -379,30 +379,45 @@
 
     /* ── Wallpaper data ─────────────────────────────────────── */
     var WALLPAPER_DIR = '/images/wallpapers/';
-    var WALLPAPERS = [
+    var WALLPAPER_ITEMS = [
         {
-            name:           'Andromeda Horizon',
-            thumb:          '/images/wallpapers/thumbs/Andromeda-horizon.webp',
-            full:           WALLPAPER_DIR + encodeURIComponent('Andromeda Horizon.jpg'),
-            filename:       'Andromeda Horizon.jpg',
-            mobile:         WALLPAPER_DIR + 'Andromeda-horizon-mobile.png',
-            mobileFilename: 'Andromeda-horizon-mobile.png'
+            name:       'Andromeda Horizon.jpg',
+            thumb:      '/images/wallpapers/thumbs/Andromeda-horizon-desktop.webp',
+            src:        WALLPAPER_DIR + encodeURIComponent('Andromeda Horizon.jpg'),
+            filename:   'Andromeda Horizon.jpg',
+            landscape:  true
         },
         {
-            name:           'Andromeda Flare',
-            thumb:          '/images/wallpapers/thumbs/Andromeda-flare.webp',
-            full:           WALLPAPER_DIR + encodeURIComponent('Andromeda Flare.jpg'),
-            filename:       'Andromeda Flare.jpg',
-            mobile:         WALLPAPER_DIR + 'Andromeda-flare-mobile.png',
-            mobileFilename: 'Andromeda-flare-mobile.png'
+            name:       'Andromeda-horizon-mobile.png',
+            thumb:      '/images/wallpapers/thumbs/Andromeda-horizon.webp',
+            src:        WALLPAPER_DIR + 'Andromeda-horizon-mobile.png',
+            filename:   'Andromeda-horizon-mobile.png'
         },
         {
-            name:           'Andromeda Emerald',
-            thumb:          '/images/wallpapers/thumbs/Andromeda-emerald.webp',
-            full:           WALLPAPER_DIR + encodeURIComponent('Andromeda Emerald.jpg'),
-            filename:       'Andromeda Emerald.jpg',
-            mobile:         WALLPAPER_DIR + 'Andromeda-emerald-mobile.png',
-            mobileFilename: 'Andromeda-emerald-mobile.png'
+            name:       'Andromeda Flare.jpg',
+            thumb:      '/images/wallpapers/thumbs/Andromeda-flare-desktop.webp',
+            src:        WALLPAPER_DIR + encodeURIComponent('Andromeda Flare.jpg'),
+            filename:   'Andromeda Flare.jpg',
+            landscape:  true
+        },
+        {
+            name:       'Andromeda-flare-mobile.png',
+            thumb:      '/images/wallpapers/thumbs/Andromeda-flare.webp',
+            src:        WALLPAPER_DIR + 'Andromeda-flare-mobile.png',
+            filename:   'Andromeda-flare-mobile.png'
+        },
+        {
+            name:       'Andromeda Emerald.jpg',
+            thumb:      '/images/wallpapers/thumbs/Andromeda-emerald-desktop.webp',
+            src:        WALLPAPER_DIR + encodeURIComponent('Andromeda Emerald.jpg'),
+            filename:   'Andromeda Emerald.jpg',
+            landscape:  true
+        },
+        {
+            name:       'Andromeda-emerald-mobile.png',
+            thumb:      '/images/wallpapers/thumbs/Andromeda-emerald.webp',
+            src:        WALLPAPER_DIR + 'Andromeda-emerald-mobile.png',
+            filename:   'Andromeda-emerald-mobile.png'
         }
     ];
 
@@ -1038,21 +1053,21 @@
     function populateFinderGrid() {
         var grid = document.getElementById('win-free-wallpapers-grid');
         if (!grid) return;
-        WALLPAPERS.forEach(function (wp, i) {
+        WALLPAPER_ITEMS.forEach(function (item, i) {
             var btn = document.createElement('button');
-            btn.className = 'mac-finder-thumb';
-            btn.setAttribute('aria-label', wp.name);
+            btn.className = 'mac-finder-thumb' + (item.landscape ? ' mac-finder-thumb--landscape' : '');
+            btn.setAttribute('aria-label', item.name);
 
             var img    = document.createElement('img');
-            img.src    = wp.thumb;
-            img.alt    = wp.name;
-            img.width  = 120;
-            img.height = 213;
+            img.src    = item.thumb;
+            img.alt    = item.name;
+            img.width  = item.landscape ? 120 : 120;
+            img.height = item.landscape ? 68 : 213;
             img.loading = 'lazy';
             img.style.height = 'auto';
 
             var lbl = document.createElement('span');
-            lbl.textContent = wp.name;
+            lbl.textContent = item.name;
 
             btn.appendChild(img);
             btn.appendChild(lbl);
@@ -1297,21 +1312,12 @@
 
     /* Convenience wrappers used by icon click handlers */
     function openPreview(index) {
-        var items = [];
-        WALLPAPERS.forEach(function (wp) {
-            items.push({ src: wp.thumb, name: wp.name, dl: wp.full, filename: wp.filename });
-            if (wp.mobile) {
-                items.push({
-                    src:      wp.mobile,
-                    name:     wp.name + ' — Mobile',
-                    dl:       wp.mobile,
-                    filename: wp.mobileFilename
-                });
-            }
-        });
-        var startIdx = 0;
-        for (var i = 0; i < index; i++) startIdx += 1 + (WALLPAPERS[i].mobile ? 1 : 0);
-        openPreviewWindow(items, startIdx);
+        openPreviewWindow(
+            WALLPAPER_ITEMS.map(function (item) {
+                return { src: item.src, name: item.name, dl: item.src, filename: item.filename };
+            }),
+            index
+        );
     }
 
     function openSinglePreview(src, name) {

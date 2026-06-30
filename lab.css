@@ -732,6 +732,11 @@ body.lab-page .lab-learning-card__meta {
   max-width: 100%;
 }
 
+.mac-finder-thumb--landscape img {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
 .mac-finder-thumb span {
   font-size: 10px;
   line-height: 1.2;
