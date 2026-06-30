@@ -1002,6 +1002,7 @@ body.lab-page .lab-learning-card__meta {
   gap: 6px;
   font-size: 12px;
   font-weight: 500;
+  font-family: inherit;
   color: rgba(255, 255, 255, 0.72);
   text-decoration: none;
   padding: 6px 10px;
@@ -1010,6 +1011,7 @@ body.lab-page .lab-learning-card__meta {
   border: 1px solid rgba(255, 255, 255, 0.13);
   background: rgba(255, 255, 255, 0.07);
   white-space: nowrap;
+  cursor: pointer;
   transition: background 0.12s, color 0.12s;
 }
 
@@ -1198,6 +1200,12 @@ body.lab-page .lab-learning-card__meta {
   }
 
   .mac-preview-dl span { display: none; } /* icon only on mobile */
+  .mac-preview-dl {
+    min-width: 44px;
+    min-height: 44px;
+    justify-content: center;
+    padding: 8px;
+  }
 
   .lab-color-switcher {
     bottom: var(--spacing-16);

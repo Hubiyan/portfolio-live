@@ -378,24 +378,31 @@
     })();
 
     /* ── Wallpaper data ─────────────────────────────────────── */
+    var WALLPAPER_DIR = '/images/wallpapers/';
     var WALLPAPERS = [
         {
-            name:     'Andromeda Horizon',
-            thumb:    '/images/wallpapers/thumbs/Andromeda-horizon.webp',
-            full:     'https://raw.githubusercontent.com/Hubiyan/portfolio-live/main/images/wallpapers/Andromeda-horizon.png',
-            filename: 'Andromeda-horizon.png'
+            name:           'Andromeda Horizon',
+            thumb:          '/images/wallpapers/thumbs/Andromeda-horizon.webp',
+            full:           WALLPAPER_DIR + encodeURIComponent('Andromeda Horizon.jpg'),
+            filename:       'Andromeda Horizon.jpg',
+            mobile:         WALLPAPER_DIR + 'Andromeda-horizon-mobile.png',
+            mobileFilename: 'Andromeda-horizon-mobile.png'
         },
         {
-            name:     'Andromeda Horizon No.1',
-            thumb:    '/images/wallpapers/thumbs/Andromeda-horizon-1.webp',
-            full:     'https://raw.githubusercontent.com/Hubiyan/portfolio-live/main/images/wallpapers/Andromeda-horizon-1.png',
-            filename: 'Andromeda-horizon-1.png'
+            name:           'Andromeda Flare',
+            thumb:          '/images/wallpapers/thumbs/Andromeda-flare.webp',
+            full:           WALLPAPER_DIR + encodeURIComponent('Andromeda Flare.jpg'),
+            filename:       'Andromeda Flare.jpg',
+            mobile:         WALLPAPER_DIR + 'Andromeda-flare-mobile.png',
+            mobileFilename: 'Andromeda-flare-mobile.png'
         },
         {
-            name:     'Andromeda Horizon No.2',
-            thumb:    '/images/wallpapers/thumbs/Andromeda-horizon-2.webp',
-            full:     'https://raw.githubusercontent.com/Hubiyan/portfolio-live/main/images/wallpapers/Andromeda-horizon-2.png',
-            filename: 'Andromeda-horizon-2.png'
+            name:           'Andromeda Emerald',
+            thumb:          '/images/wallpapers/thumbs/Andromeda-emerald.webp',
+            full:           WALLPAPER_DIR + encodeURIComponent('Andromeda Emerald.jpg'),
+            filename:       'Andromeda Emerald.jpg',
+            mobile:         WALLPAPER_DIR + 'Andromeda-emerald-mobile.png',
+            mobileFilename: 'Andromeda-emerald-mobile.png'
         }
     ];
 
@@ -541,9 +548,9 @@
             toolbar.id = 'preview-toolbar';
             toolbar.innerHTML =
                 '<span class="mac-preview-counter" id="preview-counter-bar"></span>' +
-                '<a class="mac-preview-dl" id="preview-dl" href="" target="_blank" rel="noopener" download="" aria-label="Download">' +
+                '<button type="button" class="mac-preview-dl" id="preview-dl" aria-label="Download">' +
                     SVG_ICONS.download + '<span>Download full resolution</span>' +
-                '</a>';
+                '</button>';
             win.appendChild(toolbar);
         }
 
@@ -1148,6 +1155,49 @@
 
     /* ── Image Preview windows ───────────────────────────────── */
 
+    function mimeForFilename(filename) {
+        var ext = (filename.split('.').pop() || '').toLowerCase();
+        if (ext === 'jpg' || ext === 'jpeg') return 'image/jpeg';
+        if (ext === 'png') return 'image/png';
+        if (ext === 'webp') return 'image/webp';
+        return 'application/octet-stream';
+    }
+
+    /** Fetch same-origin asset and save via native picker or blob download. */
+    function downloadAsset(url, filename) {
+        fetch(url).then(function (res) {
+            if (!res.ok) throw new Error('Download failed');
+            return res.blob();
+        }).then(function (blob) {
+            if (window.showSaveFilePicker) {
+                var mime = mimeForFilename(filename);
+                var accept = {};
+                accept[mime] = ['.' + (filename.split('.').pop() || 'bin').toLowerCase()];
+                return window.showSaveFilePicker({
+                    suggestedName: filename,
+                    types: [{ description: 'Image', accept: accept }]
+                }).then(function (handle) {
+                    return handle.createWritable().then(function (writable) {
+                        return writable.write(blob).then(function () { return writable.close(); });
+                    });
+                });
+            }
+
+            var blobUrl = URL.createObjectURL(blob);
+            var link = document.createElement('a');
+            link.href = blobUrl;
+            link.download = filename;
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            setTimeout(function () { URL.revokeObjectURL(blobUrl); }, 1000);
+        }).catch(function (err) {
+            if (err && err.name === 'AbortError') return;
+            window.open(url, '_blank', 'noopener');
+        });
+    }
+
     /**
      * Create and open an independent Preview window.
      *
@@ -1206,8 +1256,8 @@
                 var hasDl = !!(im.dl);
                 toolbar.hidden = !hasDl;
                 if (hasDl && dlEl) {
-                    dlEl.href = im.dl;
-                    dlEl.setAttribute('download', im.filename || '');
+                    dlEl.dataset.url = im.dl;
+                    dlEl.dataset.filename = im.filename || '';
                 }
             }
 
@@ -1219,6 +1269,13 @@
 
         if (prevBtn) prevBtn.addEventListener('click', function (e) { e.stopPropagation(); setImage(idx - 1, -1); });
         if (nextBtn) nextBtn.addEventListener('click', function (e) { e.stopPropagation(); setImage(idx + 1,  1); });
+        if (dlEl) dlEl.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var url = dlEl.dataset.url;
+            var name = dlEl.dataset.filename;
+            if (url && name) downloadAsset(url, name);
+        });
 
         /* Keyboard nav */
         win.addEventListener('keydown', function (e) {
@@ -1240,12 +1297,21 @@
 
     /* Convenience wrappers used by icon click handlers */
     function openPreview(index) {
-        openPreviewWindow(
-            WALLPAPERS.map(function (wp) {
-                return { src: wp.thumb, name: wp.filename, dl: wp.full, filename: wp.filename };
-            }),
-            index
-        );
+        var items = [];
+        WALLPAPERS.forEach(function (wp) {
+            items.push({ src: wp.thumb, name: wp.name, dl: wp.full, filename: wp.filename });
+            if (wp.mobile) {
+                items.push({
+                    src:      wp.mobile,
+                    name:     wp.name + ' — Mobile',
+                    dl:       wp.mobile,
+                    filename: wp.mobileFilename
+                });
+            }
+        });
+        var startIdx = 0;
+        for (var i = 0; i < index; i++) startIdx += 1 + (WALLPAPERS[i].mobile ? 1 : 0);
+        openPreviewWindow(items, startIdx);
     }
 
     function openSinglePreview(src, name) {
