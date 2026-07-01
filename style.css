@@ -507,6 +507,7 @@ p {
   object-fit: contain;
   pointer-events: none;
   mix-blend-mode: darken;
+  border-radius: var(--spacing-100);
 }
 .large-btn-icon {
   width: var(--spacing-20);

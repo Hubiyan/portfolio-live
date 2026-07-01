@@ -141,6 +141,21 @@ body.lab-page .lab-desktop-icon--prop .lab-icon-figure {
   height: clamp(160px, 24vw, 220px);
 }
 
+/* Career plan — portrait video prop, sized by HEIGHT (slightly shorter
+   than the motto, which renders ~182px tall). Figure hugs the video. */
+body.lab-page #lab-career .lab-icon-figure {
+  width: auto;
+  height: auto;
+}
+body.lab-page #lab-career .lab-icon-figure > video {
+  display: block;
+  height: clamp(140px, 21vw, 170px);
+  width: auto;
+  max-width: none;
+  border-radius: 8px;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.45));
+}
+
 /* ============================================================
    Learning video card widget
 ============================================================ */
@@ -1297,6 +1312,17 @@ body.lab-page .lab-learning-card__meta {
   body.lab-page .lab-desktop-icon--prop .lab-icon-figure {
     width: clamp(130px, 38vw, 170px);
     height: clamp(130px, 38vw, 170px);
+  }
+
+  /* Motto — smaller than the other props on mobile */
+  body.lab-page #lab-motto .lab-icon-figure {
+    width: clamp(92px, 28vw, 118px) !important;
+    height: clamp(92px, 28vw, 118px) !important;
+  }
+
+  /* Career plan — smaller on mobile, sits to the right of the motto */
+  body.lab-page #lab-career .lab-icon-figure > video {
+    height: clamp(84px, 25vw, 104px);
   }
 
   body.lab-page .lab-power-btn {

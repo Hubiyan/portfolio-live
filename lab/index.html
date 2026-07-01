@@ -175,6 +175,35 @@
             </div>
         </div>
 
+        <!-- ── Motto (decorative video prop — drag only) ────── -->
+        <div class="lab-desktop-icon lab-desktop-icon--prop"
+             id="lab-motto"
+             data-icon-id="motto-video"
+             style="left:80%;top:7%"
+             tabindex="0"
+             aria-label="Motto">
+            <div class="lab-icon-figure">
+                <video src="/images/lab-images/motto.webm"
+                       autoplay loop muted playsinline
+                       width="484" height="400"
+                       style="height:auto;max-width:100%;object-fit:contain;
+                              filter:drop-shadow(0 4px 12px rgba(0,0,0,0.45))"></video>
+            </div>
+        </div>
+
+        <!-- ── Career plan (decorative video prop — drag only) ── -->
+        <div class="lab-desktop-icon"
+             id="lab-career"
+             data-icon-id="career-video"
+             style="left:2%;top:10%"
+             tabindex="0"
+             aria-label="Career plan">
+            <div class="lab-icon-figure">
+                <video src="/images/lab-images/visual-play/Career%20plan.webm"
+                       autoplay loop muted playsinline width="856" height="1072"></video>
+            </div>
+        </div>
+
         <!-- ── Learning video card ─────────────────────────── -->
         <div class="lab-learning-card" id="lab-learning-card"
              data-widget-id="learning-video" role="region"
@@ -425,10 +454,11 @@
        Names are the exact file names. src is encoded for spaces/* */
     var VISUAL_PLAY_DIR = '/images/lab-images/visual-play/';
     var VISUAL_PLAY = [
-        { file: 'Stakeholder review.jpg', type: 'image' },
-        { file: 'design advocacy.jpg',    type: 'image' },
-        { file: 'make cool sh*t.gif',     type: 'image' },
-        { file: 'Career plan.webm',       type: 'video' }
+        { file: 'Stakeholder review.jpg',           type: 'image' },
+        { file: 'design advocacy.jpg',              type: 'image' },
+        { file: 'make cool sh*t.gif',               type: 'image' },
+        { file: 'webinar-poster.jpg',               type: 'image' },
+        { file: 'cohort-than-never-happened.jpg',   type: 'image' }
     ];
 
     /* ── Trash media (images) ───────────────────────────────── */
@@ -1800,6 +1830,8 @@
         var casio    = get('#lab-casio');
         var commits  = get('#lab-commits');
         var airpods  = get('#lab-airpods');
+        var motto    = get('#lab-motto');
+        var career   = get('#lab-career');
 
         /* 1. Learning card — top-right */
         var cardLeft = pad;
@@ -1825,6 +1857,19 @@
             place(el, pad + spec.xShift, topStart + spec.yShift, true);
             leftBottom = Math.max(leftBottom, el.offsetTop + el.offsetHeight);
         });
+
+        /* Motto — directly below AI Bro Detector (left column) */
+        var aiBroEl = get('[data-icon-id="ai-bro"]');
+        if (motto && aiBroEl) {
+            place(motto, pad + 8, aiBroEl.offsetTop + aiBroEl.offsetHeight + GAP, true);
+            leftBottom = Math.max(leftBottom, motto.offsetTop + motto.offsetHeight);
+        }
+
+        /* Career plan — to the right of the motto */
+        if (career && motto) {
+            place(career, motto.offsetLeft + motto.offsetWidth + 14, motto.offsetTop, false);
+            leftBottom = Math.max(leftBottom, career.offsetTop + career.offsetHeight);
+        }
 
         /* 3. Watch — below the card, right side */
         var rowY = cardBottom + GAP;
@@ -1855,7 +1900,7 @@
 
         /* 6. Everything else — scrambled two-column flow below */
         var placedIds = ['prompts', 'terminal', 'comment-bro', 'ai-bro'];
-        var placed = [learning, casio, commits, airpods];
+        var placed = [learning, casio, commits, airpods, motto, career];
         leftIconSpecs.forEach(function (spec) {
             var el = get('[data-icon-id="' + spec.id + '"]');
             if (el) placed.push(el);

@@ -17,7 +17,7 @@ const VID_EXTS = new Set(['webm']);
 
 /* Files used elsewhere on the page (e.g. as decorative props) that should
    NOT also appear as auto-generated desktop preview icons. */
-const EXCLUDE = new Set(['airpods_wired.png']);
+const EXCLUDE = new Set(['airpods_wired.png', 'motto.webm']);
 
 const entries = fs.readdirSync(DIR)
     .filter(f => {
