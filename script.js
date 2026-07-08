@@ -136,36 +136,139 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// -------------- CONFETTI (lazy-load on scroll to bottom) --------------
+// -------------- CONFETTI (once when the footer enters view) --------------
 (function () {
   var fired = false;
+  var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var footer = document.querySelector('footer.container');
+  if (!footer || prefersReducedMotion) return;
+
+  var burstMaxMs = 2200;
+  var burstParticleCap = window.matchMedia('(max-width: 520px)').matches ? 36 : 58;
+
+  function pageScrollHeight() {
+    return Math.max(
+      document.body.scrollHeight,
+      document.documentElement.scrollHeight,
+      document.body.offsetHeight,
+      document.documentElement.offsetHeight
+    );
+  }
 
   function isAtBottom(offset) {
-    return (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - (offset || 10));
+    return (window.innerHeight + window.pageYOffset) >= pageScrollHeight() - (offset || 80);
+  }
+
+  function fireConfettiBurst(originX, originY) {
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+
+    var canvas = document.createElement('canvas');
+    canvas.setAttribute('role', 'presentation');
+    canvas.setAttribute('aria-hidden', 'true');
+    Object.assign(canvas.style, {
+      position: 'fixed',
+      left: '0',
+      top: '0',
+      width: '100%',
+      height: '100%',
+      pointerEvents: 'none',
+      zIndex: '999999999',
+    });
+    canvas.width = Math.round(vw * dpr);
+    canvas.height = Math.round(vh * dpr);
+    var ctx = canvas.getContext('2d', { alpha: true });
+    if (!ctx) return;
+    if (dpr !== 1) {
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
+    }
+
+    var particles = [];
+    for (var i = 0; i < burstParticleCap; i += 1) {
+      var angle = Math.random() * Math.PI * 2;
+      var sp = 7 + Math.random() * 12;
+      var speedScale = 0.45 + Math.random() * 0.55;
+      particles.push({
+        x: originX,
+        y: originY,
+        vx: Math.cos(angle) * sp * speedScale,
+        vy: Math.sin(angle) * sp * speedScale,
+        w: 3 + Math.random() * 6,
+        h: 2 + Math.random() * 3,
+        rot: Math.random() * Math.PI * 2,
+        vr: (Math.random() - 0.5) * 0.25,
+        hue: 360 * Math.random(),
+        life: 1,
+        decay: 0.0075 + Math.random() * 0.0065,
+      });
+    }
+
+    document.body.appendChild(canvas);
+    var gravity = 0.32;
+    var t0 = performance.now();
+
+    function step(now) {
+      var elapsed = now - t0;
+      if (elapsed > burstMaxMs) {
+        canvas.remove();
+        return;
+      }
+      ctx.clearRect(0, 0, vw, vh);
+      var alive = 0;
+      for (var p = 0; p < particles.length; p += 1) {
+        var c = particles[p];
+        if (c.life <= 0) continue;
+        alive += 1;
+        c.vy += gravity;
+        c.x += c.vx;
+        c.y += c.vy;
+        c.vx *= 0.99;
+        c.vy *= 0.999;
+        c.rot += c.vr;
+        c.life -= c.decay;
+        if (c.life <= 0) continue;
+        var a = Math.max(0, Math.min(1, c.life));
+        ctx.save();
+        ctx.fillStyle = 'hsla(' + (c.hue % 360) + ', 90%, 65%, ' + a + ')';
+        ctx.translate(c.x, c.y);
+        ctx.rotate(c.rot);
+        ctx.fillRect(-c.w / 2, -c.h / 2, c.w, c.h);
+        ctx.restore();
+      }
+      if (alive > 0) requestAnimationFrame(step);
+      else canvas.remove();
+    }
+    requestAnimationFrame(step);
   }
 
   function fireConfettiAtCenter() {
-    var trigger = document.getElementById("confetti-trigger");
-    if (!trigger) return;
-    trigger.dispatchEvent(new MouseEvent("click", {
-      clientX: window.innerWidth / 2,
-      clientY: window.innerHeight / 2,
-      bubbles: true
-    }));
+    if (fired) return;
+    fired = true;
+    fireConfettiBurst(window.innerWidth / 2, window.innerHeight * 0.55);
   }
 
-  window.addEventListener("scroll", function () {
-    if (fired || !isAtBottom()) return;
-    fired = true;
-    var s = document.createElement('script');
-    s.src = 'confetti.min.js';
-    s.onload = function () {
-      var c = new Confetti("confetti-trigger");
-      c.destroyTarget(false);
-      fireConfettiAtCenter();
-    };
-    document.head.appendChild(s);
-  }, { passive: true });
+  /* Primary: footer entering the viewport (reliable on all screen sizes). */
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!fired && entry.isIntersecting && entry.intersectionRatio >= 0.25) {
+          observer.disconnect();
+          fireConfettiAtCenter();
+        }
+      });
+    }, { threshold: [0, 0.25, 0.5] });
+    observer.observe(footer);
+  }
+
+  /* Fallback: classic scroll-to-bottom check with correct document height. */
+  function onScrollCheck() {
+    if (!fired && isAtBottom()) fireConfettiAtCenter();
+  }
+  window.addEventListener('scroll', onScrollCheck, { passive: true });
+  window.addEventListener('load', onScrollCheck);
+  onScrollCheck();
 })();
 
 // -------------- HAMBURGER MENU (star-blue) --------------

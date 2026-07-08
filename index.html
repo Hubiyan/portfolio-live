@@ -81,6 +81,10 @@
     <script defer src="bootstrap.bundle.min.js"></script>
     <script defer src="script.js"></script>
 
+    <!-- Mock Figma-multiplayer cursor presence (desktop only) -->
+    <link rel="stylesheet" href="cursor-presence.css">
+    <script defer src="cursor-presence.js"></script>
+
 </head>
 
 <body>
@@ -410,7 +414,7 @@
         <!-- container -->
         <div class="container d-flex flex-column gap-100-box">
             <!-- Hero section -->
-            <section class="hero-section d-flex flex-column gap-40-box">
+            <section class="hero-section d-flex flex-column gap-40-box" data-hubiyan="Hey, wassup? I made all these animations, What do you think?">
                 <div class="top-bar d-flex w-100 justify-content-between align-items-center">
                     <div class="d-flex align-items-center gap-12-box">
                         <div class="hamburger-wrap">
@@ -475,7 +479,7 @@
             </section>
 
             <!-- Featured work section -->
-            <section class="standard-section showcase-section d-flex flex-column gap-32-box marg-top-100 h-fit-content">
+            <section class="standard-section showcase-section d-flex flex-column gap-32-box marg-top-100 h-fit-content" data-hubiyan="Some cool UI shots of my past projects.">
                 <div class="d-flex w-100 justify-content-between res-0-520-column res-0-520-gap-16">
                     <div class="d-flex flex-column gap-08-box res-0-520-align-center">
                         <h2 class="section-title">Featured work</h2>
@@ -568,7 +572,7 @@
             <!-- Featured work section -->
 
             <!-- Case studies new -->
-            <section class="standard-section" id="case-studies">
+            <section class="standard-section" id="case-studies" data-hubiyan="Okay, going a bit deeper into how I think work and my skills.">
                 <div class="card d-flex flex-column gap-32-box about-card">
                     <div
                         class="d-flex flex-column gap-04-box justify-content-between align-items-start w-100 about-head">
@@ -644,7 +648,7 @@
             </section>
 
             <!-- About me section -->
-            <section class="standard-section d-flex flex-column gap-32-box about-section mt-0">
+            <section class="standard-section d-flex flex-column gap-32-box about-section mt-0" data-hubiyan="That's me in the video. Press play 👀">
 
                 <div class="card d-flex align-items-center abt-me-card gap-24-box">
                     <div class="d-flex gap-04-box w-100 justify-content-between align-items-center">
@@ -660,43 +664,16 @@
                         </div>
                     </div>
                     <div class="w-75 res-0-520-w-100 loom-video-about-me">
-                        <div id="wistia-facade" class="wistia-facade" onclick="loadWistiaPlayer(this)" role="button" tabindex="0" aria-label="Play video introduction" onkeydown="if(event.key==='Enter'||event.key===' ')loadWistiaPlayer(this)" style="position:relative;cursor:pointer;display:block;">
-                            <img src="https://fast.wistia.com/embed/medias/9itf7hdei4/swatch"
-                                 alt="Video thumbnail: About me introduction"
-                                 loading="lazy"
-                                 width="640" height="853"
-                                 style="width:100%;height:auto;display:block;filter:blur(5px)">
-                            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.15);">
-                                <div style="width:3.5rem;height:3.5rem;border-radius:50%;background:rgba(255,255,255,0.95);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,0.18);">
-                                    <img src="images/btn-icons/play.png" alt="" width="19" height="19" aria-hidden="true" style="margin-left:2px;">
-                                </div>
-                            </div>
-                        </div>
-                        <script>
-                        function loadWistiaPlayer(el){
-                            var c=el.parentElement;
-                            el.remove();
-                            var s1=document.createElement('script');
-                            s1.src='https://fast.wistia.com/player.js';
-                            s1.async=true;
-                            document.head.appendChild(s1);
-                            var s2=document.createElement('script');
-                            s2.src='https://fast.wistia.com/embed/9itf7hdei4.js';
-                            s2.async=true;
-                            s2.type='module';
-                            document.head.appendChild(s2);
-                            var p=document.createElement('wistia-player');
-                            p.setAttribute('media-id','9itf7hdei4');
-                            c.appendChild(p);
-                        }
-                        </script>
+                        <wistia-player media-id="9itf7hdei4"></wistia-player>
+                        <script src="https://fast.wistia.com/player.js" async></script>
+                        <script src="https://fast.wistia.com/embed/9itf7hdei4.js" type="module" async></script>
                     </div>
                 </div>
 
             </section>
 
             <!-- Testimonials section -->
-            <section class="standard-section">
+            <section class="standard-section" data-hubiyan="What people I've worked with say about me. Not bad, right?">
                 <div class="card d-flex flex-column gap-32-box about-card">
                     <div class="d-flex justify-content-between align-items-center w-100 about-head">
                         <h2 class="section-title">What they say</h2>
@@ -834,7 +811,7 @@
             </section>
 
             <!-- Experience section -->
-            <section class="standard-section d-flex flex-column gap-16-box">
+            <section class="standard-section d-flex flex-column gap-16-box" data-hubiyan="Where I've worked — mostly fintech and banking.">
                 <div
                     class="d-flex flex-column gap-08-box justify-content-center align-items-start w-75 res-0-520-w-100">
                     <h2 class="section-title">My experience</h2>
@@ -1426,7 +1403,7 @@
         <!-- full width div -->
         <div class="fill-width dark-card w-100">
             <div class="container">
-                <div class="standard-section d-flex flex-column gap-64-box">
+                <div class="standard-section d-flex flex-column gap-64-box" data-hubiyan="Okay, this part means a lot to me as a designer. I try to connect with people, learn, share my learnings and carry my craft forward.">
                     <div class="d-flex flex-column gap-12-box justify-content-center align-items-center w-100">
                         <h2 class="section-title design-adv-title">As a design advocate 🪄🔮</h2>
                         <p class="section-description text-center w-75">My design advocacy is based on creating better,
@@ -1505,7 +1482,7 @@
         </div>
         <!-- full width div -->
         <footer class="container marg-top-100">
-            <section class="standard-section d-flex flex-column gap-16-box">
+            <section class="standard-section d-flex flex-column gap-16-box" data-hubiyan="You made it to the end. Let's connect? ">
                 <div class="d-flex flex-column gap-04-box justify-content-center align-items-start w-75">
                     <h2 class="section-title">Hope you liked it!</h2>
                     <p class="section-description">Follow me anywhere</p>

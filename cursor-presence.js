@@ -1,0 +1,363 @@
+/* ============================================================
+   Mock Figma-multiplayer presence.
+   - The visitor's cursor becomes a purple "You" cursor.
+   - A red "Hubiyan" cursor trails them (offset, never overlapping),
+     and when they dwell on a [data-hubiyan] section it glides onto
+     that section and types a short first-person explanation.
+   Desktop / fine-pointer only. Overlay never blocks input.
+   ============================================================ */
+(function () {
+    'use strict';
+
+    /* Desktop, fine-pointer only — leave touch/small screens untouched */
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    if (window.innerWidth < 901) return;
+
+    var REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* Exact pointer path from the Paper "Cursor designs" file */
+    var PATH = 'M33.232 20.137C33.232 20.137 33.242 20.144 33.242 20.144 33.784 20.536 34.186 21.055 34.381 21.698 34.551 22.26 34.579 22.837 34.426 23.404 34.278 23.954 33.985 24.435 33.581 24.84 33.101 25.323 32.49 25.578 31.823 25.65 31.823 25.65 18.463 27.299 18.463 27.299 18.187 27.333 17.937 27.477 17.77 27.698 17.77 27.698 9.656 38.394 9.656 38.394 9.259 38.933 8.732 39.333 8.072 39.505 7.517 39.651 6.953 39.663 6.4 39.516 5.831 39.364 5.343 39.051 4.939 38.624 4.477 38.134 4.228 37.528 4.157 36.864 4.157 36.864 4.156 36.852 4.156 36.852 4.156 36.852 1.012 3.556 1.012 3.556 0.932 2.932 1.028 2.318 1.351 1.766 1.637 1.278 2.031 0.886 2.522 0.604 3.013 0.321 3.551 0.178 4.118 0.175 4.761 0.172 5.343 0.397 5.845 0.777 5.845 0.777 33.232 20.137 33.232 20.137Z';
+
+    function arrowSVG() {
+        return '<svg class="hub-cur__arrow" viewBox="0 0 46 49" xmlns="http://www.w3.org/2000/svg">'
+            + '<g transform="translate(3.06 7.75) rotate(-10.1)">'
+            +   '<path d="' + PATH + '" fill="#ffffff"/>'
+            +   '<path d="' + PATH + '" fill="none" stroke-width="2.678" vector-effect="non-scaling-stroke" style="stroke:var(--c)"/>'
+            + '</g></svg>';
+    }
+
+    /* Pointer hand — filled icon mapped to the You colour token. */
+    var POINTER_D = 'M12.6 5c-0.2 0-0.5 0-0.6 0 0-0.2-0.2-0.6-0.4-0.8s-0.6-0.4-1.1-0.4c-0.2 0-0.4 0-0.6 0.1-0.1-0.2-0.2-0.3-0.3-0.5-0.2-0.2-0.5-0.4-1.1-0.4-0.2 0-0.4 0-0.5 0.1v-1.7c0-0.6-0.4-1.4-1.4-1.4-0.4 0-0.8 0.2-1.1 0.4-0.5 0.6-0.5 1.4-0.5 1.4v4.3c-0.6 0.1-1.1 0.3-1.4 0.6-0.6 0.7-0.6 1.6-0.6 2.8 0 0.2 0 0.5 0 0.7 0 1.4 0.7 2.1 1.4 2.8l0.3 0.4c1.3 1.2 2.4 1.6 5.1 1.6 2.9 0 4.2-1.6 4.2-5.1v-2.5c0-0.7-0.2-2.1-1.4-2.4zM13 7.4v2.6c0 3.4-1.3 4.1-3.2 4.1-2.4 0-3.3-0.3-4.3-1.3-0.1-0.1-0.2-0.2-0.4-0.4-0.7-0.8-1.1-1.2-1.1-2.2 0-0.2 0-0.5 0-0.7 0-1 0-1.7 0.3-2.1 0.1-0.1 0.4-0.2 0.7-0.2v0.5l-0.3 1.5c0 0.1 0 0.1 0.1 0.2s0.2 0 0.2 0l1-1.2c0-0.1 0-0.2 0-0.2v-6.2c0-0.1 0-0.5 0.2-0.7 0.1 0 0.2-0.1 0.4-0.1 0.3 0 0.4 0.3 0.4 0.4v3.1c0 0 0 0 0 0v1.2c0 0.3 0.2 0.6 0.5 0.6s0.5-0.3 0.5-0.5v-1.3c0 0 0 0 0 0 0-0.1 0.1-0.5 0.5-0.5 0.3 0 0.5 0.1 0.5 0.4v1.3c0 0.3 0.2 0.6 0.5 0.6s0.5-0.3 0.5-0.5v-0.7c0-0.1 0.1-0.3 0.5-0.3 0.2 0 0.3 0.1 0.3 0.1 0.2 0.1 0.2 0.4 0.2 0.4v0.8c0 0.3 0.2 0.5 0.4 0.5 0.3 0 0.5-0.1 0.5-0.4 0-0.1 0.1-0.2 0.2-0.3 0 0 0.1 0 0.2 0 0.6 0.2 0.7 1.2 0.7 1.5 0-0.1 0-0.1 0 0z';
+    var POINTER_OUTER = POINTER_D.split('M13 ')[0];
+    function pointerSVG() {
+        return '<svg class="hub-cur__icon hub-cur__icon--pointer" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">'
+            +   '<path d="' + POINTER_OUTER + '" fill="#ffffff" stroke="#ffffff" stroke-width="0.5" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>'
+            +   '<path d="' + POINTER_D + '" style="fill:var(--c)"/>'
+            + '</svg>';
+    }
+
+    /* Open grab hand (default) — Clarity cursor-hand-open solid, You colour token. */
+    var GRAB_OPEN_D = 'M29.6235,6.99688H29.374C28.8851,6.99688,28.4161,7.10681,27.997,7.29669C27.957,5.46783,26.4103,3.99875,24.5143,3.99875C23.9156,3.99875,23.3568,4.15865,22.8678,4.41849C22.4487,3.02936,21.1814,2,19.6547,2H19.4052C17.5691,2,16.0822,3.47908,16.0423,5.29794C15.6232,5.10806,15.1542,4.99813,14.6653,4.99813H14.4158C12.5597,4.99813,11.0429,6.50718,11.0429,8.37602V17.4304L8.76777,14.9519C7.76989,13.6327,5.94377,13.2829,4.53675,14.1424C3.1497,14.9819,2.60086,16.7308,3.29938,18.2998L6.60237,24.2161C6.86182,25.2055,8.45843,30.842,12.44,33.8001C12.6096,33.93,12.8192,34,13.0387,34H26.57C26.7895,34,27.009,33.92,27.1887,33.7901C30.8808,30.9019,32.9963,26.5646,32.9963,21.8876V10.3848C32.9963,8.52592,31.4895,7.00687,29.6235,7.00687V6.99688ZM31.0006,11.0344V21.8776C31.0006,25.8151,29.2643,29.4828,26.2207,31.9913H13.378C9.8854,29.183,8.52828,23.6665,8.5183,23.6065C8.49834,23.5166,8.45843,23.4266,8.41851,23.3467L5.08559,17.4004C4.83612,16.8407,5.04567,16.1711,5.57455,15.8513C6.1134,15.5215,6.80194,15.6615,7.24101,16.2311L11.3024,20.6683C11.482,20.8582,11.7415,20.9881,12.0308,20.9881C12.5797,20.9881,13.0287,20.5384,13.0287,19.9888V8.37602C13.0287,7.61649,13.6474,6.99688,14.4058,6.99688H14.6553C15.4137,6.99688,16.0323,7.61649,16.0323,8.37602V15.9913H18.0281V5.37789C18.0281,4.61836,18.6468,3.99875,19.4052,3.99875H19.6547C20.4131,3.99875,21.0317,4.61836,21.0317,5.37789V15.9913H23.0275V7.37664C23.0275,6.61711,23.6961,5.9975,24.5243,5.9975C25.3526,5.9975,26.0211,6.61711,26.0211,7.37664V15.9913H28.0169V10.3748C28.0169,9.61524,28.6356,8.99563,29.394,8.99563H29.6435C30.4018,8.99563,31.0205,9.61524,31.0205,10.3748V11.0344H31.0006Z';
+    var GRAB_OPEN_OUTER = GRAB_OPEN_D.split('M31.0006')[0];
+    function grabOpenSVG() {
+        return '<svg class="hub-cur__icon hub-cur__icon--grab-open" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">'
+            +   '<path d="' + GRAB_OPEN_OUTER + '" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>'
+            +   '<path d="' + GRAB_OPEN_D + '" style="fill:var(--c)"/>'
+            + '</svg>';
+    }
+
+    /* Closed grab hand (mousedown / dragging) — filled icon, same You colour. */
+    var GRAB_CLOSED_D = 'M28.09,9.74a4,4,0,0,0-1.16.19c-.19-1.24-1.55-2.18-3.27-2.18A4,4,0,0,0,22.13,8,3.37,3.37,0,0,0,19,6.3a3.45,3.45,0,0,0-2.87,1.32,3.65,3.65,0,0,0-1.89-.51A3.05,3.05,0,0,0,11,9.89v.91c-1.06.4-4.11,1.8-4.91,4.84s.34,8,2.69,11.78a25.21,25.21,0,0,0,5.9,6.41.9.9,0,0,0,.53.17H25.55a.92.92,0,0,0,.55-.19,13.13,13.13,0,0,0,3.75-6.13A25.8,25.8,0,0,0,31.41,18v-5.5A3.08,3.08,0,0,0,28.09,9.74ZM29.61,18a24,24,0,0,1-1.47,9.15A12.46,12.46,0,0,1,25.2,32.2H15.47a23.75,23.75,0,0,1-5.2-5.72c-2.37-3.86-3-8.23-2.48-10.39A5.7,5.7,0,0,1,11,12.76v7.65a.9.9,0,0,0,1.8,0V9.89c0-.47.59-1,1.46-1s1.49.52,1.49,1v5.72h1.8V8.81c0-.28.58-.71,1.46-.71s1.53.48,1.53.75v6.89h1.8V10l.17-.12a2.1,2.1,0,0,1,1.18-.32c.93,0,1.5.44,1.5.68l0,6.5H27V11.87a1.91,1.91,0,0,1,1.12-.33c.86,0,1.52.51,1.52.94Z';
+    var GRAB_CLOSED_OUTER = GRAB_CLOSED_D.split('M29.61')[0];
+    function grabClosedSVG() {
+        return '<svg class="hub-cur__icon hub-cur__icon--grab-closed" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">'
+            +   '<path d="' + GRAB_CLOSED_OUTER + '" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>'
+            +   '<path d="' + GRAB_CLOSED_D + '" style="fill:var(--c)"/>'
+            + '</svg>';
+    }
+
+    var TIP_X = 6.5, TIP_Y = 6.5;   /* arrow-tip hotspot within the svg */
+
+    /* Elements whose native cursor is grab / pointer (detected semantically,
+       since the real cursor is hidden). */
+    var GRAB_SEL    = '.testimonial-container, .exp-card, [data-cursor="grab"], [style*="cursor:grab"], [style*="cursor: grab"]';
+    var POINTER_SEL = 'a[href], button, [role="button"], input[type="button"], input[type="submit"], input[type="reset"], summary, label, select, .my-button, .hamburger-btn, .btn-close, [onclick], [data-cursor="pointer"], [style*="cursor:pointer"], [style*="cursor: pointer"]';
+
+    /* ── Build overlay ── */
+    var root = document.createElement('div');
+    root.id = 'hub-presence';
+    root.setAttribute('aria-hidden', 'true');
+
+    function makeCursor(role, label) {
+        var el = document.createElement('div');
+        el.className = 'hub-cur hub-cur--' + role;
+        el.innerHTML = arrowSVG()
+            + '<div class="hub-cur__tag">'
+            +   '<span class="hub-cur__label">' + label + '</span>'
+            +   '<div class="hub-cur__bubble"><span class="hub-cur__text"></span><span class="hub-cur__caret"></span></div>'
+            + '</div>';
+        root.appendChild(el);
+        return el;
+    }
+
+    var hubEl = makeCursor('hub', 'Hubiyan');   /* built first → under the You cursor */
+    var youEl = makeCursor('you', 'You');
+    var hubText = hubEl.querySelector('.hub-cur__text');
+
+    /* Give the You cursor its pointer + grab hand variants (after the arrow) */
+    youEl.querySelector('.hub-cur__arrow')
+         .insertAdjacentHTML('afterend', pointerSVG() + grabOpenSVG() + grabClosedSVG());
+
+    /* Swap the You cursor's icon based on what is actually under the pointer. */
+    var youCurState = '';
+    function cursorStateFrom(el) {
+        if (!el || !el.closest) return '';
+        /* Grab beats pointer — only on explicit grab targets. */
+        if (el.closest(GRAB_SEL)) return 'grab';
+        if (el.closest(POINTER_SEL)) return 'pointer';
+        return '';
+    }
+    function setYouCursor(el) {
+        var s = cursorStateFrom(el);
+        if (s === youCurState) return;
+        youCurState = s;
+        youEl.classList.toggle('is-pointer', s === 'pointer');
+        youEl.classList.toggle('is-grab',    s === 'grab');
+        if (s !== 'grab') youEl.classList.remove('is-grabbing');
+    }
+
+    /* Hit-test the real element at the visitor's pointer (ignores our overlay). */
+    function hitAt(x, y) {
+        var el = document.elementFromPoint(x, y);
+        if (el && el.closest && el.closest('#hub-presence')) return null;
+        return el;
+    }
+
+    /* Re-derive pointer / grab / section from current pointer position. */
+    function syncPointerContext() {
+        var hit = hitAt(pointer.x, pointer.y);
+        setYouCursor(hit);
+        hoverSec = sectionFromTarget(hit);
+    }
+
+    /* ── State ── */
+    var pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    var you     = { x: pointer.x, y: pointer.y };
+    var hub     = { x: pointer.x - 60, y: pointer.y - 40 };
+    var target  = { x: hub.x, y: hub.y };
+    var mode    = 'wander';                /* 'wander' | 'explain' */
+    var live    = false;
+
+    var pendingSec   = null;   /* section we're currently explaining */
+    var pendingText  = '';
+    var startedTyping = false;
+    var typingDone   = false;  /* message fully typed out */
+    var typeTimer    = null;
+    var wobble       = 0;
+    var anchor       = { x: 0, y: 0 };   /* fixed explain-mode target */
+    var explainAt    = 0;                /* time explain mode began */
+    var wander       = { x: window.innerWidth * 0.5, y: window.innerHeight * 0.42 };
+    var reWanderAt   = 0;                /* next time to pick a new roam point */
+
+    var idleTimer    = null;             /* fires once the pointer settles      */
+    var holdTimer    = null;             /* fires HOLD_MS after a message shows  */
+    var hoverSec     = null;             /* section the pointer is currently over */
+    var shownCount   = new Map();        /* section el → completed show cycles   */
+
+    /* ── Tunables ── */
+    var IDLE_MS   = 500;   /* pointer must be still this long to trigger a message */
+    var HOLD_MS   = 2500;  /* how long a message stays after it finishes typing    */
+    var MAX_SHOWS = 1;     /* each section message shows once per session (after a full cycle) */
+
+    /* A section may be explained if it has not yet completed a full show cycle. */
+    function canShow(sec) {
+        return sec && (shownCount.get(sec) || 0) < MAX_SHOWS;
+    }
+
+    /* True while Hubiyan's cursor tip still sits over the section in the viewport. */
+    function hubOverSection(sec) {
+        if (!sec) return false;
+        var r = sec.getBoundingClientRect();
+        return hub.x >= r.left && hub.x <= r.right && hub.y >= r.top && hub.y <= r.bottom;
+    }
+
+    /* ── Render ── */
+    function place(el, x, y) {
+        el.style.transform = 'translate3d(' + (x - TIP_X) + 'px,' + (y - TIP_Y) + 'px,0)';
+    }
+
+    /* ── Section detection ── */
+    function sectionFromTarget(node) {
+        while (node && node !== document.body && node.nodeType === 1) {
+            if (node.hasAttribute('data-hubiyan')) return node;
+            node = node.parentElement;
+        }
+        return null;
+    }
+
+    /* Pick a new roam point — calm, moderate distance, kept on-screen. */
+    function reWander(now) {
+        var mx = 150, my = 130;
+        wander.x = mx + Math.random() * Math.max(1, window.innerWidth  - 2 * mx);
+        wander.y = my + Math.random() * Math.max(1, window.innerHeight - 2 * my);
+        reWanderAt = now + 2600 + Math.random() * 2400;
+    }
+
+    function enterExplain(sec) {
+        clearTimeout(idleTimer);
+        clearTimeout(holdTimer);
+        mode = 'explain';
+        pendingSec = sec;
+        pendingText = sec.getAttribute('data-hubiyan') || '';
+        startedTyping = false;
+        typingDone = false;
+        hubText.textContent = '';
+        hubEl.classList.add('is-explaining');
+        hubEl.classList.remove('is-typed');
+
+        /* Anchor somewhere in the upper part of the section, near — but
+           not on top of — the pointer, clamped into the viewport. */
+        var r = sec.getBoundingClientRect();
+        var ax = pointer.x - 150;
+        ax = Math.max(r.left + 24, Math.min(ax, r.right - 260));
+        ax = Math.max(16, Math.min(ax, window.innerWidth - 380));
+        var ay = Math.max(r.top + 36, 76);
+        ay = Math.min(ay, window.innerHeight - 150);
+        anchor.x = ax; anchor.y = ay;
+        target.x = ax; target.y = ay;
+        explainAt = performance.now();
+    }
+
+    function exitExplain() {
+        if (mode !== 'explain' && !pendingSec) return;
+        clearTimeout(holdTimer);
+        mode = 'wander';
+        reWanderAt = 0;                 /* pick a fresh roam point to drift toward */
+        pendingSec = null;
+        stopTyping();
+        hubEl.classList.remove('is-explaining', 'is-typed');
+        hubText.textContent = '';
+    }
+
+    /* When the current message's full cycle ends (typed + held HOLD_MS), count it
+       and move on. Interrupted cycles are not counted — the section stays eligible. */
+    function onHoldEnd() {
+        if (mode !== 'explain') return;
+        if (pendingSec) {
+            shownCount.set(pendingSec, (shownCount.get(pendingSec) || 0) + 1);
+        }
+        if (hoverSec && hoverSec !== pendingSec && canShow(hoverSec)) enterExplain(hoverSec);
+        else exitExplain();
+    }
+
+    /* ── Typewriter ── */
+    function markShown() {
+        typingDone = true;
+        hubEl.classList.add('is-typed');
+        /* Message stays HOLD_MS after it finishes typing, then moves on —
+           regardless of whether the visitor moves. */
+        clearTimeout(holdTimer);
+        holdTimer = setTimeout(onHoldEnd, HOLD_MS);
+    }
+    function typeText(text) {
+        stopTyping();
+        if (REDUCE) { hubText.textContent = text; markShown(); return; }
+        var i = 0;
+        (function step() {
+            hubText.textContent = text.slice(0, i);
+            if (i >= text.length) { markShown(); typeTimer = null; return; }
+            var ch = text.charAt(i);
+            i += 1;
+            typeTimer = setTimeout(step, ch === ' ' ? 24 : (20 + Math.random() * 45));
+        })();
+    }
+    function stopTyping() { if (typeTimer) { clearTimeout(typeTimer); typeTimer = null; } }
+
+    /* ── Pointer ── */
+    window.addEventListener('mousemove', function (e) {
+        pointer.x = e.clientX;
+        pointer.y = e.clientY;
+        if (!live) {
+            live = true;
+            root.classList.add('is-live');
+            document.documentElement.classList.add('hub-presence-on');
+        }
+        syncPointerContext();
+        if (!e.buttons) youEl.classList.remove('is-grabbing');
+        if (mode === 'wander') {
+            clearTimeout(idleTimer);
+            idleTimer = setTimeout(onSettle, IDLE_MS);
+        }
+    }, { passive: true });
+
+    window.addEventListener('mousedown', function () {
+        syncPointerContext();
+        if (youCurState === 'grab') youEl.classList.add('is-grabbing');
+    }, { passive: true });
+
+    window.addEventListener('mouseup', function () {
+        youEl.classList.remove('is-grabbing');
+        syncPointerContext();
+    }, { passive: true });
+
+    /* Pointer settled for IDLE_MS while roaming → explain the section under it,
+       unless it has already completed a full show cycle this session. */
+    function onSettle() {
+        if (mode === 'wander' && canShow(hoverSec)) enterExplain(hoverSec);
+    }
+
+    /* Any scroll (page or nested): re-hit-test so pointer/grab icons clear when
+       the element under the cursor changes; cancel explain if section moved away. */
+    document.addEventListener('scroll', function () {
+        if (!live) return;
+        syncPointerContext();
+        if (mode === 'explain' && pendingSec && !hubOverSection(pendingSec)) {
+            exitExplain();
+        } else if (mode === 'wander') {
+            clearTimeout(idleTimer);
+            idleTimer = setTimeout(onSettle, IDLE_MS);
+        }
+    }, { passive: true, capture: true });
+
+    /* Hide the presence if the pointer leaves the window */
+    window.addEventListener('mouseout', function (e) {
+        if (!e.relatedTarget && !e.toElement) {
+            root.classList.remove('is-live');
+            document.documentElement.classList.remove('hub-presence-on');
+            live = false;
+            youEl.classList.remove('is-grabbing');
+        }
+    });
+
+    /* ── Loop ── */
+    var EXPLAIN_EASE = REDUCE ? 1 : 0.13;   /* snappier glide onto a section */
+    var WANDER_EASE  = REDUCE ? 1 : 0.045;  /* slow, calm autonomous roam    */
+    var YOU_EASE     = REDUCE ? 1 : 0.55;
+
+    function frame(t) {
+        you.x += (pointer.x - you.x) * YOU_EASE;
+        you.y += (pointer.y - you.y) * YOU_EASE;
+
+        wobble = t * 0.001;
+        if (mode === 'wander') {
+            /* Roams on its own — independent of the visitor's cursor. */
+            if (t > reWanderAt) reWander(t);
+            target.x = wander.x + Math.sin(wobble) * 8;
+            target.y = wander.y + Math.cos(wobble * 1.2) * 8;
+        } else {
+            /* subtle life while parked — bounded offset from the anchor */
+            target.x = anchor.x + Math.sin(wobble * 1.7) * 3;
+            target.y = anchor.y + Math.cos(wobble * 1.9) * 3;
+        }
+
+        var ease = (mode === 'wander') ? WANDER_EASE : EXPLAIN_EASE;
+        hub.x += (target.x - hub.x) * ease;
+        hub.y += (target.y - hub.y) * ease;
+
+        place(youEl, you.x, you.y);
+        place(hubEl, hub.x, hub.y);
+
+        /* Start typing once Hubiyan has arrived on the section (or after a
+           short grace period, so a far glide never blocks the message). */
+        if (mode === 'explain' && pendingSec && !startedTyping) {
+            var dx = target.x - hub.x, dy = target.y - hub.y;
+            if (dx * dx + dy * dy < 70 * 70 || (t - explainAt) > 650) {
+                startedTyping = true;
+                typeText(pendingText);
+            }
+        }
+
+
+        requestAnimationFrame(frame);
+    }
+
+    function boot() {
+        (document.body || document.documentElement).appendChild(root);
+        requestAnimationFrame(frame);
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', boot);
+    } else {
+        boot();
+    }
+})();

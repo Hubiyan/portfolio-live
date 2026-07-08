@@ -1,0 +1,157 @@
+/* ============================================================
+   Mock Figma-multiplayer presence — a purple "You" cursor and a
+   red "Hubiyan" cursor that trails the visitor and "explains" each
+   section on hover. Desktop / fine-pointer only. Overlay never
+   intercepts input (pointer-events: none throughout).
+   ============================================================ */
+
+/* ─────────────────────────────────────────────────────────────
+   EDIT THE CURSOR COLORS HERE  (one value each drives the arrow
+   stroke, the name pill, and the speech bubble for that cursor).
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --you-color: #009b0d;   /* the visitor's "You" cursor */
+  --hub-color: #d900d9;   /* Hubiyan's cursor           */
+}
+
+#hub-presence {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;   /* above nav, modals, everything */
+  pointer-events: none;
+  overflow: hidden;
+  contain: strict;
+}
+
+/* Hide the OS cursor only once JS has confirmed a fine pointer and
+   switched the effect on. If JS never runs, the native cursor stays. */
+@media (hover: hover) and (pointer: fine) {
+  /* Safari ignores `cursor: none`, so hide the native cursor with a 1×1
+     transparent cursor image (which Safari respects); `none` is the
+     fallback for engines that honour it. */
+  html.hub-presence-on,
+  html.hub-presence-on * {
+    cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mNgAAIAAAUAAen63NgAAAAASUVORK5CYII=") 0 0, none !important;
+  }
+}
+
+/* ── A cursor (shared) ─────────────────────────────────────── */
+.hub-cur {
+  position: fixed;
+  left: 0;
+  top: 0;
+  will-change: transform;
+  pointer-events: none;
+  /* transform is written by JS: translate3d(x, y, 0) rotate(tilt) */
+}
+
+.hub-cur__arrow {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 28px;
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(4px 1.3px 3.5px rgba(0, 0, 0, 0.28));
+}
+
+/* Hand variants for the You cursor (pointer / grab). Same look as the arrow. */
+.hub-cur__icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: auto;
+  overflow: visible;
+  display: none;
+  filter: drop-shadow(4px 1.3px 3.5px rgba(0, 0, 0, 0.28));
+}
+.hub-cur__icon--pointer { width: 28px; left: -4px; top: -3px; }
+/* grab hands — hotspot nudged onto the pointer tip */
+.hub-cur__icon--grab-open,
+.hub-cur__icon--grab-closed { width: 30px; left: -7px; top: -9px; }
+
+.hub-cur--you.is-pointer .hub-cur__arrow,
+.hub-cur--you.is-grab    .hub-cur__arrow               { display: none; }
+.hub-cur--you.is-pointer .hub-cur__icon--pointer      { display: block; }
+.hub-cur--you.is-grab    .hub-cur__icon--grab-open     { display: block; }
+.hub-cur--you.is-grab    .hub-cur__icon--grab-closed   { display: none; }
+.hub-cur--you.is-grab.is-grabbing .hub-cur__icon--grab-open   { display: none; }
+.hub-cur--you.is-grab.is-grabbing .hub-cur__icon--grab-closed { display: block; }
+
+/* Label + bubble hang below-right of the arrow, clear of it (the bubble's
+   square top-left corner attaches just under the cursor's tail). */
+.hub-cur__tag {
+  position: absolute;
+  left: 18px;
+  top: 28px;
+  display: flex;
+  font-family: 'Urbanist', system-ui, sans-serif;
+  color: #fff;
+}
+
+.hub-cur__label {
+  background: var(--c);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+}
+
+/* Explaining speech bubble — square top-left corner (attaches to the
+   cursor), rounded elsewhere. Matches the Paper design. */
+.hub-cur__bubble {
+  display: none;
+  width: max-content;
+  max-width: min(340px, 58vw);
+  background: var(--c);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  padding: 8px 12px;
+  border-radius: 0 18px 18px 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+/* Explain mode: hide the small pill, show the bubble */
+.hub-cur.is-explaining .hub-cur__label { display: none; }
+.hub-cur.is-explaining .hub-cur__bubble { display: block; }
+
+/* Blinking type caret */
+.hub-cur__caret {
+  display: inline-block;
+  width: 2px;
+  height: 17px;
+  vertical-align: -3px;
+  margin-left: 2px;
+  background: #fff;
+  animation: hub-caret 1s step-end infinite;
+}
+.hub-cur.is-typed .hub-cur__caret { display: none; }
+
+@keyframes hub-caret {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+
+/* Colors per cursor */
+.hub-cur--you { --c: var(--you-color); }
+.hub-cur--hub { --c: var(--hub-color); }
+
+/* Gentle fade-in when the presence first appears */
+.hub-cur {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+#hub-presence.is-live .hub-cur { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hub-cur__caret { animation: none; }
+  .hub-cur { transition: none; }
+}

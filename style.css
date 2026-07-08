@@ -1089,6 +1089,10 @@ p {
   border-radius: var(--spacing-24);
   overflow: hidden;
 }
+.loom-video-about-me wistia-player {
+  display: block;
+  width: 100%;
+}
 .animated-action {
   width: 100%;
   height: var(--spacing-352);
