@@ -1,3 +1,4 @@
+
 /* ============================================================
    Mock Figma-multiplayer presence.
    - The visitor's cursor becomes a purple "You" cursor.
@@ -106,11 +107,11 @@
         if (s !== 'grab') youEl.classList.remove('is-grabbing');
     }
 
-    /* Hit-test the real element at the visitor's pointer (ignores our overlay). */
+    /* Hit-test the real element at the visitor's pointer. Our overlay is
+       pointer-events:none, so elementFromPoint never returns one of its nodes —
+       no need to filter them out. */
     function hitAt(x, y) {
-        var el = document.elementFromPoint(x, y);
-        if (el && el.closest && el.closest('#hub-presence')) return null;
-        return el;
+        return document.elementFromPoint(x, y);
     }
 
     /* Re-derive pointer / grab / section from current pointer position. */
@@ -121,33 +122,119 @@
     }
 
     /* ── State ── */
+    /* Parked "home" corner — a different one is chosen each time Hubiyan
+       returns to rest. Margins keep the "Hubiyan" tag on-screen. */
+    var corner    = { x: 0, y: 0 };
+    var corners   = [];
+    var cornerIdx = 0;
+    function setCorners() {
+        var iw = window.innerWidth, ih = window.innerHeight;
+        corners = [
+            { x: 30,       y: 82 },       /* top-left     */
+            { x: iw - 150, y: 82 },       /* top-right    */
+            { x: 30,       y: ih - 92 },  /* bottom-left  */
+            { x: iw - 150, y: ih - 92 }   /* bottom-right */
+        ];
+        corner.x = corners[cornerIdx].x;
+        corner.y = corners[cornerIdx].y;
+    }
+    function pickCorner() {
+        var i = cornerIdx;
+        if (corners.length > 1) {
+            do { i = Math.floor(Math.random() * corners.length); } while (i === cornerIdx);
+        }
+        cornerIdx = i;
+        corner.x = corners[i].x;
+        corner.y = corners[i].y;
+    }
+    cornerIdx = Math.floor(Math.random() * 4);   /* random starting corner */
+    setCorners();
+    window.addEventListener('resize', function () { setCorners(); wake(); });
+
     var pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     var you     = { x: pointer.x, y: pointer.y };
-    var hub     = { x: pointer.x - 60, y: pointer.y - 40 };
+    var hub     = { x: corner.x, y: corner.y };
     var target  = { x: hub.x, y: hub.y };
-    var mode    = 'wander';                /* 'wander' | 'explain' */
+    var mode    = 'wander';                /* 'wander' = parked at corner | 'explain' */
     var live    = false;
+    var disabled = false;                  /* H pressed → whole feature is off */
+
+    /* Loop lifecycle: the rAF only runs while something is actually moving or a
+       pointer/scroll re-hit-test is pending. wake() (re)starts it; frame() parks
+       it once everything has settled. This is what keeps the effect idle-free. */
+    var running  = false;
+    var dirty    = false;   /* pointer moved or scrolled → re-derive context next frame */
+    var scrolled = false;   /* the pending re-derive was triggered by a scroll          */
+    function wake() {
+        if (!running) { running = true; requestAnimationFrame(frame); }
+    }
 
     var pendingSec   = null;   /* section we're currently explaining */
     var pendingText  = '';
     var startedTyping = false;
     var typingDone   = false;  /* message fully typed out */
     var typeTimer    = null;
-    var wobble       = 0;
     var anchor       = { x: 0, y: 0 };   /* fixed explain-mode target */
     var explainAt    = 0;                /* time explain mode began */
-    var wander       = { x: window.innerWidth * 0.5, y: window.innerHeight * 0.42 };
-    var reWanderAt   = 0;                /* next time to pick a new roam point */
 
     var idleTimer    = null;             /* fires once the pointer settles      */
     var holdTimer    = null;             /* fires HOLD_MS after a message shows  */
     var hoverSec     = null;             /* section the pointer is currently over */
     var shownCount   = new Map();        /* section el → completed show cycles   */
 
+    var hintTimer  = null;
+    var hintCount  = 0;                  /* how many times the "Press H" nudge has shown */
+
     /* ── Tunables ── */
     var IDLE_MS   = 500;   /* pointer must be still this long to trigger a message */
     var HOLD_MS   = 2500;  /* how long a message stays after it finishes typing    */
     var MAX_SHOWS = 1;     /* each section message shows once per session (after a full cycle) */
+    var MAX_HINTS   = 2;     /* Hubiyan mentions "press H" at most this many times   */
+    var HINT_CHANCE = 0.55;  /* ...and only on some rests, so it doesn't nag         */
+    var HINT_TEXT   = 'Btw — press H on the keyboard to disable me anytime.';
+
+    /* Occasionally, while parked, Hubiyan just says the "press H" tip in his own
+       chat bubble (same view as the section messages) rather than every rest.
+       Capped per session, never while a section message or the disabled state
+       is active. Types in place — he stays in the corner. */
+    function showHint() {
+        if (disabled || mode !== 'wander' || pendingSec || hintCount >= MAX_HINTS) return;
+        if (Math.random() > HINT_CHANCE) return;
+        hintCount += 1;
+        /* The tip bubble opens rightward — if we're parked at a right corner it
+           would clip, so slide the resting spot left far enough to fit it. */
+        var maxX = window.innerWidth - 380;
+        if (corner.x > maxX) corner.x = Math.max(30, maxX);
+        hubEl.classList.add('is-explaining');
+        hubEl.classList.remove('is-typed');
+        hubText.textContent = '';
+        typeHint(HINT_TEXT);
+        wake();                         /* the left-shift (if any) needs to glide */
+    }
+    function typeHint(text) {
+        stopTyping();
+        function done() {
+            hubEl.classList.add('is-typed');
+            clearTimeout(hintTimer);
+            hintTimer = setTimeout(hideHint, HOLD_MS);
+        }
+        if (REDUCE) { hubText.textContent = text; done(); return; }
+        var i = 0;
+        (function step() {
+            hubText.textContent = text.slice(0, i);
+            if (i >= text.length) { done(); typeTimer = null; return; }
+            var ch = text.charAt(i); i += 1;
+            typeTimer = setTimeout(step, ch === ' ' ? 24 : (20 + Math.random() * 45));
+        })();
+    }
+    /* Clear the tip bubble — but only if a section hasn't taken over the cursor. */
+    function hideHint() {
+        clearTimeout(hintTimer);
+        if (mode !== 'wander' || pendingSec) return;
+        stopTyping();
+        hubEl.classList.remove('is-explaining', 'is-typed');
+        hubText.textContent = '';
+    }
 
     /* A section may be explained if it has not yet completed a full show cycle. */
     function canShow(sec) {
@@ -175,15 +262,9 @@
         return null;
     }
 
-    /* Pick a new roam point — calm, moderate distance, kept on-screen. */
-    function reWander(now) {
-        var mx = 150, my = 130;
-        wander.x = mx + Math.random() * Math.max(1, window.innerWidth  - 2 * mx);
-        wander.y = my + Math.random() * Math.max(1, window.innerHeight - 2 * my);
-        reWanderAt = now + 2600 + Math.random() * 2400;
-    }
-
     function enterExplain(sec) {
+        if (disabled) return;
+        hideHint();
         clearTimeout(idleTimer);
         clearTimeout(holdTimer);
         mode = 'explain';
@@ -206,17 +287,44 @@
         anchor.x = ax; anchor.y = ay;
         target.x = ax; target.y = ay;
         explainAt = performance.now();
+        wake();                         /* glide onto the section + trigger typing */
     }
 
     function exitExplain() {
         if (mode !== 'explain' && !pendingSec) return;
         clearTimeout(holdTimer);
-        mode = 'wander';
-        reWanderAt = 0;                 /* pick a fresh roam point to drift toward */
+        mode = 'wander';                /* glide back to the parked corner */
+        pickCorner();                   /* ...a different corner each time  */
         pendingSec = null;
         stopTyping();
         hubEl.classList.remove('is-explaining', 'is-typed');
         hubText.textContent = '';
+        wake();                         /* glide back to the parked corner */
+        showHint();                     /* nudge again on the first rest after a message */
+    }
+
+    /* H fully turns the feature on/off — not just a visual hide. When off,
+       every timer is cleared and any in-flight message is dropped (never
+       shown, never counted), so nothing runs while hidden. The green You
+       cursor keeps working. Turning it back on starts from a clean parked
+       state. */
+    function setHidden(h) {
+        disabled = h;
+        root.classList.toggle('is-hidden', h);
+        hideHint();
+        clearTimeout(idleTimer);
+        clearTimeout(holdTimer);
+        stopTyping();
+        mode = 'wander';
+        pendingSec = null;
+        startedTyping = false;
+        typingDone = false;
+        hubEl.classList.remove('is-explaining', 'is-typed');
+        hubText.textContent = '';
+        pickCorner();
+        hub.x = corner.x; hub.y = corner.y;      /* re-appear parked, no glide */
+        target.x = corner.x; target.y = corner.y;
+        wake();                                  /* render the snap once */
     }
 
     /* When the current message's full cycle ends (typed + held HOLD_MS), count it
@@ -261,9 +369,12 @@
             live = true;
             root.classList.add('is-live');
             document.documentElement.classList.add('hub-presence-on');
+            setTimeout(showHint, 700);   /* first nudge, once the cursor has settled in */
         }
-        syncPointerContext();
+        dirty = true;                    /* re-derive pointer context in the frame */
         if (!e.buttons) youEl.classList.remove('is-grabbing');
+        wake();
+        if (disabled) return;                 /* feature off → no message logic */
         if (mode === 'wander') {
             clearTimeout(idleTimer);
             idleTimer = setTimeout(onSettle, IDLE_MS);
@@ -271,32 +382,33 @@
     }, { passive: true });
 
     window.addEventListener('mousedown', function () {
-        syncPointerContext();
+        syncPointerContext();            /* rare — resolve grab-close instantly */
         if (youCurState === 'grab') youEl.classList.add('is-grabbing');
+        wake();
     }, { passive: true });
 
     window.addEventListener('mouseup', function () {
         youEl.classList.remove('is-grabbing');
         syncPointerContext();
+        wake();
     }, { passive: true });
 
     /* Pointer settled for IDLE_MS while roaming → explain the section under it,
        unless it has already completed a full show cycle this session. */
     function onSettle() {
+        if (disabled) return;
         if (mode === 'wander' && canShow(hoverSec)) enterExplain(hoverSec);
     }
 
-    /* Any scroll (page or nested): re-hit-test so pointer/grab icons clear when
-       the element under the cursor changes; cancel explain if section moved away. */
+    /* Any scroll (page or nested): defer the re-hit-test to the next frame so
+       momentum scrolling never forces a layout per event. The frame does the
+       actual work (clear pointer/grab icons when the element under the cursor
+       changes; cancel explain if the section moved away). */
     document.addEventListener('scroll', function () {
         if (!live) return;
-        syncPointerContext();
-        if (mode === 'explain' && pendingSec && !hubOverSection(pendingSec)) {
-            exitExplain();
-        } else if (mode === 'wander') {
-            clearTimeout(idleTimer);
-            idleTimer = setTimeout(onSettle, IDLE_MS);
-        }
+        dirty = true;
+        scrolled = true;
+        wake();
     }, { passive: true, capture: true });
 
     /* Hide the presence if the pointer leaves the window */
@@ -309,35 +421,64 @@
         }
     });
 
+    /* Press H to hide/show the Hubiyan cursor and the "You" name tag.
+       The visitor's green cursor itself always stays. */
+    window.addEventListener('keydown', function (e) {
+        if (e.key !== 'h' && e.key !== 'H') return;
+        if (e.metaKey || e.ctrlKey || e.altKey) return;
+        var a = document.activeElement;
+        if (a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA' || a.isContentEditable)) return;
+        setHidden(!disabled);
+    });
+
     /* ── Loop ── */
     var EXPLAIN_EASE = REDUCE ? 1 : 0.13;   /* snappier glide onto a section */
     var WANDER_EASE  = REDUCE ? 1 : 0.045;  /* slow, calm autonomous roam    */
     var YOU_EASE     = REDUCE ? 1 : 0.55;
+    var REST_EPS     = 0.1;                  /* within this many px → settled (sub-pixel) */
 
     function frame(t) {
+        /* 1. Re-derive the pointer context at most once per frame, and only when
+              the pointer moved or a scroll happened (dirty). */
+        if (dirty) {
+            if (live) {
+                syncPointerContext();
+                if (scrolled && !disabled) {
+                    if (mode === 'explain' && pendingSec && !hubOverSection(pendingSec)) {
+                        exitExplain();
+                    } else if (mode === 'wander') {
+                        clearTimeout(idleTimer);
+                        idleTimer = setTimeout(onSettle, IDLE_MS);
+                    }
+                }
+            }
+            dirty = false;
+            scrolled = false;
+        }
+
+        /* 2. Ease toward targets — unchanged motion. */
         you.x += (pointer.x - you.x) * YOU_EASE;
         you.y += (pointer.y - you.y) * YOU_EASE;
 
-        wobble = t * 0.001;
+        /* Only two destinations, both reached with the same eased glide and
+           then held still — no idle wobble or roaming. */
         if (mode === 'wander') {
-            /* Roams on its own — independent of the visitor's cursor. */
-            if (t > reWanderAt) reWander(t);
-            target.x = wander.x + Math.sin(wobble) * 8;
-            target.y = wander.y + Math.cos(wobble * 1.2) * 8;
+            target.x = corner.x;   /* rest in the parked corner */
+            target.y = corner.y;
         } else {
-            /* subtle life while parked — bounded offset from the anchor */
-            target.x = anchor.x + Math.sin(wobble * 1.7) * 3;
-            target.y = anchor.y + Math.cos(wobble * 1.9) * 3;
+            target.x = anchor.x;   /* sit on the section being explained */
+            target.y = anchor.y;
         }
 
         var ease = (mode === 'wander') ? WANDER_EASE : EXPLAIN_EASE;
         hub.x += (target.x - hub.x) * ease;
         hub.y += (target.y - hub.y) * ease;
 
+        /* 3. Render. */
         place(youEl, you.x, you.y);
         place(hubEl, hub.x, hub.y);
 
-        /* Start typing once Hubiyan has arrived on the section (or after a
+        /* 4. Start typing once Hubiyan has arrived on the section (or after a
            short grace period, so a far glide never blocks the message). */
         if (mode === 'explain' && pendingSec && !startedTyping) {
             var dx = target.x - hub.x, dy = target.y - hub.y;
@@ -347,13 +488,28 @@
             }
         }
 
+        /* 5. Park the loop once nothing is moving and no re-derive is pending.
+           Snap the sub-pixel remainder (< REST_EPS, invisible) so there's no
+           residual drift, then stop requesting frames. Any input or state change
+           calls wake() to resume — typing and the caret run on their own timers,
+           so sleeping while a message sits typed/held is fine. */
+        if (!dirty
+            && Math.abs(pointer.x - you.x) < REST_EPS && Math.abs(pointer.y - you.y) < REST_EPS
+            && Math.abs(target.x - hub.x) < REST_EPS && Math.abs(target.y - hub.y) < REST_EPS) {
+            you.x = pointer.x; you.y = pointer.y;
+            hub.x = target.x;  hub.y = target.y;
+            place(youEl, you.x, you.y);
+            place(hubEl, hub.x, hub.y);
+            running = false;
+            return;
+        }
 
         requestAnimationFrame(frame);
     }
 
     function boot() {
         (document.body || document.documentElement).appendChild(root);
-        requestAnimationFrame(frame);
+        wake();
     }
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', boot);

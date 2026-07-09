@@ -151,6 +151,11 @@
 }
 #hub-presence.is-live .hub-cur { opacity: 1; }
 
+/* Press-H toggle: hide the Hubiyan cursor and the "You" name tag;
+   the visitor's green cursor itself stays visible. */
+#hub-presence.is-hidden .hub-cur--hub { display: none; }
+#hub-presence.is-hidden .hub-cur--you .hub-cur__tag { display: none; }
+
 @media (prefers-reduced-motion: reduce) {
   .hub-cur__caret { animation: none; }
   .hub-cur { transition: none; }
