@@ -464,6 +464,69 @@ p {
 .btn-social:active {
   background-color: var(--blue-200);
 }
+/* Homepage: secondary buttons → blue outline + rounded filled blue icon chips */
+body.home-page .my-button.btn-seco {
+  border: 1px solid var(--blue-400);
+  background-color: var(--white-50);
+  color: var(--blue-400);
+}
+body.home-page .my-button.btn-seco:hover {
+  background-color: var(--blue-100);
+}
+body.home-page .my-button.btn-seco:active {
+  background-color: var(--blue-200) !important;
+  color: var(--blue-400);
+}
+body.home-page .my-button.btn-seco.disable,
+body.home-page .my-button.btn-seco:disabled {
+  opacity: 0.45;
+  pointer-events: none;
+  border-color: var(--blue-200);
+  color: var(--blue-200);
+  cursor: not-allowed;
+}
+body.home-page .my-button.btn-seco .large-btn-icon:not([src*="notion"]):not([src*="play"]) {
+  box-sizing: content-box;
+  width: var(--spacing-12);
+  height: var(--spacing-12);
+  padding: var(--spacing-04);
+  border-radius: 50%;
+  background-color: var(--blue-400);
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: brightness(0) invert(1);
+}
+body.home-page .my-button.btn-seco:hover .large-btn-icon:not([src*="notion"]):not([src*="play"]),
+body.home-page .my-button.btn-seco:active .large-btn-icon:not([src*="notion"]):not([src*="play"]) {
+  background-color: var(--blue-500);
+}
+body.home-page .my-button.btn-seco .large-btn-icon[src*="play"] {
+  width: var(--spacing-20);
+  height: var(--spacing-20);
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  filter: brightness(0) saturate(100%) invert(40%) sepia(67%) saturate(1282%) hue-rotate(211deg) brightness(93%) contrast(88%);
+}
+body.home-page .carousel-control-prev.my-button.btn-seco .large-btn-icon:not([src*="notion"]):not([src*="play"]),
+body.home-page .carousel-control-next.my-button.btn-seco .large-btn-icon:not([src*="notion"]):not([src*="play"]) {
+  width: var(--spacing-14);
+  height: var(--spacing-14);
+}
+/* UI shots modal — flat blue arrows (match play icon) */
+body.home-page #exampleModal1 .my-button.btn-seco .large-btn-icon[src*="arrow"] {
+  box-sizing: border-box;
+  width: var(--spacing-20);
+  height: var(--spacing-20);
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  filter: brightness(0) saturate(100%) invert(40%) sepia(67%) saturate(1282%) hue-rotate(211deg) brightness(93%) contrast(88%);
+}
+body.home-page #exampleModal1 .my-button.btn-seco:hover .large-btn-icon[src*="arrow"],
+body.home-page #exampleModal1 .my-button.btn-seco:active .large-btn-icon[src*="arrow"] {
+  background: none;
+}
 .icon-btn {
   padding: var(--spacing-14);
   overflow: hidden;
@@ -515,6 +578,7 @@ p {
 }
 .button-link {
   text-decoration: none !important;
+  cursor: pointer;
 }
 .btn-smaller {
   padding: var(--spacing-12) var(--spacing-24) !important;
@@ -948,7 +1012,7 @@ p {
   font-style: italic;
 }
 .exp-desk-sm-btn {
-  padding: var(--spacing-14) var(--spacing-24);
+  padding: var(--spacing-14) var(--spacing-14);
   font-size: var(--spacing-14);
 }
 .accordion-item {
@@ -1092,6 +1156,12 @@ p {
 .loom-video-about-me wistia-player {
   display: block;
   width: 100%;
+}
+@media (hover: hover) and (pointer: fine) {
+  html.hub-presence-on .loom-video-about-me,
+  html.hub-presence-on .loom-video-about-me wistia-player {
+    cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mNgAAIAAAUAAen63NgAAAAASUVORK5CYII=") 0 0, none !important;
+  }
 }
 .animated-action {
   width: 100%;
@@ -1556,6 +1626,9 @@ p {
   }
   .btn-seco:hover {
     background-color: var(--grey-700);
+  }
+  body.home-page .btn-seco:hover {
+    background-color: var(--blue-50);
   }
   .btn-social:hover {
     background-color: var(--blue-50);

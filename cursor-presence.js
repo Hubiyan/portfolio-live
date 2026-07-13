@@ -59,10 +59,43 @@
 
     var TIP_X = 6.5, TIP_Y = 6.5;   /* arrow-tip hotspot within the svg */
 
-    /* Elements whose native cursor is grab / pointer (detected semantically,
-       since the real cursor is hidden). */
+    var HIDE_CURSOR = 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mNgAAIAAAUAAen63NgAAAAASUVORK5CYII=") 0 0, none';
+
+    /* Clickable targets first; grab only on explicit drag-scroll surfaces. */
+    var POINTER_SEL = 'a[href], button, [role="button"], input[type="button"], input[type="submit"], input[type="reset"], input[type="checkbox"], input[type="radio"], summary, label[for], select, .my-button, .hamburger-btn, .btn-close, .button-link, .ham-link, .carousel-control-prev, .carousel-control-next, [data-bs-toggle], [data-bs-dismiss], [onclick], [data-cursor="pointer"], [style*="cursor:pointer"], [style*="cursor: pointer"]';
     var GRAB_SEL    = '.testimonial-container, .exp-card, [data-cursor="grab"], [style*="cursor:grab"], [style*="cursor: grab"]';
-    var POINTER_SEL = 'a[href], button, [role="button"], input[type="button"], input[type="submit"], input[type="reset"], summary, label, select, .my-button, .hamburger-btn, .btn-close, [onclick], [data-cursor="pointer"], [style*="cursor:pointer"], [style*="cursor: pointer"]';
+
+    /* Wistia embeds set their own cursor inside shadow DOM / iframes. */
+    function injectWistiaCursorHide(player) {
+        if (!player || !player.shadowRoot) return;
+        if (player.shadowRoot.getElementById('hub-presence-cursor')) return;
+        var style = document.createElement('style');
+        style.id = 'hub-presence-cursor';
+        style.textContent = ':host, :host *, :host *::before, :host *::after, iframe { cursor: ' + HIDE_CURSOR + ' !important; }';
+        player.shadowRoot.appendChild(style);
+        /* Re-inject if Wistia rebuilds its inner tree after load. */
+        if (typeof MutationObserver !== 'undefined' && !player._hubPresenceObs) {
+            player._hubPresenceObs = new MutationObserver(function () {
+                if (!player.shadowRoot.getElementById('hub-presence-cursor')) injectWistiaCursorHide(player);
+            });
+            player._hubPresenceObs.observe(player.shadowRoot, { childList: true, subtree: true });
+        }
+    }
+    function scanWistiaPlayers() {
+        document.querySelectorAll('wistia-player').forEach(injectWistiaCursorHide);
+    }
+    function watchWistiaPlayers() {
+        scanWistiaPlayers();
+        if (typeof MutationObserver === 'undefined') return;
+        var obs = new MutationObserver(function () { scanWistiaPlayers(); });
+        obs.observe(document.documentElement, { childList: true, subtree: true });
+        /* Shadow roots attach async — retry briefly after load. */
+        var tries = 0;
+        var retry = setInterval(function () {
+            scanWistiaPlayers();
+            if (++tries >= 20) clearInterval(retry);
+        }, 500);
+    }
 
     /* ── Build overlay ── */
     var root = document.createElement('div');
@@ -93,9 +126,9 @@
     var youCurState = '';
     function cursorStateFrom(el) {
         if (!el || !el.closest) return '';
-        /* Grab beats pointer — only on explicit grab targets. */
-        if (el.closest(GRAB_SEL)) return 'grab';
+        /* Pointer beats grab — buttons inside drag-scroll rows stay clickable. */
         if (el.closest(POINTER_SEL)) return 'pointer';
+        if (el.closest(GRAB_SEL)) return 'grab';
         return '';
     }
     function setYouCursor(el) {
@@ -107,9 +140,7 @@
         if (s !== 'grab') youEl.classList.remove('is-grabbing');
     }
 
-    /* Hit-test the real element at the visitor's pointer. Our overlay is
-       pointer-events:none, so elementFromPoint never returns one of its nodes —
-       no need to filter them out. */
+    /* Hit-test the real element at the visitor's pointer. Pierces open shadow DOM. */
     function hitAt(x, y) {
         return document.elementFromPoint(x, y);
     }
@@ -509,6 +540,7 @@
 
     function boot() {
         (document.body || document.documentElement).appendChild(root);
+        watchWistiaPlayers();
         wake();
     }
     if (document.readyState === 'loading') {

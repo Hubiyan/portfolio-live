@@ -485,5 +485,30 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('orientationchange', render);
 })();
 
+// Lab entry points always open in a new tab
+(function () {
+  function labPath(href) {
+    if (!href) return false;
+    try {
+      var url = new URL(href, window.location.origin);
+      return url.pathname === '/lab/' || url.pathname === '/lab';
+    } catch (e) {
+      return href === '/lab/' || href === '/lab';
+    }
+  }
+  function applyLabTargets(root) {
+    (root || document).querySelectorAll('a[href]').forEach(function (a) {
+      if (!labPath(a.getAttribute('href'))) return;
+      a.setAttribute('target', '_blank');
+      a.setAttribute('rel', 'noopener noreferrer');
+    });
+  }
+  function init() { applyLabTargets(document); }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once: true });
+  } else {
+    init();
+  }
+})();
 
 
