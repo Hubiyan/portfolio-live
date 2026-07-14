@@ -2,7 +2,7 @@
  * POST /api/comment
  *
  * Vercel Serverless Function (Node.js runtime).
- * Same plumbing as /api/analyze (Groq + Llama 4 Scout, per-IP rate limit, URL
+ * Same plumbing as /api/analyze (Groq + GPT-OSS 120B, per-IP rate limit, URL
  * snippet fetch), but generates cliché-lampooning social comments instead of a
  * BS score. See ./comment-taxonomy.js for the prompt + output shape.
  *
@@ -21,7 +21,7 @@ const { getClientIp, checkAndRecord, rateLimitPayload, reserveGlobalBudget, refu
 const { buildSystemPrompt, normalizeComments } = require('./comment-taxonomy');
 
 const GROQ_API_URL  = 'https://api.groq.com/openai/v1/chat/completions';
-const DEFAULT_MODEL = 'meta-llama/llama-4-scout-17b-16e-instruct';
+const DEFAULT_MODEL = 'openai/gpt-oss-120b';
 
 const MAX_TEXT_CHARS  = 20000;
 const MAX_FETCH_BYTES = 512 * 1024;            // 512 KB per URL

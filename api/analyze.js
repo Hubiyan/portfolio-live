@@ -2,11 +2,11 @@
  * POST /api/analyze
  *
  * Vercel Serverless Function (Node.js runtime).
- * Uses Groq Chat Completions (OpenAI-compatible) + Llama 4 Scout (text JSON).
+ * Uses Groq Chat Completions (OpenAI-compatible) + GPT-OSS 120B (text JSON).
  *
  * Environment variables required (set in Vercel dashboard):
  *   GROQ_API_KEY        — Groq API key (https://console.groq.com/keys)
- *   MODEL_ID            — optional override, default meta-llama/llama-4-scout-17b-16e-instruct
+ *   MODEL_ID            — optional override, default openai/gpt-oss-120b
  *   ALLOWED_ORIGIN      — optional extra origins (space-separated exact URLs)
  *   KV_REST_API_URL     — Vercel KV (rate limit); optional locally (in-memory fallback)
  *   KV_REST_API_TOKEN   — Vercel KV token
@@ -26,7 +26,7 @@ const { getClientIp, checkAndRecord, rateLimitPayload, reserveGlobalBudget, refu
 const { buildSystemPrompt, normalizeAnalysis } = require('./bro-taxonomy');
 
 const GROQ_API_URL  = 'https://api.groq.com/openai/v1/chat/completions';
-const DEFAULT_MODEL = 'meta-llama/llama-4-scout-17b-16e-instruct';
+const DEFAULT_MODEL = 'openai/gpt-oss-120b';
 
 const MAX_TEXT_CHARS  = 20000;
 const MAX_FETCH_BYTES = 512 * 1024;            // 512 KB per URL

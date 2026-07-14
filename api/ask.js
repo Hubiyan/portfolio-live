@@ -28,7 +28,7 @@ const DEV_FILE      = path.join(os.tmpdir(), 'terminal-dev-rate-limit.json');
 
 /* ── Groq ── */
 const GROQ_URL       = 'https://api.groq.com/openai/v1/chat/completions';
-const DEFAULT_MODEL  = 'meta-llama/llama-4-scout-17b-16e-instruct';
+const DEFAULT_MODEL  = 'openai/gpt-oss-120b';
 const MAX_Q_CHARS    = 500;
 const GROQ_TIMEOUT_MS = 12000;
 

@@ -17,7 +17,7 @@ const require = createRequire(import.meta.url);
 const { buildSystemPrompt, REGRESSION_FIXTURES, normalizeAnalysis } = require('../api/bro-taxonomy.js');
 
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
-const DEFAULT_MODEL = 'meta-llama/llama-4-scout-17b-16e-instruct';
+const DEFAULT_MODEL = 'openai/gpt-oss-120b';
 
 const localArg = process.argv.indexOf('--local');
 const localBase = localArg >= 0 ? process.argv[localArg + 1] : null;
